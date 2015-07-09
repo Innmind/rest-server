@@ -1,0 +1,38 @@
+collections:
+    web:
+        storage: doctrine
+        resources:
+            resource:
+                id: uuid
+                storage: neo4j
+                properties:
+                    uri:
+                        type: string
+                        access: [READ, CREATE]
+                    scheme:
+                        type: string
+                        access: [READ, CREATE]
+                    host:
+                        type: string
+                        access: [READ, CREATE]
+                    domain:
+                        type: string
+                        access: [READ, CREATE]
+                    tld:
+                        type: string
+                        access: [READ, CREATE]
+                    port:
+                        type: int
+                        access: [READ, CREATE]
+                    path:
+                        type: string
+                        access: [READ, CREATE]
+                    query:
+                        type: string
+                        access: [READ, CREATE]
+                    crawl_date:
+                        type: date
+                        access: [READ, CREATE, UPDATE]
+                        variants: [date]
+                meta:
+                    description: Basic representation of a web resource
