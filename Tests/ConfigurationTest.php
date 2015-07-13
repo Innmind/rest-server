@@ -16,7 +16,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $expected = $config;
 
         foreach ($expected['collections']['web']['resources']['resource']['properties'] as &$prop) {
-            if( !isset($prop['options'])) {
+            if (!isset($prop['options'])) {
                 $prop['options'] = [];
             }
 
