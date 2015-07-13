@@ -15,7 +15,9 @@
         "issues": "http://github.com/Innmind/rest-server/issues"
     },
     "require": {
-        "php": ">=5.5"
+        "php": ">=5.5",
+        "symfony/config": "~2.7",
+        "symfony/yaml": "~2.7"
     },
     "autoload": {
         "psr-0": {
