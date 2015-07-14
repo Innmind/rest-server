@@ -190,4 +190,14 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         $loader->load('.');
         $this->assertTrue($fired);
     }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage Do not add the "innmind_rest" loader twice
+     */
+    public function testThrowIfLoaderLoadedTwice()
+    {
+        $this->r->load('.');
+        $this->r->load('.');
+    }
 }

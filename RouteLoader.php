@@ -36,7 +36,7 @@ class RouteLoader extends Loader
     {
         if ($this->loaded) {
             throw new \LogicException(
-                'Do not not add the "innmind_rest" loader twice'
+                'Do not add the "innmind_rest" loader twice'
             );
         }
 
