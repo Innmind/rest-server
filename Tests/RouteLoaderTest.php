@@ -7,6 +7,9 @@ use Innmind\Rest\Server\Registry;
 use Innmind\Rest\Server\Definition\Collection;
 use Innmind\Rest\Server\Definition\Resource;
 use Innmind\Rest\Server\Definition\Property;
+use Innmind\Rest\Server\Events;
+use Innmind\Rest\Server\Event\RouteEvent;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class RouteLoaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,7 +28,7 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         $collection->addResource($resource);
         $this->registry->addCollection($collection);
 
-        $this->r = new RouteLoader($this->registry);
+        $this->r = new RouteLoader(new EventDispatcher, $this->registry);
         $this->resource = $resource;
     }
 
@@ -165,7 +168,7 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testPrefix()
     {
-        $loader = new RouteLoader($this->registry, '/foo/');
+        $loader = new RouteLoader(new EventDispatcher, $this->registry, '/foo/');
         $routes = $loader->load('.')->all();
         $route = $routes['innmind_rest_foo_bar_list'];
 
@@ -173,5 +176,18 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
             '/foo/foo/bar/',
             $route->getPath()
         );
+    }
+
+    public function testDispatchEvent()
+    {
+        $fired = false;
+        $d = new EventDispatcher;
+        $d->addListener(Events::ROUTE, function (RouteEvent $event) use (&$fired) {
+            $fired = true;
+        });
+        $loader = new RouteLoader($d, $this->registry);
+        $this->assertFalse($fired);
+        $loader->load('.');
+        $this->assertTrue($fired);
     }
 }

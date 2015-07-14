@@ -3,20 +3,28 @@
 namespace Innmind\Rest\Server;
 
 use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
+use Innmind\Rest\Server\Events;
+use Innmind\Rest\Server\Event\RouteEvent;
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RouteLoader extends Loader
 {
     CONST RESOURCE_KEY = '_rest_resource';
 
+    protected $dispatcher;
     protected $registry;
     protected $prefix;
     protected $loaded = false;
 
-    public function __construct(Registry $registry, $prefix = null)
-    {
+    public function __construct(
+        EventDispatcherInterface $dispatcher,
+        Registry $registry,
+        $prefix = null
+    ) {
+        $this->dispatcher = $dispatcher;
         $this->registry = $registry;
         $this->prefix = '/' . rtrim(ltrim((string) $prefix, '/'), '/');
     }
@@ -40,6 +48,10 @@ class RouteLoader extends Loader
 
             foreach ($resources as $resource) {
                 foreach ($this->buildRoutes($resource) as $name => $route) {
+                    $this->dispatcher->dispatch(
+                        Events::ROUTE,
+                        new RouteEvent($routes, $route, $resource)
+                    );
                     $routes->add($name, $route);
                 }
             }
