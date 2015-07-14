@@ -182,7 +182,7 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $fired = false;
         $d = new EventDispatcher;
-        $d->addListener(Events::ROUTE, function ($event) use (&$fired) {
+        $d->addListener(Events::ROUTE, function($event) use (&$fired) {
             $this->assertInstanceOf(RouteEvent::class, $event);
             $fired = true;
         });
