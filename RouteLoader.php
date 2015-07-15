@@ -13,6 +13,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class RouteLoader extends Loader
 {
     CONST RESOURCE_KEY = '_rest_resource';
+    CONST ACTION_KEY = '_rest_action';
 
     protected $dispatcher;
     protected $registry;
@@ -133,7 +134,10 @@ class RouteLoader extends Loader
             $resource
         );
 
-        $route = new Route($path, [self::RESOURCE_KEY => $resource]);
+        $route = new Route($path, [
+            self::RESOURCE_KEY => $resource,
+            self::ACTION_KEY => 'list',
+        ]);
         $route->setMethods('GET');
 
         return $route;
@@ -150,7 +154,8 @@ class RouteLoader extends Loader
     {
         return $this
             ->createListRoute($resource)
-            ->setMethods('POST');
+            ->setMethods('POST')
+            ->setDefault(self::ACTION_KEY, 'create');
     }
 
     /**
@@ -169,7 +174,10 @@ class RouteLoader extends Loader
             $resource
         );
 
-        $route = new Route($path, [self::RESOURCE_KEY => $resource]);
+        $route = new Route($path, [
+            self::RESOURCE_KEY => $resource,
+            self::ACTION_KEY => 'get',
+        ]);
         $route->setMethods('GET');
 
         return $route;
@@ -186,7 +194,8 @@ class RouteLoader extends Loader
     {
         return $this
             ->createGetRoute($resource)
-            ->setMethods('PUT');
+            ->setMethods('PUT')
+            ->setDefault(self::ACTION_KEY, 'update');
     }
 
     /**
@@ -200,7 +209,8 @@ class RouteLoader extends Loader
     {
         return $this
             ->createGetRoute($resource)
-            ->setMethods('DELETE');
+            ->setMethods('DELETE')
+            ->setDefault(self::ACTION_KEY, 'delete');
     }
 
     /**
@@ -214,6 +224,7 @@ class RouteLoader extends Loader
     {
         return $this
             ->createListRoute($resource)
-            ->setMethods('OPTIONS');
+            ->setMethods('OPTIONS')
+            ->setDefault(self::ACTION_KEY, 'options');
     }
 }

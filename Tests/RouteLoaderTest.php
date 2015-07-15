@@ -59,6 +59,10 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
             $this->resource,
             $route->getDefault(RouteLoader::RESOURCE_KEY)
         );
+        $this->assertSame(
+            'list',
+            $route->getDefault(RouteLoader::ACTION_KEY)
+        );
     }
 
     public function testAddCreateRoute()
@@ -79,6 +83,10 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             $this->resource,
             $route->getDefault(RouteLoader::RESOURCE_KEY)
+        );
+        $this->assertSame(
+            'create',
+            $route->getDefault(RouteLoader::ACTION_KEY)
         );
     }
 
@@ -101,6 +109,10 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
             $this->resource,
             $route->getDefault(RouteLoader::RESOURCE_KEY)
         );
+        $this->assertSame(
+            'get',
+            $route->getDefault(RouteLoader::ACTION_KEY)
+        );
     }
 
     public function testAddUpdateRoute()
@@ -121,6 +133,10 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             $this->resource,
             $route->getDefault(RouteLoader::RESOURCE_KEY)
+        );
+        $this->assertSame(
+            'update',
+            $route->getDefault(RouteLoader::ACTION_KEY)
         );
     }
 
@@ -143,6 +159,10 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
             $this->resource,
             $route->getDefault(RouteLoader::RESOURCE_KEY)
         );
+        $this->assertSame(
+            'delete',
+            $route->getDefault(RouteLoader::ACTION_KEY)
+        );
     }
 
     public function testAddOptionsRoute()
@@ -163,6 +183,10 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             $this->resource,
             $route->getDefault(RouteLoader::RESOURCE_KEY)
+        );
+        $this->assertSame(
+            'options',
+            $route->getDefault(RouteLoader::ACTION_KEY)
         );
     }
 
