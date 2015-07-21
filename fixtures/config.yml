@@ -36,3 +36,5 @@ collections:
                         variants: [date]
                 meta:
                     description: Basic representation of a web resource
+                options:
+                    class: Some\Class\Name
