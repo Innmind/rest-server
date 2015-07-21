@@ -19,7 +19,8 @@
         "symfony/config": "~2.7",
         "symfony/yaml": "~2.7",
         "symfony/routing": "~2.7",
-        "symfony/event-dispatcher": "~2.7"
+        "symfony/event-dispatcher": "~2.7",
+        "symfony/property-access": "~2.7"
     },
     "autoload": {
         "psr-0": {
