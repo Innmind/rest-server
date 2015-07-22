@@ -80,6 +80,8 @@ class ResourceBuilder
         $type = Types::get($property->getType());
 
         try {
+            $path = (string) $property;
+
             if ($type instanceof ArrayType) {
                 $type = Types::get($property->getOption('inner_type'));
                 foreach ($value as $key => $subValue) {
@@ -90,7 +92,6 @@ class ResourceBuilder
                     );
                 }
             } else {
-                $path = (string) $property;
                 $this->validateValue(
                     $value,
                     $type->getConstraints($property)
