@@ -5,6 +5,7 @@ namespace Innmind\Rest\Server;
 use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Definition\Types;
+use Innmind\Rest\Server\Definition\Type\ArrayType;
 use Innmind\Rest\Server\Exception\PropertyValidationException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
