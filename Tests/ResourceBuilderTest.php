@@ -6,7 +6,9 @@ use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
+use Innmind\Rest\Server\Definition\Collection;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Validator\Validation;
 
 class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,7 +17,8 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->b = new ResourceBuilder(
-            PropertyAccess::createPropertyAccessor()
+            PropertyAccess::createPropertyAccessor(),
+            Validation::createValidator()
         );
     }
 
@@ -45,7 +48,10 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
     public function testBuild()
     {
         $d = new ResourceDefinition('foo');
-        $d->addProperty(new Property('bar'));
+        $d->addProperty(
+            (new Property('bar'))
+                ->setType('string')
+        );
         $o = new \stdClass;
         $o->bar = 'baz';
 
@@ -60,5 +66,24 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
             'baz',
             $r->get('bar')
         );
+    }
+
+    /**
+     * @expectedException Innmind\Rest\Server\Exception\PropertyValidationException
+     * @expectedExceptionMessage The value at the path "foo" on resource foo::bar does not comply with the type "int" (Original error: This value should be of type int.)
+     */
+    public function testThrowOnValidationError()
+    {
+        $d = new ResourceDefinition('bar');
+        $d
+            ->setCollection(new Collection('foo'))
+            ->addProperty(
+                (new Property('foo'))
+                    ->setType('int')
+            );
+        $o = new \stdClass;
+        $o->foo = '42';
+
+        $this->b->build($o, $d);
     }
 }
