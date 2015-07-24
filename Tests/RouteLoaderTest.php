@@ -9,6 +9,7 @@ use Innmind\Rest\Server\Definition\Resource;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Event\RouteEvent;
+use Innmind\Rest\Server\Routing\RouteCollection;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class RouteLoaderTest extends \PHPUnit_Framework_TestCase
@@ -57,11 +58,11 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertSame(
             $this->resource,
-            $route->getDefault(RouteLoader::RESOURCE_KEY)
+            $route->getDefault(RouteCollection::RESOURCE_KEY)
         );
         $this->assertSame(
             'index',
-            $route->getDefault(RouteLoader::ACTION_KEY)
+            $route->getDefault(RouteCollection::ACTION_KEY)
         );
     }
 
@@ -82,11 +83,11 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertSame(
             $this->resource,
-            $route->getDefault(RouteLoader::RESOURCE_KEY)
+            $route->getDefault(RouteCollection::RESOURCE_KEY)
         );
         $this->assertSame(
             'create',
-            $route->getDefault(RouteLoader::ACTION_KEY)
+            $route->getDefault(RouteCollection::ACTION_KEY)
         );
     }
 
@@ -107,11 +108,11 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertSame(
             $this->resource,
-            $route->getDefault(RouteLoader::RESOURCE_KEY)
+            $route->getDefault(RouteCollection::RESOURCE_KEY)
         );
         $this->assertSame(
             'get',
-            $route->getDefault(RouteLoader::ACTION_KEY)
+            $route->getDefault(RouteCollection::ACTION_KEY)
         );
     }
 
@@ -132,11 +133,11 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertSame(
             $this->resource,
-            $route->getDefault(RouteLoader::RESOURCE_KEY)
+            $route->getDefault(RouteCollection::RESOURCE_KEY)
         );
         $this->assertSame(
             'update',
-            $route->getDefault(RouteLoader::ACTION_KEY)
+            $route->getDefault(RouteCollection::ACTION_KEY)
         );
     }
 
@@ -157,11 +158,11 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertSame(
             $this->resource,
-            $route->getDefault(RouteLoader::RESOURCE_KEY)
+            $route->getDefault(RouteCollection::RESOURCE_KEY)
         );
         $this->assertSame(
             'delete',
-            $route->getDefault(RouteLoader::ACTION_KEY)
+            $route->getDefault(RouteCollection::ACTION_KEY)
         );
     }
 
@@ -182,11 +183,11 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertSame(
             $this->resource,
-            $route->getDefault(RouteLoader::RESOURCE_KEY)
+            $route->getDefault(RouteCollection::RESOURCE_KEY)
         );
         $this->assertSame(
             'options',
-            $route->getDefault(RouteLoader::ACTION_KEY)
+            $route->getDefault(RouteCollection::ACTION_KEY)
         );
     }
 

@@ -12,9 +12,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RouteLoader extends Loader
 {
-    CONST RESOURCE_KEY = '_rest_resource';
-    CONST ACTION_KEY = '_rest_action';
-
     protected $dispatcher;
     protected $registry;
     protected $prefix;
