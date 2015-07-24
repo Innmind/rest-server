@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\Definition\Type;
 use Innmind\Rest\Server\Definition\TypeInterface;
 use Innmind\Rest\Server\Definition\Property;
 use Symfony\Component\Validator\Constraints\Callback;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ArrayType implements TypeInterface
 {
