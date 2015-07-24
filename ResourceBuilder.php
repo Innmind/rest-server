@@ -117,7 +117,7 @@ class ResourceBuilder
      */
     protected function validateValue($value, array $constraints)
     {
-        $errors = $this->validator->validateValue($value, $constraints);
+        $errors = $this->validator->validate($value, $constraints);
 
         if ($errors->count() > 0) {
             $excpt = new PropertyValidationException;

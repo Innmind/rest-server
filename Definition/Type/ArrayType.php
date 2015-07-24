@@ -20,10 +20,10 @@ class ArrayType implements TypeInterface
                 !$data instanceof \ArrayAccess ||
                 !$data instanceof \Traversable
             ) {
-                $context->addViolationAt(
-                    (string) $property,
-                    'It must be an array or an object implementing \ArrayAccess and \Traversable'
-                );
+                $context
+                    ->buildViolation('It must be an array or an object implementing \ArrayAccess and \Traversable')
+                    ->atPath((string) $property)
+                    ->addViolation();
             }
         };
 
