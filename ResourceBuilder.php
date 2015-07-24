@@ -51,7 +51,7 @@ class ResourceBuilder
             $value = $this->accessor->getValue($data, (string) $property);
             try {
                 $this->validateProperty($property, $value);
-            } catch(PropertyValidationException $e) {
+            } catch (PropertyValidationException $e) {
                 $e
                     ->setDefinition($definition)
                     ->setDataObject($data);
