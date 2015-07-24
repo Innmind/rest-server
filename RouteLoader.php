@@ -2,7 +2,6 @@
 
 namespace Innmind\Rest\Server;
 
-use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
 use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Event\RouteEvent;
 use Innmind\Rest\Server\Routing\RouteCollection;
