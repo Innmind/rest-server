@@ -44,8 +44,8 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $routes = $this->r->load('.')->all();
 
-        $this->assertTrue(isset($routes['innmind_rest_foo_bar_list']));
-        $route = $routes['innmind_rest_foo_bar_list'];
+        $this->assertTrue(isset($routes['innmind_rest_foo_bar_index']));
+        $route = $routes['innmind_rest_foo_bar_index'];
 
         $this->assertSame(
             '/foo/bar/',
@@ -60,7 +60,7 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
             $route->getDefault(RouteLoader::RESOURCE_KEY)
         );
         $this->assertSame(
-            'list',
+            'index',
             $route->getDefault(RouteLoader::ACTION_KEY)
         );
     }
@@ -194,7 +194,7 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $loader = new RouteLoader(new EventDispatcher, $this->registry, '/foo/');
         $routes = $loader->load('.')->all();
-        $route = $routes['innmind_rest_foo_bar_list'];
+        $route = $routes['innmind_rest_foo_bar_index'];
 
         $this->assertSame(
             '/foo/foo/bar/',
