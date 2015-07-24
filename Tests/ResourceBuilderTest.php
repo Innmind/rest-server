@@ -86,4 +86,48 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->b->build($o, $d);
     }
+
+    public function testBuildArrayProperty()
+    {
+        $d = new ResourceDefinition('foo');
+        $d->addProperty(
+            (new Property('bar'))
+                ->setType('array')
+                ->addOption('inner_type', 'string')
+        );
+        $o = new \stdClass;
+        $o->bar = ['baz'];
+
+        $r = $this->b->build($o, $d);
+
+        $this->assertInstanceOf(
+            Resource::class,
+            $r
+        );
+        $this->assertTrue($r->has('bar'));
+        $this->assertSame(
+            ['baz'],
+            $r->get('bar')
+        );
+    }
+
+    /**
+     * @expectedException Innmind\Rest\Server\Exception\PropertyValidationException
+     * @expectedExceptionMessage The value at the path "foo[0]" on resource foo::bar does not comply with the type "int" (Original error: This value should be of type int.)
+     */
+    public function testThrowOnValidationErrorInArray()
+    {
+        $d = new ResourceDefinition('bar');
+        $d
+            ->setCollection(new Collection('foo'))
+            ->addProperty(
+                (new Property('foo'))
+                    ->setType('array')
+                    ->addOption('inner_type', 'int')
+            );
+        $o = new \stdClass;
+        $o->foo = ['42'];
+
+        $this->b->build($o, $d);
+    }
 }
