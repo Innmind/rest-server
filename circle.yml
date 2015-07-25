@@ -7,7 +7,7 @@ dependencies:
         - sed -i 's/^;//' ~/.phpenv/versions/$(phpenv global)/etc/conf.d/xdebug.ini
     override:
         - curl -sS https://getcomposer.org/installer | php
-        - php composer.phar install --no-dev --prefer-source
+        - php composer.phar install --prefer-source
 
 test:
     override:
