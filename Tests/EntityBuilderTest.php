@@ -101,7 +101,7 @@ class EntityBuilderTest extends \PHPUnit_Framework_TestCase
         );
         $this->d->addListener(
             'innmind.rest.server.entity.build',
-            function (EntityBuildEvent $event) use (&$fired, $r) {
+            function(EntityBuildEvent $event) use (&$fired, $r) {
                 $fired = true;
                 $this->assertSame(
                     $r,

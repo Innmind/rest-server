@@ -150,7 +150,7 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->d->addListener(
             'innmind.rest.server.resource.build',
-            function (ResourceBuildEvent $event) use (&$fired, $d, $o) {
+            function(ResourceBuildEvent $event) use (&$fired, $d, $o) {
                 $fired = true;
                 $this->assertSame(
                     $d,
