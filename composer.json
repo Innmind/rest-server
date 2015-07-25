@@ -28,5 +28,8 @@
             "Innmind\\Rest\\Server": ""
         }
     },
-    "target-dir": "Innmind/Rest/Server"
+    "target-dir": "Innmind/Rest/Server",
+    "require-dev": {
+        "doctrine/orm": "^2.5"
+    }
 }
