@@ -27,10 +27,10 @@ class ResourceBuildEventTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             $this->e,
-            $this->e->replaceData(['bar'])
+            $this->e->replaceData($o = new \stdClass)
         );
         $this->assertSame(
-            ['bar'],
+            $o,
             $this->e->getData()
         );
     }
