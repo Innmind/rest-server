@@ -47,6 +47,10 @@ class ResourceBuilder
             $event = new ResourceBuildEvent($data, $definition)
         );
 
+        if ($event->hasResource()) {
+            return $event->getResource();
+        }
+
         $data = $event->getData();
 
         if (!is_object($data)) {

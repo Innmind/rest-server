@@ -166,4 +166,36 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
         $this->b->build($o, $d);
         $this->assertTrue($fired);
     }
+
+    public function testBuildResourceInEvent()
+    {
+        $this->d->addListener(
+            'innmind.rest.server.resource.build',
+            function (ResourceBuildEvent $event) {
+                $event->setResource(
+                    (new Resource)
+                        ->setDefinition(new ResourceDefinition('foo'))
+                        ->set('my', 'own')
+                );
+            }
+        );
+        $d = new ResourceDefinition('bar');
+        $d
+            ->setCollection(new Collection('foo'))
+            ->addProperty(
+                (new Property('foo'))
+                    ->setType('int')
+            );
+        $o = new \stdClass;
+        $o->foo = 42;
+
+        $r = $this->b->build($o, $d);
+
+        $this->assertTrue($r->has('my'));
+        $this->assertSame(
+            'own',
+            $r->get('my')
+        );
+        $this->assertFalse($r->has('foo'));
+    }
 }

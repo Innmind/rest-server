@@ -3,7 +3,8 @@
 namespace Innmind\Rest\Server\Tests\Event;
 
 use Innmind\Rest\Server\Event\ResourceBuildEvent;
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\Resource as Definition;
+use Innmind\Rest\Server\Resource;
 
 class ResourceBuildEventTest extends \PHPUnit_Framework_TestCase
 {
@@ -11,7 +12,7 @@ class ResourceBuildEventTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->e = new ResourceBuildEvent(['foo'], new Resource('foo'));
+        $this->e = new ResourceBuildEvent(['foo'], new Definition('foo'));
     }
 
     public function testGetData()
@@ -37,8 +38,34 @@ class ResourceBuildEventTest extends \PHPUnit_Framework_TestCase
     public function testGetDefinition()
     {
         $this->assertInstanceOf(
-            Resource::class,
+            Definition::class,
             $this->e->getDefinition()
         );
+    }
+
+    public function testSetResource()
+    {
+        $r = new Resource;
+        $r->setDefinition(new Definition('foo'));
+
+        $this->assertFalse($this->e->hasResource());
+        $this->assertSame(
+            $this->e,
+            $this->e->setResource($r)
+        );
+        $this->assertTrue($this->e->hasResource());
+        $this->assertSame(
+            $r,
+            $this->e->getResource()
+        );
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage A resource must have a definition
+     */
+    public function testThrowWhenSettingAResourceWithoutADefinition()
+    {
+        $this->e->setResource(new Resource);
     }
 }
