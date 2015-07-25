@@ -28,10 +28,12 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
         $r = new Resource;
         $d = new Definition('foo');
 
+        $this->assertFalse($r->hasDefinition());
         $this->assertSame(
             $r,
             $r->setDefinition($d)
         );
+        $this->assertTrue($r->hasDefinition());
         $this->assertSame(
             $d,
             $r->getDefinition()
