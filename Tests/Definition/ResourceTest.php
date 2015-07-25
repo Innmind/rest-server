@@ -165,4 +165,34 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
             $r->getStorage()
         );
     }
+
+    public function testAddOption()
+    {
+        $r = new Resource('foo');
+
+        $this->assertFalse($r->hasOption('foo'));
+        $this->assertSame(
+            $r,
+            $r->addOption('foo', 'bar')
+        );
+        $this->assertTrue($r->hasOption('foo'));
+        $this->assertSame(
+            'bar',
+            $r->getOption('foo')
+        );
+        $this->assertSame(
+            ['foo' => 'bar'],
+            $r->getOptions()
+        );
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Unknown option "bar"
+     */
+    public function testThrowIfUnknownOption()
+    {
+        $r = new Resource('foo');
+        $r->getOption('bar');
+    }
 }

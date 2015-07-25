@@ -4,6 +4,8 @@ namespace Innmind\Rest\Server\Definition;
 
 class Resource
 {
+    use OptionsTrait;
+
     protected $name;
     protected $id;
     protected $properties = [];

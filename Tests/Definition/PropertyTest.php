@@ -111,7 +111,7 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Unknown option "bar" for property "foo"
+     * @expectedExceptionMessage Unknown option "bar"
      */
     public function testThrowIfUnknownOption()
     {
