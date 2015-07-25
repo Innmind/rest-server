@@ -7,18 +7,22 @@ use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Definition\Collection;
+use Innmind\Rest\Server\Event\ResourceBuildEvent;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Validation;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
 {
     protected $b;
+    protected $d;
 
     public function setUp()
     {
         $this->b = new ResourceBuilder(
             PropertyAccess::createPropertyAccessor(),
-            Validation::createValidator()
+            Validation::createValidator(),
+            $this->d = new EventDispatcher
         );
     }
 
@@ -129,5 +133,37 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
         $o->foo = ['42'];
 
         $this->b->build($o, $d);
+    }
+
+    public function testDispatchEvent()
+    {
+        $fired = false;
+        $d = new ResourceDefinition('bar');
+        $d
+            ->setCollection(new Collection('foo'))
+            ->addProperty(
+                (new Property('foo'))
+                    ->setType('int')
+            );
+        $o = new \stdClass;
+        $o->foo = 42;
+
+        $this->d->addListener(
+            'innmind.rest.server.resource.build',
+            function (ResourceBuildEvent $event) use (&$fired, $d, $o) {
+                $fired = true;
+                $this->assertSame(
+                    $d,
+                    $event->getDefinition()
+                );
+                $this->assertSame(
+                    $o,
+                    $event->getData()
+                );
+            }
+        );
+
+        $this->b->build($o, $d);
+        $this->assertTrue($fired);
     }
 }
