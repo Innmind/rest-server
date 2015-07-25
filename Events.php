@@ -6,6 +6,7 @@ class Events
 {
     const ROUTE = 'innmind.rest.server.route';
     const RESOURCE_BUILD = 'innmind.rest.server.resource.build';
+    const ENTITY_BUILD = 'innmind.rest.server.entity.build';
     const STORAGE_PRE_READ = 'innmind.rest.storage.pre.read';
     const STORAGE_POST_READ = 'innmind.rest.storage.post.read';
     const STORAGE_PRE_CREATE = 'innmind.rest.storage.pre.create';
