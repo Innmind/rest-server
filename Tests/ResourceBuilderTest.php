@@ -171,7 +171,7 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->d->addListener(
             'innmind.rest.server.resource.build',
-            function (ResourceBuildEvent $event) {
+            function(ResourceBuildEvent $event) {
                 $event->setResource(
                     (new Resource)
                         ->setDefinition(new ResourceDefinition('foo'))
