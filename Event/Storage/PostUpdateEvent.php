@@ -9,11 +9,13 @@ class PostUpdateEvent extends Event
 {
     protected $resource;
     protected $id;
+    protected $entity;
 
-    public function __construct(Resource $resource, $id)
+    public function __construct(Resource $resource, $id, $entity)
     {
         $this->resource = $resource;
         $this->id = $id;
+        $this->entity = $entity;
     }
 
     /**
@@ -34,5 +36,15 @@ class PostUpdateEvent extends Event
     public function getResourceId()
     {
         return $this->id;
+    }
+
+    /**
+     * Return the entity that has been updated
+     *
+     * @return object
+     */
+    public function getEntity()
+    {
+        return $this->entity;
     }
 }

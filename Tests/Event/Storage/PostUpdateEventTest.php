@@ -14,7 +14,8 @@ class PostUpdateEventTest extends \PHPUnit_Framework_TestCase
     {
         $this->e = new PostUpdateEvent(
             $this->r = new Resource,
-            42
+            42,
+            new \stdClass
         );
     }
 
@@ -31,6 +32,14 @@ class PostUpdateEventTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             42,
             $this->e->getResourceId()
+        );
+    }
+
+    public function testGetEntity()
+    {
+        $this->assertInstanceOf(
+            'stdClass',
+            $this->e->getEntity()
         );
     }
 }
