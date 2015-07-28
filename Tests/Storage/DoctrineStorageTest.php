@@ -20,7 +20,6 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class DoctrineStorageTest extends \PHPUnit_Framework_TestCase
 {
