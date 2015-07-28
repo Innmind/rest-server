@@ -129,7 +129,7 @@ class DoctrineStorageTest extends \PHPUnit_Framework_TestCase
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');
-        $id = $this->s->create($r);
+        $this->s->create($r);
 
         $this->assertTrue($fired);
     }
@@ -177,7 +177,7 @@ class DoctrineStorageTest extends \PHPUnit_Framework_TestCase
                 );
             }
         );
-        $resources = $this->s->read($this->def);
+        $this->s->read($this->def);
 
         $this->assertTrue($fired);
     }
@@ -286,7 +286,7 @@ class DoctrineStorageTest extends \PHPUnit_Framework_TestCase
         $fired = false;
         $this->d->addListener(
             'innmind.rest.storage.post.update',
-            function(Storage\PostUpdateEvent $event) use (&$fired) {
+            function() use (&$fired) {
                 $fired = true;
             }
         );
@@ -371,7 +371,7 @@ class DoctrineStorageTest extends \PHPUnit_Framework_TestCase
         $postFired = false;
         $this->d->addListener(
             'innmind.rest.storage.post.delete',
-            function(Storage\POstDeleteEvent $event) use (&$postFired) {
+            function() use (&$postFired) {
                 $postFired = true;
             }
         );
