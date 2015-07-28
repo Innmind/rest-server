@@ -75,8 +75,7 @@ class DoctrineStorage implements StorageInterface
 
         $entities = $event->getQueryBuilder()->getQuery()->getResult();
         $entities = $entities instanceof Collection ?
-            $entities->toArray() :
-            (array) $entities;
+            $entities->toArray() : (array) $entities;
         $resources = new \SplObjectStorage;
 
         foreach ($entities as $entity) {

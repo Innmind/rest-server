@@ -77,7 +77,7 @@ class DoctrineStorageTest extends \PHPUnit_Framework_TestCase
                 (new Property('name'))
                     ->setType('string')
             )
-            ->addOption('class',  Foo::class);
+            ->addOption('class', Foo::class);
         $this->d->addSubscriber(new StorageCreateListener(
             PropertyAccess::createPropertyAccessor()
         ));
