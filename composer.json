@@ -30,6 +30,7 @@
     },
     "target-dir": "Innmind/Rest/Server",
     "require-dev": {
-        "doctrine/orm": "^2.5"
+        "doctrine/orm": "^2.5",
+        "innmind/neo4j-onm": "^1.0"
     }
 }
