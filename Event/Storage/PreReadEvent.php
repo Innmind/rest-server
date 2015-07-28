@@ -95,7 +95,7 @@ class PreReadEvent extends Event
     /**
      * Return the resources bag
      *
-     * @return SplObjectStorage
+     * @return \SplObjectStorage
      */
     public function getResources()
     {

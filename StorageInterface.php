@@ -13,7 +13,7 @@ interface StorageInterface
      * @param ResourceDefinition $definition
      * @param mixed $id
      *
-     * @return SplObjectStorage
+     * @return \SplObjectStorage
      */
     public function read(ResourceDefinition $definition, $id = null);
 
