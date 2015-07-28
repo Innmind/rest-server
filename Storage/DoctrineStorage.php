@@ -3,12 +3,11 @@
 namespace Innmind\Rest\Server\Storage;
 
 use Innmind\Rest\Server\StorageInterface;
-use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Event\Storage;
 use Innmind\Rest\Server\Event\Doctrine\ReadQueryBuilderEvent;
-use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
+use Innmind\Rest\Server\Definition\Resource;
 use Innmind\Rest\Server\Exception\ResourceNotSupportedException;
 use Innmind\Rest\Server\EntityBuilder;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,6 +16,10 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class DoctrineStorage implements StorageInterface
 {
+    use CreateTrait;
+    use UpdateTrait;
+    use DeleteTrait;
+
     protected $em;
     protected $dispatcher;
     protected $entityBuilder;
@@ -37,7 +40,7 @@ class DoctrineStorage implements StorageInterface
     /**
      * {@inheritdoc}
      */
-    public function read(ResourceDefinition $definition, $id = null)
+    public function read(Resource $definition, $id = null)
     {
         $this->dispatcher->dispatch(
             Events::STORAGE_PRE_READ,
@@ -98,97 +101,7 @@ class DoctrineStorage implements StorageInterface
     /**
      * {@inheritdoc}
      */
-    public function create(Resource $resource)
-    {
-        $this->dispatcher->dispatch(
-            Events::STORAGE_PRE_CREATE,
-            $event = new Storage\PreCreateEvent($resource)
-        );
-
-        if ($event->hasResourceId()) {
-            return $event->getResourceId();
-        }
-
-        $this->checkSupport($event->getResource()->getDefinition());
-
-        $entity = $this->entityBuilder->build($event->getResource());
-
-        $this->em->persist($entity);
-        $this->em->flush();
-
-        $this->dispatcher->dispatch(
-            Events::STORAGE_POST_CREATE,
-            $event = new Storage\PostCreateEvent($event->getResource(), $entity)
-        );
-
-        return $event->getResourceId();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function update(Resource $resource, $id)
-    {
-        $this->dispatcher->dispatch(
-            Events::STORAGE_PRE_UPDATE,
-            $event = new Storage\PreUpdateEvent($resource, $id)
-        );
-
-        if ($event->isPropagationStopped()) {
-            return $this;
-        }
-
-        $resource = $event->getResource();
-        $this->checkSupport($resource->getDefinition());
-
-        $entity = $this->em->find(
-            $resource->getDefinition()->getOption('class'),
-            $id
-        );
-        $this->entityBuilder->build($resource, $entity);
-
-        $this->em->flush();
-
-        $this->dispatcher->dispatch(
-            Events::STORAGE_POST_UPDATE,
-            new Storage\PostUpdateEvent($resource, $id, $entity)
-        );
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function delete(ResourceDefinition $definition, $id)
-    {
-        $this->dispatcher->dispatch(
-            Events::STORAGE_PRE_DELETE,
-            $event = new Storage\PreDeleteEvent($definition, $id)
-        );
-
-        if ($event->isPropagationStopped()) {
-            return $this;
-        }
-
-        $this->checkSupport($definition);
-
-        $entity = $this->em->find($definition->getOption('class'), $id);
-        $this->em->remove($entity);
-        $this->em->flush();
-
-        $this->dispatcher->dispatch(
-            Events::STORAGE_POST_DELETE,
-            new Storage\PostDeleteEvent($definition, $id, $entity)
-        );
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(ResourceDefinition $definition)
+    public function supports(Resource $definition)
     {
         if (!$definition->hasOption('class')) {
             return false;
@@ -206,11 +119,11 @@ class DoctrineStorage implements StorageInterface
     /**
      * Verify if the doctrine storage can allow this resource definition
      *
-     * @param ResourceDefinition $definition
+     * @param Resource $definition
      *
      * @throws ResourceNotSupportedException In case the storage can't
      */
-    protected function checkSupport(ResourceDefinition $definition)
+    protected function checkSupport(Resource $definition)
     {
         if (!$this->supports($definition)) {
             throw new ResourceNotSupportedException(sprintf(
