@@ -101,17 +101,17 @@ class DoctrineStorageTest extends AbstractStorage
 
     public function testDispatchPostUpdate()
     {
-        parent::dispatchPostUpdate(Foo::class);
+        $this->dispatchPostUpdate(Foo::class);
     }
 
     public function testDispatchPostDelete()
     {
-        parent::dispatchPostDelete(Foo::class);
+        $this->dispatchPostDelete(Foo::class);
     }
 
     public function testDispatchPostCreate()
     {
-        parent::dispatchPostCreate(Foo::class);
+        $this->dispatchPostCreate(Foo::class);
     }
 }
 

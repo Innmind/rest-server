@@ -95,17 +95,17 @@ class Neo4jStorageTest extends AbstractStorage
 
     public function testDispatchPostUpdate()
     {
-        parent::dispatchPostUpdate(Bar::class);
+        $this->dispatchPostUpdate(Bar::class);
     }
 
     public function testDispatchPostDelete()
     {
-        parent::dispatchPostDelete(Bar::class);
+        $this->dispatchPostDelete(Bar::class);
     }
 
     public function testDispatchPostCreate()
     {
-        parent::dispatchPostCreate(Bar::class);
+        $this->dispatchPostCreate(Bar::class);
     }
 }
 
