@@ -6,21 +6,26 @@ use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Definition\Types;
 use Innmind\Rest\Server\Definition\Type\ArrayType;
+use Innmind\Rest\Server\Event\ResourceBuildEvent;
 use Innmind\Rest\Server\Exception\PropertyValidationException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ResourceBuilder
 {
     protected $accessor;
     protected $validator;
+    protected $dispatcher;
 
     public function __construct(
         PropertyAccessorInterface $accessor,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        EventDispatcherInterface $dispatcher
     ) {
         $this->accessor = $accessor;
         $this->validator = $validator;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -37,6 +42,17 @@ class ResourceBuilder
      */
     public function build($data, ResourceDefinition $definition)
     {
+        $this->dispatcher->dispatch(
+            Events::RESOURCE_BUILD,
+            $event = new ResourceBuildEvent($data, $definition)
+        );
+
+        if ($event->hasResource()) {
+            return $event->getResource();
+        }
+
+        $data = $event->getData();
+
         if (!is_object($data)) {
             throw new \InvalidArgumentException(sprintf(
                 'You must give a data object in order to build the resource %s',

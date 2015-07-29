@@ -4,11 +4,12 @@ namespace Innmind\Rest\Server\Definition;
 
 class Property
 {
+    use OptionsTrait;
+
     protected $name;
     protected $type;
     protected $access = [];
     protected $variants = [];
-    protected $options = [];
 
     public function __construct($name)
     {
@@ -120,65 +121,6 @@ class Property
     public function getVariants()
     {
         return $this->variants;
-    }
-
-    /**
-     * Add a configuration option
-     *
-     * @param string $name
-     * @param mixed $value
-     *
-     * @return Property self
-     */
-    public function addOption($name, $value)
-    {
-        $this->options[(string) $name] = $value;
-
-        return $this;
-    }
-
-    /**
-     * Check if the option exists
-     *
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function hasOption($name)
-    {
-        return isset($this->options[(string) $name]);
-    }
-
-    /**
-     * Return the option value
-     *
-     * @param string $name
-     *
-     * @throws InvalidArgumentException If the option doesn't exist
-     *
-     * @return mixed
-     */
-    public function getOption($name)
-    {
-        if (!$this->hasOption($name)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Unknown option "%s" for property "%s"',
-                $name,
-                $this->name
-            ));
-        }
-
-        return $this->options[(string) $name];
-    }
-
-    /**
-     * Return all options
-     *
-     * @return array
-     */
-    public function getOptions()
-    {
-        return $this->options;
     }
 
     public function __toString()

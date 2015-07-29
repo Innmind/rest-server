@@ -1,0 +1,10 @@
+Innmind\Rest\Server\Tests\Storage\Foo:
+    type: entity
+    table: foo
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        name:
+            type: string

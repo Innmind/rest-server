@@ -1,0 +1,9 @@
+Innmind\Rest\Server\Tests\Storage\Bar:
+    type: node
+    id:
+        id:
+            type: string
+            generator: { strategy: UUID }
+    labels: [Bar]
+    properties:
+        name: string

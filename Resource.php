@@ -90,4 +90,14 @@ class Resource
     {
         return $this->definition;
     }
+
+    /**
+     * Check if the resource has a definition attached
+     *
+     * @return bool
+     */
+    public function hasDefinition()
+    {
+        return $this->definition !== null;
+    }
 }
