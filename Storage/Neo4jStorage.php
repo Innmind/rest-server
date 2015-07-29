@@ -9,6 +9,7 @@ use Innmind\Rest\Server\Definition\Resource;
 use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Event\Storage;
 use Innmind\Rest\Server\Event\Neo4j\ReadQueryBuilderEvent;
+use Innmind\Rest\Server\Exception\ResourceNotSupportedException;
 use Innmind\Neo4j\ONM\EntityManagerInterface;
 use Innmind\Neo4j\ONM\Mapping\NodeMetadata;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
