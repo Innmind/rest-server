@@ -14,12 +14,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class DoctrineStorage implements StorageInterface
+class DoctrineStorage extends AbstractStorage implements StorageInterface
 {
-    use CreateTrait;
-    use UpdateTrait;
-    use DeleteTrait;
-
     protected $em;
     protected $dispatcher;
     protected $entityBuilder;
@@ -114,23 +110,5 @@ class DoctrineStorage implements StorageInterface
         }
 
         return true;
-    }
-
-    /**
-     * Verify if the doctrine storage can allow this resource definition
-     *
-     * @param Resource $definition
-     *
-     * @throws ResourceNotSupportedException In case the storage can't
-     */
-    protected function checkSupport(Resource $definition)
-    {
-        if (!$this->supports($definition)) {
-            throw new ResourceNotSupportedException(sprintf(
-                'Doctrine can\'t support the resource %s::%s',
-                $definition->getCollection(),
-                $definition
-            ));
-        }
     }
 }

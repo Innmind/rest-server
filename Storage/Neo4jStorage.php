@@ -14,12 +14,8 @@ use Innmind\Neo4j\ONM\EntityManagerInterface;
 use Innmind\Neo4j\ONM\Mapping\NodeMetadata;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class Neo4jStorage implements StorageInterface
+class Neo4jStorage extends AbstractStorage implements StorageInterface
 {
-    use CreateTrait;
-    use UpdateTrait;
-    use DeleteTrait;
-
     protected $em;
     protected $dispatcher;
     protected $entityBuilder;
@@ -139,23 +135,5 @@ class Neo4jStorage implements StorageInterface
         }
 
         return true;
-    }
-
-    /**
-     * Verify if the neo4j storage can allow this resource definition
-     *
-     * @param Resource $definition
-     *
-     * @throws ResourceNotSupportedException In case the storage can't
-     */
-    protected function checkSupport(Resource $definition)
-    {
-        if (!$this->supports($definition)) {
-            throw new ResourceNotSupportedException(sprintf(
-                'Neo4j can\'t support the resource %s::%s',
-                $definition->getCollection(),
-                $definition
-            ));
-        }
     }
 }
