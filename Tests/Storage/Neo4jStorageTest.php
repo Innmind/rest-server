@@ -2,25 +2,22 @@
 
 namespace Innmind\Rest\Server\Tests\Storage;
 
-use Innmind\Rest\Server\Storage\DoctrineStorage;
+use Innmind\Rest\Server\Storage\Neo4jStorage;
 use Innmind\Rest\Server\EntityBuilder;
 use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Event\Storage;
-use Innmind\Rest\Server\Event\Doctrine\ReadQueryBuilderEvent;
+use Innmind\Rest\Server\Event\Neo4j\ReadQueryBuilderEvent;
 use Innmind\Rest\Server\EventListener\StorageCreateListener;
+use Innmind\Neo4j\ONM\EntityManagerFactory;
+use Innmind\Neo4j\ONM\Configuration;
+use Innmind\Neo4j\ONM\QueryBuilder;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\SchemaTool;
-use Doctrine\ORM\Configuration;
-use Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver;
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\QueryBuilder;
 
-class DoctrineStorageTest extends AbstractStorage
+class Neo4jStorageTest extends AbstractStorage
 {
     protected $s;
     protected $em;
@@ -31,28 +28,24 @@ class DoctrineStorageTest extends AbstractStorage
 
     public function setUp()
     {
-        $conf = new Configuration;
-        $conf->setMetadataDriverImpl(new SimplifiedYamlDriver([
-            'fixtures/doctrine' => 'Innmind\Rest\Server\Tests\Storage',
-        ]));
-        $conf->setProxyDir(sys_get_temp_dir());
-        $conf->setProxyNamespace('Doctrine\__PROXY__');
-        $this->em = EntityManager::create(
+        $conf = Configuration::create([
+            'cache' => sys_get_temp_dir(),
+            'reader' => 'yaml',
+            'locations' => ['fixtures/neo4j'],
+        ], true);
+        $this->em = EntityManagerFactory::make(
             [
-                'driver' => 'pdo_sqlite',
-                'dbname' => ':memory:',
+                'host' => getenv('CI') ? 'localhost' : 'docker',
+                'username' => 'neo4j',
+                'password' => 'ci',
             ],
-            $conf
+            $conf,
+            $this->d = new EventDispatcher
         );
 
-        $tool = new SchemaTool($this->em);
-        $tool->updateSchema([
-            $this->em->getClassMetadata(Foo::class),
-        ]);
-
-        $this->s = new DoctrineStorage(
+        $this->s = new Neo4jStorage(
             $this->em,
-            $this->d = new EventDispatcher,
+            $this->d,
             $this->eb = new EntityBuilder(
                 $accessor = PropertyAccess::createPropertyAccessor(),
                 $this->d
@@ -63,29 +56,30 @@ class DoctrineStorageTest extends AbstractStorage
                 $this->d
             )
         );
+        $this->em->getConnection()->execute('MATCH (n) DELETE n;');
 
         $this->def = new ResourceDefinition('foo');
         $this->def
             ->setId('id')
             ->addProperty(
                 (new Property('id'))
-                    ->setType('int')
+                    ->setType('string')
             )
             ->addProperty(
                 (new Property('name'))
                     ->setType('string')
             )
-            ->addOption('class', Foo::class);
+            ->addOption('class', Bar::class);
         $this->d->addSubscriber(new StorageCreateListener(
             PropertyAccess::createPropertyAccessor()
         ));
     }
 
-    public function testDispatchDoctrineQB()
+    public function testDispatchNeo4jQB()
     {
         $fired = false;
         $this->d->addListener(
-            'innmind.rest.storage.doctrine.read_query_builder',
+            'innmind.rest.storage.neo4j.read_query_builder',
             function(ReadQueryBuilderEvent $event) use (&$fired) {
                 $fired = true;
                 $this->assertInstanceOf(
@@ -101,33 +95,21 @@ class DoctrineStorageTest extends AbstractStorage
 
     public function testDispatchPostUpdate()
     {
-        parent::testDispatchPostUpdate(Foo::class);
+        parent::testDispatchPostUpdate(Bar::class);
     }
 
     public function testDispatchPostDelete()
     {
-        parent::testDispatchPostDelete(Foo::class);
+        parent::testDispatchPostDelete(Bar::class);
     }
 
     public function testDispatchPostCreate()
     {
-        parent::testDispatchPostCreate(Foo::class);
+        parent::testDispatchPostCreate(Bar::class);
     }
 }
 
-/**
- * @ORM\Entity
- */
-class Foo {
-    /**
-     * @ORM\Id
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+class Bar {
     public $id;
-
-    /**
-     * @ORM\Column(name="name", type="string")
-     */
     public $name;
 }
