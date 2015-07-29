@@ -3,7 +3,6 @@
 namespace Innmind\Rest\Server\Storage;
 
 use Innmind\Rest\Server\Resource;
-use Innmind\Rest\Server\Definition\Resource as Definition;
 use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Event\Storage;
 
@@ -12,10 +11,6 @@ use Innmind\Rest\Server\Event\Storage;
  */
 trait CreateTrait
 {
-    protected $dispatcher;
-    protected $em;
-    protected $entityBuilder;
-
     /**
      * {@inheritdoc}
      *
@@ -46,12 +41,5 @@ trait CreateTrait
         );
 
         return $event->getResourceId();
-    }
-
-    /**
-     * Dumb implementation to not break create method
-     */
-    protected function checkSupport(Definition $definition)
-    {
     }
 }
