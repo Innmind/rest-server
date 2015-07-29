@@ -11,6 +11,9 @@ use Innmind\Rest\Server\Events;
  */
 trait DeleteTrait
 {
+    protected $dispatcher;
+    protected $em;
+
     /**
      * {@inheritdoc}
      *
@@ -40,5 +43,12 @@ trait DeleteTrait
         );
 
         return $this;
+    }
+
+    /**
+     * Dumb implementation to not break create method
+     */
+    protected function checkSupport(Resource $definition)
+    {
     }
 }
