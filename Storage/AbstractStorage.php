@@ -106,14 +106,6 @@ class AbstractStorage
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function supports()
-    {
-        return true;
-    }
-
-    /**
      * Verify if the storage can allow this resource definition
      *
      * @param Definition $definition
