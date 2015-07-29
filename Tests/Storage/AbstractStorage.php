@@ -43,7 +43,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
         $this->assertSame(42, $id);
     }
 
-    public function testDispatchPostCreate($class)
+    public function dispatchPostCreate($class)
     {
         $fired = false;
         $this->d->addListener(
@@ -229,7 +229,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
         $this->assertFalse($fired);
     }
 
-    public function testDispatchPostUpdate($class)
+    public function dispatchPostUpdate($class)
     {
         $r = new Resource;
         $r
@@ -303,7 +303,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
         $this->assertFalse($postFired);
     }
 
-    public function testDispatchPostDelete($class)
+    public function dispatchPostDelete($class)
     {
         $r = new Resource;
         $r
