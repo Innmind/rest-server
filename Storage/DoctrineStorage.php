@@ -8,7 +8,6 @@ use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Event\Storage;
 use Innmind\Rest\Server\Event\Doctrine\ReadQueryBuilderEvent;
 use Innmind\Rest\Server\Definition\Resource;
-use Innmind\Rest\Server\Exception\ResourceNotSupportedException;
 use Innmind\Rest\Server\EntityBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Common\Collections\Collection;
