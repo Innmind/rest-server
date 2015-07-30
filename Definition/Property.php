@@ -67,6 +67,18 @@ class Property
     }
 
     /**
+     * Check if the given access flag has been set for this property
+     *
+     * @param string $flag
+     *
+     * @return bool
+     */
+    public function hasAccess($flag)
+    {
+        return in_array((string) $flag, $this->access, true);
+    }
+
+    /**
      * Return all the access flags
      *
      * @return array

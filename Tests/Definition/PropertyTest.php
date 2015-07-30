@@ -56,6 +56,15 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testHasAccess()
+    {
+        $p = new Property('foo');
+
+        $this->assertFalse($p->hasAccess('foo'));
+        $p->addAccess('foo');
+        $this->assertTrue($p->hasAccess('foo'));
+    }
+
     public function testAddVariant()
     {
         $p = new Property('foo');
