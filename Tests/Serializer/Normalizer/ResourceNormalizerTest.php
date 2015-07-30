@@ -13,17 +13,17 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->p = new ResourceNormalizer;
+        $this->n = new ResourceNormalizer;
     }
 
     public function testSupportNormalization()
     {
-        $this->assertTrue($this->p->supportsNormalization(new Resource));
+        $this->assertTrue($this->n->supportsNormalization(new Resource));
     }
 
     public function testDoesntSupportNormalization()
     {
-        $this->assertFalse($this->p->supportsNormalization([]));
+        $this->assertFalse($this->n->supportsNormalization([]));
     }
 
     public function testNormalize()
@@ -46,18 +46,18 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(
             ['foo' => '1'],
-            $this->p->normalize($r)
+            $this->n->normalize($r)
         );
     }
 
     public function testSupportDenormalization()
     {
-        $this->assertTrue($this->p->supportsDenormalization([], Resource::class));
+        $this->assertTrue($this->n->supportsDenormalization([], Resource::class));
     }
 
     public function testDoesntSupportDenormalization()
     {
-        $this->assertFalse($this->p->supportsDenormalization([], 'array'));
+        $this->assertFalse($this->n->supportsDenormalization([], 'array'));
     }
 
     public function testDenormalize()
@@ -73,7 +73,7 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                     ->addAccess('UPDATE')
             );
 
-        $r = $this->p->denormalize(
+        $r = $this->n->denormalize(
             [
                 'foo' => 1,
                 'bar' => 2,
@@ -102,7 +102,7 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowWhenNoDefinitionInContext()
     {
-        $this->p->denormalize(
+        $this->n->denormalize(
             [
                 'foo' => 1,
                 'bar' => 2,
@@ -121,7 +121,7 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowWhenInvalidDefinitionInContext()
     {
-        $this->p->denormalize(
+        $this->n->denormalize(
             [
                 'foo' => 1,
                 'bar' => 2,
@@ -141,7 +141,7 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowWhenNoWhishedAccessInContext()
     {
-        $this->p->denormalize(
+        $this->n->denormalize(
             [
                 'foo' => 1,
                 'bar' => 2,
@@ -160,7 +160,7 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowWhenNoInvalidAccessInContext()
     {
-        $this->p->denormalize(
+        $this->n->denormalize(
             [
                 'foo' => 1,
                 'bar' => 2,
