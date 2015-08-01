@@ -34,7 +34,33 @@ collections:
                         type: date
                         access: [READ, CREATE, UPDATE]
                         variants: [date]
+                    sub_resource:
+                        type: resource
+                        access: [READ]
+                        options:
+                            resource: foo
+                            collection: bar
+                    sub_resource_coll:
+                        type: array
+                        access: [READ]
+                        options:
+                            inner_type: resource
+                            resource: resource
                 meta:
                     description: Basic representation of a web resource
                 options:
                     class: Some\Class\Name
+    bar:
+        storage: neo4j
+        resources:
+            foo:
+                id: uuid
+                storage: neo4j
+                properties:
+                    foo:
+                        type: string
+                        access: [READ]
+                        variants: []
+                        options: []
+                meta: []
+                options: []

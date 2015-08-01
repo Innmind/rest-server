@@ -65,18 +65,34 @@ class ResourceBuilder
 
         foreach ($definition->getProperties() as $property) {
             $value = $this->accessor->getValue($data, (string) $property);
-            try {
-                $this->validateProperty($property, $value);
-            } catch (PropertyValidationException $e) {
-                $e
-                    ->setDefinition($definition)
-                    ->setDataObject($data);
-                throw new PropertyValidationException(
-                    $e->buildMessage(),
-                    0,
+
+            if ($property->getType() === 'resource') {
+                $value = $this->build($value, $property->getOption('resource'));
+            } else if (
+                $property->getType() === 'array' &&
+                $property->getOption('inner_type') === 'resource'
+            ) {
+                foreach ($value as &$subValue) {
+                    $subValue = $this->build(
+                        $subValue,
+                        $property->getOption('resource')
+                    );
+                }
+            } else {
+                try {
+                    $this->validateProperty($property, $value);
+                } catch (PropertyValidationException $e) {
                     $e
-                );
+                        ->setDefinition($definition)
+                        ->setDataObject($data);
+                    throw new PropertyValidationException(
+                        $e->buildMessage(),
+                        0,
+                        $e
+                    );
+                }
             }
+
             $resource->set($property, $value);
         }
 
@@ -122,7 +138,7 @@ class ResourceBuilder
     }
 
     /**
-     * Validate a value against contraints
+     * Validate a value against constraints
      *
      * @param mixed $value
      * @param array $constraints

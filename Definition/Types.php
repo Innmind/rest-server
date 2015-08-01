@@ -8,6 +8,7 @@ use Innmind\Rest\Server\Definition\Type\DateType;
 use Innmind\Rest\Server\Definition\Type\FloatType;
 use Innmind\Rest\Server\Definition\Type\IntType;
 use Innmind\Rest\Server\Definition\Type\StringType;
+use Innmind\Rest\Server\Definition\Type\ResourceType;
 
 class Types
 {
@@ -64,6 +65,7 @@ class Types
             'float' => new FloatType,
             'int' => new IntType,
             'string' => new StringType,
+            'resource' => new ResourceType,
         ];
     }
 }
