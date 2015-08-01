@@ -198,4 +198,50 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertFalse($r->has('foo'));
     }
+
+    public function testBuildSubResource()
+    {
+        $d2 = new ResourceDefinition('foo');
+        $d2
+            ->setCollection($c = new Collection('foo'))
+            ->addProperty(
+                (new Property('foo'))
+                    ->setType('int')
+            );
+        $d = new ResourceDefinition('bar');
+        $d
+            ->setCollection($c)
+            ->addProperty(
+                (new Property('foo'))
+                    ->setType('resource')
+                    ->addOption('resource', $d2)
+            )
+            ->addProperty(
+                (new Property('bar'))
+                    ->setType('array')
+                    ->addOption('inner_type', 'resource')
+                    ->addOption('resource', $d2)
+            );
+
+        $s = new \stdClass;
+        $s->foo = 42;
+        $o = new \stdClass;
+        $o->foo = $s;
+        $o->bar = [$s];
+
+        $r = $this->b->build($o, $d);
+
+        $this->assertInstanceOf(
+            Resource::class,
+            $r->get('foo')
+        );
+        $this->assertSame(
+            42,
+            $r->get('foo')->get('foo')
+        );
+        $this->assertSame(
+            42,
+            $r->get('bar')[0]->get('foo')
+        );
+    }
 }
