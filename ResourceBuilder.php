@@ -138,7 +138,7 @@ class ResourceBuilder
     }
 
     /**
-     * Validate a value against contraints
+     * Validate a value against constraints
      *
      * @param mixed $value
      * @param array $constraints
