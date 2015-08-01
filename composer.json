@@ -22,7 +22,8 @@
         "symfony/event-dispatcher": "~2.7",
         "symfony/property-access": "~2.7",
         "symfony/validator": "~2.7",
-        "symfony/serializer": "~2.7"
+        "symfony/serializer": "~2.7",
+        "symfony/http-foundation": "~2.7"
     },
     "autoload": {
         "psr-0": {
