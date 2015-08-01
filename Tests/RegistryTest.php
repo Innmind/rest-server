@@ -4,27 +4,34 @@ namespace Innmind\Rest\Server\Tests;
 
 use Innmind\Rest\Server\Registry;
 use Innmind\Rest\Server\Definition\Collection;
+use Symfony\Component\Yaml\Yaml;
 
 class RegistryTest extends \PHPUnit_Framework_TestCase
 {
+    protected $r;
+
+    public function setUp()
+    {
+        $this->r = new Registry;
+    }
+
     public function testAddCollection()
     {
-        $r = new Registry;
         $c = new Collection('foo');
 
-        $this->assertFalse($r->hasCollection('foo'));
+        $this->assertFalse($this->r->hasCollection('foo'));
         $this->assertSame(
-            $r,
-            $r->addCollection($c)
+            $this->r,
+            $this->r->addCollection($c)
         );
-        $this->assertTrue($r->hasCollection('foo'));
+        $this->assertTrue($this->r->hasCollection('foo'));
         $this->assertSame(
             $c,
-            $r->getCollection('foo')
+            $this->r->getCollection('foo')
         );
         $this->assertSame(
             ['foo' => $c],
-            $r->getCollections()
+            $this->r->getCollections()
         );
     }
 
@@ -34,7 +41,39 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowIfUnknownCollection()
     {
-        $r = new Registry;
-        $r->getCollection('foo');
+        $this->r->getCollection('foo');
+    }
+
+    public function testLoad()
+    {
+        $this->assertSame(
+            $this->r,
+            $this->r->load(
+                Yaml::parse(file_get_contents('fixtures/config.yml'))
+            )
+        );
+        $this->assertTrue($this->r->hasCollection('web'));
+        $this->assertTrue(
+            $this->r->getCollection('web')->hasResource('resource')
+        );
+        $resource = $this->r->getCollection('web')->getResource('resource');
+        $this->assertTrue($resource->hasMeta('description'));
+        $this->assertTrue($resource->hasOption('class'));
+        $this->assertTrue($resource->hasProperty('crawl_date'));
+        $prop = $resource->getProperty('crawl_date');
+        $this->assertSame(
+            'date',
+            $prop->getType()
+        );
+        $this->assertTrue($prop->hasAccess('UPDATE'));
+        $this->assertTrue($prop->hasVariant('date'));
+    }
+
+    /**
+     * @expectedException Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     */
+    public function testThrowIfInvalidConfig()
+    {
+        $this->r->load(['foo']);
     }
 }
