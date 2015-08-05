@@ -118,7 +118,7 @@ class Parser
      *
      * @throws PayloadException If a field is unknown or misconfigured
      *
-     * @return stdClass
+     * @return \stdClass
      */
     protected function computePayload(
         array $payload,
@@ -188,7 +188,7 @@ class Parser
      * @param array $data
      * @param ResourceDefinition $definition
      *
-     * @return stdClass
+     * @return \stdClass
      */
     protected function transformArrayToObject(
         array $data,
