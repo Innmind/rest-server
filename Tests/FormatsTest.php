@@ -53,7 +53,7 @@ class FormatsTest extends \PHPUnit_Framework_TestCase
         $this->f->add('bar', 'bar', 24);
 
         $this->assertSame(
-            ['application/json', 'bar', 'foo'],
+            ['foo', 'bar', 'application/json'],
             $this->f->getMediaTypes()
         );
     }

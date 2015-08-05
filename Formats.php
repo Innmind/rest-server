@@ -84,7 +84,7 @@ class Formats
             $types[$format['priority']] = $format['mediaType'];
         }
 
-        ksort($types);
+        krsort($types);
 
         return array_values($types);
     }
