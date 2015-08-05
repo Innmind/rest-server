@@ -116,6 +116,8 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
             ['foo' => 'bar'],
             $p->getOptions()
         );
+        $p->addOption('bar', null);
+        $this->assertTrue($p->hasOption('bar'));
     }
 
     /**

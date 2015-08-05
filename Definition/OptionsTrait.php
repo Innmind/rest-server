@@ -30,7 +30,7 @@ trait OptionsTrait
      */
     public function hasOption($name)
     {
-        return isset($this->options[(string) $name]);
+        return array_key_exists((string) $name, $this->options);
     }
 
     /**
