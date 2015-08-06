@@ -7,7 +7,6 @@ use Innmind\Rest\Server\Storages;
 use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Exception\ResourceNotFoundException;
-use Symfony\Component\HttpFoundation\Request;
 
 class Handler
 {
