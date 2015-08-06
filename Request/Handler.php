@@ -38,7 +38,7 @@ class Handler
     /**
      * Return a resource
      *
-     * @param ResourceDefinition $Definition
+     * @param ResourceDefinition $definition
      * @param mixed $id
      *
      * @return Resource
