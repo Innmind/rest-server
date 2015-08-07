@@ -212,4 +212,15 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
         $this->p->getData($r, $definition);
     }
+
+    public function testGetRequestedFormat()
+    {
+        $r = new HttpRequest;
+        $r->headers->add(['Accept' => 'application/json']);
+
+        $this->assertSame(
+            'json',
+            $this->p->getRequestedFormat($r)
+        );
+    }
 }

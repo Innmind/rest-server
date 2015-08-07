@@ -75,6 +75,21 @@ class Parser
     }
 
     /**
+     * Return the requested format
+     *
+     * @return string
+     */
+    public function getRequestedFormat(HttpRequest $request)
+    {
+        $accept = $this->negotiator->getBest(
+            $request->headers->get('Accept'),
+            $this->formats->getMediaTypes()
+        );
+
+        return $this->formats->getName($accept->getValue());
+    }
+
+    /**
      * Return the data payload as an object
      *
      * @param HttpRequest $request
