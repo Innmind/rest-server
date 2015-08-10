@@ -15,6 +15,13 @@ class ResponseEvent extends Event
     protected $content;
     protected $action;
 
+    /**
+     * @param ResourceDefinition $definition
+     * @param Response $response
+     * @param Request $request
+     * @param mixed $content Data returned by the request handler
+     * @param string $action Can be either index, get, create, update, delete or options
+     */
     public function __construct(
         ResourceDefinition $definition,
         Response $response,
