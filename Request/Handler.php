@@ -107,4 +107,45 @@ class Handler
         $storage = $this->storages->get($definition->getStorage());
         $storage->delete($definition, $id);
     }
+
+    /**
+     * Format the resource description for the outside world
+     * without exposing sensitive data
+     *
+     * @param ResourceDefinition $definition
+     *
+     * @return array
+     */
+    public function optionsAction(ResourceDefinition $definition)
+    {
+        $output = [
+            'id' => $definition->getId(),
+            'properties' => [],
+        ];
+
+        foreach ($definition->getproperties() as $property) {
+            $output['properties'][(string) $property] = [
+                'type' => $property->getType(),
+                'access' => $property->getAccess(),
+                'variants' => $property->getVariants()
+            ];
+
+            if (
+                $property->getType() === 'resource' ||
+                (
+                    $property->getType() === 'array' &&
+                    $property->getOption('inner_type') === 'resource'
+                )
+            ) {
+                $sub = $property->getOption('resource');
+                $output['properties'][(string) $property]['resource'] = $sub;
+            }
+        }
+
+        if ($metas = $definition->getMetas()) {
+            $output['meta'] = $metas;
+        }
+
+        return ['resource' => $output];
+    }
 }

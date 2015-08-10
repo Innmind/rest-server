@@ -12,11 +12,13 @@ use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Definition\Resource as Definition;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Tests\Storage\Bar;
+use Innmind\Rest\Server\Registry;
 use Innmind\Neo4j\ONM\EntityManagerFactory;
 use Innmind\Neo4j\ONM\Configuration;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Validator\Validation;
+use Symfony\Component\Yaml\Yaml;
 
 class HandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -176,5 +178,83 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
             $this->h->deleteAction($this->def, $r->get('id'))
         );
         $this->h->getAction($this->def, $r->get('id'));
+    }
+
+    public function testOptionsAction()
+    {
+        $registry = new Registry;
+        $registry->load(Yaml::parse(file_get_contents('fixtures/config.yml')));
+        $def = $registry->getCollection('web')->getResource('resource');
+
+        $this->assertEquals(
+            [
+                'resource' => [
+                    'id' => 'uuid',
+                    'properties' => [
+                        'uri' => [
+                            'type' => 'string',
+                            'access' =>  ['READ', 'CREATE'],
+                            'variants' => [],
+                        ],
+                        'scheme' => [
+                            'type' => 'string',
+                            'access' => ['READ', 'CREATE'],
+                            'variants' => [],
+                        ],
+                        'host' => [
+                            'type' => 'string',
+                            'access' => ['READ', 'CREATE'],
+                            'variants' => [],
+                        ],
+                        'domain' => [
+                            'type' => 'string',
+                            'access' => ['READ', 'CREATE'],
+                            'variants' => [],
+                        ],
+                        'tld' => [
+                            'type' => 'string',
+                            'access' => ['READ', 'CREATE'],
+                            'variants' => [],
+                        ],
+                        'port' => [
+                            'type' => 'int',
+                            'access' => ['READ', 'CREATE'],
+                            'variants' => [],
+                        ],
+                        'path' => [
+                            'type' => 'string',
+                            'access' => ['READ', 'CREATE'],
+                            'variants' => [],
+                        ],
+                        'query' => [
+                            'type' => 'string',
+                            'access' => ['READ', 'CREATE'],
+                            'variants' => [],
+                        ],
+                        'crawl_date' => [
+                            'type' => 'date',
+                            'access' => ['READ', 'CREATE', 'UPDATE'],
+                            'variants' => ['date']
+                        ],
+                        'sub_resource' =>[
+                            'type' => 'resource',
+                            'access' => ['READ'],
+                            'variants' => [],
+                            'resource' => 'foo',
+                        ],
+                        'sub_resource_coll' => [
+                            'type' => 'array',
+                            'access' => ['READ'],
+                            'variants' => [],
+                            'resource' => 'resource',
+                        ],
+                    ],
+                    'meta' => [
+                        'description' => 'Basic representation of a web resource',
+                    ],
+                ],
+            ],
+            $this->h->optionsAction($def)
+        );
     }
 }
