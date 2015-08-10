@@ -1,8 +1,8 @@
 <?php
 
-namespace Innmind\Rest\Server\Tests\EventListener;
+namespace Innmind\Rest\Server\Tests\EventListener\Response;
 
-use Innmind\Rest\Server\EventListener\OptionsResponseListener;
+use Innmind\Rest\Server\EventListener\Response\OptionsListener;
 use Innmind\Rest\Server\Event\ResponseEvent;
 use Innmind\Rest\Server\Registry;
 use Innmind\Rest\Server\RouteLoader;
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Validation;
 
-class OptionsResponseListenerTest extends \PHPUnit_Framework_TestCase
+class OptionsListenerTest extends \PHPUnit_Framework_TestCase
 {
     protected $l;
     protected $routes;
@@ -43,7 +43,7 @@ class OptionsResponseListenerTest extends \PHPUnit_Framework_TestCase
         $context->fromRequest($request);
         $generator = new UrlGenerator($this->routes, $context);
 
-        $this->l = new OptionsResponseListener(
+        $this->l = new OptionsListener(
             $generator,
             $loader
         );

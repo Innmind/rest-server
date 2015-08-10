@@ -1,6 +1,6 @@
 <?php
 
-namespace Innmind\Rest\Server\EventListener;
+namespace Innmind\Rest\Server\EventListener\Response;
 
 use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Definition\Resource;
@@ -8,9 +8,9 @@ use Innmind\Rest\Server\Event\ResponseEvent;
 use Innmind\Rest\Server\RouteLoader;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
-class OptionsResponseListener implements EventSubscriberInterface
+class OptionsListener implements EventSubscriberInterface
 {
     protected $urlGenerator;
     protected $routeLoader;
@@ -81,7 +81,7 @@ class OptionsResponseListener implements EventSubscriberInterface
      * @return void
      */
     protected function appendLink(
-        Response $response,
+        HttpResponse $response,
         $property,
         $type,
         array $access,
