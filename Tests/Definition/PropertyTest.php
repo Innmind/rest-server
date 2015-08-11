@@ -129,4 +129,16 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
         $p = new Property('foo');
         $p->getOption('bar');
     }
+
+    public function testContainsResource()
+    {
+        $p = new Property('foo');
+        $this->assertFalse($p->containsResource());
+        $p->setType('resource');
+        $this->assertTrue($p->containsResource());
+        $p
+            ->setType('array')
+            ->addOption('inner_type', 'resource');
+        $this->assertTrue($p->containsResource());
+    }
 }

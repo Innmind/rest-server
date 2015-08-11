@@ -135,6 +135,20 @@ class Property
         return $this->variants;
     }
 
+    /**
+     * Check if the property is of type resource or an array of ones
+     *
+     * @return bool
+     */
+    public function containsResource()
+    {
+        return $this->type === 'resource' ||
+            (
+                $this->type === 'array' &&
+                $this->getOption('inner_type') === 'resource'
+            );
+    }
+
     public function __toString()
     {
         return $this->name;
