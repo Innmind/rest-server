@@ -12,8 +12,6 @@ use Innmind\Rest\Server\Storages;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\CompilerPass\SubResourcePass;
-use Innmind\Rest\Server\Serializer\Normalizer\ResourceNormalizer;
-use Innmind\Rest\Server\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +20,6 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Validation;
-use Symfony\Component\Serializer\Serializer;
 
 class CreateListenerTest extends \PHPUnit_Framework_TestCase
 {
