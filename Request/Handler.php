@@ -130,13 +130,7 @@ class Handler
                 'variants' => $property->getVariants()
             ];
 
-            if (
-                $property->getType() === 'resource' ||
-                (
-                    $property->getType() === 'array' &&
-                    $property->getOption('inner_type') === 'resource'
-                )
-            ) {
+            if ($property->containsResource()) {
                 $sub = $property->getOption('resource');
                 $output['properties'][(string) $property]['resource'] = $sub;
             }

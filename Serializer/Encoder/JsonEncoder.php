@@ -31,13 +31,7 @@ class JsonEncoder implements EncoderInterface, DecoderInterface
 
         foreach ($definition->getProperties() as $property) {
             if (
-                (
-                    $property->getType() === 'resource' ||
-                    (
-                        $property->getType() === 'array' &&
-                        $property->getOption('inner_type') === 'resource'
-                    )
-                ) &&
+                $property->containsResource() &&
                 !$property->hasOption('inline')
             ) {
                 continue;
