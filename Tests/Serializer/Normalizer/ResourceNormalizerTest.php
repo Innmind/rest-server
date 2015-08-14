@@ -64,25 +64,20 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
     {
         $def = new Definition('foo');
         $def
-            ->addProperty(
-                (new Property('foo'))
-                    ->addAccess('READ')
-            )
-            ->addProperty(
-                (new Property('bar'))
-                    ->addAccess('UPDATE')
-            );
+            ->addProperty(new Property('foo'))
+            ->addProperty(new Property('bar'));
 
         $r = $this->n->denormalize(
             [
-                'foo' => 1,
-                'bar' => 2,
+                'resource' => [
+                    'foo' => 1,
+                    'bar' => 2,
+                ],
             ],
             Resource::class,
             null,
             [
                 'definition' => $def,
-                'access' => 'UPDATE',
             ]
         );
         $this->assertInstanceOf(
@@ -93,7 +88,40 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
             2,
             $r->get('bar')
         );
-        $this->assertFalse($r->has('foo'));
+        $this->assertSame(
+            1,
+            $r->get('foo')
+        );
+
+        $resources = $this->n->denormalize(
+            [
+                'resources' => [[
+                    'foo' => 1,
+                    'bar' => 2,
+                ]],
+            ],
+            Resource::class,
+            null,
+            [
+                'definition' => $def,
+            ]
+        );
+        $this->assertInstanceOf(
+            \SplObjectStorage::class,
+            $resources
+        );
+        $this->assertSame(
+            1,
+            $resources->count()
+        );
+        $this->assertSame(
+            2,
+            $resources->current()->get('bar')
+        );
+        $this->assertSame(
+            1,
+            $resources->current()->get('foo')
+        );
     }
 
     /**
@@ -136,10 +164,10 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Serializer\Exception\LogicException
-     * @expectedExceptionMessage You need to specify either "CREATE" or "UPDATE" access flags in the denormalization context
+     * @expectedException Symfony\Component\Serializer\Exception\UnsupportedException
+     * @expectedExceptionMessage Data must be set under the key "resource" or "resources"
      */
-    public function testThrowWhenNoWhishedAccessInContext()
+    public function testThrowWhenDenormalizerCantFindData()
     {
         $this->n->denormalize(
             [
@@ -150,26 +178,6 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
             null,
             [
                 'definition' => new Definition('foo'),
-            ]
-        );
-    }
-
-    /**
-     * @expectedException Symfony\Component\Serializer\Exception\LogicException
-     * @expectedExceptionMessage You need to specify either "CREATE" or "UPDATE" access flags in the denormalization context
-     */
-    public function testThrowWhenNoInvalidAccessInContext()
-    {
-        $this->n->denormalize(
-            [
-                'foo' => 1,
-                'bar' => 2,
-            ],
-            Resource::class,
-            null,
-            [
-                'definition' => new Definition('foo'),
-                'access' => 'READ',
             ]
         );
     }

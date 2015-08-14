@@ -8,6 +8,7 @@ use Innmind\Rest\Server\DEfinition\Resource as Definition;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Exception\LogicException;
+use Symfony\Component\Serializer\Exception\UnsupportedException;
 
 class ResourceNormalizer implements NormalizerInterface, DenormalizerInterface
 {
@@ -51,31 +52,72 @@ class ResourceNormalizer implements NormalizerInterface, DenormalizerInterface
             );
         }
 
-        if (
-            !isset($context['access']) ||
-            !in_array($context['access'], [Access::CREATE, Access::UPDATE])
-        ) {
-            throw new LogicException(sprintf(
-                'You need to specify either "%s" or "%s" access flags ' .
-                'in the denormalization context',
-                Access::CREATE,
-                Access::UPDATE
-            ));
+        $definition = $context['definition'];
+
+        if (isset($data['resource'])) {
+            return $this->createResource($data['resource'], $definition);
+        } else if (isset($data['resources'])) {
+            $resources = new \SplObjectStorage;
+
+            foreach ($data['resources'] as $data) {
+                $resources->attach(
+                    $this->createResource($data, $definition)
+                );
+            }
+
+            $resources->rewind();
+
+            return $resources;
         }
 
+        throw new UnsupportedException(
+            'Data must be set under the key "resource" or "resources"'
+        );
+    }
+
+    /**
+     * Create a resource off of the given array and definition
+     *
+     * @param array $data
+     * @param Definition $definition
+     *
+     * @return Resource
+     */
+    protected function createResource(array $data, Definition $definition)
+    {
         $resource = new Resource;
-        $resource->setDefinition($context['definition']);
+        $resource->setDefinition($definition);
 
-        foreach ($context['definition']->getProperties() as $prop) {
-            if (!$prop->hasAccess($context['access'])) {
+        foreach ($definition->getProperties() as $prop) {
+            if (!array_key_exists((string) $prop, $data)) {
                 continue;
             }
 
-            if (!isset($data[(string) $prop])) {
-                continue;
-            }
+            if ($prop->getType() === 'resource') {
+                $resource->set(
+                    (string) $prop,
+                    $this->createResource(
+                        $data[(string) $prop],
+                        $prop->getOption('resource')
+                    )
+                );
+            } else if (
+                $prop->getType() === 'array' &&
+                $prop->getOption('inner_type') === 'resource'
+            ) {
+                $coll = [];
 
-            $resource->set((string) $prop, $data[(string) $prop]);
+                foreach ($data[(string) $prop] as $subData) {
+                    $coll[] = $this->createResource(
+                        $subData,
+                        $prop->getOption('resource')
+                    );
+                }
+
+                $resource->set((string) $prop, $coll);
+            } else {
+                $resource->set((string) $prop, $data[(string) $prop]);
+            }
         }
 
         return $resource;
