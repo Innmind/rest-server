@@ -59,7 +59,6 @@ class DoctrineStorageTest extends AbstractStorage
             ),
             $this->rb = new ResourceBuilder(
                 $accessor,
-                Validation::createValidator(),
                 $this->d
             )
         );

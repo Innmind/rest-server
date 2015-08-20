@@ -53,7 +53,6 @@ class CreateListenerTest extends \PHPUnit_Framework_TestCase
             new Storages,
             new ResourceBuilder(
                 PropertyAccess::createPropertyAccessor(),
-                Validation::createValidator(),
                 $dispatcher
             )
         );

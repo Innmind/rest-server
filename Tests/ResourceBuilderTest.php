@@ -9,7 +9,6 @@ use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Definition\Collection;
 use Innmind\Rest\Server\Event\ResourceBuildEvent;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\Validator\Validation;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
@@ -21,7 +20,6 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->b = new ResourceBuilder(
             PropertyAccess::createPropertyAccessor(),
-            Validation::createValidator(),
             $this->d = new EventDispatcher
         );
     }
@@ -72,25 +70,6 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\PropertyValidationException
-     * @expectedExceptionMessage The value at the path "foo" on resource foo::bar does not comply with the type "int" (Original error: This value should be of type int.)
-     */
-    public function testThrowOnValidationError()
-    {
-        $d = new ResourceDefinition('bar');
-        $d
-            ->setCollection(new Collection('foo'))
-            ->addProperty(
-                (new Property('foo'))
-                    ->setType('int')
-            );
-        $o = new \stdClass;
-        $o->foo = '42';
-
-        $this->b->build($o, $d);
-    }
-
     public function testBuildArrayProperty()
     {
         $d = new ResourceDefinition('foo');
@@ -113,26 +92,6 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
             ['baz'],
             $r->get('bar')
         );
-    }
-
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\PropertyValidationException
-     * @expectedExceptionMessage The value at the path "foo[0]" on resource foo::bar does not comply with the type "int" (Original error: This value should be of type int.)
-     */
-    public function testThrowOnValidationErrorInArray()
-    {
-        $d = new ResourceDefinition('bar');
-        $d
-            ->setCollection(new Collection('foo'))
-            ->addProperty(
-                (new Property('foo'))
-                    ->setType('array')
-                    ->addOption('inner_type', 'int')
-            );
-        $o = new \stdClass;
-        $o->foo = ['42'];
-
-        $this->b->build($o, $d);
     }
 
     public function testDispatchEvent()

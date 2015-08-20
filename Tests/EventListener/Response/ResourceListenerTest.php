@@ -48,6 +48,11 @@ class ResourceListenerTest extends \PHPUnit_Framework_TestCase
         $context->fromRequest($request);
         $generator = new UrlGenerator($this->routes, $context);
 
+        $resourceBuilder = new ResourceBuilder(
+            PropertyAccess::createPropertyAccessor(),
+            $dispatcher
+        );
+
         $this->l = new ResourceListener(
             $generator,
             $loader,
@@ -58,11 +63,7 @@ class ResourceListenerTest extends \PHPUnit_Framework_TestCase
         );
         $this->handler = new Handler(
             new Storages,
-            new ResourceBuilder(
-                PropertyAccess::createPropertyAccessor(),
-                Validation::createValidator(),
-                $dispatcher
-            )
+            $resourceBuilder
         );
     }
 

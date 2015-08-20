@@ -33,7 +33,6 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
         $dispatcher->addSubscriber(new StorageCreateListener($accessor));
         $resourceBuilder = new ResourceBuilder(
             $accessor,
-            Validation::createValidator(),
             $dispatcher
         );
         $entityBuilder = new EntityBuilder(
