@@ -4,6 +4,7 @@ namespace Innmind\Rest\Server\Tests\Serializer\Normalizer;
 
 use Innmind\Rest\Server\Serializer\Normalizer\ResourceNormalizer;
 use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Definition\Resource as Definition;
 use Innmind\Rest\Server\Definition\Property;
 
@@ -107,7 +108,7 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
             ]
         );
         $this->assertInstanceOf(
-            \SplObjectStorage::class,
+            Collection::class,
             $resources
         );
         $this->assertSame(

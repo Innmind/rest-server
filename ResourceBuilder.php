@@ -72,12 +72,14 @@ class ResourceBuilder
                 $property->getType() === 'array' &&
                 $property->getOption('inner_type') === 'resource'
             ) {
-                foreach ($value as &$subValue) {
-                    $subValue = $this->build(
+                $coll = new Collection;
+                foreach ($value as $subValue) {
+                    $coll[] = $this->build(
                         $subValue,
                         $property->getOption('resource')
                     );
                 }
+                $value = $coll;
             } else {
                 try {
                     $this->validateProperty($property, $value);

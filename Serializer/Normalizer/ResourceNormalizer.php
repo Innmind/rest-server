@@ -3,6 +3,7 @@
 namespace Innmind\Rest\Server\Serializer\Normalizer;
 
 use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Access;
 use Innmind\Rest\Server\DEfinition\Resource as Definition;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -57,12 +58,10 @@ class ResourceNormalizer implements NormalizerInterface, DenormalizerInterface
         if (isset($data['resource'])) {
             return $this->createResource($data['resource'], $definition);
         } else if (isset($data['resources'])) {
-            $resources = new \SplObjectStorage;
+            $resources = new Collection;
 
             foreach ($data['resources'] as $data) {
-                $resources->attach(
-                    $this->createResource($data, $definition)
-                );
+                $resources[] = $this->createResource($data, $definition);
             }
 
             $resources->rewind();
