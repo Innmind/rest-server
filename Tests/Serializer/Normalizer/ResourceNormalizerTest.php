@@ -4,9 +4,12 @@ namespace Innmind\Rest\Server\Tests\Serializer\Normalizer;
 
 use Innmind\Rest\Server\Serializer\Normalizer\ResourceNormalizer;
 use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Definition\Resource as Definition;
 use Innmind\Rest\Server\Definition\Property;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,7 +17,12 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->n = new ResourceNormalizer;
+        $this->n = new ResourceNormalizer(
+            new ResourceBuilder(
+                PropertyAccess::createPropertyAccessor(),
+                new EventDispatcher
+            )
+        );
     }
 
     public function testSupportNormalization()

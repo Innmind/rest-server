@@ -57,7 +57,7 @@ class ResourceListenerTest extends \PHPUnit_Framework_TestCase
             $generator,
             $loader,
             new Serializer(
-                [new ResourceNormalizer],
+                [new ResourceNormalizer($resourceBuilder)],
                 [new JsonEncoder]
             )
         );

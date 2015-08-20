@@ -5,7 +5,8 @@ namespace Innmind\Rest\Server\Serializer\Normalizer;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Access;
-use Innmind\Rest\Server\DEfinition\Resource as Definition;
+use Innmind\Rest\Server\ResourceBuilder;
+use Innmind\Rest\Server\Definition\Resource as Definition;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Exception\LogicException;
@@ -13,6 +14,13 @@ use Symfony\Component\Serializer\Exception\UnsupportedException;
 
 class ResourceNormalizer implements NormalizerInterface, DenormalizerInterface
 {
+    protected $resourceBuilder;
+
+    public function __construct(ResourceBuilder $resourceBuilder)
+    {
+        $this->resourceBuilder = $resourceBuilder;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -84,42 +92,10 @@ class ResourceNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     protected function createResource(array $data, Definition $definition)
     {
-        $resource = new Resource;
-        $resource->setDefinition($definition);
-
-        foreach ($definition->getProperties() as $prop) {
-            if (!array_key_exists((string) $prop, $data)) {
-                continue;
-            }
-
-            if ($prop->getType() === 'resource') {
-                $resource->set(
-                    (string) $prop,
-                    $this->createResource(
-                        $data[(string) $prop],
-                        $prop->getOption('resource')
-                    )
-                );
-            } else if (
-                $prop->getType() === 'array' &&
-                $prop->getOption('inner_type') === 'resource'
-            ) {
-                $coll = [];
-
-                foreach ($data[(string) $prop] as $subData) {
-                    $coll[] = $this->createResource(
-                        $subData,
-                        $prop->getOption('resource')
-                    );
-                }
-
-                $resource->set((string) $prop, $coll);
-            } else {
-                $resource->set((string) $prop, $data[(string) $prop]);
-            }
-        }
-
-        return $resource;
+        return $this->resourceBuilder->build(
+            $this->transformArrayToObject($data, $definition),
+            $definition
+        );
     }
 
     /**
@@ -128,5 +104,50 @@ class ResourceNormalizer implements NormalizerInterface, DenormalizerInterface
     public function supportsDenormalization($data, $type, $format = null)
     {
         return is_array($data) && $type === Resource::class;
+    }
+
+    /**
+     * Transform an array into an object (reursively)
+     *
+     * @param array $data
+     * @param Definition $definition
+     *
+     * @return StdClass
+     */
+    protected function transformArrayToObject(
+        array $data,
+        Definition $definition
+    ) {
+        $object = new \stdClass;
+
+        foreach ($data as $key => $value) {
+            if (!$definition->hasProperty($key)) {
+                continue;
+            }
+
+            $prop = $definition->getProperty($key);
+
+            if ($prop->containsResource()) {
+                if ($prop->getType() === 'array') {
+                    $coll = [];
+                    foreach ($value as $subValue) {
+                        $coll[] = $this->transformArrayToObject(
+                            $subValue,
+                            $prop->getOption('resource')
+                        );
+                    }
+                    $object->$key = $coll;
+                } else {
+                    $object->$key = $this->transformArrayToObject(
+                        $value,
+                        $prop->getOption('resource')
+                    );
+                }
+            } else {
+                $object->$key = $value;
+            }
+        }
+
+        return $object;
     }
 }

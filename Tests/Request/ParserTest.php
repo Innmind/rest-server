@@ -4,6 +4,7 @@ namespace Innmind\Rest\Server\Tests\Request;
 
 use Innmind\Rest\Server\Request\Parser;
 use Innmind\Rest\Server\Formats;
+use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Definition\Resource as Definition;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Serializer\Encoder\FormEncoder;
@@ -12,6 +13,8 @@ use Innmind\Rest\Server\Serializer\Normalizer\ResourceNormalizer;
 use Negotiation\Negotiator;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class ParserTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +23,10 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $serializer = new Serializer(
-            [new ResourceNormalizer],
+            [new ResourceNormalizer(new ResourceBuilder(
+                PropertyAccess::createPropertyAccessor(),
+                new EventDispatcher
+            ))],
             [new FormEncoder, new JsonEncoder]
         );
         $formats = new Formats;
