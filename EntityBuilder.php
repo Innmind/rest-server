@@ -78,14 +78,16 @@ class EntityBuilder
                 $property->getType() === 'array' &&
                 $property->getOption('inner_type') === 'resource'
             ) {
-                foreach ($value as $idx => &$subValue) {
+                $coll = [];
+                foreach ($value as $idx => $subValue) {
                     $path = sprintf('%s[%s]', $key, $idx);
-                    $subValue = $this->build(
+                    $coll[] = $this->build(
                         $subValue,
                         $this->accessor->isReadable($entity, $path) ?
                             $this->accessor->getValue($entity, $path) : null
                     );
                 }
+                $value = $coll;
             }
 
             $this->accessor->setValue($entity, $key, $value);
