@@ -3,6 +3,7 @@
 namespace Innmind\Rest\Server\Tests\Storage;
 
 use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Event\Storage;
 
 abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
@@ -132,7 +133,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
         $resources = $this->s->read($this->def);
 
         $this->assertInstanceOf(
-            \SplObjectStorage::class,
+            Collection::class,
             $resources
         );
         $this->assertSame(

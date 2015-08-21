@@ -4,6 +4,7 @@ namespace Innmind\Rest\Server\Tests\Event\Storage;
 
 use Innmind\Rest\Server\Event\Storage\PostReadEvent;
 use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Collection;
 
 class PostReadEventTest extends \PHPUnit_Framework_TestCase
 {
@@ -12,7 +13,7 @@ class PostReadEventTest extends \PHPUnit_Framework_TestCase
         $e = new PostReadEvent(
             new Resource('foo'),
             null,
-            $s = new \SplObjectStorage
+            $s = new Collection
         );
 
         $this->assertSame(

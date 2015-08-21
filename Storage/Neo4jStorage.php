@@ -7,6 +7,7 @@ use Innmind\Rest\Server\EntityBuilder;
 use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Definition\Resource;
 use Innmind\Rest\Server\Events;
+use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Event\Storage;
 use Innmind\Rest\Server\Event\Neo4j\ReadQueryBuilderEvent;
 use Innmind\Neo4j\ONM\EntityManagerInterface;
@@ -99,12 +100,10 @@ class Neo4jStorage extends AbstractStorage implements StorageInterface
             ->toReturn('r')
             ->getQuery();
         $entities = $uow->execute($query);
-        $resources = new \SplObjectStorage;
+        $resources = new Collection;
 
         foreach ($entities as $entity) {
-            $resources->attach(
-                $this->resourceBuilder->build($entity, $definition)
-            );
+            $resources[] = $this->resourceBuilder->build($entity, $definition);
         }
 
         $this->dispatcher->dispatch(

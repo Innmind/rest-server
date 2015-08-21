@@ -3,6 +3,7 @@
 namespace Innmind\Rest\Server\Event\Storage;
 
 use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -16,7 +17,7 @@ class PreReadEvent extends Event
     {
         $this->definition = $definition;
         $this->id = $id;
-        $this->resources = new \SplObjectStorage;
+        $this->resources = new Collection;
     }
 
     /**
@@ -59,7 +60,7 @@ class PreReadEvent extends Event
     public function addResource(Resource $resource)
     {
         $this->validateResource($resource);
-        $this->resources->attach($resource);
+        $this->resources[] = $resource;
 
         return $this;
     }
@@ -67,11 +68,11 @@ class PreReadEvent extends Event
     /**
      * Use the given set of resources to be returned to the client
      *
-     * @param SplObjectStorage $resources
+     * @param Collection $resources
      *
      * @return PreReadEvent self
      */
-    public function useResources(\SplObjectStorage $resources)
+    public function useResources(Collection $resources)
     {
         foreach ($resources as $resource) {
             $this->validateResource($resource);
@@ -95,7 +96,7 @@ class PreReadEvent extends Event
     /**
      * Return the resources bag
      *
-     * @return \SplObjectStorage
+     * @return Collection
      */
     public function getResources()
     {
