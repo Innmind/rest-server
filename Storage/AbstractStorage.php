@@ -8,7 +8,7 @@ use Innmind\Rest\Server\Event\Storage;
 use Innmind\Rest\Server\Definition\Resource as Definition;
 use Innmind\Rest\Server\Exception\ResourceNotSupportedException;
 
-class AbstractStorage
+abstract class AbstractStorage
 {
     protected $em;
     protected $dispatcher;
@@ -104,6 +104,11 @@ class AbstractStorage
 
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    abstract protected function supports(Definition $definition);
 
     /**
      * Verify if the storage can allow this resource definition
