@@ -37,11 +37,23 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function testNormalize()
     {
+        $subDef = new Definition('bar');
+        $subDef->addProperty(
+            (new Property('foo'))
+                ->setType('string')
+                ->addAccess('READ')
+        );
         $def = new Definition('foo');
         $def
             ->addProperty(
                 (new Property('foo'))
                     ->addAccess('READ')
+            )
+            ->addProperty(
+                (new Property('sub'))
+                    ->setType('resource')
+                    ->addAccess('READ')
+                    ->addOption('resource', $subDef)
             )
             ->addProperty(
                 (new Property('bar'))
@@ -51,10 +63,38 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
         $r
             ->set('foo', '1')
             ->set('bar', '2')
+            ->set(
+                'sub',
+                (new Resource)
+                    ->setDefinition($subDef)
+                    ->set('foo', 'foo')
+            )
             ->setDefinition($def);
 
         $this->assertSame(
-            ['foo' => '1'],
+            ['resource' => ['foo' => '1']],
+            $this->n->normalize($r)
+        );
+
+        $c = new Collection;
+        $c[] = $r;
+
+        $this->assertSame(
+            ['resources' => [['foo' => '1']]],
+            $this->n->normalize($c)
+        );
+
+        $def->getProperty('sub')->addOption('inline', null);
+
+        $this->assertSame(
+            [
+                'resource' => [
+                    'foo' => '1',
+                    'sub' => [
+                        'foo' => 'foo',
+                    ],
+                ],
+            ],
             $this->n->normalize($r)
         );
     }

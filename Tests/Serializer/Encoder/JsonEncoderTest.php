@@ -30,54 +30,19 @@ class JsonEncoderTest extends \PHPUnit_Framework_TestCase
 
     public function testEncode()
     {
-        $definition = new Definition('foo');
-        $definition
-            ->addProperty(
-                (new Property('foo'))
-                    ->setType('string')
-            )
-            ->addProperty(
-                (new Property('inlineSub'))
-                    ->setType('resource')
-                    ->addOption('inline', null)
-                    ->addOption('resource', $definition)
-            )
-            ->addProperty(
-                (new Property('inlineSubCollection'))
-                    ->setType('array')
-                    ->addOption('inner_type', 'resource')
-                    ->addOption('resource', $definition)
-                    ->addOption('inline', null)
-            )
-            ->addProperty(
-                (new Property('res'))
-                    ->setType('resource')
-                    ->addOption('resource', $definition)
-            );
         $data = [
             'foo' => 'bar',
             'inlineSub' => ['foo' => 'bar'],
             'inlineSubCollection' => [
                 ['foo' => 'bar'],
-            ],
-            'res' => ['foo' => 'bar'],
+            ]
         ];
         $expected = $data;
-        unset($expected['res']);
 
         $this->assertSame(
             json_encode($expected),
-            $this->e->encode($data, 'json', ['definition' => $definition])
+            $this->e->encode($data, 'json')
         );
-    }
-
-    /**
-     * @expectedException Symfony\Component\Serializer\Exception\LogicException
-     * @expectedExceptionMessage You need to specify a resource definition in the encoding context
-     */
-    public function testThrowIfNoDefinitionPassedInContext()
-    {
-        $this->e->encode([], 'json');
     }
 
     public function testDecode()

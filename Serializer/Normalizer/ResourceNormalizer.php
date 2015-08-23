@@ -26,12 +26,48 @@ class ResourceNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $def = $object->getDefinition();
         $data = [];
+        $level = 0;
 
-        foreach ($object->getProperties() as $key => $value) {
-            if ($def->getProperty($key)->hasAccess(Access::READ)) {
-                $data[$key] = $value;
+        if (isset($context['level'])) {
+            $level = $context['level'];
+        }
+
+        if ($object instanceof Collection) {
+            $context['level'] = ++$level;
+
+            foreach ($object as $resource) {
+                $data[] = $this->normalize($resource, null, $context);
+            }
+
+            $context['level'] = --$level;
+        } else {
+            $def = $object->getDefinition();
+
+            foreach ($object->getProperties() as $key => $value) {
+                $prop = $def->getProperty($key);
+
+                if ($prop->containsResource() && !$prop->hasOption('inline')) {
+                    continue;
+                }
+
+                if ($prop->hasAccess(Access::READ)) {
+                    if ($prop->containsResource()) {
+                        $context['level'] = ++$level;
+                        $data[$key] = $this->normalize($value, null, $context);
+                        $context['level'] = --$level;
+                    } else {
+                        $data[$key] = $value;
+                    }
+                }
+            }
+        }
+
+        if ($level === 0) {
+            if ($object instanceof Collection) {
+                $data = ['resources' => $data];
+            } else {
+                $data = ['resource' => $data];
             }
         }
 
@@ -43,7 +79,7 @@ class ResourceNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Resource;
+        return $data instanceof Resource || $data instanceof Collection;
     }
 
     /**

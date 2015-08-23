@@ -16,31 +16,7 @@ class JsonEncoder implements EncoderInterface, DecoderInterface
      */
     public function encode($data, $format, array $context = [])
     {
-        if (
-            !isset($context['definition']) ||
-            !$context['definition'] instanceof Definition
-        ) {
-            throw new LogicException(
-                'You need to specify a resource definition ' .
-                'in the encoding context'
-            );
-        }
-
-        $output = [];
-        $definition = $context['definition'];
-
-        foreach ($definition->getProperties() as $property) {
-            if (
-                $property->containsResource() &&
-                !$property->hasOption('inline')
-            ) {
-                continue;
-            }
-
-            $output[(string) $property] = $data[(string) $property];
-        }
-
-        return json_encode($output);
+        return json_encode($data);
     }
 
     /**
