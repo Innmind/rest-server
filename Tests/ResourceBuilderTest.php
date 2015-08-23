@@ -203,4 +203,21 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
             $r->get('bar')[0]->get('foo')
         );
     }
+
+    public function testBuildWithMissingOptionalProperty()
+    {
+        $def = new ResourceDefinition('foo');
+        $def->addProperty(
+            (new Property('foo'))
+                ->setType('string')
+                ->addOption('optional', null)
+        );
+
+        $r = $this->b->build(new \stdClass, $def);
+
+        $this->assertInstanceOf(
+            Resource::class,
+            $r
+        );
+    }
 }

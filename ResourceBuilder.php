@@ -66,6 +66,10 @@ class ResourceBuilder
 
             $value = $this->accessor->getValue($data, (string) $property);
 
+            if ($property->hasOption('optional') && $value === null) {
+                continue;
+            }
+
             if ($property->getType() === 'resource') {
                 $value = $this->build($value, $property->getOption('resource'));
             } else if (
