@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\Validator\Validation;
 
 class OptionsListenerTest extends \PHPUnit_Framework_TestCase
 {

@@ -18,7 +18,6 @@ use Innmind\Neo4j\ONM\EntityManagerFactory;
 use Innmind\Neo4j\ONM\Configuration;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Validator\Validation;
 use Symfony\Component\Yaml\Yaml;
 
 class HandlerTest extends \PHPUnit_Framework_TestCase
