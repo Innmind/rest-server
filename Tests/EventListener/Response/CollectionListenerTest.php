@@ -10,6 +10,7 @@ use Innmind\Rest\Server\Request\Handler;
 use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Storages;
 use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\CompilerPass\SubResourcePass;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Yaml\Yaml;
@@ -62,17 +63,17 @@ class CollectionListenerTest extends \PHPUnit_Framework_TestCase
         $definition = $this->registry
             ->getCollection('web')
             ->getResource('resource');
-        $s = new \SplObjectStorage;
+        $s = new Collection;
         $r = new Resource;
         $r
             ->setDefinition($definition)
             ->set('uuid', 42);
-        $s->attach($r);
+        $s[] = $r;
         $r = new Resource;
         $r
             ->setDefinition($definition)
             ->set('uuid', 24);
-        $s->attach($r);
+        $s[] = $r;
         $event = new ResponseEvent(
             $definition,
             $response = new Response,

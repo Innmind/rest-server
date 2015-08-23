@@ -3,6 +3,7 @@
 namespace Innmind\Rest\Server\EventListener\Response;
 
 use Innmind\Rest\Server\Events;
+use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Event\ResponseEvent;
 use Innmind\Rest\Server\RouteLoader;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

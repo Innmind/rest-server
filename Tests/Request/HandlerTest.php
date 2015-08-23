@@ -191,6 +191,11 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
                 'resource' => [
                     'id' => 'uuid',
                     'properties' => [
+                        'uuid' => [
+                            'type' => 'string',
+                            'access' => ['READ'],
+                            'variants' => [],
+                        ],
                         'uri' => [
                             'type' => 'string',
                             'access' =>  ['READ', 'CREATE'],

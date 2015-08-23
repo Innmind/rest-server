@@ -6,6 +6,9 @@ collections:
                 id: uuid
                 storage: neo4j
                 properties:
+                    uuid:
+                        type: string
+                        access: [READ]
                     uri:
                         type: string
                         access: [READ, CREATE]
@@ -49,7 +52,7 @@ collections:
                 meta:
                     description: Basic representation of a web resource
                 options:
-                    class: Some\Class\Name
+                    class: Innmind\Rest\Server\Tests\WebResource
     bar:
         storage: neo4j
         resources:

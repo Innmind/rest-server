@@ -113,16 +113,18 @@ class ResourceListenerTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertSame(
             json_encode([
-                'uri' => 'http://localhost',
-                'scheme' => 'http',
-                'host' => 'localhost',
-                'domain' => 'localhost',
-                'tld' => null,
-                'port' => 80,
-                'path' => '/',
-                'query' => null,
-                'crawl_date' => new \DateTime,
-                'uuid' => 42,
+                'resource' => [
+                    'uuid' => 42,
+                    'uri' => 'http://localhost',
+                    'scheme' => 'http',
+                    'host' => 'localhost',
+                    'domain' => 'localhost',
+                    'tld' => null,
+                    'port' => 80,
+                    'path' => '/',
+                    'query' => null,
+                    'crawl_date' => new \DateTime,
+                ],
             ]),
             $response->getContent()
         );
