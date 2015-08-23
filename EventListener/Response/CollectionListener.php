@@ -42,7 +42,7 @@ class CollectionListener implements EventSubscriberInterface
     {
         $content = $event->getContent();
 
-        if (!$content instanceof \SplObjectStorage) {
+        if (!$content instanceof Collection) {
             return;
         }
 
