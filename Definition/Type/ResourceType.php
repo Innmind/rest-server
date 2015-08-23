@@ -4,7 +4,6 @@ namespace Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\Definition\TypeInterface;
 use Innmind\Rest\Server\Definition\Property;
-use Innmind\Rest\Server\Definition\Types;
 use Innmind\Rest\Server\Resource;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;

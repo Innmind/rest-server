@@ -2,11 +2,9 @@
 
 namespace Innmind\Rest\Server\Serializer\Encoder;
 
-use Innmind\Rest\Server\Definition\Resource as Definition;
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
-use Symfony\Component\Serializer\Exception\LogicException;
 use Symfony\Component\HttpFoundation\Request;
 
 class JsonEncoder implements EncoderInterface, DecoderInterface

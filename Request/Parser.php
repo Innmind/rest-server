@@ -5,11 +5,8 @@ namespace Innmind\Rest\Server\Request;
 use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
 use Innmind\Rest\Server\Formats;
 use Innmind\Rest\Server\Resource;
-use Innmind\Rest\Server\Exception\PayloadException;
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\Exception\ExceptionInterface;
 use Negotiation\Negotiator;
 
 class Parser
