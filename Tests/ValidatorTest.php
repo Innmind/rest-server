@@ -23,6 +23,11 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                 (new Property('foo'))
                     ->setType('string')
                     ->addAccess('READ')
+            )
+            ->addProperty(
+                (new Property('bar'))
+                    ->setType('string')
+                    ->addAccess('UPDATE')
             );
         $this->d = new Definition('foo');
         $this->d
@@ -69,14 +74,15 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
         $violations = $this->v->validate($r, 'READ');
         $this->assertSame(0, $violations->count());
+        $inner->set('bar', 'bar');
         $violations = $this->v->validate($r, 'UPDATE');
         $this->assertSame(2, $violations->count());
         $this->assertSame(
-            'Array[foo][foo]:' . "\n" . '    This value should be null.',
+            'Array[foo][foo]:' . "\n" . '    This field was not expected. (code 2)',
             (string) $violations->get(0)
         );
         $this->assertSame(
-            'Array[baz]:' . "\n" . '    This value should be null.',
+            'Array[baz]:' . "\n" . '    This field was not expected. (code 2)',
             (string) $violations->get(1)
         );
     }

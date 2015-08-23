@@ -124,7 +124,7 @@ class Validator
                         $fields[(string) $prop][] = new Assert\NotNull;
                     }
                 } else {
-                    $fields[(string) $prop][] = new Assert\Null;
+                    unset($fields[(string) $prop]);
 
                     continue;
                 }
