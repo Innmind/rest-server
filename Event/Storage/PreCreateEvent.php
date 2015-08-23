@@ -28,7 +28,7 @@ class PreCreateEvent extends Event
     /**
      * Replace the resource to be created
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Resource $resource
      *
      * @throws InvalidArgumentException If no definition is set on the resource
      *

@@ -58,7 +58,7 @@ class Handler
     /**
      * Create a resource
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Resource $resource
      *
      * @return Resource
      */
@@ -79,7 +79,7 @@ class Handler
     /**
      * Update a resource
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Resource $resource
      * @param mixed $id
      *
      * @return Resource

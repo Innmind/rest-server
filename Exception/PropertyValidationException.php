@@ -41,7 +41,7 @@ class PropertyValidationException extends \Exception
     /**
      * Set the resource definition on which the error occured
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Definition\Resource $resource
      *
      * @return PropertyValidationException self
      */

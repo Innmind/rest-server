@@ -20,7 +20,7 @@ interface StorageInterface
     /**
      * Create the given resource
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Resource $resource
      *
      * @return mixed The id for the given resource
      */
@@ -29,7 +29,7 @@ interface StorageInterface
     /**
      * Update the given resource
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Resource $resource
      * @param mixed $id
      *
      * @return StorageInterface self

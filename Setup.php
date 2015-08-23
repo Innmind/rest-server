@@ -496,7 +496,7 @@ class Setup
     /**
      * Validate the given content for the wished access
      *
-     * @param Resource|Collection $data
+     * @param Innmind\Rest\Server\Resource|Innmind\Rest\ServerCollection $data
      * @param string $access
      *
      * @throws ValidationException

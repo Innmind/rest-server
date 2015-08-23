@@ -9,7 +9,7 @@ class Collection implements \ArrayAccess, \Iterator, \Countable
     /**
      * Check if the resource is in this collection
      *
-     * @param Resource $rsource
+     * @param Innmind\Rest\Server\Resource $resource
      *
      * @return bool
      */

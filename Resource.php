@@ -15,7 +15,7 @@ class Resource
      * @param string $property
      * @param mixed $value
      *
-     * @return Resource self
+     * @return Innmind\Rest\Server\Resource self
      */
     public function set($property, $value)
     {
@@ -72,7 +72,7 @@ class Resource
      *
      * @param Definition $definition
      *
-     * @return Resource self
+     * @return Innmind\Rest\Server\Resource self
      */
     public function setDefinition(Definition $definition)
     {

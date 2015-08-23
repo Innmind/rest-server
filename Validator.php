@@ -18,7 +18,7 @@ class Validator
     /**
      * Validate a resource or a collection of ones
      *
-     * @param Resource|Collection $resources
+     * @param Innmind\Rest\Server\Resource|Innmind\Rest\Server\Collection $resources
      * @param string $access One of the constants of Access
      *
      * @return ConstraintViolationList
@@ -52,7 +52,7 @@ class Validator
     /**
      * Transform the resources in a tree of arrays
      *
-     * @param Resource|Collection $resources
+     * @param Innmind\Rest\Server\Resource|Innmind\Rest\Server\Collection $resources
      *
      * @return array
      */
@@ -97,7 +97,7 @@ class Validator
     /**
      * Build the constraints tree in order to validate data
      *
-     * @param Resource|Collection $resources
+     * @param Innmind\Rest\Server\Resource|Innmind\Rest\Server\Collection $resources
      * @param string $access
      *
      * @return Constraint

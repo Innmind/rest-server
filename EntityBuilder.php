@@ -22,7 +22,7 @@ class EntityBuilder
     /**
      * Build an entity out of the given resource
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Resource $resource
      * @param object $entity
      *
      * @throws LogicException If no class specified or if the entity is not an instance of it

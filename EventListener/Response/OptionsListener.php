@@ -76,7 +76,7 @@ class OptionsListener implements EventSubscriberInterface
      * @param string $type
      * @param array $access
      * @param array $variants
-     * @param Resource $definition
+     * @param Innmind\Rest\Server\Definition\Resource $definition
      *
      * @return void
      */

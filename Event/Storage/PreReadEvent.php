@@ -53,7 +53,7 @@ class PreReadEvent extends Event
     /**
      * Add a resource to return to the user
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Resource $resource
      *
      * @return PrereadEvent self
      */
@@ -106,7 +106,7 @@ class PreReadEvent extends Event
     /**
      * Check if a resource is valid
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Resource $resource
      *
      * @throws InvalidArgumentException If the resource has no definition attached
      *
