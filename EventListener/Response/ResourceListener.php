@@ -62,6 +62,10 @@ class ResourceListener implements EventSubscriberInterface
                 continue;
             }
 
+            if (!$content->has((string) $property)) {
+                continue;
+            }
+
             $subs = [];
 
             if ($property->getType() === 'resource') {
