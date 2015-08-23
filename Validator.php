@@ -105,13 +105,14 @@ class Validator
     protected function buildConstraintTree($resources, $access)
     {
         if ($resources instanceof Collection) {
-            $constraint = new Assert\All;
+            $constraints = [];
             foreach ($resources as $resource) {
-                $constraint->constraints[] = $this->buildConstraintTree(
+                $constraints[] = $this->buildConstraintTree(
                     $resource,
                     $access
                 );
             }
+            $constraint = new Assert\All(['constraints' => $constraints]);
         } else {
             $fields = [];
             $definition = $resources->getDefinition();
