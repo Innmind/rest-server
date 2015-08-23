@@ -169,7 +169,7 @@ class Setup
     /**
      * Attach response subscribers to the dispatcher
      *
-     * @param UrlGenerator $urlGenrator
+     * @param UrlGenerator $urlGenerator
      *
      * @return void
      */
