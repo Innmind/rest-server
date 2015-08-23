@@ -104,4 +104,25 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->v->validate([], 'READ');
     }
+
+    public function testDoesntViolateEmptyOptionalFields()
+    {
+        $def = new Definition('foo');
+        $def->addProperty(
+            (new Property('foo'))
+                ->setType('resource')
+                ->addAccess('READ')
+                ->addOption('optional', null)
+                ->addOption('resource', new Definition('bar'))
+        );
+        $r = new Resource;
+        $r->setDefinition($def);
+
+        $violations = $this->v->validate($r, 'READ');
+
+        $this->assertSame(
+            0,
+            $violations->count()
+        );
+    }
 }

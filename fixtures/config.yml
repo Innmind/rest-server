@@ -41,12 +41,14 @@ collections:
                         type: resource
                         access: [READ]
                         options:
+                            optional: ~
                             resource: foo
                             collection: bar
                     sub_resource_coll:
                         type: array
                         access: [READ]
                         options:
+                            optional: ~
                             inner_type: resource
                             resource: resource
                 meta:

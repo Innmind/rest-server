@@ -131,16 +131,25 @@ class Validator
                 }
 
                 if ($prop->containsResource()) {
-                    $fields[(string) $prop][] = $this->buildConstraintTree(
-                        $resources->get((string) $prop),
-                        $access
-                    );
+                    if ($resources->has((string) $prop)) {
+                        $fields[(string) $prop][] = $this->buildConstraintTree(
+                            $resources->get((string) $prop),
+                            $access
+                        );
+                    }
                 } else {
                     $type = Types::get($prop->getType());
                     $fields[(string) $prop] = array_merge(
                         $fields[(string) $prop],
                         $type->getConstraints($prop)
                     );
+                }
+
+                if (
+                    $prop->hasOption('optional') &&
+                    empty($fields[(string) $prop])
+                ) {
+                    unset($fields[(string) $prop]);
                 }
             }
 
