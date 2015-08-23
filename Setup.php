@@ -38,6 +38,7 @@ class Setup
     protected $routes;
     protected $routeLoader;
     protected $requestHandler;
+    protected $formats;
     protected $requestParser;
     protected $validator;
     protected $serializer;
