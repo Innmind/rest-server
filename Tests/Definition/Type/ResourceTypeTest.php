@@ -6,7 +6,7 @@ use Innmind\Rest\Server\Definition\Type\ResourceType;
 use Innmind\Rest\Server\Definition\TypeInterface;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Definition\Resource;
-use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Callback;
 
 class ResourceTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,16 +25,8 @@ class ResourceTypeTest extends \PHPUnit_Framework_TestCase
             count($t->getConstraints($p))
         );
         $this->assertInstanceOf(
-            Collection::class,
+            Callback::class,
             $t->getConstraints($p)[0]
-        );
-        $this->assertSame(
-            1,
-            count($t->getConstraints($p)[0]->fields)
-        );
-        $this->assertSame(
-            'string',
-            $t->getConstraints($p)[0]->fields['foo']->constraints[0]->type
         );
     }
 }

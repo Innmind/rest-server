@@ -5,7 +5,9 @@ namespace Innmind\Rest\Server\Definition\Type;
 use Innmind\Rest\Server\Definition\TypeInterface;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Definition\Types;
-use Symfony\Component\Validator\Constraints\Collection;
+use Innmind\Rest\Server\Resource;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ResourceType implements TypeInterface
 {
@@ -14,14 +16,21 @@ class ResourceType implements TypeInterface
      */
     public function getConstraints(Property $property)
     {
-        $properties = $property->getOption('resource')->getProperties();
-        $fields = [];
+        $closure = function($data, ExecutionContextInterface $context) use ($property) {
+            if (!$data instanceof Resource) {
+                $context
+                    ->buildViolation(sprintf(
+                        'A resource must be an instance of %s',
+                        Resource::class
+                    ))
+                    ->atPath((string) $property)
+                    ->addViolation();
 
-        foreach ($properties as $p) {
-            $fields[(string) $p] = Types::get($p->getType())->getConstraints($p);
-        }
+                return;
+            }
+        };
 
-        return [new Collection(['fields' => $fields])];
+        return [new Callback($closure)];
     }
 
     /**
