@@ -35,16 +35,16 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
         $this->b->build([], $d);
     }
 
-    /**
-     * @expectedException Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException
-     * @expectedExceptionMessage Neither the property "foo" nor one of the methods "getFoo()", "foo()", "isFoo()", "hasFoo()", "__get()" exist and have public access in class "stdClass".
-     */
-    public function testThrowIfUnknownPropertyFromDataObject()
+    public function testDoesntThrowIfUnknownPropertyFromDataObject()
     {
         $d = new ResourceDefinition('bar');
         $d->addProperty(new Property('foo'));
 
-        $this->b->build(new \stdClass, $d);
+        try {
+            $this->b->build(new \stdClass, $d);
+        } catch(\Exception $e) {
+            $this->fail('It should not throw if property not found');
+        }
     }
 
     public function testBuild()
