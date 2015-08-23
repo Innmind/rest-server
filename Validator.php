@@ -21,7 +21,7 @@ class Validator
      * @param Innmind\Rest\Server\Resource|Innmind\Rest\Server\Collection $resources
      * @param string $access One of the constants of Access
      *
-     * @return ConstraintViolationList
+     * @return \Symfony\Component\Validator\ConstraintViolationListInterface
      */
     public function validate($resources, $access)
     {
