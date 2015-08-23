@@ -42,7 +42,7 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
 
         try {
             $this->b->build(new \stdClass, $d);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->fail('It should not throw if property not found');
         }
     }
