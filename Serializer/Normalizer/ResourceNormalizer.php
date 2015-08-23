@@ -143,7 +143,7 @@ class ResourceNormalizer implements NormalizerInterface, DenormalizerInterface
     }
 
     /**
-     * Transform an array into an object (reursively)
+     * Transform an array into an object (recursively)
      *
      * @param array $data
      * @param Definition $definition
