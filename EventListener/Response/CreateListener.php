@@ -42,10 +42,15 @@ class CreateListener implements EventSubscriberInterface
      */
     public function buildResponse(ResponseEvent $event)
     {
-        if (
-            $event->getAction() !== 'create' &&
-            !$event->getContent() instanceof Resource
-        ) {
+        if ($event->getAction() !== 'create') {
+            return;
+        }
+
+        $event
+            ->getResponse()
+            ->setStatusCode(Response::HTTP_CREATED);
+
+        if (!$event->getContent() instanceof Resource) {
             return;
         }
 
@@ -57,7 +62,6 @@ class CreateListener implements EventSubscriberInterface
         );
         $event
             ->getResponse()
-            ->setStatusCode(Response::HTTP_CREATED)
             ->headers
             ->add([
                 'Location' => $this->urlGenerator->generate(
