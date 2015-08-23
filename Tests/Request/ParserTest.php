@@ -5,6 +5,8 @@ namespace Innmind\Rest\Server\Tests\Request;
 use Innmind\Rest\Server\Request\Parser;
 use Innmind\Rest\Server\Formats;
 use Innmind\Rest\Server\ResourceBuilder;
+use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Definition\Resource as Definition;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Serializer\Encoder\FormEncoder;
@@ -84,12 +86,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                 'foo' => 'bar',
             ]],
         ];
-        $expected = new \stdClass;
-        $sub = new \stdClass;
-        $sub->foo = 'bar';
-        $expected->foo = 'bar';
-        $expected->sub = $sub;
-        $expected->subColl = [$sub];
         $subDef = (new Definition('sub'))
             ->addProperty(
                 (new Property('foo'))
@@ -112,6 +108,21 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                     ->addOption('inner_type', 'resource')
                     ->addOption('resource', $subDef)
             );
+        $expectedColl = new Collection;
+        $expectedColl[] = (new Resource)
+            ->setDefinition($subDef)
+            ->set('foo', 'bar');
+        $expected = new Resource;
+        $expected
+            ->setDefinition($definition)
+            ->set('foo', 'bar')
+            ->set(
+                'sub',
+                (new Resource)
+                    ->setDefinition($subDef)
+                    ->set('foo', 'bar')
+            )
+            ->set('subColl', $expectedColl);
         $r = new HttpRequest(
             [],
             [],
@@ -129,11 +140,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\PayloadException
-     * @expectedExceptionMessage Bad request payload
-     */
-    public function testThrowIfPayloadDoesntMatchDefinition()
+    public function testDoesntThrowIfPayloadDoesntMatchDefinition()
     {
         $definition = new Definition('foo');
         $definition
@@ -156,7 +163,11 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         );
         $r->headers->add(['Content-Type' => 'application/json']);
 
-        $this->p->getData($r, $definition);
+        try {
+            $this->p->getData($r, $definition);
+        } catch (\Exception $e) {
+            $this->fail('An exception has been raised while building invalid data');
+        }
     }
 
     public function testGetCollectionOfData()
@@ -180,12 +191,16 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             json_encode(['resources' => $data])
         );
         $r->headers->add(['Content-Type' => 'application/json']);
-        $expected = [];
-        $o = new \stdClass;
-        $o->foo = 'bar';
+        $expected = new Collection;
+        $o = new Resource;
+        $o
+            ->setDefinition($def)
+            ->set('foo', 'bar');
         $expected[] = $o;
-        $o = new \stdClass;
-        $o->foo = 'baz';
+        $o = new Resource;
+        $o
+            ->setDefinition($def)
+            ->set('foo', 'baz');
         $expected[] = $o;
 
         $this->assertEquals(
@@ -195,8 +210,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\PayloadException
-     * @expectedExceptionMessage The payload must be set either under the key "resource" or "resources"
+     * @expectedException Symfony\Component\Serializer\Exception\UnsupportedException
+     * @expectedExceptionMessage Data must be set under the key "resource" or "resources"
      */
     public function testThrowIfNoResourceKeyInPayload()
     {

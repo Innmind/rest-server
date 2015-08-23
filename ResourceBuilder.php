@@ -60,6 +60,10 @@ class ResourceBuilder
         $resource->setDefinition($definition);
 
         foreach ($definition->getProperties() as $property) {
+            if (!$this->accessor->isReadable($data, (string) $property)) {
+                continue;
+            }
+
             $value = $this->accessor->getValue($data, (string) $property);
 
             if ($property->getType() === 'resource') {
