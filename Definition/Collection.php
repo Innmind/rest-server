@@ -50,7 +50,7 @@ class Collection
     /**
      * Add a new resource definition to the collection
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Definition\Resource $resource
      *
      * @return Collection self
      */
@@ -90,7 +90,7 @@ class Collection
      *
      * @throws InvalidArgumentException If resource not found
      *
-     * @return Resource
+     * @return Innmind\Rest\Server\Definition\Resource
      */
     public function getResource($name)
     {

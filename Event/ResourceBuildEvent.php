@@ -55,7 +55,7 @@ class ResourceBuildEvent extends Event
     /**
      * Set your own built resource, prevent default behavior
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Resource $resource
      *
      * @throws InvalidArgumentException If no definition attached to the resource
      *

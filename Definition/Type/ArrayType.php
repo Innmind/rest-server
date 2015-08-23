@@ -16,14 +16,19 @@ class ArrayType implements TypeInterface
     {
         $closure = function($data, ExecutionContextInterface $context) use ($property) {
             if (
-                !is_array($data) ||
-                !$data instanceof \ArrayAccess ||
+                !is_array($data) &&
+                !$data instanceof \ArrayAccess &&
                 !$data instanceof \Traversable
             ) {
                 $context
-                    ->buildViolation('It must be an array or an object implementing \ArrayAccess and \Traversable')
+                    ->buildViolation(
+                        'It must be an array or an object implementing ' .
+                        '\ArrayAccess or \Traversable'
+                    )
                     ->atPath((string) $property)
                     ->addViolation();
+
+                return;
             }
         };
 

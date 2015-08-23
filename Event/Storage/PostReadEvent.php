@@ -2,6 +2,7 @@
 
 namespace Innmind\Rest\Server\Event\Storage;
 
+use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Definition\Resource;
 
 class PostReadEvent extends PreReadEvent
@@ -9,7 +10,7 @@ class PostReadEvent extends PreReadEvent
     public function __construct(
         Resource $definition,
         $id,
-        \SplObjectStorage $resources
+        Collection $resources
     ) {
         parent::__construct($definition, $id);
 

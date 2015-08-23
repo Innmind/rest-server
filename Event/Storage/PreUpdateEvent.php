@@ -29,7 +29,7 @@ class PreUpdateEvent extends Event
     /**
      * Replace the resource with the given one
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Resource $resource
      *
      * @throws InvalidArgumentException If the resource has no definition
      *

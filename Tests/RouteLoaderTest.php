@@ -226,4 +226,12 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         $this->r->load('.');
         $this->r->load('.');
     }
+
+    public function testGetRoute()
+    {
+        $this->assertSame(
+            'innmind_rest_foo_bar_options',
+            $this->r->getRoute($this->resource, 'options')
+        );
+    }
 }

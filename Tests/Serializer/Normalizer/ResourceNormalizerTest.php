@@ -4,8 +4,12 @@ namespace Innmind\Rest\Server\Tests\Serializer\Normalizer;
 
 use Innmind\Rest\Server\Serializer\Normalizer\ResourceNormalizer;
 use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\ResourceBuilder;
+use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Definition\Resource as Definition;
 use Innmind\Rest\Server\Definition\Property;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,7 +17,12 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->n = new ResourceNormalizer;
+        $this->n = new ResourceNormalizer(
+            new ResourceBuilder(
+                PropertyAccess::createPropertyAccessor(),
+                new EventDispatcher
+            )
+        );
     }
 
     public function testSupportNormalization()
@@ -28,11 +37,23 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function testNormalize()
     {
+        $subDef = new Definition('bar');
+        $subDef->addProperty(
+            (new Property('foo'))
+                ->setType('string')
+                ->addAccess('READ')
+        );
         $def = new Definition('foo');
         $def
             ->addProperty(
                 (new Property('foo'))
                     ->addAccess('READ')
+            )
+            ->addProperty(
+                (new Property('sub'))
+                    ->setType('resource')
+                    ->addAccess('READ')
+                    ->addOption('resource', $subDef)
             )
             ->addProperty(
                 (new Property('bar'))
@@ -42,10 +63,38 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
         $r
             ->set('foo', '1')
             ->set('bar', '2')
+            ->set(
+                'sub',
+                (new Resource)
+                    ->setDefinition($subDef)
+                    ->set('foo', 'foo')
+            )
             ->setDefinition($def);
 
         $this->assertSame(
-            ['foo' => '1'],
+            ['resource' => ['foo' => '1']],
+            $this->n->normalize($r)
+        );
+
+        $c = new Collection;
+        $c[] = $r;
+
+        $this->assertSame(
+            ['resources' => [['foo' => '1']]],
+            $this->n->normalize($c)
+        );
+
+        $def->getProperty('sub')->addOption('inline', null);
+
+        $this->assertSame(
+            [
+                'resource' => [
+                    'foo' => '1',
+                    'sub' => [
+                        'foo' => 'foo',
+                    ],
+                ],
+            ],
             $this->n->normalize($r)
         );
     }
@@ -64,25 +113,20 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
     {
         $def = new Definition('foo');
         $def
-            ->addProperty(
-                (new Property('foo'))
-                    ->addAccess('READ')
-            )
-            ->addProperty(
-                (new Property('bar'))
-                    ->addAccess('UPDATE')
-            );
+            ->addProperty(new Property('foo'))
+            ->addProperty(new Property('bar'));
 
         $r = $this->n->denormalize(
             [
-                'foo' => 1,
-                'bar' => 2,
+                'resource' => [
+                    'foo' => 1,
+                    'bar' => 2,
+                ],
             ],
             Resource::class,
             null,
             [
                 'definition' => $def,
-                'access' => 'UPDATE',
             ]
         );
         $this->assertInstanceOf(
@@ -93,7 +137,40 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
             2,
             $r->get('bar')
         );
-        $this->assertFalse($r->has('foo'));
+        $this->assertSame(
+            1,
+            $r->get('foo')
+        );
+
+        $resources = $this->n->denormalize(
+            [
+                'resources' => [[
+                    'foo' => 1,
+                    'bar' => 2,
+                ]],
+            ],
+            Resource::class,
+            null,
+            [
+                'definition' => $def,
+            ]
+        );
+        $this->assertInstanceOf(
+            Collection::class,
+            $resources
+        );
+        $this->assertSame(
+            1,
+            $resources->count()
+        );
+        $this->assertSame(
+            2,
+            $resources->current()->get('bar')
+        );
+        $this->assertSame(
+            1,
+            $resources->current()->get('foo')
+        );
     }
 
     /**
@@ -136,10 +213,10 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Serializer\Exception\LogicException
-     * @expectedExceptionMessage You need to specify either "CREATE" or "UPDATE" access flags in the denormalization context
+     * @expectedException Symfony\Component\Serializer\Exception\UnsupportedException
+     * @expectedExceptionMessage Data must be set under the key "resource" or "resources"
      */
-    public function testThrowWhenNoWhishedAccessInContext()
+    public function testThrowWhenDenormalizerCantFindData()
     {
         $this->n->denormalize(
             [
@@ -150,26 +227,6 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
             null,
             [
                 'definition' => new Definition('foo'),
-            ]
-        );
-    }
-
-    /**
-     * @expectedException Symfony\Component\Serializer\Exception\LogicException
-     * @expectedExceptionMessage You need to specify either "CREATE" or "UPDATE" access flags in the denormalization context
-     */
-    public function testThrowWhenNoInvalidAccessInContext()
-    {
-        $this->n->denormalize(
-            [
-                'foo' => 1,
-                'bar' => 2,
-            ],
-            Resource::class,
-            null,
-            [
-                'definition' => new Definition('foo'),
-                'access' => 'READ',
             ]
         );
     }

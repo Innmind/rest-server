@@ -22,7 +22,7 @@ class EntityBuilder
     /**
      * Build an entity out of the given resource
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Resource $resource
      * @param object $entity
      *
      * @throws LogicException If no class specified or if the entity is not an instance of it
@@ -78,14 +78,16 @@ class EntityBuilder
                 $property->getType() === 'array' &&
                 $property->getOption('inner_type') === 'resource'
             ) {
-                foreach ($value as $idx => &$subValue) {
+                $coll = [];
+                foreach ($value as $idx => $subValue) {
                     $path = sprintf('%s[%s]', $key, $idx);
-                    $subValue = $this->build(
+                    $coll[] = $this->build(
                         $subValue,
                         $this->accessor->isReadable($entity, $path) ?
                             $this->accessor->getValue($entity, $path) : null
                     );
                 }
+                $value = $coll;
             }
 
             $this->accessor->setValue($entity, $key, $value);

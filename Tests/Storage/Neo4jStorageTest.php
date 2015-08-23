@@ -52,7 +52,6 @@ class Neo4jStorageTest extends AbstractStorage
             ),
             $this->rb = new ResourceBuilder(
                 $accessor,
-                Validation::createValidator(),
                 $this->d
             )
         );

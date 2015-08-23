@@ -13,14 +13,14 @@ interface StorageInterface
      * @param ResourceDefinition $definition
      * @param mixed $id
      *
-     * @return \SplObjectStorage
+     * @return Collection
      */
     public function read(ResourceDefinition $definition, $id = null);
 
     /**
      * Create the given resource
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Resource $resource
      *
      * @return mixed The id for the given resource
      */
@@ -29,7 +29,7 @@ interface StorageInterface
     /**
      * Update the given resource
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Resource $resource
      * @param mixed $id
      *
      * @return StorageInterface self

@@ -12,7 +12,7 @@ class RouteCollection extends SFRouteCollection
     CONST ACTION_KEY = '_rest_action';
 
     /**
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Definition\Resource $resource
      */
     public function __construct(Resource $resource)
     {
@@ -28,7 +28,7 @@ class RouteCollection extends SFRouteCollection
     /**
      * Build the route to list resources
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Definition\Resource $resource
      *
      * @return RouteCollection self
      */
@@ -54,7 +54,7 @@ class RouteCollection extends SFRouteCollection
     /**
      * Build route to create a resource
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Definition\Resource $resource
      *
      * @return RouteCollection self
      */
@@ -72,7 +72,7 @@ class RouteCollection extends SFRouteCollection
     /**
      * Build route to expose resource configuration
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Definition\Resource $resource
      *
      * @return RouteCollection self
      */
@@ -90,7 +90,7 @@ class RouteCollection extends SFRouteCollection
     /**
      * Build route to get a resource
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Definiton\Resource $resource
      *
      * @return RouteCollection self
      */
@@ -116,7 +116,7 @@ class RouteCollection extends SFRouteCollection
     /**
      * Build route to update a resource
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Definition\Resource $resource
      *
      * @return RouteCollection self
      */
@@ -134,7 +134,7 @@ class RouteCollection extends SFRouteCollection
     /**
      * Build route to remove a resource
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Definition\Resource $resource
      *
      * @return RouteCollection self
      */
@@ -170,7 +170,7 @@ class RouteCollection extends SFRouteCollection
     /**
      * Build the route name
      *
-     * @param Resource $resource
+     * @param Innmind\Rest\Server\Definition\Resource $resource
      * @param string $action
      *
      * @return string

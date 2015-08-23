@@ -5,12 +5,13 @@ namespace Innmind\Rest\Server\Storage;
 use Innmind\Rest\Server\StorageInterface;
 use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Events;
+use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Event\Storage;
 use Innmind\Rest\Server\Event\Doctrine\ReadQueryBuilderEvent;
 use Innmind\Rest\Server\Definition\Resource;
 use Innmind\Rest\Server\EntityBuilder;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Collection as DoctrineCollection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class DoctrineStorage extends AbstractStorage implements StorageInterface
@@ -72,14 +73,12 @@ class DoctrineStorage extends AbstractStorage implements StorageInterface
         }
 
         $entities = $event->getQueryBuilder()->getQuery()->getResult();
-        $entities = $entities instanceof Collection ?
+        $entities = $entities instanceof DoctrineCollection ?
             $entities->toArray() : (array) $entities;
-        $resources = new \SplObjectStorage;
+        $resources = new Collection;
 
         foreach ($entities as $entity) {
-            $resources->attach(
-                $this->resourceBuilder->build($entity, $definition)
-            );
+            $resources[] = $this->resourceBuilder->build($entity, $definition);
         }
 
         $this->dispatcher->dispatch(
