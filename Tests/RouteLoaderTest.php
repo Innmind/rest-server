@@ -234,4 +234,19 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
             $this->r->getRoute($this->resource, 'options')
         );
     }
+
+    public function testPreventAddindRoute()
+    {
+        $d = new EventDispatcher;
+        $d->addListener(Events::ROUTE, function($event) {
+            $route = $event->getRoute();
+
+            if ($route->getDefault(RouteCollection::ACTION_KEY) === 'index') {
+                $event->stopPropagation();
+            }
+        });
+        $loader = new RouteLoader($d, $this->registry);
+        $routes = $loader->load('.');
+        $this->assertSame(5, count($routes));
+    }
 }

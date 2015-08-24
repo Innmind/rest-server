@@ -50,13 +50,15 @@ class RouteLoader extends Loader
                 $resourceRoutes->addPrefix($this->prefix);
 
                 foreach ($resourceRoutes as $name => $route) {
-                    $this->dispatcher->dispatch(
+                    $event = $this->dispatcher->dispatch(
                         Events::ROUTE,
                         new RouteEvent($routes, $route, $resource)
                     );
-                }
 
-                $routes->addCollection($resourceRoutes);
+                    if (!$event->isPropagationStopped()) {
+                        $routes->add($name, $route);
+                    }
+                }
             }
         }
 
