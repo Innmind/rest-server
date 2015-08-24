@@ -88,6 +88,8 @@ class EntityBuilder
                     );
                 }
                 $value = $coll;
+            } else if ($property->getType() === 'date' && is_string($value)) {
+                $value = new \DateTime($value);
             }
 
             $this->accessor->setValue($entity, $key, $value);

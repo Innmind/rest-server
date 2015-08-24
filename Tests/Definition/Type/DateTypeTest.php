@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\Tests\Definition\Type;
 use Innmind\Rest\Server\Definition\Type\DateType;
 use Innmind\Rest\Server\Definition\TypeInterface;
 use Innmind\Rest\Server\Definition\Property;
-use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\Callback;
 
 class DateTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,7 +19,7 @@ class DateTypeTest extends \PHPUnit_Framework_TestCase
             count($t->getConstraints($p))
         );
         $this->assertInstanceOf(
-            Date::class,
+            Callback::class,
             $t->getConstraints($p)[0]
         );
     }

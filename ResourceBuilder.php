@@ -80,6 +80,13 @@ class ResourceBuilder
                     );
                 }
                 $value = $coll;
+            } else if (
+                $property->getType() === 'date' &&
+                $value instanceof \DateTime
+            ) {
+                $format = $property->hasOption('format') ?
+                    $property->getOption('format') : \DateTime::ISO8601;
+                $value = $value->format($format);
             }
 
             $resource->set($property, $value);

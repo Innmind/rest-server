@@ -4,7 +4,8 @@ namespace Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\Definition\TypeInterface;
 use Innmind\Rest\Server\Definition\Property;
-use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class DateType implements TypeInterface
 {
@@ -13,7 +14,38 @@ class DateType implements TypeInterface
      */
     public function getConstraints(Property $property)
     {
-        return [new Date];
+        $closure = function($data, ExecutionContextInterface $context) use ($property) {
+            if ($data instanceof \DateTime) {
+                return;
+            }
+
+            if (!is_string($data)) {
+                $context
+                    ->buildViolation('This field must be a date')
+                    ->atPath((string) $property)
+                    ->addViolation();
+
+                return;
+            }
+
+            try {
+                if ($property->hasOption('format')) {
+                    \DateTime::createFromFormat(
+                        $property->getOption('format'),
+                        $data
+                    );
+                } else {
+                    new \DateTime($data);
+                }
+            } catch (\Exception $e) {
+                $context
+                    ->buildViolation('This field must be a date')
+                    ->atPath((string) $property)
+                    ->addViolation();
+            }
+        };
+
+        return [new Callback($closure)];
     }
 
     /**

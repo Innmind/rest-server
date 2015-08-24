@@ -37,6 +37,8 @@ collections:
                         type: date
                         access: [READ, CREATE, UPDATE]
                         variants: [date]
+                        options:
+                            format: Y-m-d
                     sub_resource:
                         type: resource
                         access: [READ]
