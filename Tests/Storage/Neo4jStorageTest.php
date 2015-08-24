@@ -78,7 +78,7 @@ class Neo4jStorageTest extends AbstractStorage
     {
         $fired = false;
         $this->d->addListener(
-            'innmind.rest.storage.neo4j.read_query_builder',
+            'innmind.rest.server.storage.neo4j.read_query_builder',
             function(ReadQueryBuilderEvent $event) use (&$fired) {
                 $fired = true;
                 $this->assertInstanceOf(

@@ -30,7 +30,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
     public function testCreateResourceInPreEvent()
     {
         $this->d->addListener(
-            'innmind.rest.storage.pre.create',
+            'innmind.rest.server.storage.pre.create',
             function(Storage\PreCreateEvent $event) {
                 $event->setResourceId(42);
             }
@@ -48,7 +48,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
     {
         $fired = false;
         $this->d->addListener(
-            'innmind.rest.storage.post.create',
+            'innmind.rest.server.storage.post.create',
             function(Storage\PostCreateEvent $event) use (&$fired, $class) {
                 $fired = true;
                 $this->assertInstanceOf(
@@ -87,7 +87,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
     {
         $fired = false;
         $this->d->addListener(
-            'innmind.rest.storage.pre.read',
+            'innmind.rest.server.storage.pre.read',
             function(Storage\PreReadEvent $event) use (&$fired) {
                 $fired = true;
                 $event->addResource(
@@ -106,7 +106,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
     {
         $fired = false;
         $this->d->addListener(
-            'innmind.rest.storage.post.read',
+            'innmind.rest.server.storage.post.read',
             function(Storage\PostReadEvent $event) use (&$fired) {
                 $fired = true;
                 $event->addResource(
@@ -175,7 +175,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
 
         $fired = false;
         $this->d->addListener(
-            'innmind.rest.storage.pre.update',
+            'innmind.rest.server.storage.pre.update',
             function(Storage\PreUpdateEvent $event) use (&$fired, $r, $id) {
                 $fired = true;
                 $this->assertSame(
@@ -205,13 +205,13 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
     {
         $fired = false;
         $this->d->addListener(
-            'innmind.rest.storage.post.update',
+            'innmind.rest.server.storage.post.update',
             function() use (&$fired) {
                 $fired = true;
             }
         );
         $this->d->addListener(
-            'innmind.rest.storage.pre.update',
+            'innmind.rest.server.storage.pre.update',
             function(Storage\PreUpdateEvent $event) use (&$fired) {
                 $event->stopPropagation();
             }
@@ -239,7 +239,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
         $id = $this->s->create($r);
         $fired = false;
         $this->d->addListener(
-            'innmind.rest.storage.post.update',
+            'innmind.rest.server.storage.post.update',
             function(Storage\PostUpdateEvent $event) use (&$fired, $r, $id, $class) {
                 $fired = true;
                 $this->assertSame(
@@ -274,7 +274,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
         $id = $this->s->create($r);
         $fired = false;
         $this->d->addListener(
-            'innmind.rest.storage.pre.delete',
+            'innmind.rest.server.storage.pre.delete',
             function(Storage\PreDeleteEvent $event) use (&$fired, $r, $id) {
                 $fired = true;
                 $this->assertSame(
@@ -290,7 +290,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
         );
         $postFired = false;
         $this->d->addListener(
-            'innmind.rest.storage.post.delete',
+            'innmind.rest.server.storage.post.delete',
             function() use (&$postFired) {
                 $postFired = true;
             }
@@ -313,7 +313,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
         $id = $this->s->create($r);
         $fired = false;
         $this->d->addListener(
-            'innmind.rest.storage.post.delete',
+            'innmind.rest.server.storage.post.delete',
             function(Storage\PostDeleteEvent $event) use (&$fired, $r, $id, $class) {
                 $fired = true;
                 $this->assertSame(

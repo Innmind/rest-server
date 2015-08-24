@@ -84,7 +84,7 @@ class DoctrineStorageTest extends AbstractStorage
     {
         $fired = false;
         $this->d->addListener(
-            'innmind.rest.storage.doctrine.read_query_builder',
+            'innmind.rest.server.storage.doctrine.read_query_builder',
             function(ReadQueryBuilderEvent $event) use (&$fired) {
                 $fired = true;
                 $this->assertInstanceOf(
