@@ -95,10 +95,13 @@ class Neo4jStorage extends AbstractStorage implements StorageInterface
             return $event->getResources();
         }
 
-        $query = $event
-            ->getQueryBuilder()
-            ->toReturn('r')
-            ->getQuery();
+        $qb = $event->getQueryBuilder();
+
+        if (!$event->hasQueryBuilderBeenReplaced()) {
+            $qb->toReturn('r');
+        }
+
+        $query = $qb->getQuery();
         $entities = $uow->execute($query);
         $resources = new Collection;
 
