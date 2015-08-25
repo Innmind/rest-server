@@ -57,6 +57,7 @@ collections:
                     description: Basic representation of a web resource
                 options:
                     class: Innmind\Rest\Server\Tests\WebResource
+                    paginate: 42
     bar:
         storage: neo4j
         resources:

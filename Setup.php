@@ -9,7 +9,9 @@ use Innmind\Rest\Server\Exception\PayloadException;
 use Innmind\Rest\Server\Exception\ValidationException;
 use Innmind\Rest\Server\EventListener\Response as ResponseListener;
 use Innmind\Rest\Server\EventListener\StorageCreateListener;
+use Innmind\Rest\Server\EventListener\PaginationListener;
 use Innmind\Rest\Server\Event\ResponseEvent;
+use Innmind\Rest\Server\Event\RequestEvent;
 use Innmind\Rest\Server\Definition\Resource as Definition;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -126,6 +128,11 @@ class Setup
         $definition = $request->attributes->get(RouteCollection::RESOURCE_KEY);
         $action = $request->attributes->get(RouteCollection::ACTION_KEY);
 
+        $this->dispatcher->dispatch(
+            Events::REQUEST,
+            new RequestEvent($definition, $request, $action)
+        );
+
         switch ($action) {
             case 'index':
                 $content = $this->handleIndexAction($definition);
@@ -197,6 +204,10 @@ class Setup
             $urlGenerator,
             $this->routeLoader,
             $this->serializer
+        ));
+        $this->dispatcher->addSubscriber(new PaginationListener(
+            $urlGenerator,
+            $this->routeLoader
         ));
 
         $this->responseSubscribersLoaded = true;

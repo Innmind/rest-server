@@ -577,6 +577,59 @@ class SetupTest extends \PHPUnit_Framework_TestCase
             $response->headers->get('Link', null, false)
         );
     }
+
+    public function testHasNextLink()
+    {
+        $request = new Request(
+            [],
+            [],
+            [],
+            [],
+            [],
+            [
+                'REQUEST_URI' => '/api/web/resource/',
+                'REQUEST_METHOD' => 'GET',
+            ]
+        );
+        $request->headers->add([
+            'Accept' => 'application/json',
+        ]);
+        $response = $this->s->handleRequest($request);
+        $this->assertTrue(in_array(
+            '</api/web/resource/?offset=42&limit=42>; rel="next"',
+            $response->headers->get('Link', null, false)
+        ));
+    }
+
+    public function testHasPrevLink()
+    {
+        $request = new Request(
+            [
+                'offset' => '42',
+                'limit' => '42',
+            ],
+            [],
+            [],
+            [],
+            [],
+            [
+                'REQUEST_URI' => '/api/web/resource/',
+                'REQUEST_METHOD' => 'GET',
+            ]
+        );
+        $request->headers->add([
+            'Accept' => 'application/json',
+        ]);
+        $response = $this->s->handleRequest($request);
+        $this->assertTrue(in_array(
+            '</api/web/resource/?offset=84&limit=42>; rel="next"',
+            $response->headers->get('Link', null, false)
+        ));
+        $this->assertTrue(in_array(
+            '</api/web/resource/?offset=0&limit=42>; rel="prev"',
+            $response->headers->get('Link', null, false)
+        ));
+    }
 }
 
 class WebResource

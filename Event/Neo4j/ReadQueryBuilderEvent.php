@@ -9,6 +9,7 @@ use Innmind\Neo4j\ONM\QueryBuilder;
 class ReadQueryBuilderEvent extends PreReadEvent
 {
     protected $qb;
+    protected $qbReplaced = false;
 
     public function __construct(Resource $resource, $id, QueryBuilder $qb)
     {
@@ -37,7 +38,18 @@ class ReadQueryBuilderEvent extends PreReadEvent
     public function replaceQueryBuilder(QueryBuilder $qb)
     {
         $this->qb = $qb;
+        $this->qbReplaced = true;
 
         return $this;
+    }
+
+    /**
+     * Check if the query builder has been replaced by someone
+     *
+     * @return bool
+     */
+    public function hasQueryBuilderBeenReplaced()
+    {
+        return $this->qbReplaced;
     }
 }
