@@ -121,8 +121,7 @@ class Setup
         $this->handleRouting($request);
         $this->verifyRequest($request);
 
-        $request->attributes->set(
-            '_requested_format',
+        $request->setRequestFormat(
             $this->requestParser->getRequestedFormat($request)
         );
         $definition = $request->attributes->get(RouteCollection::RESOURCE_KEY);

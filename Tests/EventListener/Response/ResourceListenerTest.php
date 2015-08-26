@@ -105,7 +105,7 @@ class ResourceListenerTest extends \PHPUnit_Framework_TestCase
             $r,
             'get'
         );
-        $request->attributes->set('_requested_format', 'json');
+        $request->setRequestFormat('json');
         $this->assertSame(
             null,
             $this->l->buildResponse($event)

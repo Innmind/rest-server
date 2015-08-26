@@ -96,7 +96,7 @@ class ResourceListener implements EventSubscriberInterface
         $response->setContent(
             $this->serializer->serialize(
                 $content,
-                $event->getRequest()->attributes->get('_requested_format'),
+                $event->getRequest()->getRequestFormat(),
                 ['definition' => $definition]
             )
         );
