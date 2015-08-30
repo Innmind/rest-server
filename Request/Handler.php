@@ -7,6 +7,7 @@ use Innmind\Rest\Server\Storages;
 use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Exception\ResourceNotFoundException;
+use Innmind\Rest\Server\Exception\TooManyResourcesFoundException;
 
 class Handler
 {
@@ -48,8 +49,10 @@ class Handler
         $storage = $this->storages->get($definition->getStorage());
         $resources = $storage->read($definition, $id);
 
-        if ($resources->count() !== 1) {
+        if ($resources->count() < 1) {
             throw new ResourceNotFoundException;
+        } else if ($resources->count() > 1) {
+            throw new TooManyResourcesFoundException;
         }
 
         return $resources->current();
