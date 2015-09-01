@@ -166,7 +166,7 @@ class PaginationListener implements EventSubscriberInterface
      *
      * @return bool
      */
-    protected function canPaginate()
+    public function canPaginate()
     {
         if (!$this->request) {
             return false;
@@ -195,7 +195,7 @@ class PaginationListener implements EventSubscriberInterface
      *
      * @return array
      */
-    protected function getPaginationBounds()
+    public function getPaginationBounds()
     {
         $offset = (int) $this->request->query->get('offset', 0);
         $limit = $this->request->query->has('limit') ?
