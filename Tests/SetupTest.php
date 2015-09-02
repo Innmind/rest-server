@@ -198,7 +198,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase
             $response
         );
         $this->assertSame(
-            201,
+            300,
             $response->getStatusCode()
         );
         $this->assertSame(

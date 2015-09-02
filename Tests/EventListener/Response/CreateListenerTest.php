@@ -10,6 +10,7 @@ use Innmind\Rest\Server\Request\Handler;
 use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Storages;
 use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\CompilerPass\SubResourcePass;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -88,7 +89,7 @@ class CreateListenerTest extends \PHPUnit_Framework_TestCase
         $event = new ResponseEvent(
             $definition,
             $response = new Response,
-            $request = new Request,
+            new Request,
             $r,
             'create'
         );
@@ -103,6 +104,21 @@ class CreateListenerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             '/web/resource/42',
             $response->headers->get('Location')
+        );
+
+        $c = new Collection;
+        $c[] = $r;
+        $event = new ResponseEvent(
+            $definition,
+            $response = new Response,
+            new Request,
+            $c,
+            'create'
+        );
+        $this->l->buildResponse($event);
+        $this->assertSame(
+            300,
+            $response->getStatusCode()
         );
     }
 

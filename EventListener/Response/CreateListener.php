@@ -4,6 +4,7 @@ namespace Innmind\Rest\Server\EventListener\Response;
 
 use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Event\ResponseEvent;
 use Innmind\Rest\Server\RouteLoader;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -43,6 +44,14 @@ class CreateListener implements EventSubscriberInterface
     public function buildResponse(ResponseEvent $event)
     {
         if ($event->getAction() !== 'create') {
+            return;
+        }
+
+        if ($event->getContent() instanceof Collection) {
+            $event
+                ->getResponse()
+                ->setStatusCode(Response::HTTP_MULTIPLE_CHOICES);
+
             return;
         }
 
