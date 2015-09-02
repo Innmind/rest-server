@@ -51,7 +51,7 @@ class Setup
      * @param string $config
      * @param string $prefix
      * @param array $storages
-     * @param Serializer $serializer
+     * @param array $encoders
      * @param array $compilerPasses
      * @param EventDispatcherInterface|null $dispatcher
      * @param ValidatorInterface|null $validator
