@@ -12,6 +12,7 @@ use Innmind\Rest\Server\EventListener\StorageCreateListener;
 use Innmind\Rest\Server\EventListener\PaginationListener;
 use Innmind\Rest\Server\Event\ResponseEvent;
 use Innmind\Rest\Server\Event\RequestEvent;
+use Innmind\Rest\Server\Serializer\Normalizer\ResourceNormalizer;
 use Innmind\Rest\Server\Definition\Resource as Definition;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -59,7 +60,7 @@ class Setup
     public function __construct(
         $config,
         array $storages,
-        Serializer $serializer,
+        array $encoders,
         $prefix = null,
         array $compilerPasses = [],
         EventDispatcherInterface $dispatcher = null,
@@ -79,12 +80,12 @@ class Setup
         }
 
         $this->dispatcher = $dispatcher;
-        $this->serializer = $serializer;
         $this
             ->buildStorages($storages)
             ->buildRegistry($config, $compilerPasses)
             ->buildEntityBuilder($accessor, $dispatcher)
             ->buildResourceBuilder($accessor, $dispatcher)
+            ->buildSerializer($encoders)
             ->buildRouteLoader($dispatcher, $prefix)
             ->buildValidator($validator)
             ->buildRequestParser()
@@ -293,6 +294,23 @@ class Setup
         EventDispatcherInterface $dispatcher
     ) {
         $this->resourceBuilder = new ResourceBuilder($accessor, $dispatcher);
+
+        return $this;
+    }
+
+    /**
+     * Build the serializer
+     *
+     * @param array $encoders
+     *
+     * @return Setup self
+     */
+    protected function buildSerializer(array $encoders)
+    {
+        $this->serializer = new Serializer(
+            [new ResourceNormalizer($this->resourceBuilder)],
+            $encoders
+        );
 
         return $this;
     }

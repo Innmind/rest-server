@@ -56,10 +56,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase
         $this->s = new Setup(
             'fixtures/config.yml',
             ['neo4j' => $neo4j],
-            new Serializer(
-                [new ResourceNormalizer($resourceBuilder)],
-                [new JsonEncoder]
-            ),
+            [new JsonEncoder],
             '/api',
             [],
             $dispatcher,
