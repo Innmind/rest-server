@@ -245,12 +245,14 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
                             'access' => ['READ'],
                             'variants' => [],
                             'resource' => 'foo',
+                            'optional' => true,
                         ],
                         'sub_resource_coll' => [
                             'type' => 'array',
                             'access' => ['READ'],
                             'variants' => [],
                             'resource' => 'resource',
+                            'optional' => true,
                         ],
                     ],
                     'meta' => [

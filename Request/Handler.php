@@ -130,8 +130,12 @@ class Handler
             $output['properties'][(string) $property] = [
                 'type' => $property->getType(),
                 'access' => $property->getAccess(),
-                'variants' => $property->getVariants()
+                'variants' => $property->getVariants(),
             ];
+
+            if ($property->hasOption('optional')) {
+                $output['properties'][(string) $property]['optional'] = true;
+            }
 
             if ($property->containsResource()) {
                 $sub = $property->getOption('resource');
