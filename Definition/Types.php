@@ -52,6 +52,20 @@ class Types
     }
 
     /**
+     * Return all the types supported
+     *
+     * @return array
+     */
+    public static function keys()
+    {
+        if (self::$types === null) {
+            self::addDefaults();
+        }
+
+        return array_keys(self::$types);
+    }
+
+    /**
      * Initialize all types
      *
      * @return void

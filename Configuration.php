@@ -2,6 +2,7 @@
 
 namespace Innmind\Rest\Server;
 
+use Innmind\Rest\Server\Definition\Types;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
@@ -53,8 +54,9 @@ class Configuration implements ConfigurationInterface
                                     ->requiresAtLeastOneElement()
                                     ->prototype('array')
                                         ->children()
-                                            ->scalarNode('type')
+                                            ->enumNode('type')
                                                 ->isRequired()
+                                                ->values(Types::keys())
                                             ->end()
                                             ->arrayNode('access')
                                                 ->isRequired()

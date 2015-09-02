@@ -33,4 +33,12 @@ class TypesTest extends \PHPUnit_Framework_TestCase
             Types::get('int')
         );
     }
+
+    public function testKeys()
+    {
+        $this->assertSame(
+            ['array', 'bool', 'date', 'float', 'int', 'string', 'resource'],
+            Types::keys()
+        );
+    }
 }
