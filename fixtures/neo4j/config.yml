@@ -1,0 +1,27 @@
+Innmind\Rest\Server\Tests\Storage\Bar:
+    type: node
+    id:
+        id:
+            type: string
+            generator: { strategy: UUID }
+    labels: [Bar]
+    properties:
+        name: string
+
+Innmind\Rest\Server\Tests\WebResource:
+    type: node
+    id:
+        uuid:
+            type: string
+            generator: { strategy: UUID }
+    labels: [Web, Resource]
+    properties:
+        uri: string
+        scheme: string
+        host: string
+        domain: string
+        tld: string
+        port: int
+        path: string
+        query: string
+        crawl_date: date

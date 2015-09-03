@@ -1,0 +1,74 @@
+collections:
+    web:
+        storage: doctrine
+        resources:
+            resource:
+                id: uuid
+                storage: neo4j
+                properties:
+                    uuid:
+                        type: string
+                        access: [READ]
+                    uri:
+                        type: string
+                        access: [READ, CREATE]
+                    scheme:
+                        type: string
+                        access: [READ, CREATE]
+                    host:
+                        type: string
+                        access: [READ, CREATE]
+                    domain:
+                        type: string
+                        access: [READ, CREATE]
+                    tld:
+                        type: string
+                        access: [READ, CREATE]
+                    port:
+                        type: int
+                        access: [READ, CREATE]
+                    path:
+                        type: string
+                        access: [READ, CREATE]
+                    query:
+                        type: string
+                        access: [READ, CREATE]
+                    crawl_date:
+                        type: date
+                        access: [READ, CREATE, UPDATE]
+                        variants: [date]
+                        options:
+                            format: Y-m-d
+                    sub_resource:
+                        type: resource
+                        access: [READ]
+                        options:
+                            optional: ~
+                            resource: foo
+                            collection: bar
+                    sub_resource_coll:
+                        type: array
+                        access: [READ]
+                        options:
+                            optional: ~
+                            inner_type: resource
+                            resource: resource
+                meta:
+                    description: Basic representation of a web resource
+                options:
+                    class: Innmind\Rest\Server\Tests\WebResource
+                    paginate: 42
+    bar:
+        storage: neo4j
+        resources:
+            foo:
+                id: uuid
+                storage: neo4j
+                properties:
+                    foo:
+                        type: string
+                        access: [READ]
+                        variants: []
+                        options: []
+                meta: []
+                options: []

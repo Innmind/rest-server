@@ -1,0 +1,41 @@
+{
+    "name": "innmind/rest-server",
+    "type": "library",
+    "description": "Library to easily expose REST APIs",
+    "keywords": ["rest", "api"],
+    "homepage": "http://github.com/Innmind/rest-server",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Baptiste Langlade",
+            "email": "langlade.baptiste@gmail.com"
+        }
+    ],
+    "support": {
+        "issues": "http://github.com/Innmind/rest-server/issues"
+    },
+    "require": {
+        "php": ">=5.5",
+        "symfony/config": "~2.7",
+        "symfony/yaml": "~2.7",
+        "symfony/routing": "~2.7",
+        "symfony/event-dispatcher": "~2.7",
+        "symfony/property-access": "~2.7",
+        "symfony/validator": "~2.7",
+        "symfony/serializer": "~2.7",
+        "symfony/http-foundation": "~2.7",
+        "willdurand/negotiation": "v2.0.0-alpha1",
+        "symfony/options-resolver": "~2.7",
+        "symfony/http-kernel": "~2.7"
+    },
+    "autoload": {
+        "psr-0": {
+            "Innmind\\Rest\\Server": ""
+        }
+    },
+    "target-dir": "Innmind/Rest/Server",
+    "require-dev": {
+        "doctrine/orm": "^2.5",
+        "innmind/neo4j-onm": "^1.0"
+    }
+}
