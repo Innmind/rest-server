@@ -133,6 +133,10 @@ class Handler
                 'variants' => $property->getVariants(),
             ];
 
+            if ($property->getType() === 'array') {
+                $output['properties'][(string) $property]['inner_type'] = $property->getOption('inner_type');
+            }
+
             if ($property->hasOption('optional')) {
                 $output['properties'][(string) $property]['optional'] = true;
             }
