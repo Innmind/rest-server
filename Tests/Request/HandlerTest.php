@@ -253,6 +253,7 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
                             'variants' => [],
                             'resource' => 'resource',
                             'optional' => true,
+                            'inner_type' => 'resource',
                         ],
                     ],
                     'meta' => [
