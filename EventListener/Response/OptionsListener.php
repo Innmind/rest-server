@@ -61,6 +61,7 @@ class OptionsListener implements EventSubscriberInterface
                 $property['type'],
                 $property['access'],
                 $property['variants'],
+                isset($property['optional']) ? $property['optional'] : false,
                 $property['resource']
             );
         }
@@ -76,6 +77,7 @@ class OptionsListener implements EventSubscriberInterface
      * @param string $type
      * @param array $access
      * @param array $variants
+     * @param bool $optional
      * @param Innmind\Rest\Server\Definition\Resource $definition
      *
      * @return void
@@ -86,17 +88,19 @@ class OptionsListener implements EventSubscriberInterface
         $type,
         array $access,
         array $variants,
+        $optional,
         Resource $definition
     ) {
         $route = $this->routeLoader->getRoute($definition, 'options');
         $header = $response->headers->get('Link', null, false);
         $header[] = sprintf(
-            '<%s>; rel="property"; name="%s"; type="%s"; access="%s"; variants="%s"',
+            '<%s>; rel="property"; name="%s"; type="%s"; access="%s"; variants="%s"; optional="%s"',
             $this->urlGenerator->generate($route),
             $property,
             $type,
             implode('|', $access),
-            implode('|', $variants)
+            implode('|', $variants),
+            (int) $optional
         );
 
         $response->headers->add([
