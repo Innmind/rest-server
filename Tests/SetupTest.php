@@ -568,8 +568,8 @@ class SetupTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertSame(
             [
-                '</api/bar/foo/>; rel="property"; name="sub_resource"; type="resource"; access="READ"; variants=""',
-                '</api/web/resource/>; rel="property"; name="sub_resource_coll"; type="array"; access="READ"; variants=""',
+                '</api/bar/foo/>; rel="property"; name="sub_resource"; type="resource"; access="READ"; variants=""; optional="1"',
+                '</api/web/resource/>; rel="property"; name="sub_resource_coll"; type="array"; access="READ"; variants=""; optional="1"',
             ],
             $response->headers->get('Link', null, false)
         );

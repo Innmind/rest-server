@@ -136,8 +136,8 @@ class OptionsListenerTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertSame(
             [
-                '</bar/foo/>; rel="property"; name="sub_resource"; type="resource"; access="READ"; variants=""',
-                '</web/resource/>; rel="property"; name="sub_resource_coll"; type="array"; access="READ"; variants=""',
+                '</bar/foo/>; rel="property"; name="sub_resource"; type="resource"; access="READ"; variants=""; optional="1"',
+                '</web/resource/>; rel="property"; name="sub_resource_coll"; type="array"; access="READ"; variants=""; optional="1"',
             ],
             $response->headers->get('Link', null, false)
         );
