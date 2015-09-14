@@ -1,6 +1,6 @@
 <?php
 
-namespace Innmind\rest\Server;
+namespace Innmind\Rest\Server;
 
 class DefinitionCompiler
 {
