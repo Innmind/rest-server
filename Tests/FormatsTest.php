@@ -57,4 +57,23 @@ class FormatsTest extends \PHPUnit_Framework_TestCase
             $this->f->getMediaTypes()
         );
     }
+
+    public function testGetMediaType()
+    {
+        $this->f->add('json', 'text/json', 42);
+
+        $this->assertSame(
+            'text/json',
+            $this->f->getMediaType('json')
+        );
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage No media type found for the format "foo"
+     */
+    public function testThrowIfNoMediaTypeFound()
+    {
+        $this->f->getMediaType('foo');
+    }
 }

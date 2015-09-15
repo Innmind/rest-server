@@ -66,7 +66,10 @@ class OptionsListener implements EventSubscriberInterface
             );
         }
 
-        $response->setContent(json_encode($content));
+        $response
+            ->setContent(json_encode($content))
+            ->headers
+            ->set('Content-Type', 'application/json');
     }
 
     /**

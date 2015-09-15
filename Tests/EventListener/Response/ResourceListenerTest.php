@@ -10,6 +10,7 @@ use Innmind\Rest\Server\Request\Handler;
 use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Storages;
 use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\Formats;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\CompilerPass\SubResourcePass;
 use Innmind\Rest\Server\Serializer\Normalizer\ResourceNormalizer;
@@ -52,13 +53,17 @@ class ResourceListenerTest extends \PHPUnit_Framework_TestCase
             $dispatcher
         );
 
+        $formats = new Formats;
+        $formats->add('json', 'application/json', 1);
+
         $this->l = new ResourceListener(
             $generator,
             $loader,
             new Serializer(
                 [new ResourceNormalizer($resourceBuilder)],
                 [new JsonEncoder]
-            )
+            ),
+            $formats
         );
         $this->handler = new Handler(
             new Storages,
@@ -132,6 +137,10 @@ class ResourceListenerTest extends \PHPUnit_Framework_TestCase
                 '</bar/foo/24>; rel="property"; name="sub_resource"',
             ],
             $response->headers->get('Link', null, false)
+        );
+        $this->assertSame(
+            'application/json',
+            $response->headers->get('Content-Type')
         );
     }
 
