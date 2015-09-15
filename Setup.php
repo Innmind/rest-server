@@ -203,7 +203,8 @@ class Setup
         $this->dispatcher->addSubscriber(new ResponseListener\ResourceListener(
             $urlGenerator,
             $this->routeLoader,
-            $this->serializer
+            $this->serializer,
+            $this->formats
         ));
         $this->dispatcher->addSubscriber(new PaginationListener(
             $urlGenerator,

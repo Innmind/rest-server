@@ -141,6 +141,10 @@ class OptionsListenerTest extends \PHPUnit_Framework_TestCase
             ],
             $response->headers->get('Link', null, false)
         );
+        $this->assertSame(
+            'application/json',
+            $response->headers->get('Content-Type')
+        );
     }
 
     public function testDoesntBuildeResponse()

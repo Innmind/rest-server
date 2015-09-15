@@ -88,4 +88,44 @@ class Formats
 
         return array_values($types);
     }
+
+    /**
+     * Return the prefered media type for the given format
+     *
+     * @param string $format
+     *
+     * @return string
+     */
+    public function getMediaType($format)
+    {
+        $priority = null;
+        $type = null;
+
+        foreach ($this->formats as $knownFormat) {
+            if ($knownFormat['name'] !== (string) $format) {
+                continue;
+            }
+
+            if ($type === null) {
+                $priority = $knownFormat['priority'];
+                $type = $knownFormat['mediaType'];
+
+                continue;
+            }
+
+            if ($knownFormat['priority'] > $priority) {
+                $priority = $knownFormat['priority'];
+                $type = $knownFormat['mediaType'];
+            }
+        }
+
+        if ($type === null) {
+            throw new \LogicException(sprintf(
+                'No media type found for the format "%s"',
+                $format
+            ));
+        }
+
+        return $type;
+    }
 }
