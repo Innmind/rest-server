@@ -81,12 +81,12 @@ class Formats
         $types = [];
 
         foreach ($this->formats as $format) {
-            $types[$format['priority']] = $format['mediaType'];
+            $types[$format['mediaType']] = $format['priority'];
         }
 
-        krsort($types);
+        arsort($types);
 
-        return array_values($types);
+        return array_keys($types);
     }
 
     /**
