@@ -103,7 +103,7 @@ class DoctrineStorage extends AbstractStorage implements StorageInterface
 
         $class = $definition->getOption('class');
 
-        if (!$this->em->getMetadataFactory()->hasMetadataFor($class)) {
+        if ($this->em->getMetadataFactory()->isTransient($class)) {
             return false;
         }
 
