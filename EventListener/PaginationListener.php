@@ -147,6 +147,12 @@ class PaginationListener implements EventSubscriberInterface
             );
         }
 
+        $collection = $event->getContent();
+
+        if ($collection->count() < $limit) {
+            return;
+        }
+
         $nextOffset = $offset + $limit;
         $links[] = sprintf(
             '<%s>; rel="next"',
