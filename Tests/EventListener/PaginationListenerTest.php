@@ -85,6 +85,21 @@ class PaginationListenerTest extends \PHPUnit_Framework_TestCase
         $event = new ResponseEvent(
             $def,
             $response,
+            $req = new Request,
+            $resources = new ResourceCollection,
+            'index'
+        );
+        $resources[] = new Resource;
+        $resources[] = new Resource;
+        $this->rs->pop();
+
+        $this->assertSame(null, $this->l->addPageLinks($event));
+        $links = $response->headers->get('Link', null, false);
+        $this->assertSame(0, count($links));
+
+        $event = new ResponseEvent(
+            $def,
+            $response,
             $req = new Request(['offset' => 1, 'limit' => 1]),
             $resources,
             'index'

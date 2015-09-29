@@ -55,7 +55,7 @@ class PaginationListener implements EventSubscriberInterface
     {
         $request = $this->requestStack->getCurrentRequest();
 
-        if (!$this->paginator->canPaginate($request)) {
+        if (!$request || !$this->paginator->canPaginate($request)) {
             return;
         }
 
@@ -84,7 +84,7 @@ class PaginationListener implements EventSubscriberInterface
     {
         $request = $this->requestStack->getCurrentRequest();
 
-        if (!$this->paginator->canPaginate($request)) {
+        if (!$request || !$this->paginator->canPaginate($request)) {
             return;
         }
 
@@ -117,7 +117,7 @@ class PaginationListener implements EventSubscriberInterface
 
         $request = $this->requestStack->getCurrentRequest();
 
-        if (!$this->paginator->canPaginate($request)) {
+        if (!$request || !$this->paginator->canPaginate($request)) {
             return;
         }
 
