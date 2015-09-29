@@ -47,7 +47,7 @@ class PaginationListener implements EventSubscriberInterface
     /**
      * Add an offset and limit to the neo4j query if info found in the request
      *
-     * @param ReadQueryBuilderEvent $event
+     * @param Neo4j\ReadQueryBuilderEvent $event
      *
      * @return void
      */
@@ -76,7 +76,7 @@ class PaginationListener implements EventSubscriberInterface
     /**
      * Paginate a doctrine query if info found in the request
      *
-     * @param ReadQueryBuilderEvent $event
+     * @param Doctrine\ReadQueryBuilderEvent $event
      *
      * @return void
      */
