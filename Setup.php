@@ -3,6 +3,7 @@
 namespace Innmind\Rest\Server;
 
 use Innmind\Rest\Server\Routing\RouteCollection;
+use Innmind\Rest\Server\Routing\RouteFinder;
 use Innmind\Rest\Server\Request\Handler as RequestHandler;
 use Innmind\Rest\Server\Request\Parser as RequestParser;
 use Innmind\Rest\Server\Exception\PayloadException;
@@ -22,6 +23,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
@@ -46,6 +48,7 @@ class Setup
     protected $validator;
     protected $serializer;
     protected $responseSubscribersLoaded = false;
+    protected $requestStack;
 
     /**
      * @param string $config
@@ -80,6 +83,7 @@ class Setup
         }
 
         $this->dispatcher = $dispatcher;
+        $this->requestStack = new RequestStack;
         $this
             ->buildStorages($storages)
             ->buildRegistry($config, $compilerPasses)
@@ -119,6 +123,7 @@ class Setup
      */
     public function handleRequest(Request $request)
     {
+        $this->requestStack->push($request);
         $this->handleRouting($request);
         $this->verifyRequest($request);
 
@@ -170,6 +175,7 @@ class Setup
                 $action
             )
         );
+        $this->requestStack->pop();
 
         return $response;
     }
@@ -187,28 +193,32 @@ class Setup
             return;
         }
 
+        $finder = new RouteFinder;
+
         $this->dispatcher->addSubscriber(new ResponseListener\OptionsListener(
             $urlGenerator,
-            $this->routeLoader
+            $finder
         ));
         $this->dispatcher->addSubscriber(new ResponseListener\CollectionListener(
             $urlGenerator,
-            $this->routeLoader
+            $finder
         ));
         $this->dispatcher->addSubscriber(new ResponseListener\CreateListener(
             $urlGenerator,
-            $this->routeLoader
+            $finder
         ));
         $this->dispatcher->addSubscriber(new ResponseListener\DeleteListener);
         $this->dispatcher->addSubscriber(new ResponseListener\ResourceListener(
             $urlGenerator,
-            $this->routeLoader,
+            $finder,
             $this->serializer,
             $this->formats
         ));
         $this->dispatcher->addSubscriber(new PaginationListener(
+            $this->requestStack,
             $urlGenerator,
-            $this->routeLoader
+            $finder,
+            new Paginator
         ));
 
         $this->responseSubscribersLoaded = true;

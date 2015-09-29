@@ -593,7 +593,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase
         ]);
         $response = $this->s->handleRequest($request);
         $this->assertTrue(in_array(
-            '</api/web/resource/?offset=42&limit=42>; rel="next"',
+            '</api/web/resource/?offset=1&limit=1>; rel="next"',
             $response->headers->get('Link', null, false)
         ));
     }
@@ -602,8 +602,8 @@ class SetupTest extends \PHPUnit_Framework_TestCase
     {
         $request = new Request(
             [
-                'offset' => '42',
-                'limit' => '42',
+                'offset' => '1',
+                'limit' => '1',
             ],
             [],
             [],
@@ -619,11 +619,11 @@ class SetupTest extends \PHPUnit_Framework_TestCase
         ]);
         $response = $this->s->handleRequest($request);
         $this->assertTrue(in_array(
-            '</api/web/resource/?offset=84&limit=42>; rel="next"',
+            '</api/web/resource/?offset=2&limit=1>; rel="next"',
             $response->headers->get('Link', null, false)
         ));
         $this->assertTrue(in_array(
-            '</api/web/resource/?offset=0&limit=42>; rel="prev"',
+            '</api/web/resource/?offset=0&limit=1>; rel="prev"',
             $response->headers->get('Link', null, false)
         ));
     }

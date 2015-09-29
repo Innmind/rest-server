@@ -5,21 +5,21 @@ namespace Innmind\Rest\Server\EventListener\Response;
 use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Event\ResponseEvent;
-use Innmind\Rest\Server\RouteLoader;
+use Innmind\Rest\Server\Routing\RouteFinder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CollectionListener implements EventSubscriberInterface
 {
     protected $urlGenerator;
-    protected $routeLoader;
+    protected $routeFinder;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
-        RouteLoader $routeLoader
+        RouteFinder $routeFinder
     ) {
         $this->urlGenerator = $urlGenerator;
-        $this->routeLoader = $routeLoader;
+        $this->routeFinder = $routeFinder;
     }
 
     /**
@@ -51,7 +51,7 @@ class CollectionListener implements EventSubscriberInterface
 
         foreach ($content as $resource) {
             $definition = $resource->getDefinition();
-            $route = $this->routeLoader->getRoute(
+            $route = $this->routeFinder->find(
                 $definition,
                 'get'
             );

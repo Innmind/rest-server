@@ -6,6 +6,7 @@ use Innmind\Rest\Server\EventListener\Response\ResourceListener;
 use Innmind\Rest\Server\Event\ResponseEvent;
 use Innmind\Rest\Server\Registry;
 use Innmind\Rest\Server\RouteLoader;
+use Innmind\Rest\Server\Routing\RouteFinder;
 use Innmind\Rest\Server\Request\Handler;
 use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Storages;
@@ -58,7 +59,7 @@ class ResourceListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->l = new ResourceListener(
             $generator,
-            $loader,
+            new RouteFinder,
             new Serializer(
                 [new ResourceNormalizer($resourceBuilder)],
                 [new JsonEncoder]

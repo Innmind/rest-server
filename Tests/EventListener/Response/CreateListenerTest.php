@@ -6,6 +6,7 @@ use Innmind\Rest\Server\EventListener\Response\CreateListener;
 use Innmind\Rest\Server\Event\ResponseEvent;
 use Innmind\Rest\Server\Registry;
 use Innmind\Rest\Server\RouteLoader;
+use Innmind\Rest\Server\Routing\RouteFinder;
 use Innmind\Rest\Server\Request\Handler;
 use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Storages;
@@ -47,7 +48,7 @@ class CreateListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->l = new CreateListener(
             $generator,
-            $loader
+            new RouteFinder
         );
         $this->handler = new Handler(
             new Storages,

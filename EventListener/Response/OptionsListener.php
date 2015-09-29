@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\EventListener\Response;
 use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Definition\Resource;
 use Innmind\Rest\Server\Event\ResponseEvent;
-use Innmind\Rest\Server\RouteLoader;
+use Innmind\Rest\Server\Routing\RouteFinder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
@@ -13,14 +13,14 @@ use Symfony\Component\HttpFoundation\Response as HttpResponse;
 class OptionsListener implements EventSubscriberInterface
 {
     protected $urlGenerator;
-    protected $routeLoader;
+    protected $routeFinder;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
-        RouteLoader $routeLoader
+        RouteFinder $routeFinder
     ) {
         $this->urlGenerator = $urlGenerator;
-        $this->routeLoader = $routeLoader;
+        $this->routeFinder = $routeFinder;
     }
 
     /**
@@ -94,7 +94,7 @@ class OptionsListener implements EventSubscriberInterface
         $optional,
         Resource $definition
     ) {
-        $route = $this->routeLoader->getRoute($definition, 'options');
+        $route = $this->routeFinder->find($definition, 'options');
         $header = $response->headers->get('Link', null, false);
         $header[] = sprintf(
             '<%s>; rel="property"; name="%s"; type="%s"; access="%s"; variants="%s"; optional="%s"',
