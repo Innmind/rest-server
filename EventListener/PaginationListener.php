@@ -2,28 +2,34 @@
 
 namespace Innmind\Rest\Server\EventListener;
 
+use Innmind\Rest\Server\PaginatorInterface;
 use Innmind\Rest\Server\Events;
-use Innmind\Rest\Server\Event\RequestEvent;
-use Innmind\Rest\Server\Event\ResponseEvent;
 use Innmind\Rest\Server\Event\Neo4j;
 use Innmind\Rest\Server\Event\Doctrine;
-use Innmind\Rest\Server\RouteLoader;
+use Innmind\Rest\Server\Event\ResponseEvent;
+use Innmind\Rest\Server\Routing\RouteCollection;
+use Innmind\Rest\Server\Routing\RouteFinder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PaginationListener implements EventSubscriberInterface
 {
-    protected $request;
-    protected $definition;
+    protected $requestStack;
     protected $urlGenerator;
-    protected $routeLoader;
+    protected $routeFinder;
+    protected $paginator;
 
     public function __construct(
+        RequestStack $requestStack,
         UrlGeneratorInterface $urlGenerator,
-        RouteLoader $routeLoader
+        RouteFinder $routeFinder,
+        PaginatorInterface $paginator
     ) {
+        $this->requestStack = $requestStack;
         $this->urlGenerator = $urlGenerator;
-        $this->routeLoader = $routeLoader;
+        $this->routeFinder = $routeFinder;
+        $this->paginator = $paginator;
     }
 
     /**
@@ -35,37 +41,26 @@ class PaginationListener implements EventSubscriberInterface
             Events::NEO4J_READ_QUERY_BUILDER => 'paginateNeo4j',
             Events::DOCTRINE_READ_QUERY_BUILDER => 'paginateDoctrine',
             Events::RESPONSE => 'addPageLinks',
-            Events::REQUEST => 'keepRequest',
         ];
-    }
-
-    /**
-     * Keep the request being handled
-     *
-     * @param RequestEvent $event
-     *
-     * @return void
-     */
-    public function keepRequest(RequestEvent $event)
-    {
-        $this->request = $event->getRequest();
-        $this->definition = $event->getDefinition();
     }
 
     /**
      * Add an offset and limit to the neo4j query if info found in the request
      *
-     * @param ReadQueryBuilderEvent $event
+     * @param Neo4j\ReadQueryBuilderEvent $event
      *
      * @return void
      */
     public function paginateNeo4j(Neo4j\ReadQueryBuilderEvent $event)
     {
-        if (!$this->canPaginate()) {
+        $request = $this->requestStack->getCurrentRequest();
+
+        if (!$this->paginator->canPaginate($request)) {
             return;
         }
 
-        list($offset, $limit) = $this->getPaginationBounds();
+        $offset = $this->paginator->getOffset($request);
+        $limit = $this->paginator->getLimit($request);
 
         $qb = $event->getQueryBuilder();
         $qb->toReturn('r');
@@ -81,17 +76,20 @@ class PaginationListener implements EventSubscriberInterface
     /**
      * Paginate a doctrine query if info found in the request
      *
-     * @param ReadQueryBuilderEvent $event
+     * @param Doctrine\ReadQueryBuilderEvent $event
      *
      * @return void
      */
     public function paginateDoctrine(Doctrine\ReadQueryBuilderEvent $event)
     {
-        if (!$this->canPaginate()) {
+        $request = $this->requestStack->getCurrentRequest();
+
+        if (!$this->paginator->canPaginate($request)) {
             return;
         }
 
-        list($offset, $limit) = $this->getPaginationBounds();
+        $offset = $this->paginator->getOffset($request);
+        $limit = $this->paginator->getLimit($request);
 
         $event
             ->getQueryBuilder()
@@ -113,25 +111,26 @@ class PaginationListener implements EventSubscriberInterface
      */
     public function addPageLinks(ResponseEvent $event)
     {
-        if ($this->request !== $event->getRequest()) {
-            return;
-        }
-
         if ($event->getAction() !== 'index') {
             return;
         }
 
-        if (!$this->canPaginate()) {
+        $request = $this->requestStack->getCurrentRequest();
+
+        if (!$this->paginator->canPaginate($request)) {
             return;
         }
 
-        list($offset, $limit) = $this->getPaginationBounds();
+        $offset = $this->paginator->getOffset($request);
+        $limit = $this->paginator->getLimit($request);
         $response = $event->getResponse();
         $links = $response->headers->get('Link', null, false);
-        $route = $this->routeLoader->getRoute(
-            $this->definition,
-            'index'
-        );
+        $definition = $this
+            ->requestStack
+            ->getCurrentRequest()
+            ->attributes
+            ->get(RouteCollection::RESOURCE_KEY);
+        $route = $this->routeFinder->find($definition, 'index');
 
         if ($offset > 0) {
             $prevOffset = max(0, $offset - $limit);
@@ -147,6 +146,12 @@ class PaginationListener implements EventSubscriberInterface
             );
         }
 
+        $collection = $event->getContent();
+
+        if ($collection->count() < $limit) {
+            return;
+        }
+
         $nextOffset = $offset + $limit;
         $links[] = sprintf(
             '<%s>; rel="next"',
@@ -159,49 +164,5 @@ class PaginationListener implements EventSubscriberInterface
             )
         );
         $response->headers->add(['Link' => $links]);
-    }
-
-    /**
-     * Check if request has pagination info
-     *
-     * @return bool
-     */
-    public function canPaginate()
-    {
-        if (!$this->request) {
-            return false;
-        }
-
-        if (!$this->request->query->has('limit')) {
-            if ($this->definition->hasOption('paginate')) {
-                return true;
-            }
-
-            return false;
-        }
-
-        $offset = $this->request->query->get('offset', 0);
-        $limit = $this->request->query->get('limit');
-
-        if (!is_numeric($offset) || !is_numeric($limit)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Return the offset and limit for pagination
-     *
-     * @return array
-     */
-    public function getPaginationBounds()
-    {
-        $offset = (int) $this->request->query->get('offset', 0);
-        $limit = $this->request->query->has('limit') ?
-            (int) $this->request->query->get('limit') :
-            (int) $this->definition->getOption('paginate');
-
-        return [$offset, $limit];
     }
 }

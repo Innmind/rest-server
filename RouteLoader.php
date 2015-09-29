@@ -3,7 +3,6 @@
 namespace Innmind\Rest\Server;
 
 use Innmind\Rest\Server\Events;
-use Innmind\Rest\Server\Definition\Resource as Definition;
 use Innmind\Rest\Server\Event\RouteEvent;
 use Innmind\Rest\Server\Routing\RouteCollection;
 use Symfony\Component\Config\Loader\Loader;
@@ -65,30 +64,6 @@ class RouteLoader extends Loader
         $this->routes = $routes;
 
         return $routes;
-    }
-
-    /**
-     * Return the route for the given resource definition
-     *
-     * @param Definition $definition
-     * @param string $action Either index, create, get, update, delete or options
-     *
-     * @return string
-     */
-    public function getRoute(Definition $definition, $action)
-    {
-        if (!$this->routes) {
-            $this->load('.');
-        }
-
-        foreach ($this->routes as $name => $route) {
-            if (
-                $route->getDefault(RouteCollection::RESOURCE_KEY) === $definition &&
-                $route->getDefault(RouteCollection::ACTION_KEY) === $action
-            ) {
-                return $name;
-            }
-        }
     }
 
     public function supports($resource, $type = null)
