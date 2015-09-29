@@ -3,7 +3,6 @@
 namespace Innmind\Rest\Server;
 
 use Innmind\Rest\Server\Events;
-use Innmind\Rest\Server\Definition\Resource as Definition;
 use Innmind\Rest\Server\Event\RouteEvent;
 use Innmind\Rest\Server\Routing\RouteCollection;
 use Symfony\Component\Config\Loader\Loader;
