@@ -35,7 +35,6 @@ class Configuration implements ConfigurationInterface
         $root = $builder->root('collections');
 
         $root
-            ->requiresAtLeastOneElement()
             ->useAttributeAsKey('name')
             ->prototype('array')
                 ->children()
