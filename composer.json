@@ -26,7 +26,9 @@
         "symfony/http-foundation": "~2.7",
         "willdurand/negotiation": "~1.4",
         "symfony/options-resolver": "~2.7",
-        "symfony/http-kernel": "~2.7"
+        "symfony/http-kernel": "^2.7",
+        "symfony/dependency-injection": "^2.7",
+        "symfony/framework-bundle": "^2.7"
     },
     "autoload": {
         "psr-0": {
