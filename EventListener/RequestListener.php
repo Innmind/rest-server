@@ -30,8 +30,8 @@ class RequestListener implements EventSubscriberInterface
     {
         return [
             KernelEvents::REQUEST => [
-                ['determineFormat' => -10],
-                ['computeDefinition' => 20],
+                ['determineFormat', -10],
+                ['computeDefinition', 20],
             ],
         ];
     }

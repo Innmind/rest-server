@@ -59,8 +59,8 @@ class RequestListenerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             [
                 KernelEvents::REQUEST => [
-                    ['determineFormat' => -10],
-                    ['computeDefinition' => 20],
+                    ['determineFormat', -10],
+                    ['computeDefinition', 20],
                 ],
             ],
             RequestListener::getSubscribedEvents()
