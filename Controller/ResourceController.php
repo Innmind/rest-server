@@ -100,7 +100,7 @@ class ResourceController
             ->get($resource->getDefinition()->getStorage())
             ->update($resource, $id);
 
-        return $resource;
+        return $this->getAction($resource->getDefinition(), $id);
     }
 
     /**

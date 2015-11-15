@@ -150,8 +150,8 @@ class ResourceControllerTest extends \PHPUnit_Framework_TestCase
         $this->c->createAction($r);
         $r->set('name', 'bar');
         $this->assertSame(
-            $r,
-            $this->c->updateAction($r, $r->get('id'))
+            $r->get('id'),
+            $this->c->updateAction($r, $r->get('id'))->get('id')
         );
         $r2 = $this->c->getAction($this->def, $r->get('id'));
         $this->assertSame(
