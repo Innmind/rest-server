@@ -41,6 +41,10 @@ class RouterListener implements EventSubscriberInterface
     {
         $request = $event->getRequest();
         $this->requestStack->push($request);
+        $this
+            ->router
+            ->getContext()
+            ->fromRequest($request);
         $parameters = $this->router->matchRequest($request);
         $request->attributes->add($parameters);
     }
