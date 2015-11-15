@@ -628,19 +628,3 @@ class SetupTest extends \PHPUnit_Framework_TestCase
         ));
     }
 }
-
-class WebResource
-{
-    public $uuid;
-    public $uri;
-    public $scheme;
-    public $host;
-    public $domain;
-    public $tld;
-    public $port;
-    public $path;
-    public $query;
-    public $crawl_date;
-    public $sub_resource;
-    public $sub_resource_coll;
-}
