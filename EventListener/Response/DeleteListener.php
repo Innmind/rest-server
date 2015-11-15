@@ -16,7 +16,7 @@ class DeleteListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::VIEW => 'buildResponse',
+            KernelEvents::VIEW => [['buildResponse', 10]],
         ];
     }
 

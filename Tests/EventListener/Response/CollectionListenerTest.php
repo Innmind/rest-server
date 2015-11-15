@@ -137,7 +137,7 @@ class CollectionListenerTest extends \PHPUnit_Framework_TestCase
     public function testSubscribedEvents()
     {
         $this->assertSame(
-            [KernelEvents::VIEW => 'buildResponse'],
+            [KernelEvents::VIEW => [['buildResponse', 20]]],
             CollectionListener::getSubscribedEvents()
         );
     }
