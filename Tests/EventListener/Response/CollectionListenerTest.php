@@ -3,30 +3,28 @@
 namespace Innmind\Rest\Server\Tests\EventListener\Response;
 
 use Innmind\Rest\Server\EventListener\Response\CollectionListener;
-use Innmind\Rest\Server\Event\ResponseEvent;
 use Innmind\Rest\Server\Registry;
 use Innmind\Rest\Server\RouteLoader;
-use Innmind\Rest\Server\Routing\RouteFinder;
-use Innmind\Rest\Server\Request\Handler;
-use Innmind\Rest\Server\ResourceBuilder;
-use Innmind\Rest\Server\Storages;
+use Innmind\Rest\Server\RouteFactory;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Collection;
+use Innmind\Rest\Server\RouteKeys;
 use Innmind\Rest\Server\CompilerPass\SubResourcePass;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\HttpKernel;
+use Symfony\Component\HttpKernel\kernelEvents;
 
 class CollectionListenerTest extends \PHPUnit_Framework_TestCase
 {
     protected $l;
     protected $routes;
     protected $registry;
-    protected $handler;
+    protected $k;
 
     public function setUp()
     {
@@ -34,7 +32,7 @@ class CollectionListenerTest extends \PHPUnit_Framework_TestCase
         $this->registry = new Registry;
         $this->registry->load(Yaml::parse(file_get_contents('fixtures/config.yml')));
         (new SubResourcePass)->process($this->registry);
-        $loader = new RouteLoader($dispatcher, $this->registry);
+        $loader = new RouteLoader($dispatcher, $this->registry, new RouteFactory);
 
         if (!$this->routes) {
             $this->routes = $loader->load('.');
@@ -47,15 +45,12 @@ class CollectionListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->l = new CollectionListener(
             $generator,
-            new RouteFinder
+            new RouteFactory
         );
-        $this->handler = new Handler(
-            new Storages,
-            new ResourceBuilder(
-                PropertyAccess::createPropertyAccessor(),
-                $dispatcher
-            )
-        );
+        $this->k = $this
+            ->getMockBuilder(HttpKernel::class)
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     public function testResponseContent()
@@ -74,17 +69,21 @@ class CollectionListenerTest extends \PHPUnit_Framework_TestCase
             ->setDefinition($definition)
             ->set('uuid', 24);
         $s[] = $r;
-        $event = new ResponseEvent(
-            $definition,
-            $response = new Response,
-            $request = new Request,
-            $s,
-            'index'
+        $req = new Request;
+        $event = new GetResponseForControllerResultEvent(
+            $this->k,
+            $req,
+            HttpKernel::MASTER_REQUEST,
+            $s
         );
+        $req->attributes->set(RouteKeys::DEFINITION, $definition);
+        $req->attributes->set(RouteKeys::ACTION, 'index');
         $this->assertSame(
             null,
             $this->l->buildResponse($event)
         );
+        $this->assertTrue($event->hasResponse());
+        $response = $event->getResponse();
         $this->assertSame(
             '',
             $response->getContent()
@@ -103,21 +102,24 @@ class CollectionListenerTest extends \PHPUnit_Framework_TestCase
         $definition = $this->registry
             ->getCollection('web')
             ->getResource('resource');
-        $event = new ResponseEvent(
-            $definition,
-            $response = new Response,
-            $request = new Request,
-            [],
-            'options'
+        $r = new Request;
+        $event = new GetResponseForControllerResultEvent(
+            $this->k,
+            $r,
+            HttpKernel::MASTER_REQUEST,
+            []
         );
+        $r->attributes->set(RouteKeys::DEFINITION, $definition);
+        $r->attributes->set(RouteKeys::ACTION, 'options');
         $this->l->buildResponse($event);
+        $this->assertFalse($event->hasResponse());
+    }
+
+    public function testSubscribedEvents()
+    {
         $this->assertSame(
-            '',
-            $response->getContent()
-        );
-        $this->assertSame(
-            [],
-            $response->headers->get('Link', null, false)
+            [KernelEvents::VIEW => 'buildResponse'],
+            CollectionListener::getSubscribedEvents()
         );
     }
 }
