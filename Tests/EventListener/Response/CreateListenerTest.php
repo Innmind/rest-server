@@ -108,22 +108,6 @@ class CreateListenerTest extends \PHPUnit_Framework_TestCase
             '/web/resource/42',
             $response->headers->get('Location')
         );
-
-        $c = new Collection;
-        $c[] = $r;
-        $event = new GetResponseForControllerResultEvent(
-            $this->k,
-            $req,
-            HttpKernel::MASTER_REQUEST,
-            $c
-        );
-        $this->l->buildResponse($event);
-        $this->assertTrue($event->hasResponse());
-        $response = $event->getResponse();
-        $this->assertSame(
-            300,
-            $response->getStatusCode()
-        );
     }
 
     public function testDoesntBuildeResponse()

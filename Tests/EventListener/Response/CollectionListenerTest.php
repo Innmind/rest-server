@@ -95,6 +95,25 @@ class CollectionListenerTest extends \PHPUnit_Framework_TestCase
             ],
             $response->headers->get('Link', null, false)
         );
+
+        $c = new Collection;
+        $c[] = $r;
+        $event = new GetResponseForControllerResultEvent(
+            $this->k,
+            $req = new Request,
+            HttpKernel::MASTER_REQUEST,
+            $c
+        );
+        $req->attributes->set(RouteKeys::DEFINITION, $definition);
+        $req->attributes->set(RouteKeys::ACTION, 'create');
+
+        $this->l->buildResponse($event);
+        $this->assertTrue($event->hasResponse());
+        $response = $event->getResponse();
+        $this->assertSame(
+            300,
+            $response->getStatusCode()
+        );
     }
 
     public function testDoesntBuildeResponse()

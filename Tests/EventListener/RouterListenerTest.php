@@ -5,6 +5,7 @@ namespace Innmind\Rest\Server\Tests\EventListener;
 use Innmind\Rest\Server\EventListener\RouterListener;
 use Innmind\Rest\Server\RouteKeys;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -21,6 +22,7 @@ class RouterLitenerTest extends \PHPUnit_Framework_TestCase
             $router = $this
                 ->getMockBuilder(Router::class)
                 ->disableOriginalConstructor()
+                ->setMethods(['matchRequest', 'getContext'])
                 ->getMock(),
             $this->rs = new RequestStack
         );
@@ -30,6 +32,13 @@ class RouterLitenerTest extends \PHPUnit_Framework_TestCase
                 RouteKeys::DEFINITION => 'foo::bar',
                 RouteKeys::ACTION => 'index',
             ]);
+        $context = $this
+            ->getMockBuilder(RequestContext::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $router
+            ->method('getContext')
+            ->willReturn($context);
     }
 
     public function testGetSubscribedEvents()
