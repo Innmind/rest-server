@@ -4,6 +4,7 @@ namespace Innmind\Rest\Server\EventListener\Response;
 
 use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\RouteFactory;
+use Innmind\Rest\Server\RouteKeys;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -67,6 +68,12 @@ class CollectionListener implements EventSubscriberInterface
 
         $response = new Response;
         $response->headers->add(['Link' => $links]);
+        $request = $event->getRequest();
+
+        if ($request->attributes->get(RouteKeys::ACTION) === 'create') {
+            $response->setStatusCode(Response::HTTP_MULTIPLE_CHOICES);
+        }
+
         $event->setResponse($response);
     }
 }

@@ -3,7 +3,6 @@
 namespace Innmind\Rest\Server\EventListener\Response;
 
 use Innmind\Rest\Server\Resource;
-use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\RouteFactory;
 use Innmind\Rest\Server\RouteKeys;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -45,10 +44,12 @@ class CreateListener implements EventSubscriberInterface
     public function buildResponse(GetResponseForControllerResultEvent $event)
     {
         $request = $event->getRequest();
+        $resource = $event->getControllerResult();
 
         if (
             !$request->attributes->has(RouteKeys::ACTION) ||
-            $request->attributes->get(RouteKeys::ACTION) !== 'create'
+            $request->attributes->get(RouteKeys::ACTION) !== 'create' ||
+            !$resource instanceof Resource
         ) {
             return;
         }
@@ -56,14 +57,7 @@ class CreateListener implements EventSubscriberInterface
         $response = new Response;
         $event->setResponse($response);
 
-        if ($event->getControllerResult() instanceof Collection) {
-            $response->setStatusCode(Response::HTTP_MULTIPLE_CHOICES);
-
-            return;
-        }
-
         $response->setStatusCode(Response::HTTP_CREATED);
-        $resource = $event->getControllerResult();
         $definition = $resource->getDefinition();
         $route = $this->routeFactory->makeName(
             $definition,
