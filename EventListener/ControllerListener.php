@@ -8,14 +8,11 @@ use Innmind\Rest\Server\Exception\PayloadException;
 use Innmind\Rest\Server\Access;
 use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Validator;
-use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Request\Parser;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
-use Symfony\Component\HttpFoundation\Response;
 
 class ControllerListener implements EventSubscriberInterface
 {

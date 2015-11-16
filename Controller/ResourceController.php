@@ -2,7 +2,6 @@
 
 namespace Innmind\Rest\Server\Controller;
 
-use Innmind\Rest\Server\RouteKeys;
 use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Collection;
