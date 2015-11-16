@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server;
 
 use Innmind\Rest\Server\Definition\Types;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class Validator
