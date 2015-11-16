@@ -1,0 +1,32 @@
+services:
+    registry:
+        class: Innmind\Rest\Server\Registry
+        configurator: [@definition_compiler, 'process']
+
+    definition_compiler:
+        class: Innmind\Rest\Server\DefinitionCompiler
+
+    definition_pass.access:
+        class: Innmind\Rest\Server\CompilerPass\AccessPass
+        public: false
+        tags:
+            - { name: definition.pass }
+
+    definition_pass.array_type:
+        class: Innmind\Rest\Server\CompilerPass\ArrayTypePass
+        public: false
+        tags:
+            - { name: definition.pass }
+
+    definition_pass.storage:
+        class: Innmind\Rest\Server\CompilerPass\StorageValidationPass
+        public: false
+        arguments: [@storages]
+        tags:
+            - { name: definition.pass }
+
+    definition_pass.sub_resource:
+        class: Innmind\Rest\Server\CompilerPass\SubResourcePass
+        public: false
+        tags:
+            - { name: definition.pass }

@@ -107,8 +107,3 @@ class Neo4jStorageTest extends AbstractStorage
         $this->dispatchPostCreate(Bar::class);
     }
 }
-
-class Bar {
-    public $id;
-    public $name;
-}

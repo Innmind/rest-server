@@ -2,30 +2,31 @@
 
 namespace Innmind\Rest\Server\EventListener\Response;
 
-use Innmind\Rest\Server\Events;
-use Innmind\Rest\Server\Event\ResponseEvent;
-use Innmind\Rest\Server\Routing\RouteFinder;
+use Innmind\Rest\Server\RouteFactory;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Formats;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpFoundation\Response;
 
 class ResourceListener implements EventSubscriberInterface
 {
     protected $urlGenerator;
-    protected $routeFinder;
+    protected $routeFactory;
     protected $serializer;
     protected $formats;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
-        RouteFinder $routeFinder,
+        RouteFactory $routeFactory,
         SerializerInterface $serializer,
         Formats $formats
     ) {
         $this->urlGenerator = $urlGenerator;
-        $this->routeFinder = $routeFinder;
+        $this->routeFactory = $routeFactory;
         $this->serializer = $serializer;
         $this->formats = $formats;
     }
@@ -36,20 +37,20 @@ class ResourceListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Events::RESPONSE => 'buildResponse',
+            KernelEvents::VIEW => 'buildResponse',
         ];
     }
 
     /**
-     * Build the response event for a list of resources
+     * Build the response event for a resource
      *
-     * @param ResponseEvent $event
+     * @param GetResponseForControllerResultEvent $event
      *
      * @return void
      */
-    public function buildResponse(ResponseEvent $event)
+    public function buildResponse(GetResponseForControllerResultEvent $event)
     {
-        $content = $event->getContent();
+        $content = $event->getControllerResult();
 
         if (!$content instanceof Resource) {
             return;
@@ -80,7 +81,7 @@ class ResourceListener implements EventSubscriberInterface
 
             foreach ($subs as $resource) {
                 $def = $resource->getDefinition();
-                $route = $this->routeFinder->find(
+                $route = $this->routeFactory->makeName(
                     $def,
                     'get'
                 );
@@ -96,7 +97,7 @@ class ResourceListener implements EventSubscriberInterface
         }
 
         $format = $event->getRequest()->getRequestFormat();
-        $response = $event->getResponse();
+        $response = new Response;
         $response->headers->add([
             'Link' => $links,
             'Content-Type' => $this->formats->getMediaType($format),
@@ -108,5 +109,6 @@ class ResourceListener implements EventSubscriberInterface
                 ['definition' => $definition]
             )
         );
+        $event->setResponse($response);
     }
 }

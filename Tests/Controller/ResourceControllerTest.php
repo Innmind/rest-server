@@ -1,30 +1,28 @@
 <?php
 
-namespace Innmind\Rest\Server\Tests\Request;
+namespace Innmind\Rest\Server\Test\Controller;
 
-use Innmind\Rest\Server\Request\Handler;
+use Innmind\Rest\Server\Controller\ResourceController;
+use Innmind\Rest\Server\EventListener\StorageCreateListener;
 use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\EntityBuilder;
 use Innmind\Rest\Server\Storages;
 use Innmind\Rest\Server\Storage\Neo4jStorage;
-use Innmind\Rest\Server\EventListener\StorageCreateListener;
+use Innmind\Rest\Server\Tests\Storage\Bar;
+use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
+use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Collection;
-use Innmind\Rest\Server\Definition\Resource as Definition;
-use Innmind\Rest\Server\Definition\Property;
-use Innmind\Rest\Server\Tests\Storage\Bar;
 use Innmind\Rest\Server\Registry;
 use Innmind\Neo4j\ONM\EntityManagerFactory;
 use Innmind\Neo4j\ONM\Configuration;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Yaml\Yaml;
 
-class HandlerTest extends \PHPUnit_Framework_TestCase
+class ResourceControllerTest extends \PHPUnit_Framework_TestCase
 {
-    protected $h;
-    protected $def;
-    protected $em;
+    protected $c;
 
     public function setUp()
     {
@@ -57,8 +55,8 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
             $entityBuilder,
             $resourceBuilder
         ));
-        $this->h = new Handler($storages, $resourceBuilder);
-        $this->def = new Definition('bar');
+        $this->c = new ResourceController($storages);
+        $this->def = new ResourceDefinition('bar');
         $this->def
             ->setId('id')
             ->setStorage('neo4j')
@@ -86,7 +84,7 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($r->has('id'));
         $this->assertSame(
             $r,
-            $this->h->createAction($r)
+            $this->c->createAction($r)
         );
         $this->assertTrue($r->has('id'));
         $this->assertTrue(is_string($r->get('id')));
@@ -98,9 +96,9 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');
-        $this->h->createAction($r);
+        $this->c->createAction($r);
 
-        $r2 = $this->h->getAction($this->def, $r->get('id'));
+        $r2 = $this->c->getAction($this->def, $r->get('id'));
         $this->assertInstanceOf(
             Resource::class,
             $r2
@@ -120,7 +118,7 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowIfResourceNotFound()
     {
-        $this->h->getAction($this->def, 'foo');
+        $this->c->getAction($this->def, 'foo');
     }
 
     public function testIndexAction()
@@ -130,9 +128,9 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');
-        $this->h->createAction($r);
-        $this->h->createAction($r);
-        $resources = $this->h->indexAction($this->def);
+        $this->c->createAction($r);
+        $this->c->createAction($r);
+        $resources = $this->c->indexAction($this->def);
         $this->assertInstanceOf(
             Collection::class,
             $resources
@@ -149,13 +147,13 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');
-        $this->h->createAction($r);
+        $this->c->createAction($r);
         $r->set('name', 'bar');
         $this->assertSame(
-            $r,
-            $this->h->updateAction($r, $r->get('id'))
+            $r->get('id'),
+            $this->c->updateAction($r, $r->get('id'))->get('id')
         );
-        $r2 = $this->h->getAction($this->def, $r->get('id'));
+        $r2 = $this->c->getAction($this->def, $r->get('id'));
         $this->assertSame(
             'bar',
             $r2->get('name')
@@ -171,12 +169,12 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');
-        $this->h->createAction($r);
+        $this->c->createAction($r);
         $this->assertSame(
             null,
-            $this->h->deleteAction($this->def, $r->get('id'))
+            $this->c->deleteAction($this->def, $r->get('id'))
         );
-        $this->h->getAction($this->def, $r->get('id'));
+        $this->c->getAction($this->def, $r->get('id'));
     }
 
     public function testOptionsAction()
@@ -261,7 +259,7 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
                     ],
                 ],
             ],
-            $this->h->optionsAction($def)
+            $this->c->optionsAction($def)
         );
     }
 }

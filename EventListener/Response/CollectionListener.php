@@ -2,24 +2,26 @@
 
 namespace Innmind\Rest\Server\EventListener\Response;
 
-use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Collection;
-use Innmind\Rest\Server\Event\ResponseEvent;
-use Innmind\Rest\Server\Routing\RouteFinder;
+use Innmind\Rest\Server\RouteFactory;
+use Innmind\Rest\Server\RouteKeys;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpFoundation\Response;
 
 class CollectionListener implements EventSubscriberInterface
 {
     protected $urlGenerator;
-    protected $routeFinder;
+    protected $routeFactory;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
-        RouteFinder $routeFinder
+        RouteFactory $routeFactory
     ) {
         $this->urlGenerator = $urlGenerator;
-        $this->routeFinder = $routeFinder;
+        $this->routeFactory = $routeFactory;
     }
 
     /**
@@ -28,20 +30,20 @@ class CollectionListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Events::RESPONSE => 'buildResponse',
+            KernelEvents::VIEW => [['buildResponse', 20]],
         ];
     }
 
     /**
      * Build the response event for a list of resources
      *
-     * @param ResponseEvent $event
+     * @param GetResponseForControllerResultEvent $event
      *
      * @return void
      */
-    public function buildResponse(ResponseEvent $event)
+    public function buildResponse(GetResponseForControllerResultEvent $event)
     {
-        $content = $event->getContent();
+        $content = $event->getControllerResult();
 
         if (!$content instanceof Collection) {
             return;
@@ -51,7 +53,7 @@ class CollectionListener implements EventSubscriberInterface
 
         foreach ($content as $resource) {
             $definition = $resource->getDefinition();
-            $route = $this->routeFinder->find(
+            $route = $this->routeFactory->makeName(
                 $definition,
                 'get'
             );
@@ -64,9 +66,14 @@ class CollectionListener implements EventSubscriberInterface
             );
         }
 
-        $event
-            ->getResponse()
-            ->headers
-            ->add(['Link' => $links]);
+        $response = new Response;
+        $response->headers->add(['Link' => $links]);
+        $request = $event->getRequest();
+
+        if ($request->attributes->get(RouteKeys::ACTION) === 'create') {
+            $response->setStatusCode(Response::HTTP_MULTIPLE_CHOICES);
+        }
+
+        $event->setResponse($response);
     }
 }

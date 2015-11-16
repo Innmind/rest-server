@@ -3,15 +3,12 @@
 namespace Innmind\Rest\Server\Tests\EventListener\Response;
 
 use Innmind\Rest\Server\EventListener\Response\CreateListener;
-use Innmind\Rest\Server\Event\ResponseEvent;
 use Innmind\Rest\Server\Registry;
 use Innmind\Rest\Server\RouteLoader;
-use Innmind\Rest\Server\Routing\RouteFinder;
-use Innmind\Rest\Server\Request\Handler;
-use Innmind\Rest\Server\ResourceBuilder;
-use Innmind\Rest\Server\Storages;
+use Innmind\Rest\Server\RouteFactory;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Collection;
+use Innmind\Rest\Server\RouteKeys;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\CompilerPass\SubResourcePass;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -21,13 +18,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\HttpKernel\HttpKernel;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 
 class CreateListenerTest extends \PHPUnit_Framework_TestCase
 {
     protected $l;
     protected $routes;
     protected $registry;
-    protected $handler;
+    protected $k;
 
     public function setUp()
     {
@@ -35,7 +35,7 @@ class CreateListenerTest extends \PHPUnit_Framework_TestCase
         $this->registry = new Registry;
         $this->registry->load(Yaml::parse(file_get_contents('fixtures/config.yml')));
         (new SubResourcePass)->process($this->registry);
-        $loader = new RouteLoader($dispatcher, $this->registry);
+        $loader = new RouteLoader($dispatcher, $this->registry, new RouteFactory);
 
         if (!$this->routes) {
             $this->routes = $loader->load('.');
@@ -48,15 +48,12 @@ class CreateListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->l = new CreateListener(
             $generator,
-            new RouteFinder
+            new RouteFactory
         );
-        $this->handler = new Handler(
-            new Storages,
-            new ResourceBuilder(
-                PropertyAccess::createPropertyAccessor(),
-                $dispatcher
-            )
-        );
+        $this->k = $this
+            ->getMockBuilder(HttpKernel::class)
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     public function testResponse()
@@ -87,17 +84,21 @@ class CreateListenerTest extends \PHPUnit_Framework_TestCase
             ->set('crawl_date', new \DateTime)
             ->set('sub_resource', null)
             ->set('sub_resource_coll', []);
-        $event = new ResponseEvent(
-            $definition,
-            $response = new Response,
-            new Request,
-            $r,
-            'create'
+        $req = new Request;
+        $event = new GetResponseForControllerResultEvent(
+            $this->k,
+            $req,
+            HttpKernel::MASTER_REQUEST,
+            $r
         );
+        $req->attributes->set(RouteKeys::DEFINITION, $definition);
+        $req->attributes->set(RouteKeys::ACTION, 'create');
         $this->assertSame(
             null,
             $this->l->buildResponse($event)
         );
+        $this->assertTrue($event->hasResponse());
+        $response = $event->getResponse();
         $this->assertSame(
             201,
             $response->getStatusCode()
@@ -106,21 +107,6 @@ class CreateListenerTest extends \PHPUnit_Framework_TestCase
             '/web/resource/42',
             $response->headers->get('Location')
         );
-
-        $c = new Collection;
-        $c[] = $r;
-        $event = new ResponseEvent(
-            $definition,
-            $response = new Response,
-            new Request,
-            $c,
-            'create'
-        );
-        $this->l->buildResponse($event);
-        $this->assertSame(
-            300,
-            $response->getStatusCode()
-        );
     }
 
     public function testDoesntBuildeResponse()
@@ -128,21 +114,24 @@ class CreateListenerTest extends \PHPUnit_Framework_TestCase
         $definition = $this->registry
             ->getCollection('web')
             ->getResource('resource');
-        $event = new ResponseEvent(
-            $definition,
-            $response = new Response,
-            $request = new Request,
-            [],
-            'options'
+        $req = new Request;
+        $event = new GetResponseForControllerResultEvent(
+            $this->k,
+            $req,
+            HttpKernel::class,
+            []
         );
+        $req->attributes->set(RouteKeys::DEFINITION, $definition);
+        $req->attributes->set(RouteKeys::ACTION, 'options');
         $this->l->buildResponse($event);
+        $this->assertFalse($event->hasResponse());
+    }
+
+    public function testSubscribedEvents()
+    {
         $this->assertSame(
-            200,
-            $response->getStatusCode()
-        );
-        $this->assertSame(
-            null,
-            $response->headers->get('Link')
+            [KernelEvents::VIEW => [['buildResponse', 10]]],
+            CreateListener::getSubscribedEvents()
         );
     }
 }

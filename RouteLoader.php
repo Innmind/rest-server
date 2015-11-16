@@ -4,27 +4,26 @@ namespace Innmind\Rest\Server;
 
 use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Event\RouteEvent;
-use Innmind\Rest\Server\Routing\RouteCollection;
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection as SFRouteCollection;
+use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RouteLoader extends Loader
 {
     protected $dispatcher;
     protected $registry;
-    protected $prefix;
+    protected $factory;
     protected $routes;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
         Registry $registry,
-        $prefix = null
+        RouteFactory $factory
     ) {
         $this->dispatcher = $dispatcher;
         $this->registry = $registry;
-        $this->prefix = '/' . rtrim(ltrim((string) $prefix, '/'), '/');
+        $this->factory = $factory;
     }
 
     /**
@@ -38,15 +37,14 @@ class RouteLoader extends Loader
             );
         }
 
-        $routes = new SFRouteCollection;
+        $routes = new RouteCollection;
         $collections = $this->registry->getCollections();
 
         foreach ($collections as $collection) {
             $resources = $collection->getResources();
 
             foreach ($resources as $resource) {
-                $resourceRoutes = new RouteCollection($resource);
-                $resourceRoutes->addPrefix($this->prefix);
+                $resourceRoutes = $this->factory->makeRoutes($resource);
 
                 foreach ($resourceRoutes as $name => $route) {
                     $event = $this->dispatcher->dispatch(

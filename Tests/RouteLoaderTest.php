@@ -9,7 +9,8 @@ use Innmind\Rest\Server\Definition\Resource;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Event\RouteEvent;
-use Innmind\Rest\Server\Routing\RouteCollection;
+use Innmind\Rest\Server\RouteFactory;
+use Innmind\Rest\Server\RouteKeys;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class RouteLoaderTest extends \PHPUnit_Framework_TestCase
@@ -29,7 +30,11 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         $collection->addResource($resource);
         $this->registry->addCollection($collection);
 
-        $this->r = new RouteLoader(new EventDispatcher, $this->registry);
+        $this->r = new RouteLoader(
+            new EventDispatcher,
+            $this->registry,
+            new RouteFactory
+        );
         $this->resource = $resource;
     }
 
@@ -57,12 +62,12 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
             $route->getMethods()
         );
         $this->assertSame(
-            $this->resource,
-            $route->getDefault(RouteCollection::RESOURCE_KEY)
+            'foo::bar',
+            $route->getDefault(RouteKeys::DEFINITION)
         );
         $this->assertSame(
             'index',
-            $route->getDefault(RouteCollection::ACTION_KEY)
+            $route->getDefault(RouteKeys::ACTION)
         );
     }
 
@@ -82,12 +87,12 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
             $route->getMethods()
         );
         $this->assertSame(
-            $this->resource,
-            $route->getDefault(RouteCollection::RESOURCE_KEY)
+            'foo::bar',
+            $route->getDefault(RouteKeys::DEFINITION)
         );
         $this->assertSame(
             'create',
-            $route->getDefault(RouteCollection::ACTION_KEY)
+            $route->getDefault(RouteKeys::ACTION)
         );
     }
 
@@ -107,12 +112,12 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
             $route->getMethods()
         );
         $this->assertSame(
-            $this->resource,
-            $route->getDefault(RouteCollection::RESOURCE_KEY)
+            'foo::bar',
+            $route->getDefault(RouteKeys::DEFINITION)
         );
         $this->assertSame(
             'get',
-            $route->getDefault(RouteCollection::ACTION_KEY)
+            $route->getDefault(RouteKeys::ACTION)
         );
     }
 
@@ -132,12 +137,12 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
             $route->getMethods()
         );
         $this->assertSame(
-            $this->resource,
-            $route->getDefault(RouteCollection::RESOURCE_KEY)
+            'foo::bar',
+            $route->getDefault(RouteKeys::DEFINITION)
         );
         $this->assertSame(
             'update',
-            $route->getDefault(RouteCollection::ACTION_KEY)
+            $route->getDefault(RouteKeys::ACTION)
         );
     }
 
@@ -157,12 +162,12 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
             $route->getMethods()
         );
         $this->assertSame(
-            $this->resource,
-            $route->getDefault(RouteCollection::RESOURCE_KEY)
+            'foo::bar',
+            $route->getDefault(RouteKeys::DEFINITION)
         );
         $this->assertSame(
             'delete',
-            $route->getDefault(RouteCollection::ACTION_KEY)
+            $route->getDefault(RouteKeys::ACTION)
         );
     }
 
@@ -182,24 +187,12 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
             $route->getMethods()
         );
         $this->assertSame(
-            $this->resource,
-            $route->getDefault(RouteCollection::RESOURCE_KEY)
+            'foo::bar',
+            $route->getDefault(RouteKeys::DEFINITION)
         );
         $this->assertSame(
             'options',
-            $route->getDefault(RouteCollection::ACTION_KEY)
-        );
-    }
-
-    public function testPrefix()
-    {
-        $loader = new RouteLoader(new EventDispatcher, $this->registry, '/foo/');
-        $routes = $loader->load('.')->all();
-        $route = $routes['innmind_rest_foo_bar_index'];
-
-        $this->assertSame(
-            '/foo/foo/bar/',
-            $route->getPath()
+            $route->getDefault(RouteKeys::ACTION)
         );
     }
 
@@ -211,7 +204,7 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf(RouteEvent::class, $event);
             $fired = true;
         });
-        $loader = new RouteLoader($d, $this->registry);
+        $loader = new RouteLoader($d, $this->registry, new RouteFactory);
         $this->assertFalse($fired);
         $loader->load('.');
         $this->assertTrue($fired);
@@ -233,11 +226,11 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         $d->addListener(Events::ROUTE, function($event) {
             $route = $event->getRoute();
 
-            if ($route->getDefault(RouteCollection::ACTION_KEY) === 'index') {
+            if ($route->getDefault(RouteKeys::ACTION) === 'index') {
                 $event->stopPropagation();
             }
         });
-        $loader = new RouteLoader($d, $this->registry);
+        $loader = new RouteLoader($d, $this->registry, new RouteFactory);
         $routes = $loader->load('.');
         $this->assertSame(5, count($routes));
     }
