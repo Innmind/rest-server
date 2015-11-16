@@ -7,7 +7,7 @@ use Innmind\Rest\Server\Registry;
 use Innmind\Rest\Server\Request\Parser;
 use Innmind\Rest\Server\Formats;
 use Innmind\Rest\Server\ResourceBuilder;
-use Innmind\Rest\Server\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteKeys;
 use Innmind\Rest\Server\Definition\Resource;
 use Innmind\Rest\Server\Definition\Collection;
 use Innmind\Rest\Server\Serializer\Normalizer\ResourceNormalizer;

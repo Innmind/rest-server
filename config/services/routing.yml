@@ -7,11 +7,11 @@ services:
         arguments: [@route_loader, '.']
 
     route_loader:
-        class: Innmind\Rest\Server\RouteLoader
+        class: Innmind\Rest\Server\Routing\RouteLoader
         arguments:
             - @event_dispatcher
             - @registry
             - @route_factory
 
     route_factory:
-        class: Innmind\Rest\Server\RouteFactory
+        class: Innmind\Rest\Server\Routing\RouteFactory

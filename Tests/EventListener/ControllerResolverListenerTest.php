@@ -4,7 +4,7 @@ namespace Innmind\Rest\Server\Tests\EventListener;
 
 use Innmind\Rest\Server\EventListener\ControllerResolverListener;
 use Innmind\Rest\Server\Controller\ResourceController;
-use Innmind\Rest\Server\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteKeys;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;

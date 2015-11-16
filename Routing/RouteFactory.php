@@ -1,6 +1,6 @@
 <?php
 
-namespace Innmind\Rest\Server;
+namespace Innmind\Rest\Server\Routing;
 
 use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
 use Symfony\Component\Routing\Route;

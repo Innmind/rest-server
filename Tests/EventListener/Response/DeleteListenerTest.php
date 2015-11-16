@@ -4,7 +4,7 @@ namespace Innmind\Rest\Server\Tests\EventListener\Response;
 
 use Innmind\Rest\Server\EventListener\Response\DeleteListener;
 use Innmind\Rest\Server\Definition\Resource as Definition;
-use Innmind\Rest\Server\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteKeys;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernel;

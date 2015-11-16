@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\Tests\EventListener;
 
 use Innmind\Rest\Server\EventListener\RouterListener;
-use Innmind\Rest\Server\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteKeys;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\HttpFoundation\RequestStack;

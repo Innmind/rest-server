@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server\EventListener;
 
-use Innmind\Rest\Server\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteKeys;
 use Innmind\Rest\Server\Exception\ValidationException;
 use Innmind\Rest\Server\Exception\PayloadException;
 use Innmind\Rest\Server\Access;

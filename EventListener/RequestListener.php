@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server\EventListener;
 
-use Innmind\Rest\Server\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteKeys;
 use Innmind\Rest\Server\Registry;
 use Innmind\Rest\Server\Request\Parser;
 use Innmind\Rest\Server\Definition\Resource;

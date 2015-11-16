@@ -1,16 +1,16 @@
 <?php
 
-namespace Innmind\Rest\Server\Tests;
+namespace Innmind\Rest\Server\Tests\Routing;
 
-use Innmind\Rest\Server\RouteLoader;
+use Innmind\Rest\Server\Routing\RouteLoader;
 use Innmind\Rest\Server\Registry;
 use Innmind\Rest\Server\Definition\Collection;
 use Innmind\Rest\Server\Definition\Resource;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Event\RouteEvent;
-use Innmind\Rest\Server\RouteFactory;
-use Innmind\Rest\Server\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteFactory;
+use Innmind\Rest\Server\Routing\RouteKeys;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class RouteLoaderTest extends \PHPUnit_Framework_TestCase

@@ -4,11 +4,11 @@ namespace Innmind\Rest\Server\Tests\EventListener\Response;
 
 use Innmind\Rest\Server\EventListener\Response\CollectionListener;
 use Innmind\Rest\Server\Registry;
-use Innmind\Rest\Server\RouteLoader;
-use Innmind\Rest\Server\RouteFactory;
+use Innmind\Rest\Server\Routing\RouteLoader;
+use Innmind\Rest\Server\Routing\RouteFactory;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Collection;
-use Innmind\Rest\Server\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteKeys;
 use Innmind\Rest\Server\CompilerPass\SubResourcePass;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Yaml\Yaml;

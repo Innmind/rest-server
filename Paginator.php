@@ -2,6 +2,7 @@
 
 namespace Innmind\Rest\Server;
 
+use Innmind\Rest\Server\Routing\RouteKeys;
 use Symfony\Component\HttpFoundation\Request;
 
 class Paginator implements PaginatorInterface

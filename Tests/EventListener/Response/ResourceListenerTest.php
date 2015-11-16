@@ -4,12 +4,12 @@ namespace Innmind\Rest\Server\Tests\EventListener\Response;
 
 use Innmind\Rest\Server\EventListener\Response\ResourceListener;
 use Innmind\Rest\Server\Registry;
-use Innmind\Rest\Server\RouteLoader;
-use Innmind\Rest\Server\RouteFactory;
+use Innmind\Rest\Server\Routing\RouteLoader;
+use Innmind\Rest\Server\Routing\RouteFactory;
 use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Formats;
-use Innmind\Rest\Server\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteKeys;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\CompilerPass\SubResourcePass;
 use Innmind\Rest\Server\Serializer\Normalizer\ResourceNormalizer;

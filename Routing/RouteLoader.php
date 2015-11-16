@@ -1,8 +1,9 @@
 <?php
 
-namespace Innmind\Rest\Server;
+namespace Innmind\Rest\Server\Routing;
 
 use Innmind\Rest\Server\Events;
+use Innmind\Rest\Server\Registry;
 use Innmind\Rest\Server\Event\RouteEvent;
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;

@@ -1,11 +1,11 @@
 <?php
 
-namespace Innmind\Rest\Server\Tests;
+namespace Innmind\Rest\Server\Tests\Routing;
 
-use Innmind\Rest\Server\RouteFactory;
+use Innmind\Rest\Server\Routing\RouteFactory;
 use Innmind\Rest\Server\Definition\Resource;
 use Innmind\Rest\Server\Definition\Collection;
-use Innmind\Rest\Server\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteKeys;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Innmind\Rest\Server;
+namespace Innmind\Rest\Server\Routing;
 
 class RouteKeys
 {

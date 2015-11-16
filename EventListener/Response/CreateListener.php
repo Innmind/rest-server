@@ -3,8 +3,8 @@
 namespace Innmind\Rest\Server\EventListener\Response;
 
 use Innmind\Rest\Server\Resource;
-use Innmind\Rest\Server\RouteFactory;
-use Innmind\Rest\Server\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteFactory;
+use Innmind\Rest\Server\Routing\RouteKeys;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Response;

@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\EventListener;
 
 use Innmind\Rest\Server\Controller\ResourceController;
-use Innmind\Rest\Server\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteKeys;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;

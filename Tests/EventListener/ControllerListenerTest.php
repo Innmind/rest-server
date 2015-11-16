@@ -8,7 +8,7 @@ use Innmind\Rest\Server\Request\Parser;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Validator;
 use Innmind\Rest\Server\Collection;
-use Innmind\Rest\Server\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteKeys;
 use Innmind\Rest\Server\Exception\ValidationException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\HttpKernel\KernelEvents;

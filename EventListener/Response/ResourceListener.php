@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server\EventListener\Response;
 
-use Innmind\Rest\Server\RouteFactory;
+use Innmind\Rest\Server\Routing\RouteFactory;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Formats;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
