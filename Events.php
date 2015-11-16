@@ -15,8 +15,6 @@ class Events
     const STORAGE_POST_UPDATE = 'innmind.rest.server.storage.post.update';
     const STORAGE_PRE_DELETE = 'innmind.rest.server.storage.pre.delete';
     const STORAGE_POST_DELETE = 'innmind.rest.server.storage.post.delete';
-    const RESPONSE = 'innmind.rest.server.response';
-    const REQUEST = 'innmind.rest.server.request';
 
     const DOCTRINE_READ_QUERY_BUILDER = 'innmind.rest.server.storage.doctrine.read_query_builder';
     const NEO4J_READ_QUERY_BUILDER = 'innmind.rest.server.storage.neo4j.read_query_builder';

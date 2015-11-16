@@ -3,7 +3,6 @@
 namespace Innmind\Rest\Server\Tests\EventListener\Response;
 
 use Innmind\Rest\Server\EventListener\Response\CreateListener;
-use Innmind\Rest\Server\Event\ResponseEvent;
 use Innmind\Rest\Server\Registry;
 use Innmind\Rest\Server\RouteLoader;
 use Innmind\Rest\Server\RouteFactory;
