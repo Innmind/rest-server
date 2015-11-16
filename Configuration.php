@@ -62,7 +62,7 @@ class Configuration implements ConfigurationInterface
                                                 ->values(Types::keys())
                                             ->end()
                                             ->arrayNode('access')
-                                                ->isRequired()
+                                                ->defaultValue([Access::READ])
                                                 ->prototype('scalar')->end()
                                             ->end()
                                             ->arrayNode('variants')

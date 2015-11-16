@@ -8,7 +8,6 @@ collections:
                 properties:
                     uuid:
                         type: string
-                        access: [READ]
                     uri:
                         type: string
                         access: [READ, CREATE]
@@ -41,14 +40,12 @@ collections:
                             format: Y-m-d
                     sub_resource:
                         type: resource
-                        access: [READ]
                         options:
                             optional: ~
                             resource: foo
                             collection: bar
                     sub_resource_coll:
                         type: array
-                        access: [READ]
                         options:
                             optional: ~
                             inner_type: resource

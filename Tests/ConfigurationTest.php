@@ -23,6 +23,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             if (!isset($prop['variants'])) {
                 $prop['variants'] = [];
             }
+
+            if (!isset($prop['access'])) {
+                $prop['access'] = ['READ'];
+            }
         }
 
         $this->assertEquals(
