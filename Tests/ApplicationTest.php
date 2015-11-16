@@ -539,6 +539,59 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         ]);
         $this->a->handle($request);
     }
+
+    public function testHasNextLink()
+    {
+        $request = new Request(
+            [],
+            [],
+            [],
+            [],
+            [],
+            [
+                'REQUEST_URI' => '/web/resource/',
+                'REQUEST_METHOD' => 'GET',
+            ]
+        );
+        $request->headers->add([
+            'Accept' => 'application/json',
+        ]);
+        $response = $this->a->handle($request);
+        $this->assertTrue(in_array(
+            '</web/resource/?offset=1&limit=1>; rel="next"',
+            $response->headers->get('Link', null, false)
+        ));
+    }
+
+    public function testHasPrevLink()
+    {
+        $request = new Request(
+            [
+                'offset' => '1',
+                'limit' => '1',
+            ],
+            [],
+            [],
+            [],
+            [],
+            [
+                'REQUEST_URI' => '/web/resource/',
+                'REQUEST_METHOD' => 'GET',
+            ]
+        );
+        $request->headers->add([
+            'Accept' => 'application/json',
+        ]);
+        $response = $this->a->handle($request);
+        $this->assertTrue(in_array(
+            '</web/resource/?offset=2&limit=1>; rel="next"',
+            $response->headers->get('Link', null, false)
+        ));
+        $this->assertTrue(in_array(
+            '</web/resource/?offset=0&limit=1>; rel="prev"',
+            $response->headers->get('Link', null, false)
+        ));
+    }
 }
 
 class WebResource
