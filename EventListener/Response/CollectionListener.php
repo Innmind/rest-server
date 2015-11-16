@@ -5,6 +5,7 @@ namespace Innmind\Rest\Server\EventListener\Response;
 use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Routing\RouteFactory;
 use Innmind\Rest\Server\Routing\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteActions;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -55,7 +56,7 @@ class CollectionListener implements EventSubscriberInterface
             $definition = $resource->getDefinition();
             $route = $this->routeFactory->makeName(
                 $definition,
-                'get'
+                RouteActions::GET
             );
             $links[] = sprintf(
                 '<%s>; rel="resource"',
@@ -70,7 +71,7 @@ class CollectionListener implements EventSubscriberInterface
         $response->headers->add(['Link' => $links]);
         $request = $event->getRequest();
 
-        if ($request->attributes->get(RouteKeys::ACTION) === 'create') {
+        if ($request->attributes->get(RouteKeys::ACTION) === RouteActions::CREATE) {
             $response->setStatusCode(Response::HTTP_MULTIPLE_CHOICES);
         }
 

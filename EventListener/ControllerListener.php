@@ -3,6 +3,7 @@
 namespace Innmind\Rest\Server\EventListener;
 
 use Innmind\Rest\Server\Routing\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteActions;
 use Innmind\Rest\Server\Exception\ValidationException;
 use Innmind\Rest\Server\Exception\PayloadException;
 use Innmind\Rest\Server\Access;
@@ -56,16 +57,16 @@ class ControllerListener implements EventSubscriberInterface
         $action = $request->attributes->get(RouteKeys::ACTION);
 
         switch ($action) {
-            case 'index':
-            case 'get':
-            case 'delete':
-            case 'options':
+            case RouteActions::INDEX:
+            case RouteActions::GET:
+            case RouteActions::DELETE:
+            case RouteActions::OPTIONS:
                 $request->attributes->set(
                     'definition',
                     $request->attributes->get(RouteKeys::DEFINITION)
                 );
                 break;
-            case 'create':
+            case RouteActions::CREATE:
                 $data = $this->requestParser->getData(
                     $request,
                     $request->attributes->get(RouteKeys::DEFINITION)
@@ -73,7 +74,7 @@ class ControllerListener implements EventSubscriberInterface
                 $this->validate($data, Access::CREATE);
                 $request->attributes->set('resources', $data);
                 break;
-            case 'update':
+            case RouteActions::UPDATE:
                 $resource = $this->requestParser->getData(
                     $request,
                     $request->attributes->get(RouteKeys::DEFINITION)
@@ -107,8 +108,14 @@ class ControllerListener implements EventSubscriberInterface
         }
 
         $action = $request->attributes->get(RouteKeys::ACTION);
+        $toVerify = [
+            RouteActions::INDEX,
+            RouteActions::GET,
+            RouteActions::CREATE,
+            RouteActions::UPDATE,
+        ];
 
-        if (in_array($action, ['index', 'get', 'create', 'update'], true)) {
+        if (in_array($action, $toVerify, true)) {
             $this->validate($event->getControllerResult(), Access::READ);
         }
     }

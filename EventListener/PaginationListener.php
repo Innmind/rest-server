@@ -7,6 +7,7 @@ use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Event\Neo4j;
 use Innmind\Rest\Server\Event\Doctrine;
 use Innmind\Rest\Server\Routing\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteActions;
 use Innmind\Rest\Server\Routing\RouteFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -116,7 +117,7 @@ class PaginationListener implements EventSubscriberInterface
 
         if (
             !$request->attributes->has(RouteKeys::ACTION) ||
-            $request->attributes->get(RouteKeys::ACTION) !== 'index' ||
+            $request->attributes->get(RouteKeys::ACTION) !== RouteActions::INDEX ||
             !$this->paginator->canPaginate($request)
         ) {
             return;
@@ -131,7 +132,7 @@ class PaginationListener implements EventSubscriberInterface
             ->getCurrentRequest()
             ->attributes
             ->get(RouteKeys::DEFINITION);
-        $route = $this->routeFactory->makeName($definition, 'index');
+        $route = $this->routeFactory->makeName($definition, RouteActions::INDEX);
 
         if ($offset > 0) {
             $prevOffset = max(0, $offset - $limit);

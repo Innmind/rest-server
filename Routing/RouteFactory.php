@@ -21,27 +21,27 @@ class RouteFactory
     public function makeRoute(ResourceDefinition $resource, $action)
     {
         switch ($action) {
-            case 'index':
+            case RouteActions::INDEX:
                 $path = '/%s/%s/';
                 $method = 'GET';
                 break;
-            case 'get':
+            case RouteActions::GET:
                 $path = '/%s/%s/{id}';
                 $method = 'GET';
                 break;
-            case 'create':
+            case RouteActions::CREATE:
                 $path = '/%s/%s/';
                 $method = 'POST';
                 break;
-            case 'options':
+            case RouteActions::OPTIONS:
                 $path = '/%s/%s/';
                 $method = 'OPTIONS';
                 break;
-            case 'update':
+            case RouteActions::UPDATE:
                 $path = '/%s/%s/{id}';
                 $method = 'PUT';
                 break;
-            case 'delete':
+            case RouteActions::DELETE:
                 $path = '/%s/%s/{id}';
                 $method = 'DELETE';
                 break;
@@ -80,10 +80,9 @@ class RouteFactory
      */
     public function makeRoutes(ResourceDefinition $resource)
     {
-        $actions = ['index', 'get', 'create', 'options', 'update', 'delete'];
         $collection = new RouteCollection;
 
-        foreach ($actions as $action) {
+        foreach (RouteActions::all() as $action) {
             $collection->add(
                 $this->makeName($resource, $action),
                 $this->makeRoute($resource, $action)

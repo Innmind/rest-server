@@ -5,6 +5,7 @@ namespace Innmind\Rest\Server\EventListener\Response;
 use Innmind\Rest\Server\Definition\Resource;
 use Innmind\Rest\Server\Routing\RouteFactory;
 use Innmind\Rest\Server\Routing\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteActions;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,7 +48,7 @@ class OptionsListener implements EventSubscriberInterface
 
         if (
             !$request->attributes->has(RouteKeys::ACTION) ||
-            $request->attributes->get(RouteKeys::ACTION) !== 'options'
+            $request->attributes->get(RouteKeys::ACTION) !== RouteActions::OPTIONS
         ) {
             return;
         }
@@ -101,7 +102,7 @@ class OptionsListener implements EventSubscriberInterface
         $optional,
         Resource $definition
     ) {
-        $route = $this->routeFactory->makeName($definition, 'options');
+        $route = $this->routeFactory->makeName($definition, RouteActions::OPTIONS);
         $header = $response->headers->get('Link', null, false);
         $header[] = sprintf(
             '<%s>; rel="property"; name="%s"; type="%s"; access="%s"; variants="%s"; optional="%s"',

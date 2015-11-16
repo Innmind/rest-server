@@ -3,6 +3,7 @@
 namespace Innmind\Rest\Server\EventListener\Response;
 
 use Innmind\Rest\Server\Routing\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteActions;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -33,7 +34,7 @@ class DeleteListener implements EventSubscriberInterface
 
         if (
             !$request->attributes->has(RouteKeys::ACTION) ||
-            $request->attributes->get(RouteKeys::ACTION) !== 'delete'
+            $request->attributes->get(RouteKeys::ACTION) !== RouteActions::DELETE
         ) {
             return;
         }

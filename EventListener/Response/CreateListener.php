@@ -5,6 +5,7 @@ namespace Innmind\Rest\Server\EventListener\Response;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Routing\RouteFactory;
 use Innmind\Rest\Server\Routing\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteActions;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,7 +49,7 @@ class CreateListener implements EventSubscriberInterface
 
         if (
             !$request->attributes->has(RouteKeys::ACTION) ||
-            $request->attributes->get(RouteKeys::ACTION) !== 'create' ||
+            $request->attributes->get(RouteKeys::ACTION) !== RouteActions::CREATE ||
             !$resource instanceof Resource
         ) {
             return;
@@ -61,7 +62,7 @@ class CreateListener implements EventSubscriberInterface
         $definition = $resource->getDefinition();
         $route = $this->routeFactory->makeName(
             $definition,
-            'get'
+            RouteActions::GET
         );
         $response->headers->add([
             'Location' => $this->urlGenerator->generate(

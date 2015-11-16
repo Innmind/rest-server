@@ -3,6 +3,7 @@
 namespace Innmind\Rest\Server\EventListener\Response;
 
 use Innmind\Rest\Server\Routing\RouteFactory;
+use Innmind\Rest\Server\Routing\RouteActions;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Formats;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -83,7 +84,7 @@ class ResourceListener implements EventSubscriberInterface
                 $def = $resource->getDefinition();
                 $route = $this->routeFactory->makeName(
                     $def,
-                    'get'
+                    RouteActions::GET
                 );
                 $links[] = sprintf(
                     '<%s>; rel="property"; name="%s"',

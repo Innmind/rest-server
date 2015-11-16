@@ -4,6 +4,7 @@ namespace Innmind\Rest\Server\EventListener;
 
 use Innmind\Rest\Server\Controller\ResourceController;
 use Innmind\Rest\Server\Routing\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteActions;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -15,11 +16,12 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 class ControllerResolverListener implements EventSubscriberInterface
 {
     protected $controller;
-    protected $actions = ['index', 'create', 'get', 'options', 'update', 'delete'];
+    protected $actions;
 
     public function __construct(ResourceController $controller)
     {
         $this->controller = $controller;
+        $this->actions = RouteActions::all();
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Innmind\Rest\Server\EventListener;
 
 use Innmind\Rest\Server\Routing\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteActions;
 use Innmind\Rest\Server\Registry;
 use Innmind\Rest\Server\Request\Parser;
 use Innmind\Rest\Server\Definition\Resource;
@@ -89,7 +90,7 @@ class RequestListener implements EventSubscriberInterface
         $action = $request->attributes->get(RouteKeys::ACTION);
 
         if (
-            in_array($action, ['create', 'update']) &&
+            in_array($action, [RouteActions::CREATE, RouteActions::UPDATE]) &&
             !$this->parser->isContentTypeAcceptable($request)
         ) {
             throw new UnsupportedMediaTypeHttpException;
