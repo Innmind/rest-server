@@ -4,7 +4,7 @@ namespace Innmind\Rest\Server\Exception;
 
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class ValidationException extends \Exception
+class ValidationException extends \Exception implements ExceptionInterface
 {
     protected $access;
     protected $violations;

@@ -2,6 +2,6 @@
 
 namespace Innmind\Rest\Server\Exception;
 
-class ConfigurationException extends \Exception
+class ConfigurationException extends \Exception implements ExceptionInterface
 {
 }
