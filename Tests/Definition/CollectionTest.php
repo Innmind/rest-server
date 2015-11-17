@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\Tests\Definition;
 
 use Innmind\Rest\Server\Definition\Collection;
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 
 class CollectionTest extends \PHPUnit_Framework_TestCase
 {
@@ -44,7 +44,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testAddResource()
     {
         $c = new Collection('foo');
-        $r = new Resource('bar');
+        $r = new ResourceDefinition('bar');
         $r->setStorage('foo');
 
         $this->assertFalse($c->hasResource('bar'));
@@ -66,7 +66,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testSetCollectionToResource()
     {
         $c = new Collection('foo');
-        $r = new Resource('bar');
+        $r = new ResourceDefinition('bar');
         $r->setStorage('foo');
         $c->addResource($r);
 
@@ -80,7 +80,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     {
         $c = new Collection('foo');
         $c->setStorage('bar');
-        $r = new Resource('foo');
+        $r = new ResourceDefinition('foo');
         $c->addResource($r);
 
         $this->assertSame(
@@ -96,7 +96,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testThrowIfNoStorageDefined()
     {
         $c = new Collection('foo');
-        $c->addResource(new Resource('foo'));
+        $c->addResource(new ResourceDefinition('foo'));
     }
 
     /**

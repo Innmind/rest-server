@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\Storage;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Event\Storage;
-use Innmind\Rest\Server\Definition\Resource as Definition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Exception\ResourceNotSupportedException;
 
 abstract class AbstractStorage
@@ -80,7 +80,7 @@ abstract class AbstractStorage
     /**
      * {@inheritdoc}
      */
-    public function delete(Definition $definition, $id)
+    public function delete(ResourceDefinition $definition, $id)
     {
         $this->dispatcher->dispatch(
             Events::STORAGE_PRE_DELETE,
@@ -108,16 +108,16 @@ abstract class AbstractStorage
     /**
      * {@inheritdoc}
      */
-    abstract protected function supports(Definition $definition);
+    abstract protected function supports(ResourceDefinition $definition);
 
     /**
      * Verify if the storage can allow this resource definition
      *
-     * @param Definition $definition
+     * @param ResourceDefinition $definition
      *
      * @throws ResourceNotSupportedException In case the storage can't
      */
-    protected function checkSupport(Definition $definition)
+    protected function checkSupport(ResourceDefinition $definition)
     {
         if (!$this->supports($definition)) {
             throw new ResourceNotSupportedException(sprintf(

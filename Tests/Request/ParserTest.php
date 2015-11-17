@@ -7,7 +7,7 @@ use Innmind\Rest\Server\Formats;
 use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Collection;
-use Innmind\Rest\Server\Definition\Resource as Definition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Serializer\Encoder\FormEncoder;
 use Innmind\Rest\Server\Serializer\Encoder\JsonEncoder;
@@ -86,12 +86,12 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                 'foo' => 'bar',
             ]],
         ];
-        $subDef = (new Definition('sub'))
+        $subDef = (new ResourceDefinition('sub'))
             ->addProperty(
                 (new Property('foo'))
                     ->setType('string')
             );
-        $definition = new Definition('foo');
+        $definition = new ResourceDefinition('foo');
         $definition
             ->addProperty(
                 (new Property('foo'))
@@ -142,7 +142,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
     public function testDoesntThrowIfPayloadDoesntMatchDefinition()
     {
-        $definition = new Definition('foo');
+        $definition = new ResourceDefinition('foo');
         $definition
             ->addProperty(
                 (new Property('foo'))
@@ -172,7 +172,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
     public function testGetCollectionOfData()
     {
-        $def = new Definition('foo');
+        $def = new ResourceDefinition('foo');
         $def->addProperty(
             (new Property('foo'))
                 ->setType('string')
@@ -215,7 +215,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowIfNoResourceKeyInPayload()
     {
-        $definition = new Definition('foo');
+        $definition = new ResourceDefinition('foo');
         $definition->addProperty(
             (new Property('foo'))
                 ->setType('int')

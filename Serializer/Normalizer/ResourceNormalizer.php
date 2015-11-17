@@ -6,7 +6,7 @@ use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Access;
 use Innmind\Rest\Server\ResourceBuilder;
-use Innmind\Rest\Server\Definition\Resource as Definition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Exception\LogicException;
@@ -89,7 +89,7 @@ class ResourceNormalizer implements NormalizerInterface, DenormalizerInterface
     {
         if (
             !isset($context['definition']) ||
-            !$context['definition'] instanceof Definition
+            !$context['definition'] instanceof ResourceDefinition
         ) {
             throw new LogicException(
                 'You need to specify a resource definition ' .
@@ -122,11 +122,11 @@ class ResourceNormalizer implements NormalizerInterface, DenormalizerInterface
      * Create a resource off of the given array and definition
      *
      * @param array $data
-     * @param Definition $definition
+     * @param ResourceDefinition $definition
      *
      * @return Resource
      */
-    protected function createResource(array $data, Definition $definition)
+    protected function createResource(array $data, ResourceDefinition $definition)
     {
         return $this->resourceBuilder->build(
             $this->transformArrayToObject($data, $definition),
@@ -146,13 +146,13 @@ class ResourceNormalizer implements NormalizerInterface, DenormalizerInterface
      * Transform an array into an object (recursively)
      *
      * @param array $data
-     * @param Definition $definition
+     * @param ResourceDefinition $definition
      *
      * @return StdClass
      */
     protected function transformArrayToObject(
         array $data,
-        Definition $definition
+        ResourceDefinition $definition
     ) {
         $object = new \stdClass;
 

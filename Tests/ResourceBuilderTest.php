@@ -4,7 +4,7 @@ namespace Innmind\Rest\Server\Tests;
 
 use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Resource;
-use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Definition\Collection;
 use Innmind\Rest\Server\Event\ResourceBuildEvent;

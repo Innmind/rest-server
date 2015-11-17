@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server;
 
-use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Event\ResourceBuildEvent;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

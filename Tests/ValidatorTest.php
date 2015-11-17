@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\Tests;
 
 use Innmind\Rest\Server\Validator;
-use Innmind\Rest\Server\Definition\Resource as Definition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Resource;
 use Symfony\Component\Validator\Validation;
@@ -17,7 +17,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->v = new Validator(Validation::createValidator());
-        $this->d2 = new Definition('inner');
+        $this->d2 = new ResourceDefinition('inner');
         $this->d2
             ->addProperty(
                 (new Property('foo'))
@@ -29,7 +29,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                     ->setType('string')
                     ->addAccess('UPDATE')
             );
-        $this->d = new Definition('foo');
+        $this->d = new ResourceDefinition('foo');
         $this->d
             ->addProperty(
                 (new Property('foo'))
@@ -107,13 +107,13 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testDoesntViolateEmptyOptionalFields()
     {
-        $def = new Definition('foo');
+        $def = new ResourceDefinition('foo');
         $def->addProperty(
             (new Property('foo'))
                 ->setType('resource')
                 ->addAccess('READ')
                 ->addOption('optional', null)
-                ->addOption('resource', new Definition('bar'))
+                ->addOption('resource', new ResourceDefinition('bar'))
         );
         $r = new Resource;
         $r->setDefinition($def);

@@ -4,7 +4,7 @@ namespace Innmind\Rest\Server\Tests\Event\Storage;
 
 use Innmind\Rest\Server\Event\Storage\PreCreateEvent;
 use Innmind\Rest\Server\Resource;
-use Innmind\Rest\Server\Definition\Resource as Definition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 
 class PreCreateEventTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,7 +27,7 @@ class PreCreateEventTest extends \PHPUnit_Framework_TestCase
     public function testReplaceEvent()
     {
         $r = new Resource;
-        $r->setDefinition(new Definition('foo'));
+        $r->setDefinition(new ResourceDefinition('foo'));
 
         $this->assertSame(
             $this->e,

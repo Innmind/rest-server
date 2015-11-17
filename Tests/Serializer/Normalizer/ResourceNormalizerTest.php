@@ -6,7 +6,7 @@ use Innmind\Rest\Server\Serializer\Normalizer\ResourceNormalizer;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Collection;
-use Innmind\Rest\Server\Definition\Resource as Definition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -37,13 +37,13 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function testNormalize()
     {
-        $subDef = new Definition('bar');
+        $subDef = new ResourceDefinition('bar');
         $subDef->addProperty(
             (new Property('foo'))
                 ->setType('string')
                 ->addAccess('READ')
         );
-        $def = new Definition('foo');
+        $def = new ResourceDefinition('foo');
         $def
             ->addProperty(
                 (new Property('foo'))
@@ -111,7 +111,7 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function testDenormalize()
     {
-        $def = new Definition('foo');
+        $def = new ResourceDefinition('foo');
         $def
             ->addProperty(new Property('foo'))
             ->addProperty(new Property('bar'));
@@ -226,7 +226,7 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
             Resource::class,
             null,
             [
-                'definition' => new Definition('foo'),
+                'definition' => new ResourceDefinition('foo'),
             ]
         );
     }

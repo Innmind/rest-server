@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\Tests\Event\Neo4j;
 
 use Innmind\Rest\Server\Event\Neo4j\ReadQueryBuilderEvent;
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Neo4j\ONM\QueryBuilder;
 
 class ReadQueryBuilderEventTest extends \PHPUnit_Framework_TestCase
@@ -14,7 +14,7 @@ class ReadQueryBuilderEventTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->e = new ReadQueryBuilderEvent(
-            new Resource('foo'),
+            new ResourceDefinition('foo'),
             null,
             $this->qb = new QueryBuilder
         );

@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server\EventListener\Response;
 
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Routing\RouteFactory;
 use Innmind\Rest\Server\Routing\RouteKeys;
 use Innmind\Rest\Server\Routing\RouteActions;
@@ -100,7 +100,7 @@ class OptionsListener implements EventSubscriberInterface
         array $access,
         array $variants,
         $optional,
-        Resource $definition
+        ResourceDefinition $definition
     ) {
         $route = $this->routeFactory->makeName($definition, RouteActions::OPTIONS);
         $header = $response->headers->get('Link', null, false);

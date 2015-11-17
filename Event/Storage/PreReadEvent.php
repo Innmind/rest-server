@@ -4,7 +4,7 @@ namespace Innmind\Rest\Server\Event\Storage;
 
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Collection;
-use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Symfony\Component\EventDispatcher\Event;
 
 class PreReadEvent extends Event

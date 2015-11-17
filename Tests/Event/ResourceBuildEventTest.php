@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\Tests\Event;
 
 use Innmind\Rest\Server\Event\ResourceBuildEvent;
-use Innmind\Rest\Server\Definition\Resource as Definition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Resource;
 
 class ResourceBuildEventTest extends \PHPUnit_Framework_TestCase
@@ -12,7 +12,7 @@ class ResourceBuildEventTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->e = new ResourceBuildEvent(['foo'], new Definition('foo'));
+        $this->e = new ResourceBuildEvent(['foo'], new ResourceDefinition('foo'));
     }
 
     public function testGetData()
@@ -38,7 +38,7 @@ class ResourceBuildEventTest extends \PHPUnit_Framework_TestCase
     public function testGetDefinition()
     {
         $this->assertInstanceOf(
-            Definition::class,
+            ResourceDefinition::class,
             $this->e->getDefinition()
         );
     }
@@ -46,7 +46,7 @@ class ResourceBuildEventTest extends \PHPUnit_Framework_TestCase
     public function testSetResource()
     {
         $r = new Resource;
-        $r->setDefinition(new Definition('foo'));
+        $r->setDefinition(new ResourceDefinition('foo'));
 
         $this->assertFalse($this->e->hasResource());
         $this->assertSame(

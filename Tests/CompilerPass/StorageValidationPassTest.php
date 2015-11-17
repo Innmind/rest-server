@@ -6,7 +6,7 @@ use Innmind\Rest\Server\CompilerPass\StorageValidationPass;
 use Innmind\Rest\Server\Registry;
 use Innmind\Rest\Server\Storages;
 use Innmind\Rest\Server\Definition\Collection;
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 
 class StorageValidationPassTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,7 +18,7 @@ class StorageValidationPassTest extends \PHPUnit_Framework_TestCase
     {
         $r = new Registry;
         $c = new Collection('foo');
-        $d = new Resource('bar');
+        $d = new ResourceDefinition('bar');
         $d->setStorage('foo');
         $c->addResource($d);
         $r->addCollection($c);

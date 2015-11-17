@@ -2,15 +2,15 @@
 
 namespace Innmind\Rest\Server\Tests\Definition;
 
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Collection;
 use Innmind\Rest\Server\Definition\Property;
 
-class ResourceTest extends \PHPUnit_Framework_TestCase
+class ResourceDefinitionTest extends \PHPUnit_Framework_TestCase
 {
     public function testSetName()
     {
-        $r = new Resource('foo');
+        $r = new ResourceDefinition('foo');
 
         $this->assertSame(
             'foo',
@@ -20,7 +20,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
 
     public function testCastToString()
     {
-        $r = new Resource('foo');
+        $r = new ResourceDefinition('foo');
 
         $this->assertSame(
             'foo',
@@ -30,7 +30,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
 
     public function testSetId()
     {
-        $r = new Resource('foo');
+        $r = new ResourceDefinition('foo');
 
         $this->assertSame(
             $r,
@@ -44,7 +44,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
 
     public function testAddProperty()
     {
-        $r = new Resource('foo');
+        $r = new ResourceDefinition('foo');
         $p = new Property('foo');
 
         $this->assertFalse($r->hasProperty('foo'));
@@ -69,7 +69,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowIfPropertyNameConflictWithOtherPropertyVariant()
     {
-        $r = new Resource('foo');
+        $r = new ResourceDefinition('foo');
         $p1 = new Property('bar');
         $p1->addVariant('foo');
         $r->addProperty($p1);
@@ -84,7 +84,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowIfPropertyVariantConflictWithOtherPropertyVariant()
     {
-        $r = new Resource('foo');
+        $r = new ResourceDefinition('foo');
         $p1 = new Property('bar');
         $p1->addVariant('foo');
         $r->addProperty($p1);
@@ -100,14 +100,14 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowIfUnknownProperty()
     {
-        $r = new Resource('foo');
+        $r = new ResourceDefinition('foo');
 
         $r->getProperty('foo');
     }
 
     public function testAddMeta()
     {
-        $r = new Resource('foo');
+        $r = new ResourceDefinition('foo');
 
         $this->assertFalse($r->hasMeta('description'));
         $this->assertSame(
@@ -131,14 +131,14 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowIfUnknownMeta()
     {
-        $r = new Resource('foo');
+        $r = new ResourceDefinition('foo');
 
         $r->getMeta('foo');
     }
 
     public function testSetCollection()
     {
-        $r = new Resource('foo');
+        $r = new ResourceDefinition('foo');
 
         $this->assertSame(
             $r,
@@ -152,7 +152,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
 
     public function testSetStorage()
     {
-        $r = new Resource('foo');
+        $r = new ResourceDefinition('foo');
 
         $this->assertFalse($r->hasStorage());
         $this->assertSame(
@@ -168,7 +168,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
 
     public function testAddOption()
     {
-        $r = new Resource('foo');
+        $r = new ResourceDefinition('foo');
 
         $this->assertFalse($r->hasOption('foo'));
         $this->assertSame(
@@ -192,7 +192,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowIfUnknownOption()
     {
-        $r = new Resource('foo');
+        $r = new ResourceDefinition('foo');
         $r->getOption('bar');
     }
 }

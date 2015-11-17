@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\Event;
 
 use Innmind\Rest\Server\Resource;
-use Innmind\Rest\Server\Definition\Resource as Definition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Symfony\Component\EventDispatcher\Event;
 
 class ResourceBuildEvent extends Event
@@ -12,7 +12,7 @@ class ResourceBuildEvent extends Event
     protected $definition;
     protected $resource;
 
-    public function __construct($data, Definition $definition)
+    public function __construct($data, ResourceDefinition $definition)
     {
         $this->data = $data;
         $this->definition = $definition;
@@ -45,7 +45,7 @@ class ResourceBuildEvent extends Event
     /**
      * Return the resource definition
      *
-     * @return Definition
+     * @return ResourceDefinition
      */
     public function getDefinition()
     {

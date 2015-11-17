@@ -2,13 +2,13 @@
 
 namespace Innmind\Rest\Server\Event\Storage;
 
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 
 class PostDeleteEvent extends PreDeleteEvent
 {
     protected $entity;
 
-    public function __construct(Resource $definition, $id, $entity)
+    public function __construct(ResourceDefinition $definition, $id, $entity)
     {
         parent::__construct($definition, $id);
 

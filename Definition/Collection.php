@@ -50,11 +50,11 @@ class Collection
     /**
      * Add a new resource definition to the collection
      *
-     * @param Innmind\Rest\Server\Definition\Resource $resource
+     * @param ResourceDefinition $resource
      *
      * @return Collection self
      */
-    public function addResource(Resource $resource)
+    public function addResource(ResourceDefinition $resource)
     {
         if (!$resource->hasStorage()) {
             if ($this->storage === null) {
@@ -90,7 +90,7 @@ class Collection
      *
      * @throws InvalidArgumentException If resource not found
      *
-     * @return Innmind\Rest\Server\Definition\Resource
+     * @return ResourceDefinition
      */
     public function getResource($name)
     {

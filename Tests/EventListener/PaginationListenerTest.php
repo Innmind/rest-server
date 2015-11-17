@@ -7,7 +7,7 @@ use Innmind\Rest\Server\Paginator;
 use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Routing\RouteKeys;
 use Innmind\Rest\Server\Routing\RouteFactory;
-use Innmind\Rest\Server\Definition\Resource as Definition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Collection;
 use Innmind\Rest\Server\Collection as ResourceCollection;
 use Innmind\Rest\Server\Resource;
@@ -67,7 +67,7 @@ class PaginationListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testAddPageLinks()
     {
-        $def = new Definition('foo');
+        $def = new ResourceDefinition('foo');
         $coll = new Collection('bar');
         $coll
             ->setStorage('foo')

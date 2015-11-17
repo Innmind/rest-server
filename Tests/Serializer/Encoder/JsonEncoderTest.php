@@ -3,7 +3,6 @@
 namespace Innmind\Rest\Server\Tests\Serializer\Encoder;
 
 use Innmind\Rest\Server\Serializer\Encoder\JsonEncoder;
-use Innmind\Rest\Server\Definition\Resource as Definition;
 use Innmind\Rest\Server\Definition\Property;
 use Symfony\Component\HttpFoundation\Request;
 

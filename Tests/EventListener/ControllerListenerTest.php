@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\Tests\EventListener;
 
 use Innmind\Rest\Server\EventListener\ControllerListener;
-use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Request\Parser;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Validator;

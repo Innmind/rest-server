@@ -4,7 +4,7 @@ namespace Innmind\Rest\Server\Tests\CompilerPass;
 
 use Innmind\Rest\Server\CompilerPass\AccessPass;
 use Innmind\Rest\Server\Definition\Collection;
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Registry;
 
@@ -16,7 +16,7 @@ class AccessPassTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->resource = new Resource('foo');
+        $this->resource = new ResourceDefinition('foo');
         $this->resource->addProperty(
             (new Property('bar'))
                 ->setType('string')

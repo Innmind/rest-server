@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\Tests;
 
 use Innmind\Rest\Server\Resource;
-use Innmind\Rest\Server\Definition\Resource as Definition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 
 class ResourceTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,7 +26,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
     public function testSetDefinition()
     {
         $r = new Resource;
-        $d = new Definition('foo');
+        $d = new ResourceDefinition('foo');
 
         $this->assertFalse($r->hasDefinition());
         $this->assertSame(

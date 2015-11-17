@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server\Definition;
 
-class Resource
+class ResourceDefinition
 {
     use OptionsTrait;
 
@@ -33,7 +33,7 @@ class Resource
      *
      * @param string $id
      *
-     * @return Resource self
+     * @return ResourceDefinition self
      */
     public function setId($id)
     {
@@ -59,7 +59,7 @@ class Resource
      *
      * @throws LogicException If the property name or variant conflicts with another property
      *
-     * @return Resource self
+     * @return ResourceDefinition self
      */
     public function addProperty(Property $property)
     {
@@ -137,7 +137,7 @@ class Resource
      * @param string $name
      * @param mixed $value
      *
-     * @return Resource self
+     * @return ResourceDefinition self
      */
     public function addMeta($name, $value)
     {
@@ -195,7 +195,7 @@ class Resource
      *
      * @param Collection $collection
      *
-     * @return Resource self
+     * @return ResourceDefinition self
      */
     public function setCollection(Collection $collection)
     {
@@ -219,7 +219,7 @@ class Resource
      *
      * @param string $storage
      *
-     * @return Resource self
+     * @return ResourceDefinition self
      */
     public function setStorage($storage)
     {

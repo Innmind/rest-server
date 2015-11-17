@@ -4,7 +4,7 @@ namespace Innmind\Rest\Server\Tests\EventListener;
 
 use Innmind\Rest\Server\EventListener\StorageCreateListener;
 use Innmind\Rest\Server\Resource;
-use Innmind\Rest\Server\Definition\Resource as Definition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Event\Storage\PostCreateEvent;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -20,7 +20,7 @@ class StorageCreateListenerTest extends \PHPUnit_Framework_TestCase
         );
         $this->r = new Resource;
         $this->r->setDefinition(
-            (new Definition('foo'))
+            (new ResourceDefinition('foo'))
                 ->setId('id')
         );
     }

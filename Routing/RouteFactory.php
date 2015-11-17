@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server\Routing;
 
-use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 

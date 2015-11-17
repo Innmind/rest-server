@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\Tests\Storage;
 use Innmind\Rest\Server\Storage\DoctrineStorage;
 use Innmind\Rest\Server\EntityBuilder;
 use Innmind\Rest\Server\ResourceBuilder;
-use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Event\Storage;
 use Innmind\Rest\Server\Event\Doctrine\ReadQueryBuilderEvent;

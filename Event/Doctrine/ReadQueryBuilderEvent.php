@@ -3,14 +3,14 @@
 namespace Innmind\Rest\Server\Event\Doctrine;
 
 use Innmind\Rest\Server\Event\Storage\PreReadEvent;
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Doctrine\ORM\QueryBuilder;
 
 class ReadQueryBuilderEvent extends PreReadEvent
 {
     protected $qb;
 
-    public function __construct(Resource $resource, $id, QueryBuilder $qb)
+    public function __construct(ResourceDefinition $resource, $id, QueryBuilder $qb)
     {
         parent::__construct($resource, $id);
 

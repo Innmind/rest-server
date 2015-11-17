@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\Tests\EventListener\Response;
 
 use Innmind\Rest\Server\EventListener\Response\DeleteListener;
-use Innmind\Rest\Server\Definition\Resource as Definition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Routing\RouteKeys;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +33,7 @@ class DeleteListenerTest extends \PHPUnit_Framework_TestCase
             HttpKernel::MASTER_REQUEST,
             null
         );
-        $r->attributes->set(RouteKeys::DEFINITION, new Definition('foo'));
+        $r->attributes->set(RouteKeys::DEFINITION, new ResourceDefinition('foo'));
         $r->attributes->set(RouteKeys::ACTION, 'delete');
 
         $this->assertSame(
@@ -55,7 +55,7 @@ class DeleteListenerTest extends \PHPUnit_Framework_TestCase
             HttpKernel::MASTER_REQUEST,
             null
         );
-        $r->attributes->set(RouteKeys::DEFINITION, new Definition('foo'));
+        $r->attributes->set(RouteKeys::DEFINITION, new ResourceDefinition('foo'));
         $r->attributes->set(RouteKeys::ACTION, 'get');
 
         $this->l->buildResponse($event);

@@ -4,7 +4,7 @@ namespace Innmind\Rest\Server\Tests;
 
 use Innmind\Rest\Server\EntityBuilder;
 use Innmind\Rest\Server\Resource;
-use Innmind\Rest\Server\Definition\Resource as Definition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Collection;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Event\EntityBuildEvent;
@@ -29,7 +29,7 @@ class EntityBuilderTest extends \PHPUnit_Framework_TestCase
         $r = new Resource;
         $r->set('foo', 'bar');
         $r->setDefinition(
-            (new Definition('foo'))
+            (new ResourceDefinition('foo'))
                 ->addOption('class', Foo::class)
                 ->addProperty(
                     (new Property('foo'))
@@ -54,7 +54,7 @@ class EntityBuilderTest extends \PHPUnit_Framework_TestCase
         $r = new Resource;
         $r->set('foo', 'baz');
         $r->setDefinition(
-            (new Definition('foo'))
+            (new ResourceDefinition('foo'))
                 ->addOption('class', Foo::class)
                 ->addProperty(
                     (new Property('foo'))
@@ -79,7 +79,7 @@ class EntityBuilderTest extends \PHPUnit_Framework_TestCase
     public function testThrowWhenNoClassSpecified()
     {
         $collection = new Collection('foo');
-        $def = new Definition('bar');
+        $def = new ResourceDefinition('bar');
         $def->setCollection($collection);
         $r = new Resource;
         $r->setDefinition($def);
@@ -94,7 +94,7 @@ class EntityBuilderTest extends \PHPUnit_Framework_TestCase
     public function testThrowWhenEntityDoesntMatchDefinedClass()
     {
         $collection = new Collection('foo');
-        $def = new Definition('bar');
+        $def = new ResourceDefinition('bar');
         $def->setCollection($collection);
         $def->addOption('class', Foo::class);
         $r = new Resource;
@@ -109,7 +109,7 @@ class EntityBuilderTest extends \PHPUnit_Framework_TestCase
         $r = new Resource;
         $r->set('foo', 'bar');
         $r->setDefinition(
-            (new Definition('foo'))
+            (new ResourceDefinition('foo'))
                 ->addOption('class', Foo::class)
         );
         $this->d->addListener(
@@ -134,7 +134,7 @@ class EntityBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateSubEntity()
     {
-        $d = (new Definition('foo'))
+        $d = (new ResourceDefinition('foo'))
             ->addOption('class', Foo::class);
         $d->addProperty(
             (new Property('foo'))
@@ -165,7 +165,7 @@ class EntityBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateSubEntityInArray()
     {
-        $d = (new Definition('foo'))
+        $d = (new ResourceDefinition('foo'))
             ->addOption('class', Foo::class);
         $d->addProperty(
             (new Property('foo'))
@@ -202,7 +202,7 @@ class EntityBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateSubEntity()
     {
-        $d = (new Definition('foo'))
+        $d = (new ResourceDefinition('foo'))
             ->addOption('class', Foo::class);
         $d
             ->addProperty(
@@ -236,7 +236,7 @@ class EntityBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateSubEntityInArray()
     {
-        $d = (new Definition('foo'))
+        $d = (new ResourceDefinition('foo'))
             ->addOption('class', Foo::class);
         $d
             ->addProperty(

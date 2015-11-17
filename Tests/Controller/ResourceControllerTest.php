@@ -9,7 +9,7 @@ use Innmind\Rest\Server\EntityBuilder;
 use Innmind\Rest\Server\Storages;
 use Innmind\Rest\Server\Storage\Neo4jStorage;
 use Innmind\Rest\Server\Tests\Storage\Bar;
-use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Collection;

@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server\Request;
 
-use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Formats;
 use Innmind\Rest\Server\Resource;
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
