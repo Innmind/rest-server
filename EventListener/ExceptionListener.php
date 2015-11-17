@@ -49,7 +49,11 @@ class ExceptionListener implements EventSubscriberInterface
                     @see https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#cite_note-89
                     It means we want to return a resource that doesn't follow its description
                      */
-                    $exception = new HttpException(520, null, $exception);
+                    $exception = new HttpException(
+                        520,
+                        'Resource doesn\'t match its definition',
+                        $exception
+                    );
                 } else {
                     $exception = new BadRequestHttpException(null, $exception);
                 }
