@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\Event\Neo4j;
 
 use Innmind\Rest\Server\Event\Storage\PreReadEvent;
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Neo4j\ONM\QueryBuilder;
 
 class ReadQueryBuilderEvent extends PreReadEvent
@@ -11,7 +11,7 @@ class ReadQueryBuilderEvent extends PreReadEvent
     protected $qb;
     protected $qbReplaced = false;
 
-    public function __construct(Resource $resource, $id, QueryBuilder $qb)
+    public function __construct(ResourceDefinition $resource, $id, QueryBuilder $qb)
     {
         parent::__construct($resource, $id);
 

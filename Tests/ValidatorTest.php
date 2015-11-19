@@ -3,9 +3,9 @@
 namespace Innmind\Rest\Server\Tests;
 
 use Innmind\Rest\Server\Validator;
-use Innmind\Rest\Server\Definition\Resource as Definition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResource;
 use Symfony\Component\Validator\Validation;
 
 class ValidatorTest extends \PHPUnit_Framework_TestCase
@@ -17,7 +17,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->v = new Validator(Validation::createValidator());
-        $this->d2 = new Definition('inner');
+        $this->d2 = new ResourceDefinition('inner');
         $this->d2
             ->addProperty(
                 (new Property('foo'))
@@ -29,7 +29,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                     ->setType('string')
                     ->addAccess('UPDATE')
             );
-        $this->d = new Definition('foo');
+        $this->d = new ResourceDefinition('foo');
         $this->d
             ->addProperty(
                 (new Property('foo'))
@@ -60,11 +60,11 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testValidate()
     {
-        $inner = new Resource;
+        $inner = new HttpResource;
         $inner
             ->setDefinition($this->d2)
             ->set('foo', 'foo');
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($this->d)
             ->set('bar', 'bar')
@@ -93,7 +93,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowIfValidatingUnknownAccess()
     {
-        $this->v->validate(new Resource, 'foo');
+        $this->v->validate(new HttpResource, 'foo');
     }
 
     /**
@@ -107,15 +107,15 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testDoesntViolateEmptyOptionalFields()
     {
-        $def = new Definition('foo');
+        $def = new ResourceDefinition('foo');
         $def->addProperty(
             (new Property('foo'))
                 ->setType('resource')
                 ->addAccess('READ')
                 ->addOption('optional', null)
-                ->addOption('resource', new Definition('bar'))
+                ->addOption('resource', new ResourceDefinition('bar'))
         );
-        $r = new Resource;
+        $r = new HttpResource;
         $r->setDefinition($def);
 
         $violations = $this->v->validate($r, 'READ');

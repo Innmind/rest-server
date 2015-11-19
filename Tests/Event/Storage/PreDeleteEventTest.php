@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\Tests\Event\Storage;
 
 use Innmind\Rest\Server\Event\Storage\PreDeleteEvent;
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 
 class PreDeleteEventTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,7 +13,7 @@ class PreDeleteEventTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->e = new PreDeleteEvent(
-            $this->d = new Resource('foo'),
+            $this->d = new ResourceDefinition('foo'),
             42
         );
     }

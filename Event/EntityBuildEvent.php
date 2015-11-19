@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server\Event;
 
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResourceInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class EntityBuildEvent extends Event
@@ -10,7 +10,7 @@ class EntityBuildEvent extends Event
     protected $resource;
     protected $entity;
 
-    public function __construct(Resource $resource, $entity)
+    public function __construct(HttpResourceInterface $resource, $entity)
     {
         $this->resource = $resource;
         $this->entity = $entity;
@@ -19,7 +19,7 @@ class EntityBuildEvent extends Event
     /**
      * Return the resource which contains the new data
      *
-     * @return Resource
+     * @return HttpResourceInterface
      */
     public function getResource()
     {

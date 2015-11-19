@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\Tests;
 
 use Innmind\Rest\Server\Paginator;
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Symfony\Component\HttpFoundation\Request;
 
 class PaginatorTest extends \PHPUnit_Framework_TestCase
@@ -17,7 +17,7 @@ class PaginatorTest extends \PHPUnit_Framework_TestCase
 
     public function testCanPaginate()
     {
-        $def = new Resource('foo');
+        $def = new ResourceDefinition('foo');
         $r = new Request;
         $this->assertFalse($this->p->canPaginate($r));
 
@@ -44,7 +44,7 @@ class PaginatorTest extends \PHPUnit_Framework_TestCase
 
     public function testGetLimit()
     {
-        $def = new Resource('foo');
+        $def = new ResourceDefinition('foo');
         $r = new Request(['limit' => '42']);
         $r->attributes->set('_rest_resource', $def);
         $this->assertSame(42, $this->p->getLimit($r));

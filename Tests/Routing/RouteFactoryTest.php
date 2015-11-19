@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\Tests\Routing;
 
 use Innmind\Rest\Server\Routing\RouteFactory;
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Collection;
 use Innmind\Rest\Server\Routing\RouteKeys;
 use Symfony\Component\Routing\Route;
@@ -16,7 +16,7 @@ class RouteFactoryTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->f = new RouteFactory;
-        $this->d = new Resource('foo');
+        $this->d = new ResourceDefinition('foo');
         $this->d->setCollection(new Collection('bar'));
     }
 

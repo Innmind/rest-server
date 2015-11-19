@@ -2,9 +2,9 @@
 
 namespace Innmind\Rest\Server\Event\Storage;
 
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResourceInterface;
 use Innmind\Rest\Server\Collection;
-use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Symfony\Component\EventDispatcher\Event;
 
 class PreReadEvent extends Event
@@ -53,11 +53,11 @@ class PreReadEvent extends Event
     /**
      * Add a resource to return to the user
      *
-     * @param Innmind\Rest\Server\Resource $resource
+     * @param HttpResourceInterface $resource
      *
      * @return PrereadEvent self
      */
-    public function addResource(Resource $resource)
+    public function addResource(HttpResourceInterface $resource)
     {
         $this->validateResource($resource);
         $this->resources[] = $resource;
@@ -106,13 +106,13 @@ class PreReadEvent extends Event
     /**
      * Check if a resource is valid
      *
-     * @param Innmind\Rest\Server\Resource $resource
+     * @param HttpResourceInterface $resource
      *
      * @throws InvalidArgumentException If the resource has no definition attached
      *
      * @return void
      */
-    protected function validateResource(Resource $resource)
+    protected function validateResource(HttpResourceInterface $resource)
     {
         if (!$resource->hasDefinition()) {
             throw new \InvalidArgumentException(

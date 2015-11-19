@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\Tests\Routing;
 use Innmind\Rest\Server\Routing\RouteLoader;
 use Innmind\Rest\Server\Registry;
 use Innmind\Rest\Server\Definition\Collection;
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Event\RouteEvent;
@@ -24,7 +24,7 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         $this->registry = new Registry;
         $collection = new Collection('foo');
         $collection->setStorage('doctrine');
-        $resource = new Resource('bar');
+        $resource = new ResourceDefinition('bar');
         $property = new Property('baz');
         $resource->addProperty($property);
         $collection->addResource($resource);

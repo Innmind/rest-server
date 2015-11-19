@@ -2,20 +2,15 @@
 
 namespace Innmind\Rest\Server;
 
-use Innmind\Rest\Server\Definition\Resource as Definition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 
-class Resource
+class HttpResource implements HttpResourceInterface
 {
     protected $data = [];
     protected $definition;
 
     /**
-     * Add the given property to the resource
-     *
-     * @param string $property
-     * @param mixed $value
-     *
-     * @return Innmind\Rest\Server\Resource self
+     * {@inheritdoc}
      */
     public function set($property, $value)
     {
@@ -25,13 +20,7 @@ class Resource
     }
 
     /**
-     * Return the given property value
-     *
-     * @param string $property
-     *
-     * @throws InvalidArgumentException If the property is not found
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function get($property)
     {
@@ -46,11 +35,7 @@ class Resource
     }
 
     /**
-     * Check if the resource has the given property
-     *
-     * @param string $property
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function has($property)
     {
@@ -58,9 +43,7 @@ class Resource
     }
 
     /**
-     * Return all the properties
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getProperties()
     {
@@ -68,13 +51,9 @@ class Resource
     }
 
     /**
-     * Set the resource definition
-     *
-     * @param Definition $definition
-     *
-     * @return Innmind\Rest\Server\Resource self
+     * {@inheritdoc}
      */
-    public function setDefinition(Definition $definition)
+    public function setDefinition(ResourceDefinition $definition)
     {
         $this->definition = $definition;
 
@@ -82,9 +61,7 @@ class Resource
     }
 
     /**
-     * Return the resource definition
-     *
-     * @return Definition
+     * {@inheritdoc}
      */
     public function getDefinition()
     {
@@ -92,9 +69,7 @@ class Resource
     }
 
     /**
-     * Check if the resource has a definition attached
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasDefinition()
     {

@@ -3,9 +3,10 @@
 namespace Innmind\Rest\Server\Tests\EventListener;
 
 use Innmind\Rest\Server\EventListener\ControllerListener;
-use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Request\Parser;
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResource;
+use Innmind\Rest\Server\HttpResourceInterface;
 use Innmind\Rest\Server\Validator;
 use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Routing\RouteKeys;
@@ -36,7 +37,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
                 ->getMock()
         );
         $this->i = $this
-            ->getMockBuilder(Resource::class)
+            ->getMockBuilder(HttpResourceInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $p
@@ -166,7 +167,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
             $this->k,
             $r,
             HttpKernel::MASTER_REQUEST,
-            new Resource
+            new HttpResource
         );
 
         $this->assertSame(null, $this->l->validateControllerResult($e));

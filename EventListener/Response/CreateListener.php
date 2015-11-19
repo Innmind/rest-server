@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server\EventListener\Response;
 
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResourceInterface;
 use Innmind\Rest\Server\Routing\RouteFactory;
 use Innmind\Rest\Server\Routing\RouteKeys;
 use Innmind\Rest\Server\Routing\RouteActions;
@@ -50,7 +50,7 @@ class CreateListener implements EventSubscriberInterface
         if (
             !$request->attributes->has(RouteKeys::ACTION) ||
             $request->attributes->get(RouteKeys::ACTION) !== RouteActions::CREATE ||
-            !$resource instanceof Resource
+            !$resource instanceof HttpResourceInterface
         ) {
             return;
         }

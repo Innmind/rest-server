@@ -6,7 +6,7 @@ use Innmind\Rest\Server\EventListener\Response\CollectionListener;
 use Innmind\Rest\Server\Registry;
 use Innmind\Rest\Server\Routing\RouteLoader;
 use Innmind\Rest\Server\Routing\RouteFactory;
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResource;
 use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Routing\RouteKeys;
 use Innmind\Rest\Server\CompilerPass\SubResourcePass;
@@ -59,12 +59,12 @@ class CollectionListenerTest extends \PHPUnit_Framework_TestCase
             ->getCollection('web')
             ->getResource('resource');
         $s = new Collection;
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($definition)
             ->set('uuid', 42);
         $s[] = $r;
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($definition)
             ->set('uuid', 24);

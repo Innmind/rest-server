@@ -6,7 +6,7 @@ use Innmind\Rest\Server\Routing\RouteKeys;
 use Innmind\Rest\Server\Routing\RouteActions;
 use Innmind\Rest\Server\Registry;
 use Innmind\Rest\Server\Request\Parser;
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -55,7 +55,7 @@ class RequestListener implements EventSubscriberInterface
 
         $definition = $request->attributes->get(RouteKeys::DEFINITION);
 
-        if ($definition instanceof Resource) {
+        if ($definition instanceof ResourceDefinition) {
             return;
         }
 

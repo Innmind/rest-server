@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server\Event\Storage;
 
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResourceInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class PreCreateEvent extends Event
@@ -10,7 +10,7 @@ class PreCreateEvent extends Event
     protected $resource;
     protected $id;
 
-    public function __construct(Resource $resource)
+    public function __construct(HttpResourceInterface $resource)
     {
         $this->resource = $resource;
     }
@@ -18,7 +18,7 @@ class PreCreateEvent extends Event
     /**
      * Return the resource to be created
      *
-     * @return Resource
+     * @return HttpResourceInterface
      */
     public function getResource()
     {
@@ -28,13 +28,13 @@ class PreCreateEvent extends Event
     /**
      * Replace the resource to be created
      *
-     * @param Innmind\Rest\Server\Resource $resource
+     * @param HttpResourceInterface $resource
      *
      * @throws InvalidArgumentException If no definition is set on the resource
      *
      * @return PreCreateEvent self
      */
-    public function replaceResource(Resource $resource)
+    public function replaceResource(HttpResourceInterface $resource)
     {
         if (!$resource->hasDefinition()) {
             throw new \InvalidArgumentException(

@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server;
 
 use Innmind\Rest\Server\Definition\Collection as CollectionDefinition;
-use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
 use Symfony\Component\Config\Definition\Processor;
 
