@@ -73,6 +73,16 @@ class Configuration implements ConfigurationInterface
                                                 ->prototype('variable')->end()
                                             ->end()
                                         ->end()
+                                        ->beforeNormalization()
+                                            ->always()
+                                            ->then(function($value) {
+                                                if (is_string($value)) {
+                                                    return ['type' => $value];
+                                                }
+
+                                                return $value;
+                                            })
+                                        ->end()
                                     ->end()
                                 ->end()
                                 ->arrayNode('meta')

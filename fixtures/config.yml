@@ -6,8 +6,7 @@ collections:
                 id: uuid
                 storage: neo4j
                 properties:
-                    uuid:
-                        type: string
+                    uuid: string
                     uri:
                         type: string
                         access: [READ, CREATE]
