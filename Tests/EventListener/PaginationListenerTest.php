@@ -10,7 +10,6 @@ use Innmind\Rest\Server\Routing\RouteFactory;
 use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Collection;
 use Innmind\Rest\Server\Collection as ResourceCollection;
-use Innmind\Rest\Server\Resource;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
