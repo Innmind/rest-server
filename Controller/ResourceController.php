@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\Controller;
 
 use Innmind\Rest\Server\Definition\ResourceDefinition;
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResourceInterface;
 use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Storages;
 use Innmind\Rest\Server\Exception\ResourceNotFoundException;
@@ -60,9 +60,9 @@ class ResourceController
     /**
      * Create a resource
      *
-     * @param Innmind\Rest\Resource|Collection $resources
+     * @param HttpResourceInterface|Collection $resources
      *
-     * @return Innmind\Rest\Resource|Collection
+     * @return HttpResourceInterface|Collection
      */
     public function createAction($resources)
     {
@@ -87,12 +87,12 @@ class ResourceController
     /**
      * Update a resource
      *
-     * @param Innmind\Rest\Server\Resource $resource
+     * @param HttpResourceInterface $resource
      * @param string $id
      *
-     * @return Innmind\Rest\Server\Resource
+     * @return HttpResourceInterface
      */
-    public function updateAction(Resource $resource, $id)
+    public function updateAction(HttpResourceInterface $resource, $id)
     {
         $this
             ->storages

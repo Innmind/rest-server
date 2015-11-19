@@ -4,7 +4,7 @@ namespace Innmind\Rest\Server\EventListener\Response;
 
 use Innmind\Rest\Server\Routing\RouteFactory;
 use Innmind\Rest\Server\Routing\RouteActions;
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResourceInterface;
 use Innmind\Rest\Server\Formats;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -53,7 +53,7 @@ class ResourceListener implements EventSubscriberInterface
     {
         $content = $event->getControllerResult();
 
-        if (!$content instanceof Resource) {
+        if (!$content instanceof HttpResourceInterface) {
             return;
         }
 

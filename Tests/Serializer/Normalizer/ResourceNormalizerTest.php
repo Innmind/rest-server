@@ -4,6 +4,7 @@ namespace Innmind\Rest\Server\Tests\Serializer\Normalizer;
 
 use Innmind\Rest\Server\Serializer\Normalizer\ResourceNormalizer;
 use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResourceInterface;
 use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Definition\ResourceDefinition;
@@ -101,7 +102,7 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function testSupportDenormalization()
     {
-        $this->assertTrue($this->n->supportsDenormalization([], Resource::class));
+        $this->assertTrue($this->n->supportsDenormalization([], HttpResourceInterface::class));
     }
 
     public function testDoesntSupportDenormalization()
@@ -123,14 +124,14 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                     'bar' => 2,
                 ],
             ],
-            Resource::class,
+            HttpResourceInterface::class,
             null,
             [
                 'definition' => $def,
             ]
         );
         $this->assertInstanceOf(
-            Resource::class,
+            HttpResourceInterface::class,
             $r
         );
         $this->assertSame(
@@ -149,7 +150,7 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                     'bar' => 2,
                 ]],
             ],
-            Resource::class,
+            HttpResourceInterface::class,
             null,
             [
                 'definition' => $def,
@@ -184,7 +185,7 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                 'foo' => 1,
                 'bar' => 2,
             ],
-            Resource::class,
+            HttpResourceInterface::class,
             null,
             [
                 'access' => 'UPDATE',
@@ -203,7 +204,7 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                 'foo' => 1,
                 'bar' => 2,
             ],
-            Resource::class,
+            HttpResourceInterface::class,
             null,
             [
                 'definition' => 'foo',
@@ -223,7 +224,7 @@ class ResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                 'foo' => 1,
                 'bar' => 2,
             ],
-            Resource::class,
+            HttpResourceInterface::class,
             null,
             [
                 'definition' => new ResourceDefinition('foo'),

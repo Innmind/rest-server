@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server\Event\Storage;
 
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResourceInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class PostUpdateEvent extends Event
@@ -11,7 +11,7 @@ class PostUpdateEvent extends Event
     protected $id;
     protected $entity;
 
-    public function __construct(Resource $resource, $id, $entity)
+    public function __construct(HttpResourceInterface $resource, $id, $entity)
     {
         $this->resource = $resource;
         $this->id = $id;
@@ -21,7 +21,7 @@ class PostUpdateEvent extends Event
     /**
      * Return the resource to be updated
      *
-     * @return Resource
+     * @return HttpResourceInterface
      */
     public function getResource()
     {

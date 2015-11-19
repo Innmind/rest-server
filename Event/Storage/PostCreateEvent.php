@@ -2,13 +2,13 @@
 
 namespace Innmind\Rest\Server\Event\Storage;
 
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResourceInterface;
 
 class PostCreateEvent extends PreCreateEvent
 {
     protected $entity;
 
-    public function __construct(Resource $resource, $entity)
+    public function __construct(HttpResourceInterface $resource, $entity)
     {
         parent::__construct($resource);
 

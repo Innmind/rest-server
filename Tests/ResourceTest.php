@@ -3,10 +3,16 @@
 namespace Innmind\Rest\Server\Tests;
 
 use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResourceInterface;
 use Innmind\Rest\Server\Definition\ResourceDefinition;
 
 class ResourceTest extends \PHPUnit_Framework_TestCase
 {
+    public function testInterface()
+    {
+        $this->assertInstanceOf(HttpResourceInterface::class, new Resource);
+    }
+
     public function testSetProperty()
     {
         $r = new Resource;

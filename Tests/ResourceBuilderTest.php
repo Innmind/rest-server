@@ -4,6 +4,7 @@ namespace Innmind\Rest\Server\Tests;
 
 use Innmind\Rest\Server\ResourceBuilder;
 use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResourceInterface;
 use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Definition\Collection;
@@ -60,7 +61,7 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
         $r = $this->b->build($o, $d);
 
         $this->assertInstanceOf(
-            Resource::class,
+            HttpResourceInterface::class,
             $r
         );
         $this->assertTrue($r->has('bar'));
@@ -84,7 +85,7 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
         $r = $this->b->build($o, $d);
 
         $this->assertInstanceOf(
-            Resource::class,
+            HttpResourceInterface::class,
             $r
         );
         $this->assertTrue($r->has('bar'));
@@ -191,7 +192,7 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
         $r = $this->b->build($o, $d);
 
         $this->assertInstanceOf(
-            Resource::class,
+            HttpResourceInterface::class,
             $r->get('foo')
         );
         $this->assertSame(
@@ -216,7 +217,7 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
         $r = $this->b->build(new \stdClass, $def);
 
         $this->assertInstanceOf(
-            Resource::class,
+            HttpResourceInterface::class,
             $r
         );
     }

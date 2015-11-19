@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server\Storage;
 
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResourceInterface;
 use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Event\Storage;
 use Innmind\Rest\Server\Definition\ResourceDefinition;
@@ -18,7 +18,7 @@ abstract class AbstractStorage
     /**
      * {@inheritdoc}
      */
-    public function create(Resource $resource)
+    public function create(HttpResourceInterface $resource)
     {
         $this->dispatcher->dispatch(
             Events::STORAGE_PRE_CREATE,
@@ -47,7 +47,7 @@ abstract class AbstractStorage
     /**
      * {@inheritdoc}
      */
-    public function update(Resource $resource, $id)
+    public function update(HttpResourceInterface $resource, $id)
     {
         $this->dispatcher->dispatch(
             Events::STORAGE_PRE_UPDATE,

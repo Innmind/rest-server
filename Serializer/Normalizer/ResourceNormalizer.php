@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server\Serializer\Normalizer;
 
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResourceInterface;
 use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Access;
 use Innmind\Rest\Server\ResourceBuilder;
@@ -79,7 +79,7 @@ class ResourceNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Resource || $data instanceof Collection;
+        return $data instanceof HttpResourceInterface || $data instanceof Collection;
     }
 
     /**
@@ -139,7 +139,7 @@ class ResourceNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return is_array($data) && $type === Resource::class;
+        return is_array($data) && $type === HttpResourceInterface::class;
     }
 
     /**

@@ -123,7 +123,7 @@ class ControllerListener implements EventSubscriberInterface
     /**
      * Validate the given data for the given access
      *
-     * @param Innmind\Rest\Resource|Collection $data
+     * @param HttpResourceInterface|Collection $data
      * @param string $access
      *
      * @throws ValidationException

@@ -18,7 +18,7 @@ class Validator
     /**
      * Validate a resource or a collection of ones
      *
-     * @param Innmind\Rest\Server\Resource|Innmind\Rest\Server\Collection $resources
+     * @param HttpResourceInterface|Collection $resources
      * @param string $access One of the constants of Access
      *
      * @return \Symfony\Component\Validator\ConstraintViolationListInterface
@@ -35,7 +35,7 @@ class Validator
         }
 
         if (
-            !$resources instanceof Resource &&
+            !$resources instanceof HttpResourceInterface &&
             !$resources instanceof Collection
         ) {
             throw new \InvalidArgumentException(
@@ -52,7 +52,7 @@ class Validator
     /**
      * Transform the resources in a tree of arrays
      *
-     * @param Innmind\Rest\Server\Resource|Innmind\Rest\Server\Collection $resources
+     * @param HttpResourceInterface|Collection $resources
      *
      * @return array
      */
@@ -97,7 +97,7 @@ class Validator
     /**
      * Build the constraints tree in order to validate data
      *
-     * @param Innmind\Rest\Server\Resource|Innmind\Rest\Server\Collection $resources
+     * @param HttpResourceInterface|Collection $resources
      * @param string $access
      *
      * @return Constraint

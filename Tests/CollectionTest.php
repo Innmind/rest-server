@@ -4,6 +4,7 @@ namespace Innmind\Rest\Server\Tests;
 
 use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResourceInterface;
 
 class CollectionTest extends \PHPUnit_Framework_TestCase
 {
@@ -40,7 +41,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
 
         foreach ($c as $resource) {
             $this->assertInstanceOf(
-                Resource::class,
+                HttpResourceInterface::class,
                 $resource
             );
         }

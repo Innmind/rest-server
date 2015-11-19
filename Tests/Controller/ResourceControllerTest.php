@@ -11,6 +11,7 @@ use Innmind\Rest\Server\Storage\Neo4jStorage;
 use Innmind\Rest\Server\Tests\Storage\Bar;
 use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
+use Innmind\Rest\Server\HttpResourceInterface;
 use Innmind\Rest\Server\Resource;
 use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Registry;
@@ -100,7 +101,7 @@ class ResourceControllerTest extends \PHPUnit_Framework_TestCase
 
         $r2 = $this->c->getAction($this->def, $r->get('id'));
         $this->assertInstanceOf(
-            Resource::class,
+            HttpResourceInterface::class,
             $r2
         );
         $this->assertSame(

@@ -4,7 +4,7 @@ namespace Innmind\Rest\Server\Request;
 
 use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Formats;
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResourceInterface;
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
 use Symfony\Component\Serializer\Serializer;
 use Negotiation\Negotiator;
@@ -105,7 +105,7 @@ class Parser
 
         return $this->serializer->deserialize(
             $request,
-            Resource::class,
+            HttpResourceInterface::class,
             $format,
             ['definition' => $definition]
         );

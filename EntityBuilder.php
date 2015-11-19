@@ -22,14 +22,14 @@ class EntityBuilder
     /**
      * Build an entity out of the given resource
      *
-     * @param Innmind\Rest\Server\Resource $resource
+     * @param HttpResourceInterface $resource
      * @param object $entity
      *
      * @throws LogicException If no class specified or if the entity is not an instance of it
      *
      * @return object
      */
-    public function build(Resource $resource, $entity = null)
+    public function build(HttpResourceInterface $resource, $entity = null)
     {
         if (!$resource->getDefinition()->hasOption('class')) {
             throw new \LogicException(sprintf(
