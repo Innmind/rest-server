@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\Tests;
 
 use Innmind\Rest\Server\EntityBuilder;
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResource;
 use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Collection;
 use Innmind\Rest\Server\Definition\Property;
@@ -26,7 +26,7 @@ class EntityBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testCreate()
     {
-        $r = new Resource;
+        $r = new HttpResource;
         $r->set('foo', 'bar');
         $r->setDefinition(
             (new ResourceDefinition('foo'))
@@ -51,7 +51,7 @@ class EntityBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdate()
     {
-        $r = new Resource;
+        $r = new HttpResource;
         $r->set('foo', 'baz');
         $r->setDefinition(
             (new ResourceDefinition('foo'))
@@ -81,7 +81,7 @@ class EntityBuilderTest extends \PHPUnit_Framework_TestCase
         $collection = new Collection('foo');
         $def = new ResourceDefinition('bar');
         $def->setCollection($collection);
-        $r = new Resource;
+        $r = new HttpResource;
         $r->setDefinition($def);
 
         $this->b->build($r);
@@ -97,7 +97,7 @@ class EntityBuilderTest extends \PHPUnit_Framework_TestCase
         $def = new ResourceDefinition('bar');
         $def->setCollection($collection);
         $def->addOption('class', Foo::class);
-        $r = new Resource;
+        $r = new HttpResource;
         $r->setDefinition($def);
 
         $this->b->build($r, new \stdClass);
@@ -106,7 +106,7 @@ class EntityBuilderTest extends \PHPUnit_Framework_TestCase
     public function testDispatchEvent()
     {
         $fired = false;
-        $r = new Resource;
+        $r = new HttpResource;
         $r->set('foo', 'bar');
         $r->setDefinition(
             (new ResourceDefinition('foo'))
@@ -141,9 +141,9 @@ class EntityBuilderTest extends \PHPUnit_Framework_TestCase
                 ->setType('resource')
                 ->addOption('resource', $d)
         );
-        $sr = new Resource;
+        $sr = new HttpResource;
         $sr->setDefinition($d);
-        $r = new Resource;
+        $r = new HttpResource;
         $r->set('foo', $sr);
         $r->setDefinition($d);
 
@@ -173,9 +173,9 @@ class EntityBuilderTest extends \PHPUnit_Framework_TestCase
                 ->addOption('inner_type', 'resource')
                 ->addOption('resource', $d)
         );
-        $sr = new Resource;
+        $sr = new HttpResource;
         $sr->setDefinition($d);
-        $r = new Resource;
+        $r = new HttpResource;
         $r->set('foo', [$sr]);
         $r->setDefinition($d);
 
@@ -214,11 +214,11 @@ class EntityBuilderTest extends \PHPUnit_Framework_TestCase
                 (new Property('bar'))
                     ->setType('string')
             );
-        $sr = new Resource;
+        $sr = new HttpResource;
         $sr
             ->setDefinition($d)
             ->set('bar', 'baz');
-        $r = new Resource;
+        $r = new HttpResource;
         $r->set('foo', $sr);
         $r->setDefinition($d);
 
@@ -249,11 +249,11 @@ class EntityBuilderTest extends \PHPUnit_Framework_TestCase
                 (new Property('bar'))
                     ->setType('string')
             );
-        $sr = new Resource;
+        $sr = new HttpResource;
         $sr
             ->setDefinition($d)
             ->set('bar', 'baz');
-        $r = new Resource;
+        $r = new HttpResource;
         $r->set('foo', [$sr]);
         $r->setDefinition($d);
 

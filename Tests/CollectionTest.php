@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\Tests;
 
 use Innmind\Rest\Server\Collection;
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResource;
 use Innmind\Rest\Server\HttpResourceInterface;
 
 class CollectionTest extends \PHPUnit_Framework_TestCase
@@ -11,14 +11,14 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testContains()
     {
         $c = new Collection;
-        $c[] = $r = new Resource;
+        $c[] = $r = new HttpResource;
         $this->assertTrue($c->contains($r));
     }
 
     public function testCount()
     {
         $c = new Collection;
-        $c[] = new Resource;
+        $c[] = new HttpResource;
 
         $this->assertSame(1, count($c));
     }
@@ -26,7 +26,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testArrayAccess()
     {
         $c = new Collection;
-        $c[] = $r = new Resource;
+        $c[] = $r = new HttpResource;
 
         $this->assertTrue(isset($c[0]));
         $this->assertSame($r, $c[0]);
@@ -37,7 +37,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testTraversability()
     {
         $c = new Collection;
-        $c[] = $r = new Resource;
+        $c[] = $r = new HttpResource;
 
         foreach ($c as $resource) {
             $this->assertInstanceOf(

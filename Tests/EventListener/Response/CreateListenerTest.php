@@ -6,7 +6,7 @@ use Innmind\Rest\Server\EventListener\Response\CreateListener;
 use Innmind\Rest\Server\Registry;
 use Innmind\Rest\Server\Routing\RouteLoader;
 use Innmind\Rest\Server\Routing\RouteFactory;
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResource;
 use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Routing\RouteKeys;
 use Innmind\Rest\Server\Definition\Property;
@@ -69,7 +69,7 @@ class CreateListenerTest extends \PHPUnit_Framework_TestCase
             );
         }
 
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($definition)
             ->set('uuid', 42)

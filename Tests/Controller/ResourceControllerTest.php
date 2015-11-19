@@ -12,7 +12,7 @@ use Innmind\Rest\Server\Tests\Storage\Bar;
 use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\HttpResourceInterface;
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResource;
 use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Registry;
 use Innmind\Neo4j\ONM\EntityManagerFactory;
@@ -78,7 +78,7 @@ class ResourceControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateAction()
     {
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');
@@ -93,7 +93,7 @@ class ResourceControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAction()
     {
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');
@@ -125,7 +125,7 @@ class ResourceControllerTest extends \PHPUnit_Framework_TestCase
     public function testIndexAction()
     {
         $this->em->getConnection()->execute('match (n) delete n');
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');
@@ -144,7 +144,7 @@ class ResourceControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateAction()
     {
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');
@@ -166,7 +166,7 @@ class ResourceControllerTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeleteAction()
     {
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');

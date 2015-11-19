@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\Tests\Event;
 
 use Innmind\Rest\Server\Event\EntityBuildEvent;
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResource;
 
 class EntityBuildEventTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,7 +14,7 @@ class EntityBuildEventTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->ev = new EntityBuildEvent(
-            $this->r = new Resource,
+            $this->r = new HttpResource,
             $this->e = new \stdClass
         );
     }

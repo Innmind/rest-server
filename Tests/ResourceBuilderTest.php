@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\Tests;
 
 use Innmind\Rest\Server\ResourceBuilder;
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResource;
 use Innmind\Rest\Server\HttpResourceInterface;
 use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
@@ -133,7 +133,7 @@ class ResourceBuilderTest extends \PHPUnit_Framework_TestCase
             'innmind.rest.server.resource.build',
             function(ResourceBuildEvent $event) {
                 $event->setResource(
-                    (new Resource)
+                    (new HttpResource)
                         ->setDefinition(new ResourceDefinition('foo'))
                         ->set('my', 'own')
                 );

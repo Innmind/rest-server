@@ -52,7 +52,7 @@ class ResourceBuilder
             ));
         }
 
-        $resource = new Resource;
+        $resource = new HttpResource;
         $resource->setDefinition($definition);
 
         foreach ($definition->getProperties() as $property) {

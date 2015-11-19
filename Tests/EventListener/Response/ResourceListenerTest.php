@@ -7,7 +7,7 @@ use Innmind\Rest\Server\Registry;
 use Innmind\Rest\Server\Routing\RouteLoader;
 use Innmind\Rest\Server\Routing\RouteFactory;
 use Innmind\Rest\Server\ResourceBuilder;
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResource;
 use Innmind\Rest\Server\Formats;
 use Innmind\Rest\Server\Routing\RouteKeys;
 use Innmind\Rest\Server\Definition\Property;
@@ -85,12 +85,12 @@ class ResourceListenerTest extends \PHPUnit_Framework_TestCase
                     ->addAccess('READ')
             );
         }
-        $sub = new Resource;
+        $sub = new HttpResource;
         $sub
             ->setDefinition($this->registry->getCollection('bar')->getResource('foo'))
             ->set('uuid', 24)
             ->set('foo', 'bar');
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($definition)
             ->set('uuid', 42)

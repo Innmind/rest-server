@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server\Tests\Storage;
 
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResource;
 use Innmind\Rest\Server\HttpResourceInterface;
 use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Event\Storage;
@@ -36,7 +36,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
                 $event->setResourceId(42);
             }
         );
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');
@@ -59,7 +59,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
             },
             10
         );
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');
@@ -70,7 +70,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
 
     public function testCreate()
     {
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');
@@ -92,7 +92,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
             function(Storage\PreReadEvent $event) use (&$fired) {
                 $fired = true;
                 $event->addResource(
-                    (new Resource)
+                    (new HttpResource)
                         ->setDefinition($this->def)
                 );
             }
@@ -111,7 +111,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
             function(Storage\PostReadEvent $event) use (&$fired) {
                 $fired = true;
                 $event->addResource(
-                    (new Resource)
+                    (new HttpResource)
                         ->setDefinition($this->def)
                 );
             }
@@ -124,7 +124,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
 
     public function testRead()
     {
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');
@@ -168,7 +168,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
 
     public function testDispatchPreUpdate()
     {
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');
@@ -218,7 +218,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
             }
         );
 
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');
@@ -233,7 +233,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
 
     public function dispatchPostUpdate($class)
     {
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');
@@ -268,7 +268,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
 
     public function testDispatchPreDelete()
     {
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');
@@ -307,7 +307,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
 
     public function dispatchPostDelete($class)
     {
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');
@@ -341,7 +341,7 @@ abstract class AbstractStorage extends \PHPUnit_Framework_TestCase
 
     public function testDelete()
     {
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($this->def)
             ->set('name', 'foo');

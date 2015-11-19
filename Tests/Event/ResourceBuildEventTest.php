@@ -4,7 +4,7 @@ namespace Innmind\Rest\Server\Tests\Event;
 
 use Innmind\Rest\Server\Event\ResourceBuildEvent;
 use Innmind\Rest\Server\Definition\ResourceDefinition;
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResource;
 
 class ResourceBuildEventTest extends \PHPUnit_Framework_TestCase
 {
@@ -45,7 +45,7 @@ class ResourceBuildEventTest extends \PHPUnit_Framework_TestCase
 
     public function testSetResource()
     {
-        $r = new Resource;
+        $r = new HttpResource;
         $r->setDefinition(new ResourceDefinition('foo'));
 
         $this->assertFalse($this->e->hasResource());
@@ -66,6 +66,6 @@ class ResourceBuildEventTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowWhenSettingAResourceWithoutADefinition()
     {
-        $this->e->setResource(new Resource);
+        $this->e->setResource(new HttpResource);
     }
 }

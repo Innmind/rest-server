@@ -4,7 +4,7 @@ namespace Innmind\Rest\Server;
 
 use Innmind\Rest\Server\Definition\ResourceDefinition;
 
-class Resource implements HttpResourceInterface
+class HttpResource implements HttpResourceInterface
 {
     protected $data = [];
     protected $definition;

@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\Tests;
 use Innmind\Rest\Server\Validator;
 use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResource;
 use Symfony\Component\Validator\Validation;
 
 class ValidatorTest extends \PHPUnit_Framework_TestCase
@@ -60,11 +60,11 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testValidate()
     {
-        $inner = new Resource;
+        $inner = new HttpResource;
         $inner
             ->setDefinition($this->d2)
             ->set('foo', 'foo');
-        $r = new Resource;
+        $r = new HttpResource;
         $r
             ->setDefinition($this->d)
             ->set('bar', 'bar')
@@ -93,7 +93,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowIfValidatingUnknownAccess()
     {
-        $this->v->validate(new Resource, 'foo');
+        $this->v->validate(new HttpResource, 'foo');
     }
 
     /**
@@ -115,7 +115,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                 ->addOption('optional', null)
                 ->addOption('resource', new ResourceDefinition('bar'))
         );
-        $r = new Resource;
+        $r = new HttpResource;
         $r->setDefinition($def);
 
         $violations = $this->v->validate($r, 'READ');

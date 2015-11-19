@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\Tests\Request;
 use Innmind\Rest\Server\Request\Parser;
 use Innmind\Rest\Server\Formats;
 use Innmind\Rest\Server\ResourceBuilder;
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResource;
 use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
@@ -109,16 +109,16 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                     ->addOption('resource', $subDef)
             );
         $expectedColl = new Collection;
-        $expectedColl[] = (new Resource)
+        $expectedColl[] = (new HttpResource)
             ->setDefinition($subDef)
             ->set('foo', 'bar');
-        $expected = new Resource;
+        $expected = new HttpResource;
         $expected
             ->setDefinition($definition)
             ->set('foo', 'bar')
             ->set(
                 'sub',
-                (new Resource)
+                (new HttpResource)
                     ->setDefinition($subDef)
                     ->set('foo', 'bar')
             )
@@ -192,12 +192,12 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         );
         $r->headers->add(['Content-Type' => 'application/json']);
         $expected = new Collection;
-        $o = new Resource;
+        $o = new HttpResource;
         $o
             ->setDefinition($def)
             ->set('foo', 'bar');
         $expected[] = $o;
-        $o = new Resource;
+        $o = new HttpResource;
         $o
             ->setDefinition($def)
             ->set('foo', 'baz');
