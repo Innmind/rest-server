@@ -88,5 +88,7 @@ services:
 
     listener.exception:
         class: Innmind\Rest\Server\EventListener\ExceptionListener
+        arguments:
+            - @logger
         tags:
             - { name: kernel.event_subscriber }

@@ -65,3 +65,6 @@ services:
 
     paginator:
         class: %innmind_rest.listener.paginator%
+
+    logger:
+        class: Psr\Log\NullLogger

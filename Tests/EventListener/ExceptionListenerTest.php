@@ -16,13 +16,17 @@ use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Psr\Log\NullLogger;
 
 class ExceptionListenerTest extends \PHPUnit_Framework_TestCase
 {
+    protected $l;
     protected $kernel;
 
     public function setUp()
     {
+        $this->l = new ExceptionListener(new NullLogger);
+
         $this->kernel = $this
             ->getMockBuilder(HttpKernel::class)
             ->disableOriginalConstructor()
@@ -45,14 +49,14 @@ class ExceptionListenerTest extends \PHPUnit_Framework_TestCase
             HttpKernel::MASTER_REQUEST,
             new PayloadException
         );
-        (new ExceptionListener)->buildHttpException($ev);
+        $this->l->buildHttpException($ev);
         $this->assertInstanceOf(
             BadRequestHttpException::class,
             $ev->getException()
         );
 
         $ev->setException(new ValidationException);
-        (new ExceptionListener)->buildHttpException($ev);
+        $this->l->buildHttpException($ev);
         $this->assertInstanceOf(
             BadRequestHttpException::class,
             $ev->getException()
@@ -68,7 +72,7 @@ class ExceptionListenerTest extends \PHPUnit_Framework_TestCase
             HttpKernel::MASTER_REQUEST,
             ValidationException::build('READ', $v)
         );
-        (new ExceptionListener)->buildHttpException($ev);
+        $this->l->buildHttpException($ev);
         $this->assertInstanceOf(
             HttpException::class,
             $ev->getException()
@@ -83,7 +87,7 @@ class ExceptionListenerTest extends \PHPUnit_Framework_TestCase
             HttpKernel::MASTER_REQUEST,
             new ResourceNotFoundException
         );
-        (new ExceptionListener)->buildHttpException($ev);
+        $this->l->buildHttpException($ev);
         $this->assertInstanceOf(
             NotFoundHttpException::class,
             $ev->getException()
@@ -98,7 +102,7 @@ class ExceptionListenerTest extends \PHPUnit_Framework_TestCase
             HttpKernel::MASTER_REQUEST,
             new TooManyResourcesFoundException
         );
-        (new ExceptionListener)->buildHttpException($ev);
+        $this->l->buildHttpException($ev);
         $this->assertInstanceOf(
             ConflictHttpException::class,
             $ev->getException()

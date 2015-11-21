@@ -14,9 +14,17 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Psr\Log\LoggerInterface;
 
 class ExceptionListener implements EventSubscriberInterface
 {
+    protected $logger;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -45,6 +53,10 @@ class ExceptionListener implements EventSubscriberInterface
                 break;
             case $exception instanceof ValidationException:
                 if ($exception->getAccess() === Access::READ) {
+                    $this->logger->error(
+                        'Returned resource doesn\'t match its definition',
+                        ['violations' => $exception->getViolations()]
+                    );
                     /*
                     @see https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#cite_note-89
                     It means we want to return a resource that doesn't follow its description
@@ -55,6 +67,10 @@ class ExceptionListener implements EventSubscriberInterface
                         $exception
                     );
                 } else {
+                    $this->logger->warning(
+                        'Resceived resource doesn\'t match its definition',
+                        ['violations' => $exception->getViolations()]
+                    );
                     $exception = new BadRequestHttpException(null, $exception);
                 }
                 break;
