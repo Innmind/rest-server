@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server\Event\Storage;
 
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Symfony\Component\EventDispatcher\Event;
 
 class PreDeleteEvent extends Event
@@ -10,7 +10,7 @@ class PreDeleteEvent extends Event
     protected $definition;
     protected $id;
 
-    public function __construct(Resource $definition, $id)
+    public function __construct(ResourceDefinition $definition, $id)
     {
         $this->definition = $definition;
         $this->id = $id;
@@ -19,7 +19,7 @@ class PreDeleteEvent extends Event
     /**
      * Return the resource definition
      *
-     * @return Resource
+     * @return ResourceDefinition
      */
     public function getDefinition()
     {

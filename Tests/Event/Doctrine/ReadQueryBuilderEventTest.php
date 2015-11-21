@@ -3,7 +3,7 @@
 namespace Innmind\Rest\Server\Tests\Event\Doctrine;
 
 use Innmind\Rest\Server\Event\Doctrine\ReadQueryBuilderEvent;
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
 
@@ -15,7 +15,7 @@ class ReadQueryBuilderEventTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->e = new ReadQueryBuilderEvent(
-            new Resource('foo'),
+            new ResourceDefinition('foo'),
             null,
             $this->qb = new QueryBuilder(
                 $this

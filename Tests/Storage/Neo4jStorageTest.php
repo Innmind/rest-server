@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\Tests\Storage;
 use Innmind\Rest\Server\Storage\Neo4jStorage;
 use Innmind\Rest\Server\EntityBuilder;
 use Innmind\Rest\Server\ResourceBuilder;
-use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Definition\Property;
 use Innmind\Rest\Server\Event\Storage;
 use Innmind\Rest\Server\Event\Neo4j\ReadQueryBuilderEvent;
@@ -106,9 +106,4 @@ class Neo4jStorageTest extends AbstractStorage
     {
         $this->dispatchPostCreate(Bar::class);
     }
-}
-
-class Bar {
-    public $id;
-    public $name;
 }

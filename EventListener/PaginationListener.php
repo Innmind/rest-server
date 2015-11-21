@@ -6,29 +6,31 @@ use Innmind\Rest\Server\PaginatorInterface;
 use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Event\Neo4j;
 use Innmind\Rest\Server\Event\Doctrine;
-use Innmind\Rest\Server\Event\ResponseEvent;
-use Innmind\Rest\Server\Routing\RouteCollection;
-use Innmind\Rest\Server\Routing\RouteFinder;
+use Innmind\Rest\Server\Routing\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteActions;
+use Innmind\Rest\Server\Routing\RouteFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
 class PaginationListener implements EventSubscriberInterface
 {
     protected $requestStack;
     protected $urlGenerator;
-    protected $routeFinder;
+    protected $routeFactory;
     protected $paginator;
 
     public function __construct(
         RequestStack $requestStack,
         UrlGeneratorInterface $urlGenerator,
-        RouteFinder $routeFinder,
+        RouteFactory $routeFactory,
         PaginatorInterface $paginator
     ) {
         $this->requestStack = $requestStack;
         $this->urlGenerator = $urlGenerator;
-        $this->routeFinder = $routeFinder;
+        $this->routeFactory = $routeFactory;
         $this->paginator = $paginator;
     }
 
@@ -40,7 +42,7 @@ class PaginationListener implements EventSubscriberInterface
         return [
             Events::NEO4J_READ_QUERY_BUILDER => 'paginateNeo4j',
             Events::DOCTRINE_READ_QUERY_BUILDER => 'paginateDoctrine',
-            Events::RESPONSE => 'addPageLinks',
+            KernelEvents::RESPONSE => 'addPageLinks',
         ];
     }
 
@@ -105,19 +107,19 @@ class PaginationListener implements EventSubscriberInterface
     /**
      * Add links in the response for previous or next page
      *
-     * @param ResponseEvent $event
+     * @param FilterResponseEvent $event
      *
      * @return void
      */
-    public function addPageLinks(ResponseEvent $event)
+    public function addPageLinks(FilterResponseEvent $event)
     {
-        if ($event->getAction() !== 'index') {
-            return;
-        }
+        $request = $event->getRequest();
 
-        $request = $this->requestStack->getCurrentRequest();
-
-        if (!$request || !$this->paginator->canPaginate($request)) {
+        if (
+            !$request->attributes->has(RouteKeys::ACTION) ||
+            $request->attributes->get(RouteKeys::ACTION) !== RouteActions::INDEX ||
+            !$this->paginator->canPaginate($request)
+        ) {
             return;
         }
 
@@ -129,8 +131,8 @@ class PaginationListener implements EventSubscriberInterface
             ->requestStack
             ->getCurrentRequest()
             ->attributes
-            ->get(RouteCollection::RESOURCE_KEY);
-        $route = $this->routeFinder->find($definition, 'index');
+            ->get(RouteKeys::DEFINITION);
+        $route = $this->routeFactory->makeName($definition, RouteActions::INDEX);
 
         if ($offset > 0) {
             $prevOffset = max(0, $offset - $limit);
@@ -144,12 +146,6 @@ class PaginationListener implements EventSubscriberInterface
                     ]
                 )
             );
-        }
-
-        $collection = $event->getContent();
-
-        if ($collection->count() < $limit) {
-            return;
         }
 
         $nextOffset = $offset + $limit;

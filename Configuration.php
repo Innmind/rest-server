@@ -62,7 +62,7 @@ class Configuration implements ConfigurationInterface
                                                 ->values(Types::keys())
                                             ->end()
                                             ->arrayNode('access')
-                                                ->isRequired()
+                                                ->defaultValue([Access::READ])
                                                 ->prototype('scalar')->end()
                                             ->end()
                                             ->arrayNode('variants')
@@ -72,6 +72,16 @@ class Configuration implements ConfigurationInterface
                                             ->arrayNode('options')
                                                 ->prototype('variable')->end()
                                             ->end()
+                                        ->end()
+                                        ->beforeNormalization()
+                                            ->always()
+                                            ->then(function($value) {
+                                                if (is_string($value)) {
+                                                    return ['type' => $value];
+                                                }
+
+                                                return $value;
+                                            })
                                         ->end()
                                     ->end()
                                 ->end()

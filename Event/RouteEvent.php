@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server\Event;
 
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -16,7 +16,7 @@ class RouteEvent extends Event
     public function __construct(
         RouteCollection $routes,
         Route $route,
-        Resource $resource
+        ResourceDefinition $resource
     ) {
         $this->routes = $routes;
         $this->route = $route;

@@ -9,11 +9,11 @@ class Collection implements \ArrayAccess, \Iterator, \Countable
     /**
      * Check if the resource is in this collection
      *
-     * @param Innmind\Rest\Server\Resource $resource
+     * @param HttpResourceInterface $resource
      *
      * @return bool
      */
-    public function contains(Resource $resource)
+    public function contains(HttpResourceInterface $resource)
     {
         return in_array($resource, $this->resources, true);
     }

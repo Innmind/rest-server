@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server;
 
-use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 
 interface StorageInterface
 {
@@ -20,21 +20,21 @@ interface StorageInterface
     /**
      * Create the given resource
      *
-     * @param Innmind\Rest\Server\Resource $resource
+     * @param HttpResourceInterface $resource
      *
      * @return mixed The id for the given resource
      */
-    public function create(Resource $resource);
+    public function create(HttpResourceInterface $resource);
 
     /**
      * Update the given resource
      *
-     * @param Innmind\Rest\Server\Resource $resource
+     * @param HttpResourceInterface $resource
      * @param mixed $id
      *
      * @return StorageInterface self
      */
-    public function update(Resource $resource, $id);
+    public function update(HttpResourceInterface $resource, $id);
 
     /**
      * Delete the resource with the given id

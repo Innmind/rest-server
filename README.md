@@ -32,63 +32,42 @@ The goal is that by default you only need to write configuration to expose your 
 ## Setup
 
 ```php
-use Innmind\Rest\Server\Setup;
-use Innmind\Rest\Server\Storage\DoctrineStorage;
-use Innmind\Rest\Server\Serializer\Encoder\JsonEncoder;
-use Innmind\Rest\Server\Serializer\Encoder\FormEncoder;
+use Innmind\Rest\Server\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-$setup = new Setup(
+$app = new Application(
     '/path/to/config/file.yml',
-    ['doctrine' => new DoctrineStorage(/* ... */)],
-    [new JsonEncoder, new FormEncoder]
+    '/path/to/config/services.yml'
 );
-$setup
-    ->addFormat('json', 'application/json', 42)
-    ->addFormat('form', 'application/x-www-url-encoded', 0);
-$response = $setup->handleRequest(Request::createFromGlobals());
+$response = $app->handle(Request::createFromGlobals());
 $response->send();
 ```
 
 So what happens here?!
 
-First you tell the library to load the definitions of your resources (located at `/path/to/config/file.yml`). Then to use a [Doctrine](http://www.doctrine-project.org/) storage (more on that in a bit) and to use the `FormEncoder` and `JsonEncoder` to work with the data from the request (the json one is also used to output data).
-
-The calls to `addFormat` is your way to tell the mapping between a content type (from `Content-Type` and `Accept` headers) to a format name. For example, if we have a `Content-Type` set to `application/json`, it will be understand it's a `json` format and so use the `JsonEncoder` in order to decode the content from the request.
+First you tell the library to load the definitions of your resources (located at `/path/to/config/file.yml`). Then to load your services (at `/path/to/config/services.yml`), which contains the storages definitions (more on that in a bit).
 
 And in the end you call the mechanism to transform the request into a response (and send it).
 
 ### Storages
 
-The storages you give to the setup are facades for doctrine (or neo4j) and implements a simple [`StorageInterface`](StorageInterface.php). To build a `DcotrineStorage` you'll need 4 objects:
+The storages you give to the setup are facades for doctrine (or neo4j) and implements a simple [`StorageInterface`](StorageInterface.php). To build a `DcotrineStorage` you can do so as follows:
 
-* a doctrine entity manager (`Doctrine\ORM\EntityManagerInterface`)
-* an event dispatcher (`Symfony\Component\EventDispatcher\EventDispatcherInterface`)
-* an entity builder
-* a resource builder
+```yml
+# /path/to/config/service.yml
+services:
+    my_doctrine:
+        parent: storage.abstract.doctrine
+        arguments:
+            index_0: @doctrine
+        tags:
+            - { name: storage, alias: dcotrine }
 
-Here's a sample code to build one:
-
-```php
-use Innmind\Rest\Server\Storage\DoctrineStorage;
-use Innmind\Rest\Server\EntityBuilder;
-use Innmind\Rest\Server\ResourceBuilder;
-use Symfony\Component\EventDispatcher\EventDispather;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-
-$dispatcher = new EventDispatcher;
-$accessor = PropertyAccess::createPropertyAccessor();
-$storage = new DoctrineStorage(
-    $em, //have a look at the doctrine project to know how to build one
-    $dispatcher,
-    new EntityBuilder($accessor, $dispatcher),
-    new ResourceBuilder($accessor, $dispatcher)
-);
+    doctrine:
+        class: ... # check the doctrine website to know how to create an instance
 ```
 
-**Note**: if you want to use the same dispatcher everywhere, you can pass the dispatcher instance as the sixth argument of the setup.
-
-**Note**: The code sample is the same for the neo4j storage.
+To build a `Neo4jStorage` you can have a look at this [fixture](fixtures/services/local.yml) (as you can see it is very similar).
 
 ### Configuration file
 
@@ -152,3 +131,25 @@ This will generates the following routes:
 * `POST /blog/author/`
 * `PUT /blog/author/{id}`
 * `DELETE /blog/author/{id}`
+
+### Formats
+
+By default this library allows you to use `json` as input and output format (`url encoded form` is also supported as input format).
+
+If you wish to add a new format, you can do it simply by building a Symfony `Encoder` and declare it as a service in your `yaml` file. On this service you need to add 2 tags: `serializer.encoder` and `format`. Have a look [here](config/service/serializer.yml) to check how the `json` format is declared.
+
+As you saw, the `format` tag need at least 2 attributes: `format` and `mime`. The first is the one you need to use when you implement `EncoderInterface::supportsEncoding`; the other is used to map the `Content-Type` header to this format. In case your format can be declared under several mime types, you simply need to add a `format` tag per mime type.
+
+### Events
+
+The `Application` class used in this library extends the Symfony `Kernel` so by default you can hook on its events (`REQUEST`, `CONTROLLER`, `VIEW`, `RESPONSE`, `TERMINATE` and `EXCEPTION`).
+
+Here is a list of additional events:
+
+* `Events::ROUTE`: allows you to alter a route definition (if you call `$event->stopPropagation()`, it will prevent the route from being added to the router)
+* `Events::RESOURCE_BUILD`: use this event when you want to transpose by yourself a `HttpResource` into an entity comprehensible by the storage
+* `Events::ENTITY_BUILD`: use this event when you want to return a resource that can't be directly built from a resource (for instance a resource property is not directly mapped to an entity property)
+* `Events::PRE_[READ|CREATE|UPDATE|DELETE]`: fired before any action is done in the storage, allowing you to return an alternative content from the expected one
+* `Events::POST_[READ|CREATE|UPDATE|DELETE]`: fired right before the storage return the result of the action, could be used to filter the returned content
+* `Events::DOCTRINE_READ_QUERY_BUILDER`: fired after the `DoctrineStorage` has built a query builder object and before it is executed, it allows you to add filters to it (like `where` clauses)
+* `Events::NEO4J_READ_QUERY_BUILDER`: fired after the `Neo4jStorage` has built a query builder object and before it is executed, it allows you to add filters to it (like `where` clauses)

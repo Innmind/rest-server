@@ -2,25 +2,27 @@
 
 namespace Innmind\Rest\Server\EventListener\Response;
 
-use Innmind\Rest\Server\Events;
-use Innmind\Rest\Server\Definition\Resource;
-use Innmind\Rest\Server\Event\ResponseEvent;
-use Innmind\Rest\Server\Routing\RouteFinder;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
+use Innmind\Rest\Server\Routing\RouteFactory;
+use Innmind\Rest\Server\Routing\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteActions;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\HttpFoundation\Response as HttpResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 
 class OptionsListener implements EventSubscriberInterface
 {
     protected $urlGenerator;
-    protected $routeFinder;
+    protected $routeFactory;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
-        RouteFinder $routeFinder
+        RouteFactory $routeFactory
     ) {
         $this->urlGenerator = $urlGenerator;
-        $this->routeFinder = $routeFinder;
+        $this->routeFactory = $routeFactory;
     }
 
     /**
@@ -29,25 +31,31 @@ class OptionsListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Events::RESPONSE => 'buildResponse',
+            KernelEvents::VIEW => 'buildResponse',
         ];
     }
 
     /**
      * Build the response for an OPTIONS request
      *
-     * @param ResponseEvent $event
+     * @param GetResponseForControllerResultEvent $event
      *
      * @return void
      */
-    public function buildResponse(ResponseEvent $event)
+    public function buildResponse(GetResponseForControllerResultEvent $event)
     {
-        if ($event->getAction() !== 'options') {
+        $request = $event->getRequest();
+
+        if (
+            !$request->attributes->has(RouteKeys::ACTION) ||
+            $request->attributes->get(RouteKeys::ACTION) !== RouteActions::OPTIONS
+        ) {
             return;
         }
 
-        $content = $event->getContent();
-        $response = $event->getResponse();
+        $content = $event->getControllerResult();
+        $response = new Response;
+        $event->setResponse($response);
 
         foreach ($content['resource']['properties'] as $name => $property) {
             if (!isset($property['resource'])) {
@@ -81,20 +89,20 @@ class OptionsListener implements EventSubscriberInterface
      * @param array $access
      * @param array $variants
      * @param bool $optional
-     * @param Innmind\Rest\Server\Definition\Resource $definition
+     * @param ResourceDefinition $definition
      *
      * @return void
      */
     protected function appendLink(
-        HttpResponse $response,
+        Response $response,
         $property,
         $type,
         array $access,
         array $variants,
         $optional,
-        Resource $definition
+        ResourceDefinition $definition
     ) {
-        $route = $this->routeFinder->find($definition, 'options');
+        $route = $this->routeFactory->makeName($definition, RouteActions::OPTIONS);
         $header = $response->headers->get('Link', null, false);
         $header[] = sprintf(
             '<%s>; rel="property"; name="%s"; type="%s"; access="%s"; variants="%s"; optional="%s"',

@@ -2,6 +2,6 @@
 
 namespace Innmind\Rest\Server\Exception;
 
-class TooManyResourcesFoundException extends \Exception
+class TooManyResourcesFoundException extends \Exception implements ExceptionInterface
 {
 }

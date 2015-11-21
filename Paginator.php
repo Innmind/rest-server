@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server;
 
-use Innmind\Rest\Server\Routing\RouteCollection;
+use Innmind\Rest\Server\Routing\RouteKeys;
 use Symfony\Component\HttpFoundation\Request;
 
 class Paginator implements PaginatorInterface
@@ -12,11 +12,11 @@ class Paginator implements PaginatorInterface
      */
     public function canPaginate(Request $request)
     {
-        if (!$request->attributes->has(RouteCollection::RESOURCE_KEY)) {
+        if (!$request->attributes->has(RouteKeys::DEFINITION)) {
             return false;
         }
 
-        $definition = $request->attributes->get(RouteCollection::RESOURCE_KEY);
+        $definition = $request->attributes->get(RouteKeys::DEFINITION);
 
         if (!$request->query->has('limit')) {
             if ($definition->hasOption('paginate')) {
@@ -49,7 +49,7 @@ class Paginator implements PaginatorInterface
      */
     public function getLimit(Request $request)
     {
-        $definition = $request->attributes->get(RouteCollection::RESOURCE_KEY);
+        $definition = $request->attributes->get(RouteKeys::DEFINITION);
 
         return $request->query->has('limit') ?
             (int) $request->query->get('limit') :

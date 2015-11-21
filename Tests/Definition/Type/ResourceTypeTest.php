@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\Tests\Definition\Type;
 use Innmind\Rest\Server\Definition\Type\ResourceType;
 use Innmind\Rest\Server\Definition\TypeInterface;
 use Innmind\Rest\Server\Definition\Property;
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Symfony\Component\Validator\Constraints\Callback;
 
 class ResourceTypeTest extends \PHPUnit_Framework_TestCase
@@ -14,7 +14,7 @@ class ResourceTypeTest extends \PHPUnit_Framework_TestCase
     {
         $t = new ResourceType;
         $p = new Property('foo');
-        $p->addOption('resource', $r = new Resource('foo'));
+        $p->addOption('resource', $r = new ResourceDefinition('foo'));
         $r->addProperty(
             (new Property('foo'))
                 ->setType('string')

@@ -2,6 +2,6 @@
 
 namespace Innmind\Rest\Server\Exception;
 
-class ResourceNotFoundException extends \Exception
+class ResourceNotFoundException extends \Exception implements ExceptionInterface
 {
 }

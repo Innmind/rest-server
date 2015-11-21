@@ -2,7 +2,7 @@
 
 namespace Innmind\Rest\Server\Event\Storage;
 
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\HttpResourceInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class PreUpdateEvent extends Event
@@ -10,7 +10,7 @@ class PreUpdateEvent extends Event
     protected $resource;
     protected $id;
 
-    public function __construct(Resource $resource, $id)
+    public function __construct(HttpResourceInterface $resource, $id)
     {
         $this->resource = $resource;
         $this->id = $id;
@@ -19,7 +19,7 @@ class PreUpdateEvent extends Event
     /**
      * Return the resource to be updated
      *
-     * @return Resource
+     * @return HttpResourceInterface
      */
     public function getResource()
     {
@@ -29,13 +29,13 @@ class PreUpdateEvent extends Event
     /**
      * Replace the resource with the given one
      *
-     * @param Innmind\Rest\Server\Resource $resource
+     * @param HttpResourceInterface $resource
      *
      * @throws InvalidArgumentException If the resource has no definition
      *
      * @return PreUpdateEvent self
      */
-    public function replaceResource(Resource $resource)
+    public function replaceResource(HttpResourceInterface $resource)
     {
         if (!$resource->hasDefinition()) {
             throw new \InvalidArgumentException(

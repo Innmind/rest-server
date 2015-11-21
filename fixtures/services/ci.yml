@@ -1,0 +1,31 @@
+services:
+    storage.neo4j:
+        parent: storage.abstract.neo4j
+        arguments:
+            index_0: @neo4j
+        tags:
+            - { name: storage, alias: neo4j }
+
+    neo4j:
+        class: Innmind\Neo4j\ONM\EntityManager
+        factory:
+            - Innmind\Neo4j\ONM\EntityManagerFactory
+            - make
+        arguments:
+            -
+                host: localhost
+                username: neo4j
+                password: ci
+            - @neo4j.conf
+            - @event_dispatcher
+
+    neo4j.conf:
+        class: Innmind\Neo4j\ONM\Configuration
+        factory:
+            - Innmind\Neo4j\ONM\Configuration
+            - create
+        arguments:
+            -
+                cache: /tmp
+                reader: yaml
+                locations: ['fixtures/neo4j']

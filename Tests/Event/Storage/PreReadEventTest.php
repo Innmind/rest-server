@@ -3,8 +3,8 @@
 namespace Innmind\Rest\Server\Tests\Event\Storage;
 
 use Innmind\Rest\Server\Event\Storage\PreReadEvent;
-use Innmind\Rest\Server\Definition\Resource as ResourceDefinition;
-use Innmind\Rest\Server\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
+use Innmind\Rest\Server\HttpResource;
 use Innmind\Rest\Server\Collection;
 
 class PreReadEventTest extends \PHPUnit_Framework_TestCase
@@ -45,7 +45,7 @@ class PreReadEventTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             $this->e,
             $this->e->addResource(
-                $d = (new Resource)
+                $d = (new HttpResource)
                     ->setDefinition($this->d)
             )
         );
@@ -59,7 +59,7 @@ class PreReadEventTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowIfNoDefinitionAttachedToResource()
     {
-        $this->e->addResource(new Resource);
+        $this->e->addResource(new HttpResource);
     }
 
     /**
@@ -69,7 +69,7 @@ class PreReadEventTest extends \PHPUnit_Framework_TestCase
     public function testThrowIfNoDefinitionAttachedToAResourceInBag()
     {
         $s = new Collection;
-        $s[] = new Resource;
+        $s[] = new HttpResource;
 
         $this->e->useResources($s);
     }
@@ -77,7 +77,7 @@ class PreReadEventTest extends \PHPUnit_Framework_TestCase
     public function testUseResources()
     {
         $s = new Collection;
-        $r = new Resource;
+        $r = new HttpResource;
         $r->setDefinition($this->d);
         $s[] = $r;
 

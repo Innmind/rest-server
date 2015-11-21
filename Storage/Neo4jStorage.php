@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\Storage;
 use Innmind\Rest\Server\StorageInterface;
 use Innmind\Rest\Server\EntityBuilder;
 use Innmind\Rest\Server\ResourceBuilder;
-use Innmind\Rest\Server\Definition\Resource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 use Innmind\Rest\Server\Events;
 use Innmind\Rest\Server\Collection;
 use Innmind\Rest\Server\Event\Storage;
@@ -36,7 +36,7 @@ class Neo4jStorage extends AbstractStorage implements StorageInterface
     /**
      * {@inheritdoc}
      */
-    public function read(Resource $definition, $id = null)
+    public function read(ResourceDefinition $definition, $id = null)
     {
         $this->dispatcher->dispatch(
             Events::STORAGE_PRE_READ,
@@ -123,7 +123,7 @@ class Neo4jStorage extends AbstractStorage implements StorageInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(Resource $definition)
+    public function supports(ResourceDefinition $definition)
     {
         if (!$definition->hasOption('class')) {
             return false;

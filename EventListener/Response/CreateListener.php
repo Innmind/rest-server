@@ -2,26 +2,27 @@
 
 namespace Innmind\Rest\Server\EventListener\Response;
 
-use Innmind\Rest\Server\Events;
-use Innmind\Rest\Server\Resource;
-use Innmind\Rest\Server\Collection;
-use Innmind\Rest\Server\Event\ResponseEvent;
-use Innmind\Rest\Server\Routing\RouteFinder;
+use Innmind\Rest\Server\HttpResourceInterface;
+use Innmind\Rest\Server\Routing\RouteFactory;
+use Innmind\Rest\Server\Routing\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteActions;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 
 class CreateListener implements EventSubscriberInterface
 {
     protected $urlGenerator;
-    protected $routeFinder;
+    protected $routeFactory;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
-        RouteFinder $routeFinder
+        RouteFactory $routeFactory
     ) {
         $this->urlGenerator = $urlGenerator;
-        $this->routeFinder = $routeFinder;
+        $this->routeFactory = $routeFactory;
     }
 
     /**
@@ -30,53 +31,44 @@ class CreateListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Events::RESPONSE => 'buildResponse',
+            KernelEvents::VIEW => [['buildResponse', 10]],
         ];
     }
 
     /**
      * Determine the response code to set for this response
      *
-     * @param ResponseEvent $event
+     * @param GetResponseForControllerResultEvent $event
      *
      * @return void
      */
-    public function buildResponse(ResponseEvent $event)
+    public function buildResponse(GetResponseForControllerResultEvent $event)
     {
-        if ($event->getAction() !== 'create') {
+        $request = $event->getRequest();
+        $resource = $event->getControllerResult();
+
+        if (
+            !$request->attributes->has(RouteKeys::ACTION) ||
+            $request->attributes->get(RouteKeys::ACTION) !== RouteActions::CREATE ||
+            !$resource instanceof HttpResourceInterface
+        ) {
             return;
         }
 
-        if ($event->getContent() instanceof Collection) {
-            $event
-                ->getResponse()
-                ->setStatusCode(Response::HTTP_MULTIPLE_CHOICES);
+        $response = new Response;
+        $event->setResponse($response);
 
-            return;
-        }
-
-        $event
-            ->getResponse()
-            ->setStatusCode(Response::HTTP_CREATED);
-
-        if (!$event->getContent() instanceof Resource) {
-            return;
-        }
-
-        $resource = $event->getContent();
+        $response->setStatusCode(Response::HTTP_CREATED);
         $definition = $resource->getDefinition();
-        $route = $this->routeFinder->find(
+        $route = $this->routeFactory->makeName(
             $definition,
-            'get'
+            RouteActions::GET
         );
-        $event
-            ->getResponse()
-            ->headers
-            ->add([
-                'Location' => $this->urlGenerator->generate(
-                    $route,
-                    ['id' => $resource->get($definition->getId())]
-                )
-            ]);
+        $response->headers->add([
+            'Location' => $this->urlGenerator->generate(
+                $route,
+                ['id' => $resource->get($definition->getId())]
+            ),
+        ]);
     }
 }

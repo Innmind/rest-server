@@ -16,12 +16,20 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $expected = $config;
 
         foreach ($expected['collections']['web']['resources']['resource']['properties'] as &$prop) {
+            if (is_string($prop)) {
+                $prop = ['type' => $prop];
+            }
+
             if (!isset($prop['options'])) {
                 $prop['options'] = [];
             }
 
             if (!isset($prop['variants'])) {
                 $prop['variants'] = [];
+            }
+
+            if (!isset($prop['access'])) {
+                $prop['access'] = ['READ'];
             }
         }
 

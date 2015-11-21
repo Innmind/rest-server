@@ -3,8 +3,8 @@
 namespace Innmind\Rest\Server\Tests\Event\Storage;
 
 use Innmind\Rest\Server\Event\Storage\PreUpdateEvent;
-use Innmind\Rest\Server\Resource;
-use Innmind\Rest\Server\Definition\Resource as Definition;
+use Innmind\Rest\Server\HttpResource;
+use Innmind\Rest\Server\Definition\ResourceDefinition;
 
 class PreUpdateEventTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,7 +14,7 @@ class PreUpdateEventTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->e = new PreUpdateEvent(
-            $this->r = new Resource,
+            $this->r = new HttpResource,
             42
         );
     }
@@ -29,8 +29,8 @@ class PreUpdateEventTest extends \PHPUnit_Framework_TestCase
 
     public function testReplaceResource()
     {
-        $r = new Resource;
-        $r->setDefinition(new Definition('foo'));
+        $r = new HttpResource;
+        $r->setDefinition(new ResourceDefinition('foo'));
 
         $this->assertSame(
             $this->e,
@@ -48,7 +48,7 @@ class PreUpdateEventTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowWhenReplacingAResourceWithoutDefinition()
     {
-        $this->e->replaceResource(new Resource);
+        $this->e->replaceResource(new HttpResource);
     }
 
     public function testGetResourceId()

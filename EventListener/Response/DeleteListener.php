@@ -2,10 +2,12 @@
 
 namespace Innmind\Rest\Server\EventListener\Response;
 
-use Innmind\Rest\Server\Events;
-use Innmind\Rest\Server\Event\ResponseEvent;
+use Innmind\Rest\Server\Routing\RouteKeys;
+use Innmind\Rest\Server\Routing\RouteActions;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 
 class DeleteListener implements EventSubscriberInterface
 {
@@ -15,25 +17,28 @@ class DeleteListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Events::RESPONSE => 'buildResponse',
+            KernelEvents::VIEW => [['buildResponse', 10]],
         ];
     }
 
     /**
      * Set the appropriate status code when a resource is deleted
      *
-     * @param ResponseEvent $event
+     * @param GetResponseForControllerResultEvent $event
      *
      * @return void
      */
-    public function buildResponse(ResponseEvent $event)
+    public function buildResponse(GetResponseForControllerResultEvent $event)
     {
-        if ($event->getAction() !== 'delete') {
+        $request = $event->getRequest();
+
+        if (
+            !$request->attributes->has(RouteKeys::ACTION) ||
+            $request->attributes->get(RouteKeys::ACTION) !== RouteActions::DELETE
+        ) {
             return;
         }
 
-        $event
-            ->getResponse()
-            ->setStatusCode(Response::HTTP_NO_CONTENT);
+        $event->setResponse(new Response('', Response::HTTP_NO_CONTENT));
     }
 }
