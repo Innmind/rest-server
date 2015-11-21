@@ -32,63 +32,42 @@ The goal is that by default you only need to write configuration to expose your 
 ## Setup
 
 ```php
-use Innmind\Rest\Server\Setup;
-use Innmind\Rest\Server\Storage\DoctrineStorage;
-use Innmind\Rest\Server\Serializer\Encoder\JsonEncoder;
-use Innmind\Rest\Server\Serializer\Encoder\FormEncoder;
+use Innmind\Rest\Server\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-$setup = new Setup(
+$app = new Application(
     '/path/to/config/file.yml',
-    ['doctrine' => new DoctrineStorage(/* ... */)],
-    [new JsonEncoder, new FormEncoder]
+    '/path/to/config/services.yml'
 );
-$setup
-    ->addFormat('json', 'application/json', 42)
-    ->addFormat('form', 'application/x-www-url-encoded', 0);
-$response = $setup->handleRequest(Request::createFromGlobals());
+$response = $app->handle(Request::createFromGlobals());
 $response->send();
 ```
 
 So what happens here?!
 
-First you tell the library to load the definitions of your resources (located at `/path/to/config/file.yml`). Then to use a [Doctrine](http://www.doctrine-project.org/) storage (more on that in a bit) and to use the `FormEncoder` and `JsonEncoder` to work with the data from the request (the json one is also used to output data).
-
-The calls to `addFormat` is your way to tell the mapping between a content type (from `Content-Type` and `Accept` headers) to a format name. For example, if we have a `Content-Type` set to `application/json`, it will be understand it's a `json` format and so use the `JsonEncoder` in order to decode the content from the request.
+First you tell the library to load the definitions of your resources (located at `/path/to/config/file.yml`). Then to load your services (at `/path/to/config/services.yml`), which contains the storages definitions (more on that in a bit).
 
 And in the end you call the mechanism to transform the request into a response (and send it).
 
 ### Storages
 
-The storages you give to the setup are facades for doctrine (or neo4j) and implements a simple [`StorageInterface`](StorageInterface.php). To build a `DcotrineStorage` you'll need 4 objects:
+The storages you give to the setup are facades for doctrine (or neo4j) and implements a simple [`StorageInterface`](StorageInterface.php). To build a `DcotrineStorage` you can do so as follows:
 
-* a doctrine entity manager (`Doctrine\ORM\EntityManagerInterface`)
-* an event dispatcher (`Symfony\Component\EventDispatcher\EventDispatcherInterface`)
-* an entity builder
-* a resource builder
+```yml
+# /path/to/config/service.yml
+services:
+    my_doctrine:
+        parent: storage.abstract.doctrine
+        arguments:
+            index_0: @doctrine
+        tags:
+            - { name: storage, alias: dcotrine }
 
-Here's a sample code to build one:
-
-```php
-use Innmind\Rest\Server\Storage\DoctrineStorage;
-use Innmind\Rest\Server\EntityBuilder;
-use Innmind\Rest\Server\ResourceBuilder;
-use Symfony\Component\EventDispatcher\EventDispather;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-
-$dispatcher = new EventDispatcher;
-$accessor = PropertyAccess::createPropertyAccessor();
-$storage = new DoctrineStorage(
-    $em, //have a look at the doctrine project to know how to build one
-    $dispatcher,
-    new EntityBuilder($accessor, $dispatcher),
-    new ResourceBuilder($accessor, $dispatcher)
-);
+    doctrine:
+        class: ... # check the doctrine website to know how to create an instance
 ```
 
-**Note**: if you want to use the same dispatcher everywhere, you can pass the dispatcher instance as the sixth argument of the setup.
-
-**Note**: The code sample is the same for the neo4j storage.
+To build a `Neo4jStorage` you can have a look at this [fixture](fixtures/services/local.yml) (as you can see it is very similar).
 
 ### Configuration file
 
