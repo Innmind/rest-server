@@ -235,7 +235,7 @@ class ResourceDefinition
      */
     public function hasStorage()
     {
-        return $this->storage !== null;
+        return !empty($this->storage);
     }
 
     /**
