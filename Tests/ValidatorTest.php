@@ -115,6 +115,12 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                 ->addOption('optional', null)
                 ->addOption('resource', new ResourceDefinition('bar'))
         );
+        $def->addProperty(
+            (new Property('optional_prop'))
+                ->setType('string')
+                ->addAccess('READ')
+                ->addOption('optional', null)
+        );
         $r = new HttpResource;
         $r->setDefinition($def);
 

@@ -123,6 +123,10 @@ class Validator
                 if ($prop->hasAccess($access)) {
                     if (!$prop->hasOption('optional')) {
                         $fields[(string) $prop][] = new Assert\NotNull;
+                    } else if (!$resources->has((string) $prop)) {
+                        unset($fields[(string) $prop]);
+
+                        continue;
                     }
                 } else {
                     unset($fields[(string) $prop]);
