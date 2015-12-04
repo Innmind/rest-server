@@ -78,11 +78,11 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $violations = $this->v->validate($r, 'UPDATE');
         $this->assertSame(2, $violations->count());
         $this->assertSame(
-            'Array[foo][foo]:' . "\n" . '    This field was not expected. (code 2)',
+            'Array[foo][foo]:' . "\n" . '    This field was not expected. (code 7703c766-b5d5-4cef-ace7-ae0dd82304e9)',
             (string) $violations->get(0)
         );
         $this->assertSame(
-            'Array[baz]:' . "\n" . '    This field was not expected. (code 2)',
+            'Array[baz]:' . "\n" . '    This field was not expected. (code 7703c766-b5d5-4cef-ace7-ae0dd82304e9)',
             (string) $violations->get(1)
         );
     }
@@ -114,6 +114,12 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                 ->addAccess('READ')
                 ->addOption('optional', null)
                 ->addOption('resource', new ResourceDefinition('bar'))
+        );
+        $def->addProperty(
+            (new Property('optional_prop'))
+                ->setType('string')
+                ->addAccess('READ')
+                ->addOption('optional', null)
         );
         $r = new HttpResource;
         $r->setDefinition($def);
