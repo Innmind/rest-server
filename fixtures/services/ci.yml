@@ -2,7 +2,7 @@ services:
     storage.neo4j:
         parent: storage.abstract.neo4j
         arguments:
-            index_0: @neo4j
+            index_0: '@neo4j'
         tags:
             - { name: storage, alias: neo4j }
 
@@ -16,8 +16,8 @@ services:
                 host: localhost
                 username: neo4j
                 password: ci
-            - @neo4j.conf
-            - @event_dispatcher
+            - '@neo4j.conf'
+            - '@event_dispatcher'
 
     neo4j.conf:
         class: Innmind\Neo4j\ONM\Configuration

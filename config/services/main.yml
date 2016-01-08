@@ -11,7 +11,7 @@ parameters:
 services:
     event_dispatcher:
         class: Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
-        arguments: [@container]
+        arguments: ['@container']
 
     controller_resolver:
         class: Symfony\Component\HttpKernel\Controller\ControllerResolver
@@ -25,9 +25,9 @@ services:
     request_parser:
         class: Innmind\Rest\Server\Request\Parser
         arguments:
-            - @serializer
-            - @formats
-            - @negotiator
+            - '@serializer'
+            - '@formats'
+            - '@negotiator'
 
     formats:
         class: Innmind\Rest\Server\Formats
@@ -38,24 +38,24 @@ services:
     entity_builder:
         class: Innmind\Rest\Server\EntityBuilder
         arguments:
-            - @property_accessor
-            - @event_dispatcher
+            - '@property_accessor'
+            - '@event_dispatcher'
 
     resource_builder:
         class: Innmind\Rest\Server\ResourceBuilder
         arguments:
-            - @property_accessor
-            - @event_dispatcher
+            - '@property_accessor'
+            - '@event_dispatcher'
 
     controller:
         class: Innmind\Rest\Server\Controller\ResourceController
         arguments:
-            - @storages
+            - '@storages'
 
     resource_validator:
         class: Innmind\Rest\Server\Validator
         arguments:
-            - @validator
+            - '@validator'
 
     validator:
         class: Symfony\Component\Validator\Validator
