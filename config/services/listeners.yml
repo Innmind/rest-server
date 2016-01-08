@@ -2,47 +2,47 @@ services:
     listener.routing:
         class: Innmind\Rest\Server\EventListener\RouterListener
         arguments:
-            - @router
-            - @request_stack
+            - '@router'
+            - '@request_stack'
         tags:
             - { name: kernel.event_subscriber }
 
     listener.request:
         class: Innmind\Rest\Server\EventListener\RequestListener
         arguments:
-            - @registry
-            - @request_parser
+            - '@registry'
+            - '@request_parser'
         tags:
             - { name: kernel.event_subscriber }
 
     listener.controller_resolver:
         class: Innmind\Rest\Server\EventListener\ControllerResolverListener
         arguments:
-            - @controller
+            - '@controller'
         tags:
             - { name: kernel.event_subscriber }
 
     listener.controller:
         class: Innmind\Rest\Server\EventListener\ControllerListener
         arguments:
-            - @resource_validator
-            - @request_parser
+            - '@resource_validator'
+            - '@request_parser'
         tags:
             - { name: kernel.event_subscriber }
 
     listener.view.collection:
         class: Innmind\Rest\Server\EventListener\Response\CollectionListener
         arguments:
-            - @router
-            - @route_factory
+            - '@router'
+            - '@route_factory'
         tags:
             - { name: kernel.event_subscriber }
 
     listener.view.create:
         class: Innmind\Rest\Server\EventListener\Response\CreateListener
         arguments:
-            - @router
-            - @route_factory
+            - '@router'
+            - '@route_factory'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -54,41 +54,41 @@ services:
     listener.view.options:
         class: Innmind\Rest\Server\EventListener\Response\OptionsListener
         arguments:
-            - @router
-            - @route_factory
+            - '@router'
+            - '@route_factory'
         tags:
             - { name: kernel.event_subscriber }
 
     listener.view.resource:
         class: Innmind\Rest\Server\EventListener\Response\ResourceListener
         arguments:
-            - @router
-            - @route_factory
-            - @serializer
-            - @formats
+            - '@router'
+            - '@route_factory'
+            - '@serializer'
+            - '@formats'
         tags:
             - { name: kernel.event_subscriber }
 
     listener.pagination:
         class: Innmind\Rest\Server\EventListener\PaginationListener
         arguments:
-            - @request_stack
-            - @router
-            - @route_factory
-            - @paginator
+            - '@request_stack'
+            - '@router'
+            - '@route_factory'
+            - '@paginator'
         tags:
             - { name: kernel.event_subscriber }
 
     listener.storage.create:
         class: Innmind\Rest\Server\EventListener\StorageCreateListener
         arguments:
-            - @property_accessor
+            - '@property_accessor'
         tags:
             - { name: kernel.event_subscriber }
 
     listener.exception:
         class: Innmind\Rest\Server\EventListener\ExceptionListener
         arguments:
-            - @logger
+            - '@logger'
         tags:
             - { name: kernel.event_subscriber }

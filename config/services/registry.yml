@@ -1,7 +1,7 @@
 services:
     registry:
         class: Innmind\Rest\Server\Registry
-        configurator: [@definition_compiler, 'process']
+        configurator: ['@definition_compiler', 'process']
 
     definition_compiler:
         class: Innmind\Rest\Server\DefinitionCompiler
@@ -21,7 +21,7 @@ services:
     definition_pass.storage:
         class: Innmind\Rest\Server\CompilerPass\StorageValidationPass
         public: false
-        arguments: [@storages]
+        arguments: ['@storages']
         tags:
             - { name: definition.pass }
 

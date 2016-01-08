@@ -4,14 +4,14 @@ services:
 
     router:
         class: Symfony\Component\Routing\Router
-        arguments: [@route_loader, '.']
+        arguments: ['@route_loader', '.']
 
     route_loader:
         class: Innmind\Rest\Server\Routing\RouteLoader
         arguments:
-            - @event_dispatcher
-            - @registry
-            - @route_factory
+            - '@event_dispatcher'
+            - '@registry'
+            - '@route_factory'
 
     route_factory:
         class: Innmind\Rest\Server\Routing\RouteFactory
