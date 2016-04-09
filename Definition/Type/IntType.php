@@ -31,11 +31,11 @@ class IntType implements TypeInterface
      */
     public function denormalize($data)
     {
-        if (!is_int($data)) {
+        try {
+            return (int) $data;
+        } catch (\Throwable $e) {
             throw new DenormalizationException('The value must be an integer');
         }
-
-        return $data;
     }
 
     /**
@@ -43,11 +43,11 @@ class IntType implements TypeInterface
      */
     public function normalize($data)
     {
-        if (!is_int($data)) {
+        try {
+            return (int) $data;
+        } catch (\Throwable $e) {
             throw new NormalizationException('The value must be an integer');
         }
-
-        return $data;
     }
 
     /**

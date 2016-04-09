@@ -28,7 +28,12 @@ class StringTypeTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             'foo',
-            (new StringType)->denormalize('foo')
+            (new StringType)->denormalize(new class {
+                public function __toString()
+                {
+                    return 'foo';
+                }
+            })
         );
     }
 
@@ -38,14 +43,19 @@ class StringTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowWhenNotDenormalizingAString()
     {
-        (new StringType)->denormalize(42);
+        (new StringType)->denormalize(new \stdClass);
     }
 
     public function testNormalize()
     {
         $this->assertSame(
             'foo',
-            (new StringType)->normalize('foo')
+            (new StringType)->normalize(new class {
+                public function __toString()
+                {
+                    return 'foo';
+                }
+            })
         );
     }
 
@@ -55,11 +65,6 @@ class StringTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowWhenNotNormalizingAString()
     {
-        (new StringType)->normalize(new class {
-            public function __toString()
-            {
-                return 'foo';
-            }
-        });
+        (new StringType)->normalize(new \stdClass);
     }
 }

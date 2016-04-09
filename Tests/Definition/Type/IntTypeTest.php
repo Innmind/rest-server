@@ -28,7 +28,7 @@ class IntTypeTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             42,
-            (new IntType)->denormalize(42)
+            (new IntType)->denormalize('42')
         );
     }
 
@@ -38,14 +38,14 @@ class IntTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowWhenNotDenormalizingAString()
     {
-        (new IntType)->denormalize('42');
+        (new IntType)->denormalize(new \stdClass);
     }
 
     public function testNormalize()
     {
         $this->assertSame(
             42,
-            (new IntType)->normalize(42)
+            (new IntType)->normalize('42')
         );
     }
 
@@ -55,6 +55,6 @@ class IntTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowWhenNotNormalizingAString()
     {
-        (new IntType)->normalize('42');
+        (new IntType)->normalize(new \stdClass);
     }
 }

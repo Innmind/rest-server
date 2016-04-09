@@ -28,7 +28,7 @@ class FloatTypeTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             42.0,
-            (new FloatType)->denormalize(42.0)
+            (new FloatType)->denormalize('42.0')
         );
     }
 
@@ -38,14 +38,14 @@ class FloatTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowWhenNotDenormalizingAString()
     {
-        (new FloatType)->denormalize(42);
+        (new FloatType)->denormalize(new \stdClass);
     }
 
     public function testNormalize()
     {
         $this->assertSame(
             42.0,
-            (new FloatType)->normalize(42.0)
+            (new FloatType)->normalize('42.0')
         );
     }
 
@@ -55,6 +55,6 @@ class FloatTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowWhenNotNormalizingAString()
     {
-        (new FloatType)->normalize(42);
+        (new FloatType)->normalize(new \stdClass);
     }
 }

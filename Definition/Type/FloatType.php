@@ -31,11 +31,11 @@ class FloatType implements TypeInterface
      */
     public function denormalize($data)
     {
-        if (!is_float($data)) {
+        try {
+            return (float) $data;
+        } catch (\Throwable $e) {
             throw new DenormalizationException('The value must be a float');
         }
-
-        return $data;
     }
 
     /**
@@ -43,11 +43,11 @@ class FloatType implements TypeInterface
      */
     public function normalize($data)
     {
-        if (!is_float($data)) {
+        try {
+            return (float) $data;
+        } catch (\Throwable $e) {
             throw new NormalizationException('The value must be a float');
         }
-
-        return $data;
     }
 
     /**

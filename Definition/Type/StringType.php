@@ -31,11 +31,11 @@ class StringType implements TypeInterface
      */
     public function denormalize($data)
     {
-        if (!is_string($data)) {
+        try {
+            return (string) $data;
+        } catch (\Throwable $e) {
             throw new DenormalizationException('The value must be a string');
         }
-
-        return $data;
     }
 
     /**
@@ -43,11 +43,11 @@ class StringType implements TypeInterface
      */
     public function normalize($data)
     {
-        if (!is_string($data)) {
+        try {
+            return (string) $data;
+        } catch (\Throwable $e) {
             throw new NormalizationException('The value must be a string');
         }
-
-        return $data;
     }
 
     /**
