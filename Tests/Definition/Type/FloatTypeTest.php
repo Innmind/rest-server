@@ -36,7 +36,7 @@ class FloatTypeTest extends \PHPUnit_Framework_TestCase
      * @expectedException Innmind\Rest\Server\Exception\DenormalizationException
      * @expectedExceptionMessage The value must be a float
      */
-    public function testThrowWhenNotDenormalizingAString()
+    public function testThrowWhenNotDenormalizingAFloat()
     {
         (new FloatType)->denormalize(new \stdClass);
     }
@@ -53,7 +53,7 @@ class FloatTypeTest extends \PHPUnit_Framework_TestCase
      * @expectedException Innmind\Rest\Server\Exception\NormalizationException
      * @expectedExceptionMessage The value must be a float
      */
-    public function testThrowWhenNotNormalizingAString()
+    public function testThrowWhenNotNormalizingAFloat()
     {
         (new FloatType)->normalize(new \stdClass);
     }

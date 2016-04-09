@@ -36,7 +36,7 @@ class IntTypeTest extends \PHPUnit_Framework_TestCase
      * @expectedException Innmind\Rest\Server\Exception\DenormalizationException
      * @expectedExceptionMessage The value must be an integer
      */
-    public function testThrowWhenNotDenormalizingAString()
+    public function testThrowWhenNotDenormalizingAnInt()
     {
         (new IntType)->denormalize(new \stdClass);
     }
@@ -53,7 +53,7 @@ class IntTypeTest extends \PHPUnit_Framework_TestCase
      * @expectedException Innmind\Rest\Server\Exception\NormalizationException
      * @expectedExceptionMessage The value must be an integer
      */
-    public function testThrowWhenNotNormalizingAString()
+    public function testThrowWhenNotNormalizingAnInt()
     {
         (new IntType)->normalize(new \stdClass);
     }
