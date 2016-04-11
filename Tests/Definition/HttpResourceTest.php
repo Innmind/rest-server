@@ -19,6 +19,7 @@ class HttpResourceTest extends \PHPUnit_Framework_TestCase
     public function testInterface()
     {
         $r = new HttpResource(
+            'foobar',
             $i = new Identity('foo'),
             $p = (new Map('string', Property::class)),
             $o = new Collection([]),
@@ -26,6 +27,8 @@ class HttpResourceTest extends \PHPUnit_Framework_TestCase
             $g = new Gateway('bar')
         );
 
+        $this->assertSame('foobar', $r->name());
+        $this->assertSame('foobar', (string) $r);
         $this->assertSame($i, $r->identity());
         $this->assertSame($p, $r->properties());
         $this->assertSame($o, $r->options());
@@ -39,6 +42,7 @@ class HttpResourceTest extends \PHPUnit_Framework_TestCase
     public function testThrowForInvalidPropertyMap()
     {
         new HttpResource(
+            'foobar',
             new Identity('foo'),
             new Map('string', 'string'),
             new Collection([]),

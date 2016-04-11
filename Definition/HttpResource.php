@@ -11,6 +11,7 @@ use Innmind\Immutable\{
 
 class HttpResource
 {
+    private $name;
     private $identity;
     private $properties;
     private $options;
@@ -18,6 +19,7 @@ class HttpResource
     private $gateway;
 
     public function __construct(
+        string $name,
         Identity $identity,
         MapInterface $properties,
         CollectionInterface $options,
@@ -31,11 +33,17 @@ class HttpResource
             throw new InvalidArgumentException;
         }
 
+        $this->name = $name;
         $this->identity = $identity;
         $this->properties = $properties;
         $this->options = $options;
         $this->metas = $metas;
         $this->gateway = $gateway;
+    }
+
+    public function name(): string
+    {
+        return $this->name;
     }
 
     public function identity(): Identity
@@ -64,5 +72,10 @@ class HttpResource
     public function gateway(): Gateway
     {
         return $this->gateway;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }
