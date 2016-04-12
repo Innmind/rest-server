@@ -40,7 +40,7 @@ class HttpResource implements HttpResourceInterface
     /**
      * {@inheritdoc}
      */
-    public function get(string $name): Property
+    public function property(string $name): Property
     {
         return $this->properties->get($name);
     }

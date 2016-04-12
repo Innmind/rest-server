@@ -9,7 +9,7 @@ use Innmind\Immutable\MapInterface;
 interface HttpResourceInterface
 {
     public function definition(): ResourceDefinition;
-    public function get(string $name): Property;
+    public function property(string $name): Property;
 
     /**
      * Check if the wished property is set

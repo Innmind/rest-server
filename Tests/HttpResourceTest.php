@@ -38,7 +38,7 @@ class HttpResourceTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($d, $r->definition());
         $this->assertTrue($r->has('foo'));
         $this->assertFalse($r->has('bar'));
-        $this->assertSame($p, $r->get('foo'));
+        $this->assertSame($p, $r->property('foo'));
         $this->assertSame($ps, $r->properties());
     }
 }
