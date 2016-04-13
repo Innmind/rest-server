@@ -37,4 +37,23 @@ class Access
     {
         return $this->mask->contains(self::UPDATE);
     }
+
+    /**
+     * @return SetInterface<string>
+     */
+    public function mask(): SetInterface
+    {
+        return $this->mask;
+    }
+
+    public function matches(self $mask): bool
+    {
+        foreach ($mask->mask() as $access) {
+            if (!$this->mask->contains($access)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
