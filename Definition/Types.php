@@ -4,8 +4,8 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\Definition;
 
 use Innmind\Rest\Server\{
-    Definition\Type\ArrayType,
     Definition\Type\SetType,
+    Definition\Type\MapType,
     Definition\Type\BoolType,
     Definition\Type\DateType,
     Definition\Type\FloatType,
@@ -26,7 +26,8 @@ class Types
     public function __construct()
     {
         $defaults = [
-            ArrayType::class,
+            SetType::class,
+            MapType::class,
             BoolType::class,
             DateType::class,
             FloatType::class,

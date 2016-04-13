@@ -14,12 +14,11 @@ use Innmind\Immutable\{
     Set
 };
 
-class ArrayType implements TypeInterface
+class SetType implements TypeInterface
 {
     private static $identifiers;
     private $inner;
     private $innerKey;
-    private $useSet = true;
 
     /**
      * {@inheritdoc}
@@ -37,10 +36,6 @@ class ArrayType implements TypeInterface
                     ->unset('inner')
             );
 
-        if ($config->hasKey('use_set')) {
-            $type->useSet = (bool) $config->get('use_set');
-        }
-
         return $type;
     }
 
@@ -56,23 +51,13 @@ class ArrayType implements TypeInterface
             ));
         }
 
-        $denormalized = [];
+        $set = new Set($this->innerKey);
 
         foreach ($data as $value) {
-            $denormalized[] = $this->inner->denormalize($value);
+            $set = $set->add($this->inner->denormalize($value));
         }
 
-        if ($this->useSet) {
-            $set = new Set($this->innerKey);
-
-            foreach ($denormalized as $value) {
-                $set = $set->add($value);
-            }
-
-            return $set;
-        }
-
-        return $denormalized;
+        return $set;
     }
 
     /**
@@ -80,8 +65,8 @@ class ArrayType implements TypeInterface
      */
     public function normalize($data)
     {
-        if (!is_array($data) && !$data instanceof \Traversable) {
-            throw new NormalizationException('The value must be traversable');
+        if (!$data instanceof SetInterface) {
+            throw new NormalizationException('The value must be a set');
         }
 
         $normalized = [];
@@ -99,7 +84,7 @@ class ArrayType implements TypeInterface
     public static function identifiers(): SetInterface
     {
         if (self::$identifiers === null) {
-            self::$identifiers = (new Set('string'))->add('array');
+            self::$identifiers = (new Set('string'))->add('set');
         }
 
         return self::$identifiers;

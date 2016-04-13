@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\Tests\Definition\Type;
 
 use Innmind\Rest\Server\Definition\{
-    Type\ArrayType,
+    Type\SetType,
     TypeInterface,
     Types
 };
@@ -14,18 +14,18 @@ use Innmind\Immutable\{
     Set
 };
 
-class ArrayTypeTest extends \PHPUnit_Framework_TestCase
+class SetTypeTest extends \PHPUnit_Framework_TestCase
 {
     public function testInterface()
     {
-        $this->assertInstanceOf(TypeInterface::class, new ArrayType);
+        $this->assertInstanceOf(TypeInterface::class, new SetType);
         $this->assertSame(
-            ['array'],
-            ArrayType::identifiers()->toPrimitive()
+            ['set'],
+            SetType::identifiers()->toPrimitive()
         );
         $this->assertInstanceOf(
-            ArrayType::class,
-            ArrayType::fromConfig(new Collection([
+            SetType::class,
+            SetType::fromConfig(new Collection([
                 'inner' => 'string',
                 '_types' => new Types,
             ]))
@@ -34,13 +34,20 @@ class ArrayTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testDenormalize()
     {
+        $t = SetType::fromConfig(
+            new Collection([
+                'inner' => 'string',
+                '_types' => new Types,
+            ])
+        );
+        $this->assertInstanceOf(SetInterface::class, $t->denormalize(['foo']));
+        $this->assertSame(['foo'], $t->denormalize(['foo'])->toPrimitive());
         $this->assertSame(
             ['foo'],
-            ArrayType::fromConfig(
+            SetType::fromConfig(
                 new Collection([
                     'inner' => 'string',
                     '_types' => new Types,
-                    'use_set' => false,
                 ])
             )
                 ->denormalize([new class {
@@ -49,15 +56,8 @@ class ArrayTypeTest extends \PHPUnit_Framework_TestCase
                         return 'foo';
                     }
                 }])
+                ->toPrimitive()
         );
-        $t = ArrayType::fromConfig(
-            new Collection([
-                'inner' => 'string',
-                '_types' => new Types,
-            ])
-        );
-        $this->assertInstanceOf(SetInterface::class, $t->denormalize(['foo']));
-        $this->assertSame(['foo'], $t->denormalize(['foo'])->toPrimitive());
     }
 
     /**
@@ -66,7 +66,7 @@ class ArrayTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowWhenNotDenormalizingAnArray()
     {
-        (ArrayType::fromConfig(
+        (SetType::fromConfig(
             new Collection([
                 'inner' => 'string',
                 '_types' => new Types,
@@ -79,7 +79,7 @@ class ArrayTypeTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             ['foo'],
-            (ArrayType::fromConfig(
+            (SetType::fromConfig(
                 new Collection([
                     'inner' => 'string',
                     '_types' => new Types,
@@ -99,11 +99,11 @@ class ArrayTypeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Innmind\Rest\Server\Exception\NormalizationException
-     * @expectedExceptionMessage The value must be traversable
+     * @expectedExceptionMessage The value must be a set
      */
     public function testThrowWhenNotNormalizingAnArray()
     {
-        (ArrayType::fromConfig(
+        (SetType::fromConfig(
             new Collection([
                 'inner' => 'string',
                 '_types' => new Types,

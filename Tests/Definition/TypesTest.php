@@ -6,7 +6,8 @@ namespace Innmind\Rest\Server\Tests;
 use Innmind\Rest\Server\Definition\{
     Types,
     TypeInterface,
-    Type\ArrayType,
+    Type\SetType,
+    Type\MapType,
     Type\BoolType,
     Type\DateType,
     Type\FloatType,
@@ -26,7 +27,8 @@ class TypesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(
             [
-                'array',
+                'set',
+                'map',
                 'bool',
                 'boolean',
                 'date',
@@ -39,7 +41,8 @@ class TypesTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertSame(
             [
-                ArrayType::class,
+                SetType::class,
+                MapType::class,
                 BoolType::class,
                 BoolType::class,
                 DateType::class,
@@ -70,8 +73,8 @@ class TypesTest extends \PHPUnit_Framework_TestCase
             $t->build('string', new Collection([]))
         );
         $this->assertInstanceOf(
-            ArrayType::class,
-            $t->build('array', new Collection(['inner' => 'string']))
+            SetType::class,
+            $t->build('set', new Collection(['inner' => 'string']))
         );
     }
 }
