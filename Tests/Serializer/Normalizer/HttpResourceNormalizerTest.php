@@ -15,6 +15,7 @@ use Innmind\Rest\Server\{
     Definition\Access,
     Definition\Type\StringType,
     Exception\DenormalizationException,
+    Exception\NormalizationException,
     Exception\HttpResourceDenormalizationException,
     Exception\HttpResourceNormalizationException
 };
@@ -249,6 +250,15 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
 
             $this->fail('It should throw an error');
         } catch (HttpResourceNormalizationException $e) {
+            $this->assertSame(
+                'The input resource is not normalizable',
+                $e->getMessage()
+            );
+            $this->assertSame('string', (string) $e->errors()->keyType());
+            $this->assertSame(
+                NormalizationException::class,
+                (string) $e->errors()->valueType()
+            );
             $this->assertSame(1, $e->errors()->size());
             $this->assertSame(
                 'The value must be a string',
