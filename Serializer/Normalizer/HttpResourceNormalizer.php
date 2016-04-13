@@ -8,13 +8,17 @@ use Innmind\Rest\Server\{
     Property,
     Definition\HttpResource as ResourceDefinition,
     Definition\Property as PropertyDefinition,
+    Definition\Access,
     Exception\BadMethodCallException,
     Exception\DenormalizationException,
     Exception\NormalizationException,
     Exception\HttpResourceDenormalizationException,
     Exception\HttpResourceNormalizationException
 };
-use Innmind\Immutable\Map;
+use Innmind\Immutable\{
+    Map,
+    Set
+};
 use Symfony\Component\Serializer\Normalizer\{
     DenormalizerInterface,
     NormalizerInterface
@@ -31,6 +35,7 @@ class HttpResourceNormalizer implements NormalizerInterface, DenormalizerInterfa
         $errors = new Map('string', NormalizationException::class);
 
         $definition = $object->definition();
+        $mask = new Access((new Set('string'))->add(Access::READ));
         $object
             ->properties()
             ->foreach(function(
@@ -39,12 +44,19 @@ class HttpResourceNormalizer implements NormalizerInterface, DenormalizerInterfa
             ) use (
                 &$data,
                 &$errors,
-                $definition
+                $definition,
+                $mask
             ) {
+                $propertyDefinition = $definition
+                    ->properties()
+                    ->get($name);
+
+                if (!$propertyDefinition->access()->matches($mask)) {
+                    return;
+                }
+
                 try {
-                    $data[$name] = $definition
-                        ->properties()
-                        ->get($name)
+                    $data[$name] = $propertyDefinition
                         ->type()
                         ->normalize($property->value());
                 } catch (NormalizationException $e) {
@@ -81,7 +93,15 @@ class HttpResourceNormalizer implements NormalizerInterface, DenormalizerInterfa
             );
         }
 
+        if (
+            !isset($context['mask']) ||
+            !$context['mask'] instanceof Access
+        ) {
+            throw new BadMethodCallException('You must give an access mask');
+        }
+
         $definition = $context['definition'];
+        $mask = $context['mask'];
         $properties = new Map('string', Property::class);
         $errors = new Map('string', DenormalizationException::class);
         $data = $data['resource'];
@@ -94,8 +114,21 @@ class HttpResourceNormalizer implements NormalizerInterface, DenormalizerInterfa
             ) use (
                 &$properties,
                 &$errors,
-                $data
+                $data,
+                $mask
             ) {
+                if (
+                    !$definition->access()->matches($mask) &&
+                    isset($data[$name])
+                ) {
+                    $errors = $errors->put(
+                        $name,
+                        new DenormalizationException('The field is not allowed')
+                    );
+
+                    return;
+                }
+
                 if (!isset($data[$name])) {
                     if ($definition->isOptional()) {
                         return;

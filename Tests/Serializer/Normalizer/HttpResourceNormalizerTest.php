@@ -62,7 +62,9 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                         'bar',
                         new StringType,
                         new Access(
-                            (new Set('string'))->add(Access::READ)
+                            (new Set('string'))
+                                ->add(Access::READ)
+                                ->add(Access::CREATE)
                         ),
                         (new Set('string'))->add('baz'),
                         false
@@ -81,7 +83,10 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
             ],
             HttpResource::class,
             null,
-            ['definition' => $def]
+            [
+                'definition' => $def,
+                'mask' => new Access((new Set('string'))->add(Access::CREATE)),
+            ]
         );
 
         $this->assertInstanceOf(HttpResource::class, $r);
@@ -98,6 +103,25 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
         (new HttpResourceNormalizer)->denormalize(
             ['resource' => []],
             HttpResource::class
+        );
+    }
+
+    /**
+     * @expectedException Innmind\Rest\Server\Exception\BadMethodCallException
+     * @expectedExceptionMessage You must give an access mask
+     */
+    public function testThrowWhenTryingToDenormalizeWithoutAMask()
+    {
+        (new HttpResourceNormalizer)->denormalize(
+            ['resource' => []],
+            HttpResource::class,
+            null,
+            [
+                'definition' => $this
+                    ->getMockBuilder(ResourceDefinition::class)
+                    ->disableOriginalConstructor()
+                    ->getMock(),
+            ]
         );
     }
 
@@ -126,6 +150,20 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                         'baz',
                         new StringType,
                         new Access(
+                            (new Set('string'))
+                                ->add(Access::READ)
+                                ->add(Access::CREATE)
+                        ),
+                        new Set('string'),
+                        false
+                    )
+                )
+                ->put(
+                    'foo',
+                    new PropertyDefinition(
+                        'foo',
+                        new StringType,
+                        new Access(
                             (new Set('string'))->add(Access::READ)
                         ),
                         new Set('string'),
@@ -142,11 +180,15 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                 [
                     'resource' => [
                         'baz' => ['foo'],
+                        'foo' => 'foo',
                     ],
                 ],
                 HttpResource::class,
                 null,
-                ['definition' => $def]
+                [
+                    'definition' => $def,
+                    'mask' => new Access((new Set('string'))->add(Access::CREATE)),
+                ]
             );
             $this->fail('It should throw an exception');
         } catch (HttpResourceDenormalizationException $e) {
@@ -159,7 +201,7 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                 DenormalizationException::class,
                 (string) $e->errors()->valueType()
             );
-            $this->assertSame(2, $e->errors()->size());
+            $this->assertSame(3, $e->errors()->size());
             $this->assertSame(
                 'The field is missing',
                 $e->errors()->get('bar')->getMessage()
@@ -167,6 +209,10 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
             $this->assertSame(
                 'The value must be a string',
                 $e->errors()->get('baz')->getMessage()
+            );
+            $this->assertSame(
+                'The field is not allowed',
+                $e->errors()->get('foo')->getMessage()
             );
         }
     }
@@ -198,7 +244,19 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                         new Access(
                             (new Set('string'))->add(Access::READ)
                         ),
-                        (new Set('string'))->add('baz'),
+                        (new Set('string')),
+                        false
+                    )
+                )
+                ->put(
+                    'baz',
+                    new PropertyDefinition(
+                        'baz',
+                        new StringType,
+                        new Access(
+                            (new Set('string'))->add(Access::CREATE)
+                        ),
+                        (new Set('string')),
                         false
                     )
                 ),
@@ -210,6 +268,7 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
             $def,
             (new Map('string', Property::class))
                 ->put('bar', new Property('bar', 'baz'))
+                ->put('baz', new Property('baz', 'bar'))
         );
 
         $d = (new HttpResourceNormalizer)->normalize($r);
