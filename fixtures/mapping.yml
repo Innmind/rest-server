@@ -1,0 +1,20 @@
+top_dir:
+    children:
+        sub_dir:
+            resources:
+                res:
+                    identity: uuid
+                    gateway: command
+                    properties:
+                        uuid:
+                            type: string
+    resources:
+        image:
+            identity: uuid
+            gateway: command
+            properties:
+                uuid:
+                    type: string
+                url:
+                    type: string
+                    access: [READ, CREATE, UPDATE]
