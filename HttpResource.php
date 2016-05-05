@@ -27,6 +27,14 @@ class HttpResource implements HttpResourceInterface
 
         $this->definition = $definition;
         $this->properties = $properties;
+
+        $this
+            ->properties
+            ->foreach(function (string $name, Property $property) {
+                if (!$this->definition->properties()->contains($name)) {
+                    throw new InvalidArgumentException;
+                }
+            });
     }
 
     /**
