@@ -9,15 +9,18 @@ class MediaTypeTest extends \PHPUnit_Framework_TestCase
 {
     public function testInterface()
     {
-        $m = new MediaType($s = 'type/vnd.media-type+suffix', 42);
+        $m = new MediaType($s = 'application/vnd.media-type+suffix', 42);
 
         $this->assertSame($s, $m->mime());
         $this->assertSame($s, (string) $m);
+        $this->assertSame('application', $m->topLevel());
+        $this->assertSame('vnd.media-type', $m->subType());
+        $this->assertSame('suffix', $m->suffix());
         $this->assertSame(42, $m->priority());
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException Innmind\Filesystem\Exception\InvalidMediaTypeStringException
      */
     public function testThrowWhenInvalidMediaTypeGiven()
     {
