@@ -10,7 +10,7 @@ use Innmind\Immutable\{
     CollectionInterface
 };
 
-class HttpResource
+final class HttpResource
 {
     private $name;
     private $identity;

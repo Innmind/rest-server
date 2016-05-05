@@ -14,7 +14,7 @@ use Innmind\Immutable\{
     Set
 };
 
-class SetType implements TypeInterface
+final class SetType implements TypeInterface
 {
     private static $identifiers;
     private $inner;

@@ -19,7 +19,7 @@ use Innmind\Immutable\{
     CollectionInterface
 };
 
-class Types
+final class Types
 {
     private $types;
 

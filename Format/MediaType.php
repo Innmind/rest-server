@@ -7,7 +7,7 @@ use Innmind\Rest\Server\Exception\InvalidArgumentException;
 use Innmind\Filesystem\MediaType\MediaType as FilesystemMediaType;
 use Innmind\Immutable\StringPrimitive as Str;
 
-class MediaType
+final class MediaType
 {
     private $mime;
     private $priority;

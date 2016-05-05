@@ -14,7 +14,7 @@ use Innmind\Immutable\{
     Set
 };
 
-class BoolType implements TypeInterface
+final class BoolType implements TypeInterface
 {
     private static $identifiers;
 

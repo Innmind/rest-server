@@ -14,7 +14,7 @@ use Innmind\Immutable\{
     Set
 };
 
-class FloatType implements TypeInterface
+final class FloatType implements TypeInterface
 {
     private static $identifiers;
 

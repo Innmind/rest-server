@@ -14,7 +14,7 @@ use Innmind\Immutable\{
     Set
 };
 
-class Formats
+final class Formats
 {
     private $formats;
 

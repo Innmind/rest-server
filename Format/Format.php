@@ -6,7 +6,7 @@ namespace Innmind\Rest\Server\Format;
 use Innmind\Rest\Server\Exception\InvalidArgumentException;
 use Innmind\Immutable\SetInterface;
 
-class Format
+final class Format
 {
     private $name;
     private $types;

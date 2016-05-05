@@ -16,7 +16,7 @@ use Innmind\Immutable\{
     MapInterface
 };
 
-class MapType implements TypeInterface
+final class MapType implements TypeInterface
 {
     private static $identifiers;
     private $key;

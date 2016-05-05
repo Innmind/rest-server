@@ -6,7 +6,7 @@ namespace Innmind\Rest\Server\Definition;
 use Innmind\Rest\Server\Exception\InvalidArgumentException;
 use Innmind\Immutable\SetInterface;
 
-class Access
+final class Access
 {
     const READ = 'READ';
     const CREATE = 'CREATE';

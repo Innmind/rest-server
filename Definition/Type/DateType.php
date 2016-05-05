@@ -14,7 +14,7 @@ use Innmind\Immutable\{
     Set
 };
 
-class DateType implements TypeInterface
+final class DateType implements TypeInterface
 {
     private static $identifiers;
     private $format = \DateTime::ISO8601;

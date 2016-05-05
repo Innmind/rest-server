@@ -6,7 +6,7 @@ namespace Innmind\Rest\Server\Definition;
 use Innmind\Rest\Server\Exception\InvalidArgumentException;
 use Innmind\Immutable\SetInterface;
 
-class Property
+final class Property
 {
     private $name;
     private $type;

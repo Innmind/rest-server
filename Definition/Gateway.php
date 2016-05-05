@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Definition;
 
-class Gateway
+final class Gateway
 {
     private $name;
 

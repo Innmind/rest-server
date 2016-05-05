@@ -9,7 +9,7 @@ use Symfony\Component\Config\Definition\{
     Builder\TreeBuilder
 };
 
-class Configuration implements ConfigurationInterface
+final class Configuration implements ConfigurationInterface
 {
     /**
      * {@inheritdoc}

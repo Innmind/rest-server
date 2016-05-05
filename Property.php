@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server;
 
-class Property
+final class Property
 {
     private $name;
     private $value;

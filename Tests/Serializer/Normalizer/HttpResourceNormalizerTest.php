@@ -119,10 +119,15 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
             HttpResource::class,
             null,
             [
-                'definition' => $this
-                    ->getMockBuilder(ResourceDefinition::class)
-                    ->disableOriginalConstructor()
-                    ->getMock(),
+                'definition' => new ResourceDefinition(
+                    'foobar',
+                    new Identity('foo'),
+                    new Map('string', PropertyDefinition::class),
+                    new Collection([]),
+                    new Collection([]),
+                    new Gateway('bar'),
+                    Url::fromString('/')
+                ),
             ]
         );
     }
@@ -225,10 +230,18 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
         $n = new HttpResourceNormalizer;
 
         $this->assertTrue($n->supportsNormalization(
-            $this
-                ->getMockBuilder(HttpResource::class)
-                ->disableOriginalConstructor()
-                ->getMock()
+            new HttpResource(
+                new ResourceDefinition(
+                    'foobar',
+                    new Identity('foo'),
+                    new Map('string', PropertyDefinition::class),
+                    new Collection([]),
+                    new Collection([]),
+                    new Gateway('bar'),
+                    Url::fromString('/')
+                ),
+                new Map('string', Property::class)
+            )
         ));
         $this->assertFalse($n->supportsNormalization([]));
     }

@@ -14,7 +14,7 @@ use Innmind\Immutable\{
     Set
 };
 
-class StringType implements TypeInterface
+final class StringType implements TypeInterface
 {
     private static $identifiers;
 

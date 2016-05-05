@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Normalizer\{
     NormalizerInterface
 };
 
-class HttpResourceNormalizer implements NormalizerInterface, DenormalizerInterface
+final class HttpResourceNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
      * {@inheritdoc}

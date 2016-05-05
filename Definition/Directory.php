@@ -9,7 +9,7 @@ use Innmind\Immutable\{
     Pair
 };
 
-class Directory
+final class Directory
 {
     private $name;
     private $children;

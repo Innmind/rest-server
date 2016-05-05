@@ -9,7 +9,7 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Immutable\MapInterface;
 
-class HttpResource implements HttpResourceInterface
+final class HttpResource implements HttpResourceInterface
 {
     private $definition;
     private $properties;
