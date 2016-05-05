@@ -58,4 +58,32 @@ class Formats
 
         return $types;
     }
+
+    public function formatForMediaType(string $wished): Format
+    {
+        $format = $this
+            ->formats
+            ->values()
+            ->filter(function (Format $format) use ($wished) {
+                return $format
+                    ->mediaTypes()
+                    ->reduce(
+                        false,
+                        function (bool $carry, MediaType $mediaType) use ($wished): bool {
+                            if ($carry === true) {
+                                return true;
+                            }
+
+                            return $mediaType->mime() === $wished;
+                        }
+                    );
+            })
+            ->current();
+
+        if (!$format instanceof Format) {
+            throw new InvalidArgumentException;
+        }
+
+        return $format;
+    }
 }

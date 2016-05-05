@@ -92,4 +92,56 @@ class FormatsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($types->contains($html));
         $this->assertTrue($types->contains($xhtml));
     }
+
+    public function testFormatForMediaType()
+    {
+        $fs = new Formats(
+            (new Map('string', Format::class))
+                ->put(
+                    'json',
+                    $j = new Format(
+                        'json',
+                        (new Set(MediaType::class))
+                            ->add(new MediaType('application/json', 42)),
+                        42
+                    )
+                )
+                ->put(
+                    'html',
+                    $h = new Format(
+                        'html',
+                        (new Set(MediaType::class))
+                            ->add(new MediaType('text/html', 40))
+                            ->add(new MediaType('text/xhtml', 0)),
+                        0
+                    )
+                )
+        );
+
+        $this->assertSame($j, $fs->formatForMediaType('application/json'));
+        $this->assertSame($h, $fs->formatForMediaType('text/html'));
+        $this->assertSame($h, $fs->formatForMediaType('text/xhtml'));
+    }
+
+    /**
+     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     */
+    public function testThrowWhenNoFormatForWishedMediaType()
+    {
+        $fs = new Formats(
+            (new Map('string', Format::class))
+                ->put(
+                    'html',
+                    new Format(
+                        'html',
+                        (new Set(MediaType::class))
+                            ->add(new MediaType('text/html', 40))
+                            ->add(new MediaType('text/xhtml', 0)),
+                        0
+                    )
+                )
+        );
+
+        $fs->formatForMediaType('application/json');
+    }
 }
