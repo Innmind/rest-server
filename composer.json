@@ -16,7 +16,7 @@
     },
     "require": {
         "php": "~7.0",
-        "innmind/immutable": "^1.5",
+        "innmind/immutable": "~1.8",
         "symfony/serializer": "~3.0",
         "symfony/config": "~3.0",
         "innmind/specification": "^1.0"
