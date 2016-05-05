@@ -10,6 +10,7 @@ use Innmind\Rest\Server\Definition\{
     Property,
     Gateway
 };
+use Innmind\Url\Url;
 use Innmind\Immutable\{
     Map,
     Collection,
@@ -40,7 +41,8 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase
                         new Map('string', Property::class),
                         new Collection([]),
                         new Collection([]),
-                        new Gateway('foo')
+                        new Gateway('foo'),
+                        Url::fromString('/')
                     )
                 )
         );
@@ -96,7 +98,8 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase
                                     new Map('string', Property::class),
                                     new Collection([]),
                                     new Collection([]),
-                                    new Gateway('foo')
+                                    new Gateway('foo'),
+                                    Url::fromString('/')
                                 )
                             )
                     )
@@ -110,7 +113,8 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase
                         new Map('string', Property::class),
                         new Collection([]),
                         new Collection([]),
-                        new Gateway('foo')
+                        new Gateway('foo'),
+                        Url::fromString('/')
                     )
                 )
         );

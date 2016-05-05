@@ -19,6 +19,7 @@ use Innmind\Rest\Server\{
     Exception\HttpResourceDenormalizationException,
     Exception\HttpResourceNormalizationException
 };
+use Innmind\Url\Url;
 use Innmind\Immutable\{
     Map,
     Collection,
@@ -72,7 +73,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                 ),
             new Collection([]),
             new Collection([]),
-            new Gateway('bar')
+            new Gateway('bar'),
+            Url::fromString('/')
         );
 
         $r = $n->denormalize(
@@ -172,7 +174,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                 ),
             new Collection([]),
             new Collection([]),
-            new Gateway('bar')
+            new Gateway('bar'),
+            Url::fromString('/')
         );
 
         try {
@@ -262,7 +265,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                 ),
             new Collection([]),
             new Collection([]),
-            new Gateway('bar')
+            new Gateway('bar'),
+            Url::fromString('/')
         );
         $r = new HttpResource(
             $def,
@@ -296,7 +300,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                 ),
             new Collection([]),
             new Collection([]),
-            new Gateway('bar')
+            new Gateway('bar'),
+            Url::fromString('/')
         );
         $r = new HttpResource(
             $def,
