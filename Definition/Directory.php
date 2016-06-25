@@ -78,20 +78,23 @@ final class Directory
                     $definition
                 );
             });
-        $this
+        $definitions = $this
             ->children
-            ->foreach(function(string $name, self $child) use (&$definitions) {
-                $definitions = $definitions->merge(
-                    $child
-                        ->flatten()
-                        ->map(function(string $name, HttpResource $definition) {
-                            return new Pair(
-                                $this->name . '.' . $name,
-                                $definition
-                            );
-                        })
-                );
-            });
+            ->reduce(
+                $definitions,
+                function(MapInterface $carry, string $name, self $child) {
+                    return $carry->merge(
+                        $child
+                            ->flatten()
+                            ->map(function(string $name, HttpResource $definition) {
+                                return new Pair(
+                                    $this->name . '.' . $name,
+                                    $definition
+                                );
+                            })
+                    );
+                }
+            );
 
         return $definitions;
     }
