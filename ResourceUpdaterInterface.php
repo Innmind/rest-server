@@ -10,7 +10,7 @@ interface ResourceUpdaterInterface
     /**
      * @return void
      */
-    public function handle(
+    public function __invoke(
         ResourceDefinition $definition,
         IdentityInterface $identity,
         HttpResourceInterface $resource

@@ -10,7 +10,7 @@ interface ResourceRemoverInterface
     /**
      * @return void
      */
-    public function handle(
+    public function __invoke(
         ResourceDefinition $definition,
         IdentityInterface $identity
     );

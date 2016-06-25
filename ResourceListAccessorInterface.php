@@ -12,7 +12,7 @@ interface ResourceListAccessorInterface
     /**
      * @return SetInterface<IdentityInterface>
      */
-    public function get(
+    public function __invoke(
         ResourceDefinition $definition,
         SpecificationInterface $specification = null
     ): SetInterface;

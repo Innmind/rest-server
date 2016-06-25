@@ -7,7 +7,7 @@ use Innmind\Rest\Server\Definition\HttpResource as ResourceDefinition;
 
 interface ResourceCreatorInterface
 {
-    public function handle(
+    public function __invoke(
         ResourceDefinition $definition,
         HttpResourceInterface $resource
     ): IdentityInterface;
