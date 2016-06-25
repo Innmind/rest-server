@@ -8,6 +8,9 @@ top_dir:
                     properties:
                         uuid:
                             type: string
+                        image:
+                            type: string
+                            reference: top_dir.image # here to help validate the yaml loader
     resources:
         image:
             identity: uuid
