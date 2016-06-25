@@ -127,5 +127,6 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase
                     ->put('foo.bar.res', $rs)
             )
         );
+        $this->assertSame($defs, $d->flatten());
     }
 }

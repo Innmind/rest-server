@@ -14,6 +14,7 @@ final class Directory
     private $name;
     private $children;
     private $definitions;
+    private $flattened;
 
     public function __construct(
         string $name,
@@ -70,6 +71,10 @@ final class Directory
      */
     public function flatten(): MapInterface
     {
+        if ($this->flattened instanceof MapInterface) {
+            return $this->flattened;
+        }
+
         $definitions = $this
             ->definitions
             ->map(function(string $name, HttpResource $definition) {
@@ -95,6 +100,8 @@ final class Directory
                     );
                 }
             );
+
+        $this->flattened = $definitions;
 
         return $definitions;
     }
