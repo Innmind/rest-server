@@ -123,8 +123,8 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(
             $defs->equals(
                 (new Map('string', HttpResource::class))
-                    ->put('foo_res', $r)
-                    ->put('foo_bar_res', $rs)
+                    ->put('foo.res', $r)
+                    ->put('foo.bar.res', $rs)
             )
         );
     }
