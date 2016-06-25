@@ -20,7 +20,6 @@
         "symfony/serializer": "~3.0",
         "symfony/config": "~3.0",
         "innmind/specification": "^1.0",
-        "innmind/url": "^1.0",
         "innmind/filesystem": "^1.1"
     },
     "autoload": {

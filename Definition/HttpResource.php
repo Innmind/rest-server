@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\Definition;
 
 use Innmind\Rest\Server\Exception\InvalidArgumentException;
-use Innmind\Url\UrlInterface;
 use Innmind\Immutable\{
     MapInterface,
     CollectionInterface
@@ -18,7 +17,6 @@ final class HttpResource
     private $options;
     private $metas;
     private $gateway;
-    private $url;
 
     public function __construct(
         string $name,
@@ -26,8 +24,7 @@ final class HttpResource
         MapInterface $properties,
         CollectionInterface $options,
         CollectionInterface $metas,
-        Gateway $gateway,
-        UrlInterface $url
+        Gateway $gateway
     ) {
         if (
             (string) $properties->keyType() !== 'string' ||
@@ -42,7 +39,6 @@ final class HttpResource
         $this->options = $options;
         $this->metas = $metas;
         $this->gateway = $gateway;
-        $this->url = $url;
     }
 
     public function name(): string
@@ -76,11 +72,6 @@ final class HttpResource
     public function gateway(): Gateway
     {
         return $this->gateway;
-    }
-
-    public function url(): UrlInterface
-    {
-        return $this->url;
     }
 
     public function __toString(): string

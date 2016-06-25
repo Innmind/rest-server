@@ -19,7 +19,6 @@ use Innmind\Rest\Server\{
     Exception\HttpResourceDenormalizationException,
     Exception\HttpResourceNormalizationException
 };
-use Innmind\Url\Url;
 use Innmind\Immutable\{
     Map,
     Collection,
@@ -73,8 +72,7 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                 ),
             new Collection([]),
             new Collection([]),
-            new Gateway('bar'),
-            Url::fromString('/')
+            new Gateway('bar')
         );
 
         $r = $n->denormalize(
@@ -125,8 +123,7 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                     new Map('string', PropertyDefinition::class),
                     new Collection([]),
                     new Collection([]),
-                    new Gateway('bar'),
-                    Url::fromString('/')
+                    new Gateway('bar')
                 ),
             ]
         );
@@ -179,8 +176,7 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                 ),
             new Collection([]),
             new Collection([]),
-            new Gateway('bar'),
-            Url::fromString('/')
+            new Gateway('bar')
         );
 
         try {
@@ -237,8 +233,7 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                     new Map('string', PropertyDefinition::class),
                     new Collection([]),
                     new Collection([]),
-                    new Gateway('bar'),
-                    Url::fromString('/')
+                    new Gateway('bar')
                 ),
                 new Map('string', Property::class)
             )
@@ -278,8 +273,7 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                 ),
             new Collection([]),
             new Collection([]),
-            new Gateway('bar'),
-            Url::fromString('/')
+            new Gateway('bar')
         );
         $r = new HttpResource(
             $def,
@@ -313,8 +307,7 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                 ),
             new Collection([]),
             new Collection([]),
-            new Gateway('bar'),
-            Url::fromString('/')
+            new Gateway('bar')
         );
         $r = new HttpResource(
             $def,

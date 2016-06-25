@@ -5,7 +5,6 @@ top_dir:
                 res:
                     identity: uuid
                     gateway: command
-                    url: /top/child/res/
                     properties:
                         uuid:
                             type: string
@@ -13,7 +12,6 @@ top_dir:
         image:
             identity: uuid
             gateway: command
-            url: /top/image/
             properties:
                 uuid:
                     type: string

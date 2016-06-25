@@ -14,7 +14,6 @@ use Innmind\Rest\Server\{
     Definition\Type\StringType,
     Definition\Access
 };
-use Innmind\Url\Url;
 use Innmind\Immutable\{
     Map,
     Collection,
@@ -44,8 +43,7 @@ class HttpResourceTest extends \PHPUnit_Framework_TestCase
                     ),
                 new Collection([]),
                 new Collection([]),
-                new Gateway('bar'),
-                Url::fromString('/')
+                new Gateway('bar')
             ),
             $ps = (new Map('string', Property::class))
                 ->put('foo', $p = new Property('foo', 42))
@@ -71,8 +69,7 @@ class HttpResourceTest extends \PHPUnit_Framework_TestCase
                 (new Map('string', PropertyDefinition::class)),
                 new Collection([]),
                 new Collection([]),
-                new Gateway('bar'),
-                Url::fromString('/')
+                new Gateway('bar')
             ),
             $ps = (new Map('string', Property::class))
                 ->put('foo', $p = new Property('foo', 42))
