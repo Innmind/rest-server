@@ -10,4 +10,6 @@ interface GatewayInterface
     public function resourceCreator(): ResourceCreatorInterface;
     public function resourceUpdater(): ResourceUpdaterInterface;
     public function resourceRemover(): ResourceRemoverInterface;
+    public function resourceLinker(): ResourceLinkerInterface;
+    public function resourceUnlinker(): ResourceUnlinkerInterface;
 }

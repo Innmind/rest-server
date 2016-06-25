@@ -10,19 +10,25 @@ final class Gateway implements GatewayInterface
     private $creator;
     private $updater;
     private $remover;
+    private $linker;
+    private $unlinker;
 
     public function __construct(
         ResourceListAccessorInterface $listAccessor,
         ResourceAccessorInterface $accessor,
         ResourceCreatorInterface $creator,
         ResourceUpdaterInterface $updater,
-        ResourceRemoverInterface $remover
+        ResourceRemoverInterface $remover,
+        ResourceLinkerInterface $linker,
+        ResourceUnlinkerInterface $unlinker
     ) {
         $this->listAccessor = $listAccessor;
         $this->accessor = $accessor;
         $this->creator = $creator;
         $this->updater = $updater;
         $this->remover = $remover;
+        $this->linker = $linker;
+        $this->unlinker = $unlinker;
     }
 
     public function resourceListAccessor(): ResourceListAccessorInterface
@@ -48,5 +54,15 @@ final class Gateway implements GatewayInterface
     public function resourceRemover(): ResourceRemoverInterface
     {
         return $this->remover;
+    }
+
+    public function resourceLinker(): ResourceLinkerInterface
+    {
+        return $this->linker;
+    }
+
+    public function resourceUnlinker(): ResourceUnlinkerInterface
+    {
+        return $this->unlinker;
     }
 }

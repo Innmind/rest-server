@@ -10,7 +10,9 @@ use Innmind\Rest\Server\{
     ResourceAccessorInterface,
     ResourceCreatorInterface,
     ResourceUpdaterInterface,
-    ResourceRemoverInterface
+    ResourceRemoverInterface,
+    ResourceLinkerInterface,
+    ResourceUnlinkerInterface
 };
 
 class GatewayTest extends \PHPUnit_Framework_TestCase
@@ -22,7 +24,9 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
             $a = $this->getMock(ResourceAccessorInterface::class),
             $c = $this->getMock(ResourceCreatorInterface::class),
             $u = $this->getMock(ResourceUpdaterInterface::class),
-            $r = $this->getMock(ResourceRemoverInterface::class)
+            $r = $this->getMock(ResourceRemoverInterface::class),
+            $l = $this->getMock(ResourceLinkerInterface::class),
+            $ul = $this->getMock(ResourceUnlinkerInterface::class)
         );
 
         $this->assertInstanceOf(GatewayInterface::class, $g);
@@ -31,5 +35,7 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($c, $g->resourceCreator());
         $this->assertSame($u, $g->resourceUpdater());
         $this->assertSame($r, $g->resourceRemover());
+        $this->assertSame($l, $g->resourceLinker());
+        $this->assertSame($ul, $g->resourceUnlinker());
     }
 }
