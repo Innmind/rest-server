@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Innmind\Rest\Server\Tests\Serializer\Normalizer;
+namespace Tests\Innmind\Rest\Server\Serializer\Normalizer;
 
 use Innmind\Rest\Server\{
     Serializer\Normalizer\HttpResourceNormalizer,

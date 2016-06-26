@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Innmind\Rest\Server\Tests\Definition\Loader;
+namespace Tests\Innmind\Rest\Server\Definition\Loader;
 
 use Innmind\Rest\Server\Definition\{
     Loader\YamlLoader,

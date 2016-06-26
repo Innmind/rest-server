@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Innmind\Rest\Server\Tests\Request;
+namespace Tests\Innmind\Rest\Server\Request;
 
 use Innmind\Rest\Server\Request\Range;
 

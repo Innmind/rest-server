@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Innmind\Rest\Server\Tests\Format;
+namespace Tests\Innmind\Rest\Server\Format;
 
 use Innmind\Rest\Server\Format\{
     Format,

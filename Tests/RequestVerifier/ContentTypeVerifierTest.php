@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Innmind\Rest\Server\Tests\RequestVerifier;
+namespace Tests\Innmind\Rest\Server\RequestVerifier;
 
 use Innmind\Rest\Server\{
     RequestVerifier\ContentTypeVerifier,

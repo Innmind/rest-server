@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Innmind\Rest\Server\Tests\Exception;
+namespace Tests\Innmind\Rest\Server\Exception;
 
 use Innmind\Rest\Server\Exception\HttpResourceNormalizationException;
 use Innmind\Immutable\Map;

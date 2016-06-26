@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Innmind\Rest\Server\Tests;
+namespace Tests\Innmind\Rest\Server;
 
 use Innmind\Rest\Server\{
     HttpResource,
