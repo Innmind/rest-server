@@ -60,7 +60,7 @@ class AcceptVerifierTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException Innmind\Http\Exception\Http\NotAcceptableException
      */
-    public function testThrowWhenHeaderNotAcepted()
+    public function testThrowWhenHeaderNotAccepted()
     {
         $verifier = new AcceptVerifier(
             new Formats(
