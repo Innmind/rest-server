@@ -30,6 +30,5 @@
             "Innmind\\Rest\\Server\\": "src/",
             "Tests\\Innmind\\Rest\\Server\\": "tests/"
         }
-    },
-    "target-dir": "Innmind/Rest/Server"
+    }
 }
