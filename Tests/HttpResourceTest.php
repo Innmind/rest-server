@@ -43,7 +43,8 @@ class HttpResourceTest extends \PHPUnit_Framework_TestCase
                     ),
                 new Collection([]),
                 new Collection([]),
-                new Gateway('bar')
+                new Gateway('bar'),
+                true
             ),
             $ps = (new Map('string', Property::class))
                 ->put('foo', $p = new Property('foo', 42))
@@ -69,7 +70,8 @@ class HttpResourceTest extends \PHPUnit_Framework_TestCase
                 (new Map('string', PropertyDefinition::class)),
                 new Collection([]),
                 new Collection([]),
-                new Gateway('bar')
+                new Gateway('bar'),
+                true
             ),
             $ps = (new Map('string', Property::class))
                 ->put('foo', $p = new Property('foo', 42))

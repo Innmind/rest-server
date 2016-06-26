@@ -112,7 +112,8 @@ class ContentTypeVerifierTest extends \PHPUnit_Framework_TestCase
                 new Map('string', Property::class),
                 new Collection([]),
                 new Collection([]),
-                new Gateway('command')
+                new Gateway('command'),
+                true
             )
         );
     }
@@ -171,7 +172,8 @@ class ContentTypeVerifierTest extends \PHPUnit_Framework_TestCase
                     new Map('string', Property::class),
                     new Collection([]),
                     new Collection([]),
-                    new Gateway('command')
+                    new Gateway('command'),
+                    true
                 )
             )
         );
@@ -221,7 +223,8 @@ class ContentTypeVerifierTest extends \PHPUnit_Framework_TestCase
                     new Map('string', Property::class),
                     new Collection([]),
                     new Collection([]),
-                    new Gateway('command')
+                    new Gateway('command'),
+                    true
                 )
             )
         );

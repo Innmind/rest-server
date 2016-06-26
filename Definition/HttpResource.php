@@ -17,6 +17,7 @@ final class HttpResource
     private $options;
     private $metas;
     private $gateway;
+    private $rangeable;
 
     public function __construct(
         string $name,
@@ -24,7 +25,8 @@ final class HttpResource
         MapInterface $properties,
         CollectionInterface $options,
         CollectionInterface $metas,
-        Gateway $gateway
+        Gateway $gateway,
+        bool $rangeable
     ) {
         if (
             (string) $properties->keyType() !== 'string' ||
@@ -39,6 +41,7 @@ final class HttpResource
         $this->options = $options;
         $this->metas = $metas;
         $this->gateway = $gateway;
+        $this->rangeable = $rangeable;
     }
 
     public function name(): string
@@ -72,6 +75,11 @@ final class HttpResource
     public function gateway(): Gateway
     {
         return $this->gateway;
+    }
+
+    public function isRangeable(): bool
+    {
+        return $this->rangeable;
     }
 
     public function __toString(): string

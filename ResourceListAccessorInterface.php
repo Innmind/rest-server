@@ -3,7 +3,10 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server;
 
-use Innmind\Rest\Server\Definition\HttpResource as ResourceDefinition;
+use Innmind\Rest\Server\{
+    Definition\HttpResource as ResourceDefinition,
+    Request\Range
+};
 use Innmind\Specification\SpecificationInterface;
 use Innmind\Immutable\SetInterface;
 
@@ -14,6 +17,7 @@ interface ResourceListAccessorInterface
      */
     public function __invoke(
         ResourceDefinition $definition,
-        SpecificationInterface $specification = null
+        SpecificationInterface $specification = null,
+        Range $range = null
     ): SetInterface;
 }

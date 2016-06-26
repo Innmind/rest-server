@@ -153,7 +153,8 @@ final class YamlLoader implements LoaderInterface
             $properties,
             new Collection($config['options'] ?? []),
             new Collection($config['metas'] ?? []),
-            new Gateway($config['gateway'])
+            new Gateway($config['gateway']),
+            $config['rangeable']
         );
     }
 

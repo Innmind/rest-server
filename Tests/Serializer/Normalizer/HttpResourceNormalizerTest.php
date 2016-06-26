@@ -72,7 +72,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                 ),
             new Collection([]),
             new Collection([]),
-            new Gateway('bar')
+            new Gateway('bar'),
+            true
         );
 
         $r = $n->denormalize(
@@ -123,7 +124,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                     new Map('string', PropertyDefinition::class),
                     new Collection([]),
                     new Collection([]),
-                    new Gateway('bar')
+                    new Gateway('bar'),
+                    true
                 ),
             ]
         );
@@ -176,7 +178,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                 ),
             new Collection([]),
             new Collection([]),
-            new Gateway('bar')
+            new Gateway('bar'),
+            true
         );
 
         try {
@@ -233,7 +236,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                     new Map('string', PropertyDefinition::class),
                     new Collection([]),
                     new Collection([]),
-                    new Gateway('bar')
+                    new Gateway('bar'),
+                    true
                 ),
                 new Map('string', Property::class)
             )
@@ -273,7 +277,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                 ),
             new Collection([]),
             new Collection([]),
-            new Gateway('bar')
+            new Gateway('bar'),
+            true
         );
         $r = new HttpResource(
             $def,
@@ -307,7 +312,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                 ),
             new Collection([]),
             new Collection([]),
-            new Gateway('bar')
+            new Gateway('bar'),
+            true
         );
         $r = new HttpResource(
             $def,

@@ -43,6 +43,7 @@ class YamlLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('image', $image->name());
         $this->assertSame('uuid', (string) $image->identity());
         $this->assertSame('command', (string) $image->gateway());
+        $this->assertTrue($image->isRangeable());
         $uuid = $image->properties()->get('uuid');
         $this->assertSame('uuid', $uuid->name());
         $this->assertInstanceOf(StringType::class, $uuid->type());
@@ -68,6 +69,7 @@ class YamlLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('res', $res->name());
         $this->assertSame('uuid', (string) $res->identity());
         $this->assertSame('command', (string) $res->gateway());
+        $this->assertFalse($res->isRangeable());
         $uuid = $res->properties()->get('uuid');
         $this->assertSame('uuid', $uuid->name());
         $this->assertInstanceOf(StringType::class, $uuid->type());

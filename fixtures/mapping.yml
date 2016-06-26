@@ -11,6 +11,7 @@ top_dir:
                         image:
                             type: string
                             reference: top_dir.image # here to help validate the yaml loader
+                    rangeable: false
     resources:
         image:
             identity: uuid

@@ -24,7 +24,8 @@ class HttpResourceTest extends \PHPUnit_Framework_TestCase
             $p = (new Map('string', Property::class)),
             $o = new Collection([]),
             $m = new Collection([]),
-            $g = new Gateway('bar')
+            $g = new Gateway('bar'),
+            true
         );
 
         $this->assertSame('foobar', $r->name());
@@ -34,6 +35,7 @@ class HttpResourceTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($o, $r->options());
         $this->assertSame($m, $r->metas());
         $this->assertSame($g, $r->gateway());
+        $this->assertTrue($r->isRangeable());
     }
 
     /**
@@ -47,7 +49,8 @@ class HttpResourceTest extends \PHPUnit_Framework_TestCase
             new Map('string', 'string'),
             new Collection([]),
             new Collection([]),
-            new Gateway('bar')
+            new Gateway('bar'),
+            false
         );
     }
 }

@@ -28,6 +28,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $expected['top_dir']['resources']['image']['properties']['url']['optional'] = false;
         $expected['top_dir']['resources']['image']['options'] = [];
         $expected['top_dir']['resources']['image']['metas'] = [];
+        $expected['top_dir']['resources']['image']['rangeable'] = true;
 
         $this->assertSame($expected, $result);
     }
