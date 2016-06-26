@@ -1,14 +1,18 @@
 <?php
 declare(strict_types = 1);
 
-namespace Innmind\Rest\Server\Tests\AcceptVerifier;
+namespace Innmind\Rest\Server\Tests\RequestVerifier;
 
 use Innmind\Rest\Server\{
-    AcceptVerifier\Verifier,
-    AcceptVerifier\VerifierInterface,
+    RequestVerifier\AcceptVerifier,
+    RequestVerifier\VerifierInterface,
     Formats,
     Format\Format,
-    Format\MediaType
+    Format\MediaType,
+    Definition\HttpResource,
+    Definition\Identity,
+    Definition\Gateway,
+    Definition\Property
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -26,14 +30,15 @@ use Innmind\Url\UrlInterface;
 use Innmind\Filesystem\StreamInterface;
 use Innmind\Immutable\{
     Map,
-    Set
+    Set,
+    Collection
 };
 
-class VerifierTest extends \PHPUnit_Framework_TestCase
+class AcceptVerifierTest extends \PHPUnit_Framework_TestCase
 {
     public function testInterface()
     {
-        $verifier = new Verifier(
+        $verifier = new AcceptVerifier(
             new Formats(
                 (new Map('string', Format::class))
                     ->put(
@@ -57,7 +62,7 @@ class VerifierTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowWhenHeaderNotAcepted()
     {
-        $verifier = new Verifier(
+        $verifier = new AcceptVerifier(
             new Formats(
                 (new Map('string', Format::class))
                     ->put(
@@ -96,12 +101,22 @@ class VerifierTest extends \PHPUnit_Framework_TestCase
             $this->getMock(FilesInterface::class)
         );
 
-        $verifier->verify($request);
+        $verifier->verify(
+            $request,
+            new HttpResource(
+                'foo',
+                new Identity('uuid'),
+                new Map('string', Property::class),
+                new Collection([]),
+                new Collection([]),
+                new Gateway('command')
+            )
+        );
     }
 
     public function testDoesntThrowWhenAcceptMediaType()
     {
-        $verifier = new Verifier(
+        $verifier = new AcceptVerifier(
             new Formats(
                 (new Map('string', Format::class))
                     ->put(
@@ -140,6 +155,19 @@ class VerifierTest extends \PHPUnit_Framework_TestCase
             $this->getMock(FilesInterface::class)
         );
 
-        $this->assertSame(null, $verifier->verify($request));
+        $this->assertSame(
+            null,
+            $verifier->verify(
+                $request,
+                new HttpResource(
+                    'foo',
+                    new Identity('uuid'),
+                    new Map('string', Property::class),
+                    new Collection([]),
+                    new Collection([]),
+                    new Gateway('command')
+                )
+            )
+        );
     }
 }

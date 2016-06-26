@@ -1,11 +1,12 @@
 <?php
 declare(strict_types = 1);
 
-namespace Innmind\Rest\Server\AcceptVerifier;
+namespace Innmind\Rest\Server\RequestVerifier;
 
 use Innmind\Rest\Server\{
     Formats,
-    Format\MediaType
+    Format\MediaType,
+    Definition\HttpResource
 };
 use Innmind\Http\{
     Message\ServerRequestInterface,
@@ -16,7 +17,7 @@ use Negotiation\{
     Accept
 };
 
-final class Verifier implements VerifierInterface
+final class AcceptVerifier implements VerifierInterface
 {
     private $formats;
     private $negotiator;
@@ -29,9 +30,13 @@ final class Verifier implements VerifierInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws NotAcceptableException
      */
-    public function verify(ServerRequestInterface $request)
-    {
+    public function verify(
+        ServerRequestInterface $request,
+        HttpResource $definition
+    ) {
         $types = $this
             ->formats
             ->mediaTypes()
