@@ -64,12 +64,12 @@ final class Formats
         $format = $this
             ->formats
             ->values()
-            ->filter(function (Format $format) use ($wished) {
+            ->filter(function(Format $format) use ($wished) {
                 return $format
                     ->mediaTypes()
                     ->reduce(
                         false,
-                        function (bool $carry, MediaType $mediaType) use ($wished): bool {
+                        function(bool $carry, MediaType $mediaType) use ($wished): bool {
                             if ($carry === true) {
                                 return true;
                             }

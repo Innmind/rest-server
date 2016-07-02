@@ -57,7 +57,7 @@ final class YamlLoader implements LoaderInterface
             new Configuration,
             $files->reduce(
                 [],
-                function (array $carry, string $file) {
+                function(array $carry, string $file) {
                     $carry[] = Yaml::parse(file_get_contents($file));
 
                     return $carry;
@@ -210,7 +210,7 @@ final class YamlLoader implements LoaderInterface
 
         try {
             $config = $pieces->reduce(
-                function (array $config, string $path) {
+                function(array $config, string $path) {
                     return $config[$path] ?? $config['resources'][$path];
                 },
                 $this->config

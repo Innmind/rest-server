@@ -79,7 +79,7 @@ final class Directory
             ->definitions
             ->map(function(string $name, HttpResource $definition) {
                 return new Pair(
-                    $this->name . '.' . $name,
+                    $this->name.'.'.$name,
                     $definition
                 );
             });
@@ -93,7 +93,7 @@ final class Directory
                             ->flatten()
                             ->map(function(string $name, HttpResource $definition) {
                                 return new Pair(
-                                    $this->name . '.' . $name,
+                                    $this->name.'.'.$name,
                                     $definition
                                 );
                             })
