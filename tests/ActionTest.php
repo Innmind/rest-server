@@ -18,9 +18,9 @@ class ActionTest extends \PHPUnit_Framework_TestCase
         $all = Action::all();
         $this->assertInstanceOf(SetInterface::class, $all);
         $this->assertSame('string', (string) $all->type());
-        $this->assertSame(7, $all->size());
+        $this->assertSame(8, $all->size());
         $this->assertSame(
-            ['list', 'get', 'create', 'update', 'remove', 'link', 'unlink'],
+            ['list', 'get', 'create', 'update', 'remove', 'link', 'unlink', 'options'],
             $all->toPrimitive()
         );
     }

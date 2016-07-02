@@ -19,6 +19,7 @@ final class Action
     const REMOVE = 'remove';
     const LINK = 'link';
     const UNLINK = 'unlink';
+    const OPTIONS = 'options';
 
     private $action;
 
@@ -57,6 +58,7 @@ final class Action
             ->add(self::UPDATE)
             ->add(self::REMOVE)
             ->add(self::LINK)
-            ->add(self::UNLINK);
+            ->add(self::UNLINK)
+            ->add(self::OPTIONS);
     }
 }
