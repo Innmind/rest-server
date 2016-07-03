@@ -93,7 +93,7 @@ class FormatsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($types->contains($xhtml));
     }
 
-    public function testFormatForMediaType()
+    public function testFromMediaType()
     {
         $fs = new Formats(
             (new Map('string', Format::class))
@@ -118,9 +118,9 @@ class FormatsTest extends \PHPUnit_Framework_TestCase
                 )
         );
 
-        $this->assertSame($j, $fs->formatForMediaType('application/json'));
-        $this->assertSame($h, $fs->formatForMediaType('text/html'));
-        $this->assertSame($h, $fs->formatForMediaType('text/xhtml'));
+        $this->assertSame($j, $fs->fromMediaType('application/json'));
+        $this->assertSame($h, $fs->fromMediaType('text/html'));
+        $this->assertSame($h, $fs->fromMediaType('text/xhtml'));
     }
 
     /**
@@ -142,6 +142,6 @@ class FormatsTest extends \PHPUnit_Framework_TestCase
                 )
         );
 
-        $fs->formatForMediaType('application/json');
+        $fs->fromMediaType('application/json');
     }
 }

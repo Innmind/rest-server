@@ -59,7 +59,7 @@ final class Formats
         return $types;
     }
 
-    public function formatForMediaType(string $wished): Format
+    public function fromMediaType(string $wished): Format
     {
         $format = $this
             ->formats
