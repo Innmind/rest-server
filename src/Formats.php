@@ -13,10 +13,12 @@ use Innmind\Immutable\{
     SetInterface,
     Set
 };
+use Negotiation\Negotiator;
 
 final class Formats
 {
     private $formats;
+    private $negotiator;
 
     public function __construct(MapInterface $formats)
     {
@@ -29,6 +31,7 @@ final class Formats
         }
 
         $this->formats = $formats;
+        $this->negotiator = new Negotiator;
     }
 
     public function get(string $name): Format
@@ -85,5 +88,39 @@ final class Formats
         }
 
         return $format;
+    }
+
+    public function matching(string $wished): Format
+    {
+        $best = $this->negotiator->getBest(
+            $wished,
+            $this
+                ->mediaTypes()
+                ->reduce(
+                    [],
+                    function(array $carry, MediaType $type): array {
+                        $carry[] = (string) $type;
+
+                        return $carry;
+                    }
+                )
+        );
+
+        return $this->best($best->getBasePart().'/'.$best->getSubPart());
+    }
+
+    private function best(string $mediaType): Format
+    {
+        if ($mediaType === '*/*') {
+            return $this
+                ->formats
+                ->values()
+                ->sort(function(Format $a, Format $b): bool {
+                    return $a->priority() > $b->priority();
+                })
+                ->first();
+        }
+
+        return $this->fromMediaType($mediaType);
     }
 }

@@ -144,4 +144,64 @@ class FormatsTest extends \PHPUnit_Framework_TestCase
 
         $fs->fromMediaType('application/json');
     }
+
+    public function testMatching()
+    {
+        $fs = new Formats(
+            (new Map('string', Format::class))
+                ->put(
+                    'json',
+                    $j = new Format(
+                        'json',
+                        (new Set(MediaType::class))
+                            ->add(new MediaType('application/json', 42)),
+                        42
+                    )
+                )
+                ->put(
+                    'html',
+                    $h = new Format(
+                        'html',
+                        (new Set(MediaType::class))
+                            ->add(new MediaType('text/html', 40))
+                            ->add(new MediaType('text/xhtml', 0)),
+                        0
+                    )
+                )
+        );
+
+        $format = $fs->matching('text/html, application/json;q=0.5, *;q=0.1');
+
+        $this->assertSame($h, $format);
+    }
+
+    public function testMatchingWhenAcceptingEverything()
+    {
+        $fs = new Formats(
+            (new Map('string', Format::class))
+                ->put(
+                    'json',
+                    $j = new Format(
+                        'json',
+                        (new Set(MediaType::class))
+                            ->add(new MediaType('application/json', 42)),
+                        42
+                    )
+                )
+                ->put(
+                    'html',
+                    $h = new Format(
+                        'html',
+                        (new Set(MediaType::class))
+                            ->add(new MediaType('text/html', 40))
+                            ->add(new MediaType('text/xhtml', 0)),
+                        0
+                    )
+                )
+        );
+
+        $format = $fs->matching('*');
+
+        $this->assertSame($j, $format);
+    }
 }
