@@ -34,7 +34,7 @@ class ListDelegationBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ListBuilderInterface::class, $builder);
         $headers = $builder->build(
             new Set(IdentityInterface::class),
-            $this->getMock(ServerRequestInterface::class),
+            $this->createMock(ServerRequestInterface::class),
             new Httpresource(
                 'foobar',
                 new Identity('foo'),
@@ -69,7 +69,7 @@ class ListDelegationBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder->build(
             new Set('object'),
-            $this->getMock(ServerRequestInterface::class),
+            $this->createMock(ServerRequestInterface::class),
             new Httpresource(
                 'foobar',
                 new Identity('foo'),
@@ -86,25 +86,25 @@ class ListDelegationBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $builder = new ListDelegationBuilder(
             (new Set(ListBuilderInterface::class))
-                ->add($mock1 = $this->getMock(ListBuilderInterface::class))
-                ->add($mock2 = $this->getMock(ListBuilderInterface::class))
+                ->add($mock1 = $this->createMock(ListBuilderInterface::class))
+                ->add($mock2 = $this->createMock(ListBuilderInterface::class))
         );
         $mock1
             ->method('build')
             ->willReturn(
                 (new Map('string', HeaderInterface::class))
-                    ->put('foo', $this->getMock(HeaderInterface::class))
+                    ->put('foo', $this->createMock(HeaderInterface::class))
             );
         $mock2
             ->method('build')
             ->willReturn(
                 (new Map('string', HeaderInterface::class))
-                    ->put('bar', $this->getMock(HeaderInterface::class))
+                    ->put('bar', $this->createMock(HeaderInterface::class))
             );
 
         $headers = $builder->build(
             new Set(IdentityInterface::class),
-            $this->getMock(ServerRequestInterface::class),
+            $this->createMock(ServerRequestInterface::class),
             new Httpresource(
                 'foobar',
                 new Identity('foo'),

@@ -82,9 +82,9 @@ class ListContentTypeBuilderTest extends \PHPUnit_Framework_TestCase
         $headers = $this->builder->build(
             new Set(IdentityInterface::class),
             new ServerRequest(
-                $this->getMock(UrlInterface::class),
-                $this->getMock(MethodInterface::class),
-                $this->getMock(ProtocolVersionInterface::class),
+                $this->createMock(UrlInterface::class),
+                $this->createMock(MethodInterface::class),
+                $this->createMock(ProtocolVersionInterface::class),
                 new Headers(
                     (new Map('string', HeaderInterface::class))
                         ->put(
@@ -99,12 +99,12 @@ class ListContentTypeBuilderTest extends \PHPUnit_Framework_TestCase
                             )
                         )
                 ),
-                $this->getMock(StreamInterface::class),
-                $this->getMock(EnvironmentInterface::class),
-                $this->getMock(CookiesInterface::class),
-                $this->getMock(QueryInterface::class),
-                $this->getMock(FormInterface::class),
-                $this->getMock(FilesInterface::class)
+                $this->createMock(StreamInterface::class),
+                $this->createMock(EnvironmentInterface::class),
+                $this->createMock(CookiesInterface::class),
+                $this->createMock(QueryInterface::class),
+                $this->createMock(FormInterface::class),
+                $this->createMock(FilesInterface::class)
             ),
             new HttpResource(
                 'foo',

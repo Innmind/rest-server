@@ -24,7 +24,7 @@ class OrFilterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($left, $and->left());
         $this->assertSame($right, $and->right());
         $this->assertSame('OR', (string) $and->operator());
-        $resource = $this->getMock(HttpResourceInterface::class);
+        $resource = $this->createMock(HttpResourceInterface::class);
         $resource
             ->method('property')
             ->will($this->onConsecutiveCalls(

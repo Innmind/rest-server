@@ -41,7 +41,7 @@ class ListRangeBuilderTest extends \PHPUnit_Framework_TestCase
 
         $headers = $builder->build(
             new Set(IdentityInterface::class),
-            $this->getMock(ServerRequestInterface::class),
+            $this->createMock(ServerRequestInterface::class),
             new HttpResource(
                 'foo',
                 new Identity('uuid'),
@@ -65,7 +65,7 @@ class ListRangeBuilderTest extends \PHPUnit_Framework_TestCase
 
         $headers = $builder->build(
             new Set(IdentityInterface::class),
-            $this->getMock(ServerRequestInterface::class),
+            $this->createMock(ServerRequestInterface::class),
             new HttpResource(
                 'foo',
                 new Identity('uuid'),
@@ -94,7 +94,7 @@ class ListRangeBuilderTest extends \PHPUnit_Framework_TestCase
         $headers = $builder->build(
             (new Set(IdentityInterface::class))
                 ->add(new Id(42)),
-            $this->getMock(ServerRequestInterface::class),
+            $this->createMock(ServerRequestInterface::class),
             new HttpResource(
                 'foo',
                 new Identity('uuid'),
@@ -138,7 +138,7 @@ class ListRangeBuilderTest extends \PHPUnit_Framework_TestCase
                 ->add(new Id(49))
                 ->add(new Id(50))
                 ->add(new Id(51)),
-            $this->getMock(ServerRequestInterface::class),
+            $this->createMock(ServerRequestInterface::class),
             new HttpResource(
                 'foo',
                 new Identity('uuid'),

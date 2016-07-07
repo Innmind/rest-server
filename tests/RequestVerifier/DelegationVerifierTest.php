@@ -42,11 +42,11 @@ class DelegationVerifierTest extends \PHPUnit_Framework_TestCase
             (new Map('int', VerifierInterface::class))
                 ->put(
                     100,
-                    $verifier1 = $this->getMock(VerifierInterface::class)
+                    $verifier1 = $this->createMock(VerifierInterface::class)
                 )
                 ->put(
                     20,
-                    $verifier2 = $this->getMock(VerifierInterface::class)
+                    $verifier2 = $this->createMock(VerifierInterface::class)
                 )
         );
         $count = 0;
@@ -64,7 +64,7 @@ class DelegationVerifierTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             null,
             $verifier->verify(
-                $this->getMock(ServerRequestInterface::class),
+                $this->createMock(ServerRequestInterface::class),
                 new HttpResource(
                     'foo',
                     new Identity('uuid'),
@@ -88,7 +88,7 @@ class DelegationVerifierTest extends \PHPUnit_Framework_TestCase
             (new Map('int', VerifierInterface::class))
                 ->put(
                     1,
-                    $verifier1 = $this->getMock(VerifierInterface::class)
+                    $verifier1 = $this->createMock(VerifierInterface::class)
                 )
         );
         $verifier1
@@ -98,7 +98,7 @@ class DelegationVerifierTest extends \PHPUnit_Framework_TestCase
             }));
 
         $verifier->verify(
-            $this->getMock(ServerRequestInterface::class),
+            $this->createMock(ServerRequestInterface::class),
             new HttpResource(
                 'foo',
                 new Identity('uuid'),

@@ -54,15 +54,15 @@ class ListLinksBuilderTest extends \PHPUnit_Framework_TestCase
                 ->add(new Id(42)),
             new ServerRequest(
                 Url::fromString('/foo/bar/'),
-                $this->getMock(MethodInterface::class),
-                $this->getMock(ProtocolVersionInterface::class),
-                $this->getMock(HeadersInterface::class),
-                $this->getMock(StreamInterface::class),
-                $this->getMock(EnvironmentInterface::class),
-                $this->getMock(CookiesInterface::class),
-                $this->getMock(QueryInterface::class),
-                $this->getMock(FormInterface::class),
-                $this->getMock(FilesInterface::class)
+                $this->createMock(MethodInterface::class),
+                $this->createMock(ProtocolVersionInterface::class),
+                $this->createMock(HeadersInterface::class),
+                $this->createMock(StreamInterface::class),
+                $this->createMock(EnvironmentInterface::class),
+                $this->createMock(CookiesInterface::class),
+                $this->createMock(QueryInterface::class),
+                $this->createMock(FormInterface::class),
+                $this->createMock(FilesInterface::class)
             ),
             new HttpResource(
                 'foo',

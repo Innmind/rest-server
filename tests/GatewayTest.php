@@ -20,13 +20,13 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
     public function testInterface()
     {
         $g = new Gateway(
-            $la = $this->getMock(ResourceListAccessorInterface::class),
-            $a = $this->getMock(ResourceAccessorInterface::class),
-            $c = $this->getMock(ResourceCreatorInterface::class),
-            $u = $this->getMock(ResourceUpdaterInterface::class),
-            $r = $this->getMock(ResourceRemoverInterface::class),
-            $l = $this->getMock(ResourceLinkerInterface::class),
-            $ul = $this->getMock(ResourceUnlinkerInterface::class)
+            $la = $this->createMock(ResourceListAccessorInterface::class),
+            $a = $this->createMock(ResourceAccessorInterface::class),
+            $c = $this->createMock(ResourceCreatorInterface::class),
+            $u = $this->createMock(ResourceUpdaterInterface::class),
+            $r = $this->createMock(ResourceRemoverInterface::class),
+            $l = $this->createMock(ResourceLinkerInterface::class),
+            $ul = $this->createMock(ResourceUnlinkerInterface::class)
         );
 
         $this->assertInstanceOf(GatewayInterface::class, $g);

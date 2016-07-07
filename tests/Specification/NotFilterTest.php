@@ -18,7 +18,7 @@ class NotFilterTest extends \PHPUnit_Framework_TestCase
         $not = new NotFilter(
             $spec = new Filter('foo', 'bar')
         );
-        $resource = $this->getMock(HttpResourceInterface::class);
+        $resource = $this->createMock(HttpResourceInterface::class);
         $resource
             ->method('property')
             ->willReturn(new Property('foo', 'bar'));

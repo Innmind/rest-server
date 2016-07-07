@@ -20,7 +20,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('foo', $filter->property());
         $this->assertSame('bar', $filter->value());
         $this->assertSame('==', $filter->sign());
-        $resource = $this->getMock(HttpResourceInterface::class);
+        $resource = $this->createMock(HttpResourceInterface::class);
         $resource
             ->method('property')
             ->willReturn(new Property('foo', 'bar'));

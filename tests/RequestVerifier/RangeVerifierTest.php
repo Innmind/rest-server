@@ -47,23 +47,23 @@ class RangeVerifierTest extends \PHPUnit_Framework_TestCase
     public function testThrowWhenUsingRangeOnNonGETRequest()
     {
         $verifier = new RangeVerifier;
-        $headers = $this->getMock(HeadersInterface::class);
+        $headers = $this->createMock(HeadersInterface::class);
         $headers
             ->method('has')
             ->will($this->returnCallback(function(string $header) {
                 return $header === 'Range';
             }));
         $request = new ServerRequest(
-            $this->getMock(UrlInterface::class),
+            $this->createMock(UrlInterface::class),
             new Method('POST'),
-            $this->getMock(ProtocolVersionInterface::class),
+            $this->createMock(ProtocolVersionInterface::class),
             $headers,
-            $this->getMock(StreamInterface::class),
-            $this->getMock(EnvironmentInterface::class),
-            $this->getMock(CookiesInterface::class),
-            $this->getMock(QueryInterface::class),
-            $this->getMock(FormInterface::class),
-            $this->getMock(FilesInterface::class)
+            $this->createMock(StreamInterface::class),
+            $this->createMock(EnvironmentInterface::class),
+            $this->createMock(CookiesInterface::class),
+            $this->createMock(QueryInterface::class),
+            $this->createMock(FormInterface::class),
+            $this->createMock(FilesInterface::class)
         );
 
         $verifier->verify(
@@ -86,23 +86,23 @@ class RangeVerifierTest extends \PHPUnit_Framework_TestCase
     public function testThrowWhenUsingRangeOnNonRageableResource()
     {
         $verifier = new RangeVerifier;
-        $headers = $this->getMock(HeadersInterface::class);
+        $headers = $this->createMock(HeadersInterface::class);
         $headers
             ->method('has')
             ->will($this->returnCallback(function(string $header) {
                 return $header === 'Range';
             }));
         $request = new ServerRequest(
-            $this->getMock(UrlInterface::class),
+            $this->createMock(UrlInterface::class),
             new Method('GET'),
-            $this->getMock(ProtocolVersionInterface::class),
+            $this->createMock(ProtocolVersionInterface::class),
             $headers,
-            $this->getMock(StreamInterface::class),
-            $this->getMock(EnvironmentInterface::class),
-            $this->getMock(CookiesInterface::class),
-            $this->getMock(QueryInterface::class),
-            $this->getMock(FormInterface::class),
-            $this->getMock(FilesInterface::class)
+            $this->createMock(StreamInterface::class),
+            $this->createMock(EnvironmentInterface::class),
+            $this->createMock(CookiesInterface::class),
+            $this->createMock(QueryInterface::class),
+            $this->createMock(FormInterface::class),
+            $this->createMock(FilesInterface::class)
         );
 
         $verifier->verify(
@@ -122,23 +122,23 @@ class RangeVerifierTest extends \PHPUnit_Framework_TestCase
     public function testVerify()
     {
         $verifier = new RangeVerifier;
-        $headers = $this->getMock(HeadersInterface::class);
+        $headers = $this->createMock(HeadersInterface::class);
         $headers
             ->method('has')
             ->will($this->returnCallback(function(string $header) {
                 return $header === 'Range';
             }));
         $request = new ServerRequest(
-            $this->getMock(UrlInterface::class),
+            $this->createMock(UrlInterface::class),
             new Method('GET'),
-            $this->getMock(ProtocolVersionInterface::class),
+            $this->createMock(ProtocolVersionInterface::class),
             $headers,
-            $this->getMock(StreamInterface::class),
-            $this->getMock(EnvironmentInterface::class),
-            $this->getMock(CookiesInterface::class),
-            $this->getMock(QueryInterface::class),
-            $this->getMock(FormInterface::class),
-            $this->getMock(FilesInterface::class)
+            $this->createMock(StreamInterface::class),
+            $this->createMock(EnvironmentInterface::class),
+            $this->createMock(CookiesInterface::class),
+            $this->createMock(QueryInterface::class),
+            $this->createMock(FormInterface::class),
+            $this->createMock(FilesInterface::class)
         );
 
         $this->assertSame(
@@ -157,21 +157,21 @@ class RangeVerifierTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $headers = $this->getMock(HeadersInterface::class);
+        $headers = $this->createMock(HeadersInterface::class);
         $headers
             ->method('has')
             ->willReturn(false);
         $request = new ServerRequest(
-            $this->getMock(UrlInterface::class),
+            $this->createMock(UrlInterface::class),
             new Method('GET'),
-            $this->getMock(ProtocolVersionInterface::class),
+            $this->createMock(ProtocolVersionInterface::class),
             $headers,
-            $this->getMock(StreamInterface::class),
-            $this->getMock(EnvironmentInterface::class),
-            $this->getMock(CookiesInterface::class),
-            $this->getMock(QueryInterface::class),
-            $this->getMock(FormInterface::class),
-            $this->getMock(FilesInterface::class)
+            $this->createMock(StreamInterface::class),
+            $this->createMock(EnvironmentInterface::class),
+            $this->createMock(CookiesInterface::class),
+            $this->createMock(QueryInterface::class),
+            $this->createMock(FormInterface::class),
+            $this->createMock(FilesInterface::class)
         );
 
         $this->assertSame(

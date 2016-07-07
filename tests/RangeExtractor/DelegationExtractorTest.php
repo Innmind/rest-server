@@ -35,8 +35,8 @@ class DelegationExtractorTest extends \PHPUnit_Framework_TestCase
     {
         $extractor = new DelegationExtractor(
             (new Set(ExtractorInterface::class))
-                ->add($extractor1 = $this->getMock(ExtractorInterface::class))
-                ->add($extractor2 = $this->getMock(ExtractorInterface::class))
+                ->add($extractor1 = $this->createMock(ExtractorInterface::class))
+                ->add($extractor2 = $this->createMock(ExtractorInterface::class))
         );
         $extractor1
             ->method('extract')
@@ -46,7 +46,7 @@ class DelegationExtractorTest extends \PHPUnit_Framework_TestCase
             ->willReturn($expected = new Range(0, 42));
 
         $range = $extractor->extract(
-            $this->getMock(ServerRequestInterface::class)
+            $this->createMock(ServerRequestInterface::class)
         );
 
         $this->assertSame($expected, $range);
@@ -58,7 +58,7 @@ class DelegationExtractorTest extends \PHPUnit_Framework_TestCase
     public function testThrowWhenRangeNotFound()
     {
         (new DelegationExtractor(new Set(ExtractorInterface::class)))->extract(
-            $this->getMock(ServerRequestInterface::class)
+            $this->createMock(ServerRequestInterface::class)
         );
     }
 }
