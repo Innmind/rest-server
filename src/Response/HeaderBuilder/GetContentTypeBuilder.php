@@ -5,17 +5,14 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Definition\HttpResource,
-    Request\Range,
-    Formats
+    Formats,
+    HttpResourceInterface,
+    IdentityInterface
 };
 use Innmind\Http\Message\ServerRequestInterface;
-use Innmind\Specification\SpecificationInterface;
-use Innmind\Immutable\{
-    SetInterface,
-    MapInterface
-};
+use Innmind\Immutable\MapInterface;
 
-final class ListContentTypeBuilder implements ListBuilderInterface
+final class GetContentTypeBuilder implements GetBuilderInterface
 {
     use ContentTypeBuilder;
 
@@ -30,11 +27,10 @@ final class ListContentTypeBuilder implements ListBuilderInterface
      * {@inheritdoc}
      */
     public function build(
-        SetInterface $identities,
+        HttpResourceInterface $resource,
         ServerRequestInterface $request,
         HttpResource $definition,
-        SpecificationInterface $specification = null,
-        Range $range = null
+        IdentityInterface $identity
     ): MapInterface {
         return $this->buildHeaderFrom($this->formats, $request);
     }
