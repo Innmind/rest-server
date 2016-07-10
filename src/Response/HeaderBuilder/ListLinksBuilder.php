@@ -38,6 +38,11 @@ final class ListLinksBuilder implements ListBuilderInterface
         Range $range = null
     ): MapInterface {
         $map = new Map('string', HeaderInterface::class);
+
+        if ($identities->size() === 0) {
+            return $map;
+        }
+
         $path = $request->url()->path();
 
         return $map->put(

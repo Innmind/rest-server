@@ -84,4 +84,39 @@ class ListLinksBuilderTest extends \PHPUnit_Framework_TestCase
             (string) $headers->get('Link')
         );
     }
+
+    public function testBuildWithoutIdentities()
+    {
+        $builder = new ListLinksBuilder;
+
+        $headers = $builder->build(
+            new Set(IdentityInterface::class),
+            new ServerRequest(
+                Url::fromString('/foo/bar/'),
+                $this->createMock(MethodInterface::class),
+                $this->createMock(ProtocolVersionInterface::class),
+                $this->createMock(HeadersInterface::class),
+                $this->createMock(StreamInterface::class),
+                $this->createMock(EnvironmentInterface::class),
+                $this->createMock(CookiesInterface::class),
+                $this->createMock(QueryInterface::class),
+                $this->createMock(FormInterface::class),
+                $this->createMock(FilesInterface::class)
+            ),
+            new HttpResource(
+                'foo',
+                new Identity('uuid'),
+                new Map('string', Property::class),
+                new Collection([]),
+                new Collection([]),
+                new Gateway('command'),
+                true
+            )
+        );
+
+        $this->assertInstanceOf(MapInterface::class, $headers);
+        $this->assertSame('string', (string) $headers->keyType());
+        $this->assertSame(HeaderInterface::class, (string) $headers->valueType());
+        $this->assertSame(0, $headers->size());
+    }
 }
