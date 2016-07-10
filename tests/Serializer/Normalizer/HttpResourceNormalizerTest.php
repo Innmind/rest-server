@@ -144,7 +144,9 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                         'bar',
                         new StringType,
                         new Access(
-                            (new Set('string'))->add(Access::READ)
+                            (new Set('string'))
+                                ->add(Access::READ)
+                                ->add(Access::CREATE)
                         ),
                         new Set('string'),
                         false

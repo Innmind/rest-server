@@ -129,7 +129,10 @@ final class HttpResourceNormalizer implements NormalizerInterface, DenormalizerI
                     return;
                 }
 
-                if (!isset($data[$name])) {
+                if (
+                    !isset($data[$name]) &&
+                    $definition->access()->matches($mask)
+                ) {
                     if ($definition->isOptional()) {
                         return;
                     }
