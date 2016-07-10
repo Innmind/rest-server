@@ -177,6 +177,18 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                         new Set('string'),
                         false
                     )
+                )
+                ->put(
+                    'foobar',
+                    new PropertyDefinition(
+                        'foobar',
+                        new StringType,
+                        new Access(
+                            (new Set('string'))->add(Access::READ)
+                        ),
+                        new Set('string'),
+                        false
+                    )
                 ),
             new Collection([]),
             new Collection([]),

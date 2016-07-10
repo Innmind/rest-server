@@ -145,6 +145,13 @@ final class HttpResourceNormalizer implements NormalizerInterface, DenormalizerI
                     return;
                 }
 
+                if (
+                    !isset($data[$name]) &&
+                    !$definition->access()->matches($mask)
+                ) {
+                    return;
+                }
+
                 try {
                     $properties = $properties->put(
                         $name,
