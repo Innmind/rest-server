@@ -39,7 +39,7 @@ final class FormEncoder implements DecoderInterface
      */
     public function supportsDecoding($format)
     {
-        return $format === 'form';
+        return $format === 'request_form';
     }
 
     private function translate(ParameterInterface $parameter)

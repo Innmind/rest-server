@@ -36,8 +36,8 @@ class FormEncoderTest extends \PHPUnit_Framework_TestCase
     {
         $decoder = new FormEncoder;
 
-        $this->assertTrue($decoder->supportsDecoding('form'));
-        $this->assertFalse($decoder->supportsDecoding('json'));
+        $this->assertTrue($decoder->supportsDecoding('request_form'));
+        $this->assertFalse($decoder->supportsDecoding('form'));
     }
 
     public function testDecode()

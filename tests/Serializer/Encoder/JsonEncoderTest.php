@@ -33,8 +33,8 @@ class JsonEncoderTest extends \PHPUnit_Framework_TestCase
     {
         $decoder = new JsonEncoder;
 
-        $this->assertTrue($decoder->supportsDecoding('json'));
-        $this->assertFalse($decoder->supportsDecoding('form'));
+        $this->assertTrue($decoder->supportsDecoding('request_json'));
+        $this->assertFalse($decoder->supportsDecoding('json'));
     }
 
     public function testDecode()

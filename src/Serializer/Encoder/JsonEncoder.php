@@ -26,6 +26,6 @@ final class JsonEncoder implements DecoderInterface
      */
     public function supportsDecoding($format)
     {
-        return $format === 'json';
+        return $format === 'request_json';
     }
 }
