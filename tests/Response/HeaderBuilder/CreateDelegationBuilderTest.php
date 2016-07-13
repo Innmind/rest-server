@@ -43,7 +43,8 @@ class CreateDelegationBuilderTest extends \PHPUnit_Framework_TestCase
                 new Collection([]),
                 new Collection([]),
                 new Gateway('bar'),
-                true
+                true,
+                new Map('string', 'string')
             ),
             $this->createMock(HttpResourceInterface::class)
         );
@@ -90,7 +91,8 @@ class CreateDelegationBuilderTest extends \PHPUnit_Framework_TestCase
                 new Collection([]),
                 new Collection([]),
                 new Gateway('bar'),
-                true
+                true,
+                new Map('string', 'string')
             ),
             $this->createMock(HttpResourceInterface::class)
         );

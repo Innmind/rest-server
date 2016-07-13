@@ -25,7 +25,8 @@ class HttpResourceTest extends \PHPUnit_Framework_TestCase
             $o = new Collection([]),
             $m = new Collection([]),
             $g = new Gateway('bar'),
-            true
+            true,
+            $l = new Map('string', 'string')
         );
 
         $this->assertSame('foobar', $r->name());
@@ -36,6 +37,7 @@ class HttpResourceTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($m, $r->metas());
         $this->assertSame($g, $r->gateway());
         $this->assertTrue($r->isRangeable());
+        $this->assertSame($l, $r->allowedLinks());
     }
 
     /**
@@ -50,7 +52,25 @@ class HttpResourceTest extends \PHPUnit_Framework_TestCase
             new Collection([]),
             new Collection([]),
             new Gateway('bar'),
-            false
+            false,
+            new Map('string', 'string')
+        );
+    }
+
+    /**
+     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     */
+    public function testThrowForInvalidLinkMap()
+    {
+        new HttpResource(
+            'foobar',
+            new Identity('foo'),
+            new Map('string', Property::class),
+            new Collection([]),
+            new Collection([]),
+            new Gateway('bar'),
+            false,
+            new Map('int', 'int')
         );
     }
 }

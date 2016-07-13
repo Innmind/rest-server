@@ -41,7 +41,8 @@ class RemoveDelegationBuilderTest extends \PHPUnit_Framework_TestCase
                 new Collection([]),
                 new Collection([]),
                 new Gateway('bar'),
-                true
+                true,
+                new Map('string', 'string')
             ),
             $this->createMock(IdentityInterface::class)
         );
@@ -87,7 +88,8 @@ class RemoveDelegationBuilderTest extends \PHPUnit_Framework_TestCase
                 new Collection([]),
                 new Collection([]),
                 new Gateway('bar'),
-                true
+                true,
+                new Map('string', 'string')
             ),
             $this->createMock(IdentityInterface::class)
         );

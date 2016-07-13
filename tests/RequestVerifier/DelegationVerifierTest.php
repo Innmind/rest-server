@@ -72,7 +72,8 @@ class DelegationVerifierTest extends \PHPUnit_Framework_TestCase
                     new Collection([]),
                     new Collection([]),
                     new Gateway('command'),
-                    true
+                    true,
+                    new Map('string', 'string')
                 )
             )
         );
@@ -106,7 +107,8 @@ class DelegationVerifierTest extends \PHPUnit_Framework_TestCase
                 new Collection([]),
                 new Collection([]),
                 new Gateway('command'),
-                true
+                true,
+                new Map('string', 'string')
             )
         );
     }

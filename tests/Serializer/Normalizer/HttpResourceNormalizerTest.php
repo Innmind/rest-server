@@ -73,7 +73,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
             new Collection([]),
             new Collection([]),
             new Gateway('bar'),
-            true
+            true,
+            new Map('string', 'string')
         );
 
         $r = $n->denormalize(
@@ -125,7 +126,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                     new Collection([]),
                     new Collection([]),
                     new Gateway('bar'),
-                    true
+                    true,
+                    new Map('string', 'string')
                 ),
             ]
         );
@@ -193,7 +195,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
             new Collection([]),
             new Collection([]),
             new Gateway('bar'),
-            true
+            true,
+            new Map('string', 'string')
         );
 
         try {
@@ -251,7 +254,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                     new Collection([]),
                     new Collection([]),
                     new Gateway('bar'),
-                    true
+                    true,
+                    new Map('string', 'string')
                 ),
                 new Map('string', Property::class)
             )
@@ -292,7 +296,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
             new Collection([]),
             new Collection([]),
             new Gateway('bar'),
-            true
+            true,
+            new Map('string', 'string')
         );
         $r = new HttpResource(
             $def,
@@ -327,7 +332,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
             new Collection([]),
             new Collection([]),
             new Gateway('bar'),
-            true
+            true,
+            new Map('string', 'string')
         );
         $r = new HttpResource(
             $def,

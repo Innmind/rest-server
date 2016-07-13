@@ -18,6 +18,7 @@ final class HttpResource
     private $metas;
     private $gateway;
     private $rangeable;
+    private $allowedLinks;
 
     public function __construct(
         string $name,
@@ -26,11 +27,14 @@ final class HttpResource
         CollectionInterface $options,
         CollectionInterface $metas,
         Gateway $gateway,
-        bool $rangeable
+        bool $rangeable,
+        MapInterface $allowedLinks
     ) {
         if (
             (string) $properties->keyType() !== 'string' ||
-            (string) $properties->valueType() !== Property::class
+            (string) $properties->valueType() !== Property::class ||
+            (string) $allowedLinks->keyType() !== 'string' ||
+            (string) $allowedLinks->valueType() !== 'string'
         ) {
             throw new InvalidArgumentException;
         }
@@ -42,6 +46,7 @@ final class HttpResource
         $this->metas = $metas;
         $this->gateway = $gateway;
         $this->rangeable = $rangeable;
+        $this->allowedLinks = $allowedLinks;
     }
 
     public function name(): string
@@ -80,6 +85,14 @@ final class HttpResource
     public function isRangeable(): bool
     {
         return $this->rangeable;
+    }
+
+    /**
+     * @return MapInterface<string, string> Relationship type as key and definition path as value
+     */
+    public function allowedLinks(): MapInterface
+    {
+        return $this->allowedLinks;
     }
 
     public function __toString(): string

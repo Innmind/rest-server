@@ -42,7 +42,8 @@ class ListDelegationBuilderTest extends \PHPUnit_Framework_TestCase
                 new Collection([]),
                 new Collection([]),
                 new Gateway('bar'),
-                true
+                true,
+                new Map('string', 'string')
             )
         );
         $this->assertInstanceOf(MapInterface::class, $headers);
@@ -77,7 +78,8 @@ class ListDelegationBuilderTest extends \PHPUnit_Framework_TestCase
                 new Collection([]),
                 new Collection([]),
                 new Gateway('bar'),
-                true
+                true,
+                new Map('string', 'string')
             )
         );
     }
@@ -112,7 +114,8 @@ class ListDelegationBuilderTest extends \PHPUnit_Framework_TestCase
                 new Collection([]),
                 new Collection([]),
                 new Gateway('bar'),
-                true
+                true,
+                new Map('string', 'string')
             )
         );
 

@@ -114,7 +114,8 @@ class GetContentTypeBuilderTest extends \PHPUnit_Framework_TestCase
                 new Collection([]),
                 new Collection([]),
                 new Gateway('command'),
-                true
+                true,
+                new Map('string', 'string')
             ),
             $this->createMock(IdentityInterface::class)
         );

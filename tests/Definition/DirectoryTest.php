@@ -41,7 +41,8 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase
                         new Collection([]),
                         new Collection([]),
                         new Gateway('foo'),
-                        true
+                        true,
+                        new Map('string', 'string')
                     )
                 )
         );
@@ -98,7 +99,8 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase
                                     new Collection([]),
                                     new Collection([]),
                                     new Gateway('foo'),
-                                    true
+                                    true,
+                                    new Map('string', 'string')
                                 )
                             )
                     )
@@ -113,7 +115,8 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase
                         new Collection([]),
                         new Collection([]),
                         new Gateway('foo'),
-                        true
+                        true,
+                        new Map('string', 'string')
                     )
                 )
         );

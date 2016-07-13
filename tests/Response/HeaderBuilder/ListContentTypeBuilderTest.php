@@ -113,7 +113,8 @@ class ListContentTypeBuilderTest extends \PHPUnit_Framework_TestCase
                 new Collection([]),
                 new Collection([]),
                 new Gateway('command'),
-                true
+                true,
+                new Map('string', 'string')
             )
         );
 

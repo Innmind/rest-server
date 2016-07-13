@@ -75,7 +75,8 @@ class RangeVerifierTest extends \PHPUnit_Framework_TestCase
                 new Collection([]),
                 new Collection([]),
                 new Gateway('command'),
-                true
+                true,
+                new Map('string', 'string')
             )
         );
     }
@@ -114,7 +115,8 @@ class RangeVerifierTest extends \PHPUnit_Framework_TestCase
                 new Collection([]),
                 new Collection([]),
                 new Gateway('command'),
-                false
+                false,
+                new Map('string', 'string')
             )
         );
     }
@@ -152,7 +154,8 @@ class RangeVerifierTest extends \PHPUnit_Framework_TestCase
                     new Collection([]),
                     new Collection([]),
                     new Gateway('command'),
-                    true
+                    true,
+                    new Map('string', 'string')
                 )
             )
         );
@@ -185,7 +188,8 @@ class RangeVerifierTest extends \PHPUnit_Framework_TestCase
                     new Collection([]),
                     new Collection([]),
                     new Gateway('command'),
-                    false
+                    false,
+                    new Map('string', 'string')
                 )
             )
         );
