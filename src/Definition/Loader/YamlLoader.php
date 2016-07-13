@@ -94,6 +94,11 @@ final class YamlLoader implements LoaderInterface
         $children = new Map('string', Directory::class);
         $definitions = new Map('string', HttpResource::class);
 
+        $config = (new Processor)->processConfiguration(
+            new Configuration,
+            [[$name => $config]]
+        )[$name];
+
         foreach ($config['children'] ?? [] as $key => $child) {
             $children = $children->put(
                 $key,
@@ -179,7 +184,7 @@ final class YamlLoader implements LoaderInterface
             $variants = $variants->add($variant);
         }
 
-        $collection = new Collection($config);
+        $collection = new Collection($config['options']);
 
         if ($collection->hasKey('resource')) {
             $collection->set(

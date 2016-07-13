@@ -24,8 +24,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $expected['top_dir']['resources']['image']['properties']['uuid']['access'] = ['READ'];
         $expected['top_dir']['resources']['image']['properties']['uuid']['variants'] = [];
         $expected['top_dir']['resources']['image']['properties']['uuid']['optional'] = false;
+        $expected['top_dir']['resources']['image']['properties']['uuid']['options'] = [];
         $expected['top_dir']['resources']['image']['properties']['url']['variants'] = [];
         $expected['top_dir']['resources']['image']['properties']['url']['optional'] = false;
+        $expected['top_dir']['resources']['image']['properties']['url']['options'] = [];
         $expected['top_dir']['resources']['image']['options'] = [];
         $expected['top_dir']['resources']['image']['metas'] = [];
         $expected['top_dir']['resources']['image']['rangeable'] = true;

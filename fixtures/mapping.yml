@@ -10,7 +10,8 @@ top_dir:
                             type: string
                         image:
                             type: string
-                            reference: top_dir.image # here to help validate the yaml loader
+                            options:
+                                reference: top_dir.image # here to help validate the yaml loader
                     rangeable: false
     resources:
         image:
