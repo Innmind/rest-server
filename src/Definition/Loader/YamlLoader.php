@@ -148,6 +148,12 @@ final class YamlLoader implements LoaderInterface
             );
         }
 
+        $links = new Map('string', 'string');
+
+        foreach ($config['linkable_to'] ?? [] as $key => $value) {
+            $links = $links->put($key, $value);
+        }
+
         return new HttpResource(
             $name,
             new Identity($config['identity']),
@@ -155,7 +161,8 @@ final class YamlLoader implements LoaderInterface
             new Collection($config['options'] ?? []),
             new Collection($config['metas'] ?? []),
             new Gateway($config['gateway']),
-            $config['rangeable']
+            $config['rangeable'],
+            $links
         );
     }
 
