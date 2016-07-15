@@ -5,11 +5,13 @@ namespace Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\{
     Definition\TypeInterface,
+    Definition\Types,
     Exception\DenormalizationException,
-    Exception\NormalizationException
+    Exception\NormalizationException,
+    Exception\InvalidArgumentException
 };
 use Innmind\Immutable\{
-    CollectionInterface,
+    MapInterface,
     SetInterface,
     Set
 };
@@ -23,18 +25,22 @@ final class SetType implements TypeInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromConfig(CollectionInterface $config): TypeInterface
+    public static function fromConfig(MapInterface $config, Types $types): TypeInterface
     {
+        if (
+            (string) $config->keyType() !== 'scalar' ||
+            (string) $config->valueType() !== 'variable'
+        ) {
+            throw new InvalidArgumentException;
+        }
+
         $type = new self;
         $type->innerKey = $config->get('inner');
-        $type->inner = $config
-            ->get('_types')
-            ->build(
-                $config->get('inner'),
-                $config
-                    ->unset('_types')
-                    ->unset('inner')
-            );
+        $type->inner = $types->build(
+            $config->get('inner'),
+            $config->remove('inner'),
+            $types
+        );
 
         return $type;
     }

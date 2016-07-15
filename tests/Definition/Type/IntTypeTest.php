@@ -5,9 +5,10 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\Definition\{
     Type\IntType,
-    TypeInterface
+    TypeInterface,
+    Types
 };
-use Innmind\Immutable\Collection;
+use Innmind\Immutable\Map;
 
 class IntTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +21,7 @@ class IntTypeTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertInstanceOf(
             IntType::class,
-            IntType::fromConfig(new Collection([]))
+            IntType::fromConfig(new Map('scalar', 'variable'), new Types)
         );
     }
 

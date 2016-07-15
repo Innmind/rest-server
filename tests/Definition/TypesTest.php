@@ -16,7 +16,7 @@ use Innmind\Rest\Server\Definition\{
 };
 use Innmind\Immutable\{
     Set,
-    Collection
+    Map
 };
 
 class TypesTest extends \PHPUnit_Framework_TestCase
@@ -64,17 +64,29 @@ class TypesTest extends \PHPUnit_Framework_TestCase
         (new Types)->register('stdClass');
     }
 
+    /**
+     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     */
+    public function testThrowWhenInvalidConfigMap()
+    {
+        (new Types)->build('string', new Map('string', 'string'));
+    }
+
     public function testBuild()
     {
         $t = new Types;
 
         $this->assertInstanceOf(
             StringType::class,
-            $t->build('string', new Collection([]))
+            $t->build('string', new Map('scalar', 'variable'))
         );
         $this->assertInstanceOf(
             SetType::class,
-            $t->build('set', new Collection(['inner' => 'string']))
+            $t->build(
+                'set',
+                (new Map('scalar', 'variable'))
+                    ->put('inner', 'string')
+            )
         );
     }
 }

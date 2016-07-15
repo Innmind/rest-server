@@ -5,9 +5,10 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\Definition\{
     Type\DateType,
-    TypeInterface
+    TypeInterface,
+    Types
 };
-use Innmind\Immutable\Collection;
+use Innmind\Immutable\Map;
 
 class DateTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,15 +21,17 @@ class DateTypeTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertInstanceOf(
             DateType::class,
-            DateType::fromConfig(new Collection([]))
+            DateType::fromConfig(new Map('scalar', 'variable'), new Types)
         );
     }
 
     public function testDenormalize()
     {
-        $t = DateType::fromConfig(new Collection([
-            'format' => 'Y-m-d',
-        ]));
+        $t = DateType::fromConfig(
+            (new Map('scalar', 'variable'))
+                ->put('format', 'Y-m-d'),
+            new Types
+        );
         $this->assertInstanceOf(
             \DateTimeImmutable::class,
             $t->denormalize('2016-01-01')
@@ -50,9 +53,11 @@ class DateTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testNormalize()
     {
-        $t = DateType::fromConfig(new Collection([
-            'format' => 'Y-m-d H:i:s',
-        ]));
+        $t = DateType::fromConfig(
+            (new Map('scalar', 'variable'))
+                ->put('format', 'Y-m-d H:i:s'),
+            new Types
+        );
         $this->assertSame(
             '2016-01-01 00:00:00',
             $t->normalize('2016-01-01 00:00:00')
@@ -70,5 +75,13 @@ class DateTypeTest extends \PHPUnit_Framework_TestCase
     public function testThrowWhenNotNormalizingADate()
     {
         (new DateType)->normalize('foo');
+    }
+
+    /**
+     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     */
+    public function testThrowWhenInvalidConfigMap()
+    {
+        DateType::fromConfig(new Map('string', 'string'), new Types);
     }
 }

@@ -5,9 +5,10 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\Definition\{
     Type\BoolType,
-    TypeInterface
+    TypeInterface,
+    Types
 };
-use Innmind\Immutable\Collection;
+use Innmind\Immutable\Map;
 
 class BoolTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +21,7 @@ class BoolTypeTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertInstanceOf(
             BoolType::class,
-            BoolType::fromConfig(new Collection([]))
+            BoolType::fromConfig(new Map('scalar', 'variable'), new Types)
         );
     }
 

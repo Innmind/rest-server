@@ -9,7 +9,6 @@ use Innmind\Rest\Server\Definition\{
     Types
 };
 use Innmind\Immutable\{
-    Collection,
     MapInterface,
     Map
 };
@@ -25,33 +24,32 @@ class MapTypeTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertInstanceOf(
             MapType::class,
-            MapType::fromConfig(new Collection([
-                'inner' => 'string',
-                'key' => 'int',
-                '_types' => new Types,
-            ]))
+            MapType::fromConfig(
+                (new Map('scalar', 'variable'))
+                    ->put('inner', 'string')
+                    ->put('key', 'int'),
+                new Types
+            )
         );
     }
 
     public function testDenormalize()
     {
         $t = MapType::fromConfig(
-            new Collection([
-                'inner' => 'string',
-                'key' => 'int',
-                '_types' => new Types,
-            ])
+            (new Map('scalar', 'variable'))
+                ->put('inner', 'string')
+                ->put('key', 'int'),
+            new Types
         );
         $this->assertInstanceOf(MapInterface::class, $t->denormalize(['foo']));
         $this->assertSame('foo', $t->denormalize(['1' => 'foo'])->get(1));
         $this->assertSame(
             'foo',
             MapType::fromConfig(
-                new Collection([
-                    'inner' => 'string',
-                    'key' => 'int',
-                    '_types' => new Types,
-                ])
+                (new Map('scalar', 'variable'))
+                    ->put('inner', 'string')
+                    ->put('key', 'int'),
+                new Types
             )
                 ->denormalize(['1' => new class {
                     public function __toString()
@@ -70,11 +68,10 @@ class MapTypeTest extends \PHPUnit_Framework_TestCase
     public function testThrowWhenNotDenormalizingAnArray()
     {
         (MapType::fromConfig(
-            new Collection([
-                'inner' => 'string',
-                'key' => 'int',
-                '_types' => new Types,
-            ])
+            (new Map('scalar', 'variable'))
+                ->put('inner', 'string')
+                ->put('key', 'int'),
+            new Types
         ))
             ->denormalize(new \stdClass);
     }
@@ -84,11 +81,10 @@ class MapTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             [1 => 'foo'],
             (MapType::fromConfig(
-                new Collection([
-                    'inner' => 'string',
-                    'key' => 'int',
-                    '_types' => new Types,
-                ])
+                (new Map('scalar', 'variable'))
+                    ->put('inner', 'string')
+                    ->put('key', 'int'),
+                new Types
             ))
                 ->normalize(
                     (new Map('string', 'object'))
@@ -109,12 +105,19 @@ class MapTypeTest extends \PHPUnit_Framework_TestCase
     public function testThrowWhenNotNormalizingAnArray()
     {
         (MapType::fromConfig(
-            new Collection([
-                'inner' => 'string',
-                'key' => 'int',
-                '_types' => new Types,
-            ])
+            (new Map('scalar', 'variable'))
+                ->put('inner', 'string')
+                ->put('key', 'int'),
+            new Types
         ))
             ->normalize(new \stdClass);
+    }
+
+    /**
+     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     */
+    public function testThrowWhenInvalidConfigMap()
+    {
+        MapType::fromConfig(new Map('string', 'string'), new Types);
     }
 }

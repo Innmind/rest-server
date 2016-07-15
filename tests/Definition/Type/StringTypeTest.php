@@ -5,9 +5,10 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\Definition\{
     Type\StringType,
-    TypeInterface
+    TypeInterface,
+    Types
 };
-use Innmind\Immutable\Collection;
+use Innmind\Immutable\Map;
 
 class StringTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +21,7 @@ class StringTypeTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertInstanceOf(
             StringType::class,
-            StringType::fromConfig(new Collection([]))
+            StringType::fromConfig(new Map('scalar', 'variable'), new Types)
         );
     }
 

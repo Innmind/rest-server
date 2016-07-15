@@ -21,7 +21,6 @@ use Innmind\Immutable\{
     SetInterface,
     MapInterface,
     Map,
-    Collection,
     Set,
     Sequence,
     StringPrimitive as Str
@@ -193,13 +192,10 @@ final class YamlLoader implements LoaderInterface
             $variants = $variants->add($variant);
         }
 
-        $collection = new Collection($config['options']);
+        $collection = new Map('scalar', 'variable');
 
-        if ($collection->hasKey('resource')) {
-            $collection->set(
-                'resource',
-                $this->locate($collection->get('resource'))
-            );
+        foreach ($config['options'] ?? [] as $key => $value) {
+            $collection = $collection->put($key, $value);
         }
 
         return new Property(
@@ -212,40 +208,5 @@ final class YamlLoader implements LoaderInterface
             $variants,
             $config['optional'] ?? false
         );
-    }
-
-    /**
-     * Load the definition at the given path
-     */
-    private function locate(string $path): HttpResource
-    {
-        if ($this->loaded->contains($path)) {
-            return $this->loaded->get($path);
-        }
-
-        if ((string) $this->currentPath->join('.') === $path) {
-            throw new CircularReferenceException($path);
-        }
-
-        $pieces = (new Str($path))->split('.');
-
-        try {
-            $config = $pieces->reduce(
-                function(array $config, string $path) {
-                    return $config[$path] ?? $config['resources'][$path];
-                },
-                $this->config
-            );
-        } catch (\Throwable $e) {
-            throw new ResourceDefinitionReferenceNotFoundException($path);
-        }
-
-        $definition = $this->buildDefinition(
-            (string) $pieces->last(),
-            $config
-        );
-        $this->loaded = $this->loaded->put($path, $definition);
-
-        return $definition;
     }
 }

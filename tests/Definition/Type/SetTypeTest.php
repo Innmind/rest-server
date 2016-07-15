@@ -9,9 +9,9 @@ use Innmind\Rest\Server\Definition\{
     Types
 };
 use Innmind\Immutable\{
-    Collection,
     SetInterface,
-    Set
+    Set,
+    Map
 };
 
 class SetTypeTest extends \PHPUnit_Framework_TestCase
@@ -25,30 +25,29 @@ class SetTypeTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertInstanceOf(
             SetType::class,
-            SetType::fromConfig(new Collection([
-                'inner' => 'string',
-                '_types' => new Types,
-            ]))
+            SetType::fromConfig(
+                (new Map('scalar', 'variable'))
+                    ->put('inner', 'string'),
+                new Types
+            )
         );
     }
 
     public function testDenormalize()
     {
         $t = SetType::fromConfig(
-            new Collection([
-                'inner' => 'string',
-                '_types' => new Types,
-            ])
+            (new Map('scalar', 'variable'))
+                ->put('inner', 'string'),
+            new Types
         );
         $this->assertInstanceOf(SetInterface::class, $t->denormalize(['foo']));
         $this->assertSame(['foo'], $t->denormalize(['foo'])->toPrimitive());
         $this->assertSame(
             ['foo'],
             SetType::fromConfig(
-                new Collection([
-                    'inner' => 'string',
-                    '_types' => new Types,
-                ])
+                (new Map('scalar', 'variable'))
+                    ->put('inner', 'string'),
+                new Types
             )
                 ->denormalize([new class {
                     public function __toString()
@@ -67,10 +66,9 @@ class SetTypeTest extends \PHPUnit_Framework_TestCase
     public function testThrowWhenNotDenormalizingAnArray()
     {
         (SetType::fromConfig(
-            new Collection([
-                'inner' => 'string',
-                '_types' => new Types,
-            ])
+            (new Map('scalar', 'variable'))
+                ->put('inner', 'string'),
+            new Types
         ))
             ->denormalize(new \stdClass);
     }
@@ -80,10 +78,9 @@ class SetTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             ['foo'],
             (SetType::fromConfig(
-                new Collection([
-                    'inner' => 'string',
-                    '_types' => new Types,
-                ])
+                (new Map('scalar', 'variable'))
+                    ->put('inner', 'string'),
+                new Types
             ))
                 ->normalize(
                     (new Set('object'))
@@ -104,11 +101,18 @@ class SetTypeTest extends \PHPUnit_Framework_TestCase
     public function testThrowWhenNotNormalizingAnArray()
     {
         (SetType::fromConfig(
-            new Collection([
-                'inner' => 'string',
-                '_types' => new Types,
-            ])
+            (new Map('scalar', 'variable'))
+                ->put('inner', 'string'),
+            new Types
         ))
             ->normalize(new \stdClass);
+    }
+
+    /**
+     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     */
+    public function testThrowWhenInvalidConfigMap()
+    {
+        SetType::fromConfig(new Map('string', 'string'), new Types);
     }
 }

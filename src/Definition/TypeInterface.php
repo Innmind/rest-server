@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\Definition;
 
 use Innmind\Immutable\{
-    CollectionInterface,
+    MapInterface,
     SetInterface
 };
 
@@ -13,11 +13,12 @@ interface TypeInterface
     /**
      * Build the type out of the given config
      *
-     * @param CollectionInterface $config
+     * @param MapInterface<scalar, variable> $config
+     * @param Types $types
      *
      * @return self
      */
-    public static function fromConfig(CollectionInterface $config): self;
+    public static function fromConfig(MapInterface $config, Types $types): self;
 
     /**
      * Transform the data received via http to a data understandable for php

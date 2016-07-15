@@ -5,9 +5,10 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\Definition\{
     Type\FloatType,
-    TypeInterface
+    TypeInterface,
+    types
 };
-use Innmind\Immutable\Collection;
+use Innmind\Immutable\Map;
 
 class FloatTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +21,7 @@ class FloatTypeTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertInstanceOf(
             FloatType::class,
-            FloatType::fromConfig(new Collection([]))
+            FloatType::fromConfig(new Map('scalar', 'variable'), new Types)
         );
     }
 

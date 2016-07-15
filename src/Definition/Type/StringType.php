@@ -5,11 +5,12 @@ namespace Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\{
     Definition\TypeInterface,
+    Definition\Types,
     Exception\DenormalizationException,
     Exception\NormalizationException
 };
 use Innmind\Immutable\{
-    CollectionInterface,
+    MapInterface,
     SetInterface,
     Set
 };
@@ -21,7 +22,7 @@ final class StringType implements TypeInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromConfig(CollectionInterface $config): TypeInterface
+    public static function fromConfig(MapInterface $config, Types $types): TypeInterface
     {
         return new self;
     }

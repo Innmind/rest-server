@@ -15,8 +15,7 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Immutable\{
     Map,
-    MapInterface,
-    CollectionInterface
+    MapInterface
 };
 
 final class Types
@@ -84,17 +83,23 @@ final class Types
      * Build a new type instance of the wished type
      *
      * @param string $type
-     * @param CollectionInterface $config
+     * @param MapInterface<scalar, variable> $config
      *
      * @return TypeInterface
      */
-    public function build(string $type, CollectionInterface $config): TypeInterface
+    public function build(string $type, MapInterface $config): TypeInterface
     {
-        $config = $config->set('_types', $this);
+        if (
+            (string) $config->keyType() !== 'scalar' ||
+            (string) $config->valueType() !== 'variable'
+        ) {
+            throw new InvalidArgumentException;
+        }
 
         return call_user_func(
             [$this->types->get($type), 'fromConfig'],
-            $config
+            $config,
+            $this
         );
     }
 }
