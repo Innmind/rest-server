@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Tests\Innmind\Rest\Server;
+namespace Tests\Innmind\Rest\Server\Definition;
 
 use Innmind\Rest\Server\Definition\{
     Directory,
