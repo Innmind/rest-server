@@ -30,8 +30,7 @@ use Innmind\Filesystem\StreamInterface;
 use Innmind\Immutable\{
     Set,
     Map,
-    MapInterface,
-    Collection
+    MapInterface
 };
 
 class ListLinksBuilderTest extends \PHPUnit_Framework_TestCase
@@ -68,8 +67,8 @@ class ListLinksBuilderTest extends \PHPUnit_Framework_TestCase
                 'foo',
                 new Identity('uuid'),
                 new Map('string', Property::class),
-                new Collection([]),
-                new Collection([]),
+                new Map('scalar', 'variable'),
+                new Map('scalar', 'variable'),
                 new Gateway('command'),
                 true,
                 new Map('string', 'string')
@@ -108,8 +107,8 @@ class ListLinksBuilderTest extends \PHPUnit_Framework_TestCase
                 'foo',
                 new Identity('uuid'),
                 new Map('string', Property::class),
-                new Collection([]),
-                new Collection([]),
+                new Map('scalar', 'variable'),
+                new Map('scalar', 'variable'),
                 new Gateway('command'),
                 true,
                 new Map('string', 'string')

@@ -21,7 +21,6 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Immutable\{
     Map,
-    Collection,
     Set
 };
 
@@ -70,8 +69,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                         false
                     )
                 ),
-            new Collection([]),
-            new Collection([]),
+            new Map('scalar', 'variable'),
+            new Map('scalar', 'variable'),
             new Gateway('bar'),
             true,
             new Map('string', 'string')
@@ -123,8 +122,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                     'foobar',
                     new Identity('foo'),
                     new Map('string', PropertyDefinition::class),
-                    new Collection([]),
-                    new Collection([]),
+                    new Map('scalar', 'variable'),
+                    new Map('scalar', 'variable'),
                     new Gateway('bar'),
                     true,
                     new Map('string', 'string')
@@ -192,8 +191,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                         false
                     )
                 ),
-            new Collection([]),
-            new Collection([]),
+            new Map('scalar', 'variable'),
+            new Map('scalar', 'variable'),
             new Gateway('bar'),
             true,
             new Map('string', 'string')
@@ -251,8 +250,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                     'foobar',
                     new Identity('foo'),
                     new Map('string', PropertyDefinition::class),
-                    new Collection([]),
-                    new Collection([]),
+                    new Map('scalar', 'variable'),
+                    new Map('scalar', 'variable'),
                     new Gateway('bar'),
                     true,
                     new Map('string', 'string')
@@ -293,8 +292,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                         false
                     )
                 ),
-            new Collection([]),
-            new Collection([]),
+            new Map('scalar', 'variable'),
+            new Map('scalar', 'variable'),
             new Gateway('bar'),
             true,
             new Map('string', 'string')
@@ -329,8 +328,8 @@ class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
                         false
                     )
                 ),
-            new Collection([]),
-            new Collection([]),
+            new Map('scalar', 'variable'),
+            new Map('scalar', 'variable'),
             new Gateway('bar'),
             true,
             new Map('string', 'string')

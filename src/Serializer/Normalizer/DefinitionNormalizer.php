@@ -42,7 +42,10 @@ final class DefinitionNormalizer implements NormalizerInterface
                         return $carry;
                     }
                 ),
-            'metas' => $object->metas()->toPrimitive(),
+            'metas' => array_combine(
+                $object->metas()->keys()->toPrimitive(),
+                $object->metas()->values()->toPrimitive()
+            ),
             'rangeable' => $object->isRangeable(),
         ];
     }

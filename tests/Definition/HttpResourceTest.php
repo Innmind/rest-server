@@ -9,10 +9,7 @@ use Innmind\Rest\Server\Definition\{
     Gateway,
     Property
 };
-use Innmind\Immutable\{
-    Collection,
-    Map
-};
+use Innmind\Immutable\Map;
 
 class HttpResourceTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,8 +19,8 @@ class HttpResourceTest extends \PHPUnit_Framework_TestCase
             'foobar',
             $i = new Identity('foo'),
             $p = (new Map('string', Property::class)),
-            $o = new Collection([]),
-            $m = new Collection([]),
+            $o = new Map('scalar', 'variable'),
+            $m = new Map('scalar', 'variable'),
             $g = new Gateway('bar'),
             true,
             $l = new Map('string', 'string')
@@ -49,8 +46,8 @@ class HttpResourceTest extends \PHPUnit_Framework_TestCase
             'foobar',
             new Identity('foo'),
             new Map('string', 'string'),
-            new Collection([]),
-            new Collection([]),
+            new Map('scalar', 'variable'),
+            new Map('scalar', 'variable'),
             new Gateway('bar'),
             false,
             new Map('string', 'string')
@@ -66,11 +63,45 @@ class HttpResourceTest extends \PHPUnit_Framework_TestCase
             'foobar',
             new Identity('foo'),
             new Map('string', Property::class),
-            new Collection([]),
-            new Collection([]),
+            new Map('scalar', 'variable'),
+            new Map('scalar', 'variable'),
             new Gateway('bar'),
             false,
             new Map('int', 'int')
+        );
+    }
+
+    /**
+     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     */
+    public function testThrowForInvalidOptionMap()
+    {
+        new HttpResource(
+            'foobar',
+            new Identity('foo'),
+            new Map('string', Property::class),
+            new Map('string', 'string'),
+            new Map('scalar', 'variable'),
+            new Gateway('bar'),
+            false,
+            new Map('string', 'string')
+        );
+    }
+
+    /**
+     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     */
+    public function testThrowForInvalidMetaMap()
+    {
+        new HttpResource(
+            'foobar',
+            new Identity('foo'),
+            new Map('string', Property::class),
+            new Map('scalar', 'variable'),
+            new Map('string', 'string'),
+            new Gateway('bar'),
+            false,
+            new Map('string', 'string')
         );
     }
 }

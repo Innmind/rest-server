@@ -4,10 +4,7 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\Definition;
 
 use Innmind\Rest\Server\Exception\InvalidArgumentException;
-use Innmind\Immutable\{
-    MapInterface,
-    CollectionInterface
-};
+use Innmind\Immutable\MapInterface;
 
 final class HttpResource
 {
@@ -24,8 +21,8 @@ final class HttpResource
         string $name,
         Identity $identity,
         MapInterface $properties,
-        CollectionInterface $options,
-        CollectionInterface $metas,
+        MapInterface $options,
+        MapInterface $metas,
         Gateway $gateway,
         bool $rangeable,
         MapInterface $allowedLinks
@@ -33,6 +30,10 @@ final class HttpResource
         if (
             (string) $properties->keyType() !== 'string' ||
             (string) $properties->valueType() !== Property::class ||
+            (string) $options->keyType() !== 'scalar' ||
+            (string) $options->valueType() !== 'variable' ||
+            (string) $metas->keyType() !== 'scalar' ||
+            (string) $metas->valueType() !== 'variable' ||
             (string) $allowedLinks->keyType() !== 'string' ||
             (string) $allowedLinks->valueType() !== 'string'
         ) {
@@ -67,12 +68,18 @@ final class HttpResource
         return $this->properties;
     }
 
-    public function options(): CollectionInterface
+    /**
+     * @return MapInterface<scalar, variable>
+     */
+    public function options(): MapInterface
     {
         return $this->options;
     }
 
-    public function metas(): CollectionInterface
+    /**
+     * @return MapInterface<scalar, variable>
+     */
+    public function metas(): MapInterface
     {
         return $this->metas;
     }

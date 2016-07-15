@@ -12,7 +12,6 @@ use Innmind\Rest\Server\Definition\{
 };
 use Innmind\Immutable\{
     Map,
-    Collection,
     MapInterface
 };
 
@@ -38,8 +37,8 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase
                         'res',
                         new Identity('uuid'),
                         new Map('string', Property::class),
-                        new Collection([]),
-                        new Collection([]),
+                        new Map('scalar', 'variable'),
+                        new Map('scalar', 'variable'),
                         new Gateway('foo'),
                         true,
                         new Map('string', 'string')
@@ -96,8 +95,8 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase
                                     'res',
                                     new Identity('uuid'),
                                     new Map('string', Property::class),
-                                    new Collection([]),
-                                    new Collection([]),
+                                    new Map('scalar', 'variable'),
+                                    new Map('scalar', 'variable'),
                                     new Gateway('foo'),
                                     true,
                                     new Map('string', 'string')
@@ -112,8 +111,8 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase
                         'res',
                         new Identity('uuid'),
                         new Map('string', Property::class),
-                        new Collection([]),
-                        new Collection([]),
+                        new Map('scalar', 'variable'),
+                        new Map('scalar', 'variable'),
                         new Gateway('foo'),
                         true,
                         new Map('string', 'string')

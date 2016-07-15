@@ -12,10 +12,7 @@ use Innmind\Rest\Server\{
     Definition\Property
 };
 use Innmind\Http\Message\ServerRequestInterface;
-use Innmind\Immutable\{
-    Map,
-    Collection
-};
+use Innmind\Immutable\Map;
 
 class DelegationVerifierTest extends \PHPUnit_Framework_TestCase
 {
@@ -69,8 +66,8 @@ class DelegationVerifierTest extends \PHPUnit_Framework_TestCase
                     'foo',
                     new Identity('uuid'),
                     new Map('string', Property::class),
-                    new Collection([]),
-                    new Collection([]),
+                    new Map('scalar', 'variable'),
+                    new Map('scalar', 'variable'),
                     new Gateway('command'),
                     true,
                     new Map('string', 'string')
@@ -104,8 +101,8 @@ class DelegationVerifierTest extends \PHPUnit_Framework_TestCase
                 'foo',
                 new Identity('uuid'),
                 new Map('string', Property::class),
-                new Collection([]),
-                new Collection([]),
+                new Map('scalar', 'variable'),
+                new Map('scalar', 'variable'),
                 new Gateway('command'),
                 true,
                 new Map('string', 'string')

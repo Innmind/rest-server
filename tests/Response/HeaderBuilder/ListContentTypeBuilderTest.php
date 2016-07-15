@@ -36,7 +36,6 @@ use Innmind\Filesystem\StreamInterface;
 use Innmind\Immutable\{
     Map,
     Set,
-    Collection,
     MapInterface
 };
 
@@ -110,8 +109,8 @@ class ListContentTypeBuilderTest extends \PHPUnit_Framework_TestCase
                 'foo',
                 new Identity('uuid'),
                 new Map('string', Property::class),
-                new Collection([]),
-                new Collection([]),
+                new Map('scalar', 'variable'),
+                new Map('scalar', 'variable'),
                 new Gateway('command'),
                 true,
                 new Map('string', 'string')

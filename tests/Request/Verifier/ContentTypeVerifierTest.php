@@ -30,8 +30,7 @@ use Innmind\Url\UrlInterface;
 use Innmind\Filesystem\StreamInterface;
 use Innmind\Immutable\{
     Map,
-    Set,
-    Collection
+    Set
 };
 
 class ContentTypeVerifierTest extends \PHPUnit_Framework_TestCase
@@ -110,8 +109,8 @@ class ContentTypeVerifierTest extends \PHPUnit_Framework_TestCase
                 'foo',
                 new Identity('uuid'),
                 new Map('string', Property::class),
-                new Collection([]),
-                new Collection([]),
+                new Map('scalar', 'variable'),
+                new Map('scalar', 'variable'),
                 new Gateway('command'),
                 true,
                 new Map('string', 'string')
@@ -171,8 +170,8 @@ class ContentTypeVerifierTest extends \PHPUnit_Framework_TestCase
                     'foo',
                     new Identity('uuid'),
                     new Map('string', Property::class),
-                    new Collection([]),
-                    new Collection([]),
+                    new Map('scalar', 'variable'),
+                    new Map('scalar', 'variable'),
                     new Gateway('command'),
                     true,
                     new Map('string', 'string')
@@ -223,8 +222,8 @@ class ContentTypeVerifierTest extends \PHPUnit_Framework_TestCase
                     'foo',
                     new Identity('uuid'),
                     new Map('string', Property::class),
-                    new Collection([]),
-                    new Collection([]),
+                    new Map('scalar', 'variable'),
+                    new Map('scalar', 'variable'),
                     new Gateway('command'),
                     true,
                     new Map('string', 'string')

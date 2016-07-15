@@ -145,6 +145,9 @@ final class YamlLoader implements LoaderInterface
     private function buildDefinition(string $name, array $config): HttpResource
     {
         $properties = new Map('string', Property::class);
+        $options = new Map('scalar', 'variable');
+        $metas = new Map('scalar', 'variable');
+        $links = new Map('string', 'string');
 
         foreach ($config['properties'] as $key => $value) {
             $properties = $properties->put(
@@ -153,7 +156,13 @@ final class YamlLoader implements LoaderInterface
             );
         }
 
-        $links = new Map('string', 'string');
+        foreach ($config['options'] ?? [] as $key => $value) {
+            $options = $options->put($key, $value);
+        }
+
+        foreach ($config['metas'] ?? [] as $key => $value) {
+            $metas = $metas->put($key, $value);
+        }
 
         foreach ($config['linkable_to'] ?? [] as $key => $value) {
             $links = $links->put($key, $value);
@@ -163,8 +172,8 @@ final class YamlLoader implements LoaderInterface
             $name,
             new Identity($config['identity']),
             $properties,
-            new Collection($config['options'] ?? []),
-            new Collection($config['metas'] ?? []),
+            $options,
+            $metas,
             new Gateway($config['gateway']),
             $config['rangeable'],
             $links

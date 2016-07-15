@@ -19,7 +19,6 @@ use Innmind\Http\{
 use Innmind\Immutable\{
     Set,
     Map,
-    Collection,
     MapInterface
 };
 
@@ -39,8 +38,8 @@ class ListDelegationBuilderTest extends \PHPUnit_Framework_TestCase
                 'foobar',
                 new Identity('foo'),
                 new Map('string', Property::class),
-                new Collection([]),
-                new Collection([]),
+                new Map('scalar', 'variable'),
+                new Map('scalar', 'variable'),
                 new Gateway('bar'),
                 true,
                 new Map('string', 'string')
@@ -75,8 +74,8 @@ class ListDelegationBuilderTest extends \PHPUnit_Framework_TestCase
                 'foobar',
                 new Identity('foo'),
                 new Map('string', Property::class),
-                new Collection([]),
-                new Collection([]),
+                new Map('scalar', 'variable'),
+                new Map('scalar', 'variable'),
                 new Gateway('bar'),
                 true,
                 new Map('string', 'string')
@@ -111,8 +110,8 @@ class ListDelegationBuilderTest extends \PHPUnit_Framework_TestCase
                 'foobar',
                 new Identity('foo'),
                 new Map('string', Property::class),
-                new Collection([]),
-                new Collection([]),
+                new Map('scalar', 'variable'),
+                new Map('scalar', 'variable'),
                 new Gateway('bar'),
                 true,
                 new Map('string', 'string')

@@ -16,7 +16,6 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Immutable\{
     Map,
-    Collection,
     Set
 };
 
@@ -41,8 +40,8 @@ class HttpResourceTest extends \PHPUnit_Framework_TestCase
                             true
                         )
                     ),
-                new Collection([]),
-                new Collection([]),
+                new Map('scalar', 'variable'),
+                new Map('scalar', 'variable'),
                 new Gateway('bar'),
                 true,
                 new Map('string', 'string')
@@ -69,8 +68,8 @@ class HttpResourceTest extends \PHPUnit_Framework_TestCase
                 'foobar',
                 new Identity('foo'),
                 (new Map('string', PropertyDefinition::class)),
-                new Collection([]),
-                new Collection([]),
+                new Map('scalar', 'variable'),
+                new Map('scalar', 'variable'),
                 new Gateway('bar'),
                 true,
                 new Map('string', 'string')

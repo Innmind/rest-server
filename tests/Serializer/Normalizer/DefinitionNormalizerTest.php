@@ -14,8 +14,7 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Immutable\{
     Map,
-    Set,
-    Collection
+    Set
 };
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -38,8 +37,8 @@ class DefinitionNormalizerTest extends \PHPUnit_Framework_TestCase
                     'foobar',
                     new Identity('foo'),
                     new Map('string', Property::class),
-                    new Collection([]),
-                    new Collection([]),
+                    new Map('scalar', 'variable'),
+                    new Map('scalar', 'variable'),
                     new Gateway('bar'),
                     true,
                     new Map('string', 'string')

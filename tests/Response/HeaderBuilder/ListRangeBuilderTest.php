@@ -21,7 +21,6 @@ use Innmind\Http\{
 use Innmind\Immutable\{
     Set,
     Map,
-    Collection,
     MapInterface
 };
 
@@ -46,8 +45,8 @@ class ListRangeBuilderTest extends \PHPUnit_Framework_TestCase
                 'foo',
                 new Identity('uuid'),
                 new Map('string', Property::class),
-                new Collection([]),
-                new Collection([]),
+                new Map('scalar', 'variable'),
+                new Map('scalar', 'variable'),
                 new Gateway('command'),
                 false,
                 new Map('string', 'string')
@@ -71,8 +70,8 @@ class ListRangeBuilderTest extends \PHPUnit_Framework_TestCase
                 'foo',
                 new Identity('uuid'),
                 new Map('string', Property::class),
-                new Collection([]),
-                new Collection([]),
+                new Map('scalar', 'variable'),
+                new Map('scalar', 'variable'),
                 new Gateway('command'),
                 true,
                 new Map('string', 'string')
@@ -101,8 +100,8 @@ class ListRangeBuilderTest extends \PHPUnit_Framework_TestCase
                 'foo',
                 new Identity('uuid'),
                 new Map('string', Property::class),
-                new Collection([]),
-                new Collection([]),
+                new Map('scalar', 'variable'),
+                new Map('scalar', 'variable'),
                 new Gateway('command'),
                 true,
                 new Map('string', 'string')
@@ -146,8 +145,8 @@ class ListRangeBuilderTest extends \PHPUnit_Framework_TestCase
                 'foo',
                 new Identity('uuid'),
                 new Map('string', Property::class),
-                new Collection([]),
-                new Collection([]),
+                new Map('scalar', 'variable'),
+                new Map('scalar', 'variable'),
                 new Gateway('command'),
                 true,
                 new Map('string', 'string')
