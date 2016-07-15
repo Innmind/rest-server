@@ -1,11 +1,11 @@
 <?php
 declare(strict_types = 1);
 
-namespace Tests\Innmind\Rest\Server\RequestVerifier;
+namespace Tests\Innmind\Rest\Server\Request\Verifier;
 
 use Innmind\Rest\Server\{
-    RequestVerifier\AcceptVerifier,
-    RequestVerifier\VerifierInterface,
+    Request\Verifier\AcceptVerifier,
+    Request\Verifier\VerifierInterface,
     Formats,
     Format\Format,
     Format\MediaType,

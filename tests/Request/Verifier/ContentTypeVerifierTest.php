@@ -1,11 +1,11 @@
 <?php
 declare(strict_types = 1);
 
-namespace Tests\Innmind\Rest\Server\RequestVerifier;
+namespace Tests\Innmind\Rest\Server\Request\Verifier;
 
 use Innmind\Rest\Server\{
-    RequestVerifier\RangeVerifier,
-    RequestVerifier\VerifierInterface,
+    Request\Verifier\ContentTypeVerifier,
+    Request\Verifier\VerifierInterface,
     Formats,
     Format\Format,
     Format\MediaType,
@@ -22,8 +22,8 @@ use Innmind\Http\{
     Message\FormInterface,
     Message\QueryInterface,
     Message\FilesInterface,
-    Message\Method,
     HeadersInterface,
+    Header\HeaderInterface,
     ProtocolVersionInterface
 };
 use Innmind\Url\UrlInterface;
@@ -34,28 +34,66 @@ use Innmind\Immutable\{
     Collection
 };
 
-class RangeVerifierTest extends \PHPUnit_Framework_TestCase
+class ContentTypeVerifierTest extends \PHPUnit_Framework_TestCase
 {
     public function testInterface()
     {
-        $this->assertInstanceOf(VerifierInterface::class, new RangeVerifier);
+        $verifier = new ContentTypeVerifier(
+            new Formats(
+                (new Map('string', Format::class))
+                    ->put(
+                        'json',
+                        new Format(
+                            'json',
+                            (new Set(MediaType::class))->add(
+                                new MediaType('application/json', 0)
+                            ),
+                            0
+                        )
+                    )
+            )
+        );
+
+        $this->assertInstanceOf(VerifierInterface::class, $verifier);
     }
 
     /**
-     * @expectedException Innmind\Http\Exception\Http\PreconditionFailedException
+     * @expectedException Innmind\Http\Exception\Http\UnsupportedMediaTypeException
      */
-    public function testThrowWhenUsingRangeOnNonGETRequest()
+    public function testThrowWhenHeaderNotAccepted()
     {
-        $verifier = new RangeVerifier;
+        $verifier = new ContentTypeVerifier(
+            new Formats(
+                (new Map('string', Format::class))
+                    ->put(
+                        'json',
+                        new Format(
+                            'json',
+                            (new Set(MediaType::class))->add(
+                                new MediaType('application/json', 0)
+                            ),
+                            0
+                        )
+                    )
+            )
+        );
         $headers = $this->createMock(HeadersInterface::class);
         $headers
+            ->method('get')
+            ->willReturn(
+                $header = $this->createMock(HeaderInterface::class)
+            );
+        $headers
             ->method('has')
-            ->will($this->returnCallback(function(string $header) {
-                return $header === 'Range';
-            }));
+            ->willReturn(true);
+        $header
+            ->method('values')
+            ->willReturn(
+                (new Set('string'))->add('text/html')
+            );
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
-            new Method('POST'),
+            $this->createMock(MethodInterface::class),
             $this->createMock(ProtocolVersionInterface::class),
             $headers,
             $this->createMock(StreamInterface::class),
@@ -81,58 +119,40 @@ class RangeVerifierTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @expectedException Innmind\Http\Exception\Http\PreconditionFailedException
-     */
-    public function testThrowWhenUsingRangeOnNonRageableResource()
+    public function testDoesntThrowWhenAcceptContentType()
     {
-        $verifier = new RangeVerifier;
-        $headers = $this->createMock(HeadersInterface::class);
-        $headers
-            ->method('has')
-            ->will($this->returnCallback(function(string $header) {
-                return $header === 'Range';
-            }));
-        $request = new ServerRequest(
-            $this->createMock(UrlInterface::class),
-            new Method('GET'),
-            $this->createMock(ProtocolVersionInterface::class),
-            $headers,
-            $this->createMock(StreamInterface::class),
-            $this->createMock(EnvironmentInterface::class),
-            $this->createMock(CookiesInterface::class),
-            $this->createMock(QueryInterface::class),
-            $this->createMock(FormInterface::class),
-            $this->createMock(FilesInterface::class)
-        );
-
-        $verifier->verify(
-            $request,
-            new HttpResource(
-                'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Collection([]),
-                new Collection([]),
-                new Gateway('command'),
-                false,
-                new Map('string', 'string')
+        $verifier = new ContentTypeVerifier(
+            new Formats(
+                (new Map('string', Format::class))
+                    ->put(
+                        'json',
+                        new Format(
+                            'json',
+                            (new Set(MediaType::class))->add(
+                                new MediaType('application/json', 0)
+                            ),
+                            0
+                        )
+                    )
             )
         );
-    }
-
-    public function testVerify()
-    {
-        $verifier = new RangeVerifier;
         $headers = $this->createMock(HeadersInterface::class);
         $headers
+            ->method('get')
+            ->willReturn(
+                $header = $this->createMock(HeaderInterface::class)
+            );
+        $headers
             ->method('has')
-            ->will($this->returnCallback(function(string $header) {
-                return $header === 'Range';
-            }));
+            ->willReturn(true);
+        $header
+            ->method('values')
+            ->willReturn(
+                (new Set('string'))->add('application/json')
+            );
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
-            new Method('GET'),
+            $this->createMock(MethodInterface::class),
             $this->createMock(ProtocolVersionInterface::class),
             $headers,
             $this->createMock(StreamInterface::class),
@@ -159,14 +179,32 @@ class RangeVerifierTest extends \PHPUnit_Framework_TestCase
                 )
             )
         );
+    }
 
+    public function testDoesntThrowWhenNoContentType()
+    {
+        $verifier = new ContentTypeVerifier(
+            new Formats(
+                (new Map('string', Format::class))
+                    ->put(
+                        'json',
+                        new Format(
+                            'json',
+                            (new Set(MediaType::class))->add(
+                                new MediaType('application/json', 0)
+                            ),
+                            0
+                        )
+                    )
+            )
+        );
         $headers = $this->createMock(HeadersInterface::class);
         $headers
             ->method('has')
             ->willReturn(false);
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
-            new Method('GET'),
+            $this->createMock(MethodInterface::class),
             $this->createMock(ProtocolVersionInterface::class),
             $headers,
             $this->createMock(StreamInterface::class),
@@ -188,7 +226,7 @@ class RangeVerifierTest extends \PHPUnit_Framework_TestCase
                     new Collection([]),
                     new Collection([]),
                     new Gateway('command'),
-                    false,
+                    true,
                     new Map('string', 'string')
                 )
             )

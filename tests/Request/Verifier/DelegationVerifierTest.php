@@ -1,11 +1,11 @@
 <?php
 declare(strict_types = 1);
 
-namespace Tests\Innmind\Rest\Server\RequestVerifier;
+namespace Tests\Innmind\Rest\Server\Request\Verifier;
 
 use Innmind\Rest\Server\{
-    RequestVerifier\DelegationVerifier,
-    RequestVerifier\VerifierInterface,
+    Request\Verifier\DelegationVerifier,
+    Request\Verifier\VerifierInterface,
     Definition\HttpResource,
     Definition\Identity,
     Definition\Gateway,

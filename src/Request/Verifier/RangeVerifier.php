@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Innmind\Rest\Server\RequestVerifier;
+namespace Innmind\Rest\Server\Request\Verifier;
 
 use Innmind\Rest\Server\Definition\HttpResource;
 use Innmind\Http\{
