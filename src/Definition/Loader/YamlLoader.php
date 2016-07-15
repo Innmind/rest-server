@@ -33,10 +33,6 @@ use Symfony\Component\{
 final class YamlLoader implements LoaderInterface
 {
     private $types;
-    private $config;
-    private $directories;
-    private $currentPath;
-    private $loaded;
 
     public function __construct(Types $types)
     {
@@ -52,7 +48,7 @@ final class YamlLoader implements LoaderInterface
             throw new InvalidArgumentException;
         }
 
-        $this->config = (new Processor)->processConfiguration(
+        $config = (new Processor)->processConfiguration(
             new Configuration,
             $files->reduce(
                 [],
@@ -64,32 +60,20 @@ final class YamlLoader implements LoaderInterface
             )
         );
 
-        $this->currentPath = new Sequence;
-        $this->loaded = new Map('string', 'object');
-        $this->directories = new Map('string', Directory::class);
+        $directories = new Map('string', Directory::class);
 
-        foreach ($this->config as $key => $value) {
-            $this->directories = $this->directories->put(
+        foreach ($config as $key => $value) {
+            $directories = $directories->put(
                 $key,
                 $this->loadDirectory($key, $value)
             );
         }
 
-        $this->currentPath = null;
-        $this->loaded = null;
-
-        return $this->directories;
+        return $directories;
     }
 
     private function loadDirectory(string $name, array $config): Directory
     {
-        $currentPath = $this->currentPath->add($name);
-
-        if ($this->loaded->contains((string) $currentPath->join('.'))) {
-            return $this->loaded->get((string) $currentPath->join('.'));
-        }
-
-        $this->currentPath = $currentPath;
         $children = new Map('string', Directory::class);
         $definitions = new Map('string', HttpResource::class);
 
@@ -108,37 +92,11 @@ final class YamlLoader implements LoaderInterface
         foreach ($config['resources'] ?? [] as $key => $resource) {
             $definitions = $definitions->put(
                 $key,
-                $this->loadDefinition($key, $resource)
+                $this->buildDefinition($key, $resource)
             );
         }
 
-        $directory = new Directory($name, $children, $definitions);
-        $this->loaded = $this->loaded->put(
-            (string) $this->currentPath->join('.'),
-            $directory
-        );
-        $this->currentPath = $this->currentPath->dropEnd(1);
-
-        return $directory;
-    }
-
-    private function loadDefinition(string $name, array $config): HttpResource
-    {
-        $currentPath = $this->currentPath->add($name);
-
-        if ($this->loaded->contains((string) $currentPath->join('.'))) {
-            return $this->loaded->get((string) $currentPath->join('.'));
-        }
-
-        $this->currentPath = $currentPath;
-        $definition = $this->buildDefinition($name, $config);
-        $this->loaded = $this->loaded->put(
-            (string) $this->currentPath->join('.'),
-            $definition
-        );
-        $this->currentPath = $this->currentPath->dropEnd(1);
-
-        return $definition;
+        return new Directory($name, $children, $definitions);
     }
 
     private function buildDefinition(string $name, array $config): HttpResource
