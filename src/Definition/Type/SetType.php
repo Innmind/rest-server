@@ -38,8 +38,7 @@ final class SetType implements TypeInterface
         $type->innerKey = $config->get('inner');
         $type->inner = $types->build(
             $config->get('inner'),
-            $config->remove('inner'),
-            $types
+            $config->remove('inner')
         );
 
         return $type;

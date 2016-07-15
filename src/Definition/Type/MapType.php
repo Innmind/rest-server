@@ -44,15 +44,13 @@ final class MapType implements TypeInterface
             $config->get('inner'),
             $config
                 ->remove('inner')
-                ->remove('key'),
-            $types
+                ->remove('key')
         );
         $type->key = $types->build(
             $config->get('key'),
             $config
                 ->remove('inner')
-                ->remove('key'),
-            $types
+                ->remove('key')
         );
 
         return $type;
