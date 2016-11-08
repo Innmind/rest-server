@@ -110,4 +110,13 @@ final class MapType implements TypeInterface
 
         return self::$identifiers;
     }
+
+    public function __toString(): string
+    {
+        return sprintf(
+            'map<%s, %s>',
+            $this->innerKey,
+            $this->innerValue
+        );
+    }
 }

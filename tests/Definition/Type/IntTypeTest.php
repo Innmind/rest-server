@@ -23,6 +23,13 @@ class IntTypeTest extends \PHPUnit_Framework_TestCase
             IntType::class,
             IntType::fromConfig(new Map('scalar', 'variable'), new Types)
         );
+        $this->assertSame(
+            'int',
+            (string) IntType::fromConfig(
+                new Map('scalar', 'variable'),
+                new Types
+            )
+        );
     }
 
     public function testDenormalize()

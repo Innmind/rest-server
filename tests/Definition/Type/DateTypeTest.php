@@ -23,6 +23,21 @@ class DateTypeTest extends \PHPUnit_Framework_TestCase
             DateType::class,
             DateType::fromConfig(new Map('scalar', 'variable'), new Types)
         );
+        $this->assertSame(
+            'date<Y-m-d>',
+            (string) DateType::fromConfig(
+                (new Map('scalar', 'variable'))
+                    ->put('format', 'Y-m-d'),
+                new Types
+            )
+        );
+        $this->assertSame(
+            'date<Y-m-d\TH:i:sO>',
+            (string) DateType::fromConfig(
+                new Map('scalar', 'variable'),
+                new Types
+            )
+        );
     }
 
     public function testDenormalize()

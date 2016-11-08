@@ -31,6 +31,14 @@ class SetTypeTest extends \PHPUnit_Framework_TestCase
                 new Types
             )
         );
+        $this->assertSame(
+            'set<string>',
+            (string) SetType::fromConfig(
+                (new Map('scalar', 'variable'))
+                    ->put('inner', 'string'),
+                new Types
+            )
+        );
     }
 
     public function testDenormalize()

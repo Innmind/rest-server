@@ -23,6 +23,13 @@ class FloatTypeTest extends \PHPUnit_Framework_TestCase
             FloatType::class,
             FloatType::fromConfig(new Map('scalar', 'variable'), new Types)
         );
+        $this->assertSame(
+            'float',
+            (string) FloatType::fromConfig(
+                new Map('scalar', 'variable'),
+                new Types
+            )
+        );
     }
 
     public function testDenormalize()
