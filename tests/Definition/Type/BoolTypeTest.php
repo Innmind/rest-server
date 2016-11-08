@@ -23,6 +23,13 @@ class BoolTypeTest extends \PHPUnit_Framework_TestCase
             BoolType::class,
             BoolType::fromConfig(new Map('scalar', 'variable'), new Types)
         );
+        $this->assertSame(
+            'bool',
+            (string) BoolType::fromConfig(
+                new Map('scalar', 'variable'),
+                new Types
+            )
+        );
     }
 
     public function testDenormalize()

@@ -62,4 +62,9 @@ final class FloatType implements TypeInterface
 
         return self::$identifiers;
     }
+
+    public function __toString(): string
+    {
+        return 'float';
+    }
 }

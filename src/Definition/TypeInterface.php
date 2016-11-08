@@ -48,4 +48,6 @@ interface TypeInterface
      * @return SetInterface<string>
      */
     public static function identifiers(): SetInterface;
+
+    public function __toString(): string;
 }

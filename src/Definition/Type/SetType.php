@@ -94,4 +94,9 @@ final class SetType implements TypeInterface
 
         return self::$identifiers;
     }
+
+    public function __toString(): string
+    {
+        return sprintf('set<%s>', $this->innerKey);
+    }
 }

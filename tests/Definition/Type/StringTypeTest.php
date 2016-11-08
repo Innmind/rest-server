@@ -23,6 +23,13 @@ class StringTypeTest extends \PHPUnit_Framework_TestCase
             StringType::class,
             StringType::fromConfig(new Map('scalar', 'variable'), new Types)
         );
+        $this->assertSame(
+            'string',
+            (string) StringType::fromConfig(
+                new Map('scalar', 'variable'),
+                new Types
+            )
+        );
     }
 
     public function testDenormalize()

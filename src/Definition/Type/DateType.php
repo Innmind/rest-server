@@ -94,4 +94,9 @@ final class DateType implements TypeInterface
 
         return self::$identifiers;
     }
+
+    public function __toString(): string
+    {
+        return 'date<'.$this->format.'>';
+    }
 }

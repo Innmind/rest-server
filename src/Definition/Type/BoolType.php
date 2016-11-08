@@ -64,4 +64,9 @@ final class BoolType implements TypeInterface
 
         return self::$identifiers;
     }
+
+    public function __toString(): string
+    {
+        return 'bool';
+    }
 }
