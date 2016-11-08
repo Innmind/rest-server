@@ -24,11 +24,7 @@ final class DefinitionNormalizer implements NormalizerInterface
                     [],
                     function(array $carry, string $name, Property $property) {
                         $carry[$name] = [
-                            'type' => call_user_func([
-                                get_class($property->type()),
-                                'identifiers'
-                            ])
-                                ->current(),
+                            'type' => (string) $property->type(),
                             'access' => $property
                                 ->access()
                                 ->mask()
