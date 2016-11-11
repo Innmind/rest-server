@@ -115,8 +115,8 @@ final class MapType implements TypeInterface
     {
         return sprintf(
             'map<%s, %s>',
-            $this->innerKey,
-            $this->innerValue
+            $this->key,
+            $this->inner
         );
     }
 }

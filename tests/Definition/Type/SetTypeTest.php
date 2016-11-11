@@ -39,6 +39,15 @@ class SetTypeTest extends \PHPUnit_Framework_TestCase
                 new Types
             )
         );
+        $this->assertSame(
+            'set<date<c>>',
+            (string) SetType::fromConfig(
+                (new Map('scalar', 'variable'))
+                    ->put('format', 'c')
+                    ->put('inner', 'date'),
+                new Types
+            )
+        );
     }
 
     public function testDenormalize()
