@@ -40,6 +40,16 @@ class MapTypeTest extends \PHPUnit_Framework_TestCase
                 new Types
             )
         );
+        $this->assertSame(
+            'map<int, date<c>>',
+            (string) MapType::fromConfig(
+                (new Map('scalar', 'variable'))
+                    ->put('inner', 'date')
+                    ->put('format', 'c')
+                    ->put('key', 'int'),
+                new Types
+            )
+        );
     }
 
     public function testDenormalize()

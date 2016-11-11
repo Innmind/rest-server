@@ -97,6 +97,6 @@ final class SetType implements TypeInterface
 
     public function __toString(): string
     {
-        return sprintf('set<%s>', $this->innerKey);
+        return sprintf('set<%s>', $this->inner);
     }
 }

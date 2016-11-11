@@ -14,4 +14,20 @@ class RangeTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(0, $range->firstPosition());
         $this->assertSame(42, $range->lastPosition());
     }
+
+    /**
+     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     */
+    public function testThrowWhenFirstPositionNegative()
+    {
+        new Range(-1, 42);
+    }
+
+    /**
+     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     */
+    public function testThrowWhenLastPositionLowerThanFirstOne()
+    {
+        new Range(42, 10);
+    }
 }
