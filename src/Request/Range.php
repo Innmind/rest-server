@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Request;
 
+use Innmind\Rest\Server\Exception\InvalidArgumentException;
+
 /**
  * Describe a range of resources to be returned on an index
  */
@@ -13,6 +15,13 @@ final class Range
 
     public function __construct(int $firstPosition, int $lastPosition)
     {
+        if (
+            $firstPosition < 0 ||
+            $lastPosition < $firstPosition
+        ) {
+            throw new InvalidArgumentException;
+        }
+
         $this->firstPosition = $firstPosition;
         $this->lastPosition = $lastPosition;
     }
