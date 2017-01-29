@@ -23,3 +23,5 @@ top_dir:
                 url:
                     type: string
                     access: [READ, CREATE, UPDATE]
+            linkable_to:
+                alternate: top_dir.image
