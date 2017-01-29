@@ -43,6 +43,16 @@ final class DefinitionNormalizer implements NormalizerInterface
                 $object->metas()->values()->toPrimitive()
             ),
             'rangeable' => $object->isRangeable(),
+            'linkable_to' => $object
+                ->allowedLinks()
+                ->reduce(
+                    [],
+                    function(array $carry, string $type, string $path): array {
+                        $carry[$type] = $path;
+
+                        return $carry;
+                    }
+                ),
         ];
     }
 

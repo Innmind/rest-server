@@ -80,6 +80,9 @@ class DefinitionNormalizerTest extends \PHPUnit_Framework_TestCase
                 ],
                 'metas' => [],
                 'rangeable' => true,
+                'linkable_to' => [
+                    'alternate' => 'top_dir.image',
+                ],
             ],
             $data
         );
