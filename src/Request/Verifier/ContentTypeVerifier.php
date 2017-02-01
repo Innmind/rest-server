@@ -10,6 +10,7 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Http\{
     Message\ServerRequestInterface,
+    Message\MethodInterface,
     Exception\Http\UnsupportedMediaTypeException
 };
 use Negotiation\{
@@ -37,7 +38,14 @@ final class ContentTypeVerifier implements VerifierInterface
         ServerRequestInterface $request,
         HttpResource $definition
     ) {
-        if (!$request->headers()->has('Content-Type')) {
+        if (
+            !$request->headers()->has('Content-Type') ||
+            !in_array(
+                (string) $request->method(),
+                [MethodInterface::POST, MethodInterface::PUT],
+                true
+            )
+        ) {
             return;
         }
 
