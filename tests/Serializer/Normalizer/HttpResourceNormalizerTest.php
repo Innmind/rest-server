@@ -23,8 +23,9 @@ use Innmind\Immutable\{
     Map,
     Set
 };
+use PHPUnit\Framework\TestCase;
 
-class HttpResourceNormalizerTest extends \PHPUnit_Framework_TestCase
+class HttpResourceNormalizerTest extends TestCase
 {
     public function testSupportsDenormalization()
     {

@@ -7,8 +7,9 @@ use Innmind\Rest\Server\{
     Identity,
     IdentityInterface
 };
+use PHPUnit\Framework\TestCase;
 
-class IdentityTest extends \PHPUnit_Framework_TestCase
+class IdentityTest extends TestCase
 {
     public function testInterface()
     {

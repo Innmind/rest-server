@@ -5,8 +5,9 @@ namespace Tests\Innmind\Rest\Server;
 
 use Innmind\Rest\Server\Action;
 use Innmind\Immutable\SetInterface;
+use PHPUnit\Framework\TestCase;
 
-class ActionTest extends \PHPUnit_Framework_TestCase
+class ActionTest extends TestCase
 {
     public function testInterface()
     {

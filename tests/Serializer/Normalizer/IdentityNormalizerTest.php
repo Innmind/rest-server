@@ -8,8 +8,9 @@ use Innmind\Rest\Server\{
     Identity
 };
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use PHPUnit\Framework\TestCase;
 
-class IdentityNormalizerTest extends \PHPUnit_Framework_TestCase
+class IdentityNormalizerTest extends TestCase
 {
     public function testInterface()
     {

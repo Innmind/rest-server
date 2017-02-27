@@ -18,8 +18,9 @@ use Innmind\Http\{
 use Innmind\Url\UrlInterface;
 use Innmind\Filesystem\Stream\StringStream;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
+use PHPUnit\Framework\TestCase;
 
-class JsonEncoderTest extends \PHPUnit_Framework_TestCase
+class JsonEncoderTest extends TestCase
 {
     public function testInterface()
     {

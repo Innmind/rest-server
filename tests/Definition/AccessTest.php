@@ -5,8 +5,9 @@ namespace Tests\Innmind\Rest\Server\Definition;
 
 use Innmind\Rest\Server\Definition\Access;
 use Innmind\Immutable\Set;
+use PHPUnit\Framework\TestCase;
 
-class AccessTest extends \PHPUnit_Framework_TestCase
+class AccessTest extends TestCase
 {
     /**
      * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException

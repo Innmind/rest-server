@@ -13,8 +13,9 @@ use Innmind\Immutable\{
     Set,
     Map
 };
+use PHPUnit\Framework\TestCase;
 
-class LocatorTest extends \PHPUnit_Framework_TestCase
+class LocatorTest extends TestCase
 {
     /**
      * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException

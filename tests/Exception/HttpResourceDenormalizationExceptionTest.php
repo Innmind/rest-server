@@ -5,8 +5,9 @@ namespace Tests\Innmind\Rest\Server\Exception;
 
 use Innmind\Rest\Server\Exception\HttpResourceDenormalizationException;
 use Innmind\Immutable\Map;
+use PHPUnit\Framework\TestCase;
 
-class HttpResourceDenormalizationExceptionTest extends \PHPUnit_Framework_TestCase
+class HttpResourceDenormalizationExceptionTest extends TestCase
 {
     /**
      * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException

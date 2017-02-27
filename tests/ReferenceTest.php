@@ -12,8 +12,9 @@ use Innmind\Rest\Server\{
     Definition\Gateway
 };
 use Innmind\Immutable\Map;
+use PHPUnit\Framework\TestCase;
 
-class ReferenceTest extends \PHPUnit_Framework_TestCase
+class ReferenceTest extends TestCase
 {
     public function testInterface()
     {

@@ -32,8 +32,9 @@ use Innmind\Immutable\{
     Map,
     MapInterface
 };
+use PHPUnit\Framework\TestCase;
 
-class ListLinksBuilderTest extends \PHPUnit_Framework_TestCase
+class ListLinksBuilderTest extends TestCase
 {
     public function testInterface()
     {

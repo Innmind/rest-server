@@ -11,8 +11,9 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Http\Message\ServerRequestInterface;
 use Innmind\Immutable\Set;
+use PHPUnit\Framework\TestCase;
 
-class DelegationExtractorTest extends \PHPUnit_Framework_TestCase
+class DelegationExtractorTest extends TestCase
 {
     public function testInterface()
     {

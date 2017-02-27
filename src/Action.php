@@ -7,7 +7,7 @@ use Innmind\Rest\Server\Exception\InvalidArgumentException;
 use Innmind\Immutable\{
     SetInterface,
     Set,
-    StringPrimitive as Str
+    Str
 };
 
 final class Action

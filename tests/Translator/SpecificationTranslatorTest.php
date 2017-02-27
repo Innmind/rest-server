@@ -9,8 +9,9 @@ use Innmind\Rest\Server\{
     Specification\Filter
 };
 use Innmind\Url\QueryInterface;
+use PHPUnit\Framework\TestCase;
 
-class SpecificationTranslatorTest extends \PHPUnit_Framework_TestCase
+class SpecificationTranslatorTest extends TestCase
 {
     public function testInterface()
     {

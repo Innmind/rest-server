@@ -10,8 +10,9 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Immutable\Set;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use PHPUnit\Framework\TestCase;
 
-class IdentitiesNormalizerTest extends \PHPUnit_Framework_TestCase
+class IdentitiesNormalizerTest extends TestCase
 {
     public function testInterface()
     {

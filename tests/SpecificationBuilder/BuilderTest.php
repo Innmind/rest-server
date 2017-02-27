@@ -33,8 +33,9 @@ use Innmind\Immutable\{
     Map,
     Set
 };
+use PHPUnit\Framework\TestCase;
 
-class BuilderTest extends \PHPUnit_Framework_TestCase
+class BuilderTest extends TestCase
 {
     public function testBuildFrom()
     {
