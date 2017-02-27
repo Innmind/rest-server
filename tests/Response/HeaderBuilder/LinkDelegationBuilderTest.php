@@ -22,8 +22,9 @@ use Innmind\Immutable\{
     Map,
     MapInterface
 };
+use PHPUnit\Framework\TestCase;
 
-class LinkDelegationBuilderTest extends \PHPUnit_Framework_TestCase
+class LinkDelegationBuilderTest extends TestCase
 {
     public function testInterface()
     {

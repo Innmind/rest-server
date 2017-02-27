@@ -38,8 +38,9 @@ use Innmind\Immutable\{
     Set,
     MapInterface
 };
+use PHPUnit\Framework\TestCase;
 
-class ListContentTypeBuilderTest extends \PHPUnit_Framework_TestCase
+class ListContentTypeBuilderTest extends TestCase
 {
     private $builder;
 

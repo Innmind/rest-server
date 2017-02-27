@@ -23,8 +23,9 @@ use Innmind\Immutable\{
     Map,
     MapInterface
 };
+use PHPUnit\Framework\TestCase;
 
-class ListRangeBuilderTest extends \PHPUnit_Framework_TestCase
+class ListRangeBuilderTest extends TestCase
 {
     public function testInterface()
     {

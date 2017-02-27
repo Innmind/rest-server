@@ -17,8 +17,9 @@ use Innmind\Immutable\{
     Set
 };
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use PHPUnit\Framework\TestCase;
 
-class DefinitionNormalizerTest extends \PHPUnit_Framework_TestCase
+class DefinitionNormalizerTest extends TestCase
 {
     public function testInterface()
     {

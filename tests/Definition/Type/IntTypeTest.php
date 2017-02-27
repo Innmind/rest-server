@@ -9,8 +9,9 @@ use Innmind\Rest\Server\Definition\{
     Types
 };
 use Innmind\Immutable\Map;
+use PHPUnit\Framework\TestCase;
 
-class IntTypeTest extends \PHPUnit_Framework_TestCase
+class IntTypeTest extends TestCase
 {
     public function testInterface()
     {

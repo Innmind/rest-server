@@ -32,8 +32,9 @@ use Innmind\Immutable\{
     Map,
     Set
 };
+use PHPUnit\Framework\TestCase;
 
-class AcceptVerifierTest extends \PHPUnit_Framework_TestCase
+class AcceptVerifierTest extends TestCase
 {
     public function testInterface()
     {

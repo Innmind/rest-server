@@ -13,8 +13,9 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Http\Message\ServerRequestInterface;
 use Innmind\Immutable\Map;
+use PHPUnit\Framework\TestCase;
 
-class DelegationVerifierTest extends \PHPUnit_Framework_TestCase
+class DelegationVerifierTest extends TestCase
 {
     public function testInterface()
     {

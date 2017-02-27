@@ -28,8 +28,9 @@ use Innmind\Http\{
 use Innmind\Url\Url;
 use Innmind\Filesystem\Stream\StringStream;
 use Innmind\Immutable\Map;
+use PHPUnit\Framework\TestCase;
 
-class QueryExtractorTest extends \PHPUnit_Framework_TestCase
+class QueryExtractorTest extends TestCase
 {
     public function testInterface()
     {

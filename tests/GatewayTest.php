@@ -14,8 +14,9 @@ use Innmind\Rest\Server\{
     ResourceLinkerInterface,
     ResourceUnlinkerInterface
 };
+use PHPUnit\Framework\TestCase;
 
-class GatewayTest extends \PHPUnit_Framework_TestCase
+class GatewayTest extends TestCase
 {
     public function testInterface()
     {

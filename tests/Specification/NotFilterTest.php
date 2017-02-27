@@ -10,8 +10,9 @@ use Innmind\Rest\Server\{
     Property
 };
 use Innmind\Specification\NotInterface;
+use PHPUnit\Framework\TestCase;
 
-class NotFilterTest extends \PHPUnit_Framework_TestCase
+class NotFilterTest extends TestCase
 {
     public function testInterface()
     {

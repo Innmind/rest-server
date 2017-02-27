@@ -39,8 +39,9 @@ use Innmind\Immutable\{
     Set,
     MapInterface
 };
+use PHPUnit\Framework\TestCase;
 
-class CreateLocationBuilderTest extends \PHPUnit_Framework_TestCase
+class CreateLocationBuilderTest extends TestCase
 {
     private $builder;
 

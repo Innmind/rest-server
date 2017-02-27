@@ -5,8 +5,9 @@ namespace Tests\Innmind\Rest\Server\Exception;
 
 use Innmind\Rest\Server\Exception\HttpResourceNormalizationException;
 use Innmind\Immutable\Map;
+use PHPUnit\Framework\TestCase;
 
-class HttpResourceNormalizationExceptionTest extends \PHPUnit_Framework_TestCase
+class HttpResourceNormalizationExceptionTest extends TestCase
 {
     /**
      * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException

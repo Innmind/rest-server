@@ -32,8 +32,9 @@ use Innmind\Immutable\{
     Map,
     Set
 };
+use PHPUnit\Framework\TestCase;
 
-class RangeVerifierTest extends \PHPUnit_Framework_TestCase
+class RangeVerifierTest extends TestCase
 {
     public function testInterface()
     {

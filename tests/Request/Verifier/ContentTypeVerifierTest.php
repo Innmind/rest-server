@@ -32,8 +32,9 @@ use Innmind\Immutable\{
     Map,
     Set
 };
+use PHPUnit\Framework\TestCase;
 
-class ContentTypeVerifierTest extends \PHPUnit_Framework_TestCase
+class ContentTypeVerifierTest extends TestCase
 {
     public function testInterface()
     {

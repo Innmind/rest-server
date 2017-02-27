@@ -15,8 +15,9 @@ use Innmind\Immutable\{
     MapInterface,
     Set
 };
+use PHPUnit\Framework\TestCase;
 
-class YamlLoaderTest extends \PHPUnit_Framework_TestCase
+class YamlLoaderTest extends TestCase
 {
     public function testInterface()
     {

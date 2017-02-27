@@ -39,8 +39,9 @@ use Innmind\Immutable\{
     Set,
     MapInterface
 };
+use PHPUnit\Framework\TestCase;
 
-class CreateContentTypeBuilderTest extends \PHPUnit_Framework_TestCase
+class CreateContentTypeBuilderTest extends TestCase
 {
     private $builder;
 

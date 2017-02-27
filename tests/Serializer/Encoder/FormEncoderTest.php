@@ -21,8 +21,9 @@ use Innmind\Url\UrlInterface;
 use Innmind\Filesystem\StreamInterface;
 use Innmind\Immutable\Map;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
+use PHPUnit\Framework\TestCase;
 
-class FormEncoderTest extends \PHPUnit_Framework_TestCase
+class FormEncoderTest extends TestCase
 {
     public function testInterface()
     {

@@ -10,8 +10,9 @@ use Innmind\Rest\Server\{
     Property
 };
 use Innmind\Specification\CompositeInterface;
+use PHPUnit\Framework\TestCase;
 
-class AndFilterTest extends \PHPUnit_Framework_TestCase
+class AndFilterTest extends TestCase
 {
     public function testInterface()
     {
