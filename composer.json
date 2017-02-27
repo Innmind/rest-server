@@ -27,7 +27,11 @@
     },
     "autoload": {
         "psr-4": {
-            "Innmind\\Rest\\Server\\": "src/",
+            "Innmind\\Rest\\Server\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "Tests\\Innmind\\Rest\\Server\\": "tests/"
         }
     },
