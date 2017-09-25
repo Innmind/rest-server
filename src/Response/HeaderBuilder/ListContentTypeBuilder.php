@@ -8,7 +8,7 @@ use Innmind\Rest\Server\{
     Request\Range,
     Formats
 };
-use Innmind\Http\Message\ServerRequestInterface;
+use Innmind\Http\Message\ServerRequest;
 use Innmind\Specification\SpecificationInterface;
 use Innmind\Immutable\{
     SetInterface,
@@ -31,7 +31,7 @@ final class ListContentTypeBuilder implements ListBuilderInterface
      */
     public function build(
         SetInterface $identities,
-        ServerRequestInterface $request,
+        ServerRequest $request,
         HttpResource $definition,
         SpecificationInterface $specification = null,
         Range $range = null

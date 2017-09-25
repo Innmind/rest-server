@@ -10,8 +10,8 @@ use Innmind\Rest\Server\{
     IdentityInterface
 };
 use Innmind\Http\{
-    Message\ServerRequestInterface,
-    Header\HeaderInterface
+    Message\ServerRequest,
+    Header
 };
 use Innmind\Specification\SpecificationInterface;
 use Innmind\Immutable\{
@@ -38,7 +38,7 @@ final class ListDelegationBuilder implements ListBuilderInterface
      */
     public function build(
         SetInterface $identities,
-        ServerRequestInterface $request,
+        ServerRequest $request,
         HttpResource $definition,
         SpecificationInterface $specification = null,
         Range $range = null
@@ -50,7 +50,7 @@ final class ListDelegationBuilder implements ListBuilderInterface
         return $this
             ->builders
             ->reduce(
-                new Map('string', HeaderInterface::class),
+                new Map('string', Header::class),
                 function(
                     MapInterface $carry,
                     ListBuilderInterface $builder

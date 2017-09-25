@@ -22,8 +22,7 @@ use Innmind\Immutable\{
     MapInterface,
     Map,
     Set,
-    Sequence,
-    StringPrimitive as Str
+    Sequence
 };
 use Symfony\Component\{
     Config\Definition\Processor,

@@ -9,8 +9,8 @@ use Innmind\Rest\Server\{
     IdentityInterface
 };
 use Innmind\Http\{
-    Message\ServerRequestInterface,
-    Header\HeaderInterface
+    Message\ServerRequest,
+    Header
 };
 use Innmind\Immutable\{
     SetInterface,
@@ -35,14 +35,14 @@ final class RemoveDelegationBuilder implements RemoveBuilderInterface
      * {@inheritdoc}
      */
     public function build(
-        ServerRequestInterface $request,
+        ServerRequest $request,
         HttpResource $definition,
         IdentityInterface $identity
     ): MapInterface {
         return $this
             ->builders
             ->reduce(
-                new Map('string', HeaderInterface::class),
+                new Map('string', Header::class),
                 function(
                     MapInterface $carry,
                     RemoveBuilderInterface $builder

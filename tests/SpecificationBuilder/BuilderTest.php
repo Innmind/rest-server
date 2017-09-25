@@ -15,20 +15,20 @@ use Innmind\Rest\Server\{
     Specification\AndFilter
 };
 use Innmind\Http\{
-    Message\ServerRequest,
-    Message\Query,
-    Message\Query\Parameter,
-    Message\Query\ParameterInterface,
-    Message\MethodInterface,
-    Message\EnvironmentInterface,
-    Message\CookiesInterface,
-    Message\FormInterface,
-    Message\FilesInterface,
-    ProtocolVersionInterface,
-    HeadersInterface
+    Message\ServerRequest\ServerRequest,
+    Message\Query\Query,
+    Message\Query\Parameter\Parameter,
+    Message\Query\Parameter as ParameterInterface,
+    Message\Method,
+    Message\Environment,
+    Message\Cookies,
+    Message\Form,
+    Message\Files,
+    ProtocolVersion,
+    Headers
 };
 use Innmind\Url\UrlInterface;
-use Innmind\Filesystem\StreamInterface;
+use Innmind\Stream\Readable;
 use Innmind\Immutable\{
     Map,
     Set
@@ -41,20 +41,20 @@ class BuilderTest extends TestCase
     {
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
-            $this->createMock(MethodInterface::class),
-            $this->createMock(ProtocolVersionInterface::class),
-            $this->createMock(HeadersInterface::class),
-            $this->createMock(StreamInterface::class),
-            $this->createMock(EnvironmentInterface::class),
-            $this->createMock(CookiesInterface::class),
+            $this->createMock(Method::class),
+            $this->createMock(ProtocolVersion::class),
+            $this->createMock(Headers::class),
+            $this->createMock(Readable::class),
+            $this->createMock(Environment::class),
+            $this->createMock(Cookies::class),
             new Query(
                 (new Map('string', ParameterInterface::class))
                     ->put('foo', new Parameter('foo', 'bar'))
                     ->put('bar', new Parameter('bar', 'baz'))
                     ->put('range', new Parameter('range', [0, 42]))
             ),
-            $this->createMock(FormInterface::class),
-            $this->createMock(FilesInterface::class)
+            $this->createMock(Form::class),
+            $this->createMock(Files::class)
         );
         $definition = new HttpResource(
             'foo',
@@ -109,18 +109,18 @@ class BuilderTest extends TestCase
     {
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
-            $this->createMock(MethodInterface::class),
-            $this->createMock(ProtocolVersionInterface::class),
-            $this->createMock(HeadersInterface::class),
-            $this->createMock(StreamInterface::class),
-            $this->createMock(EnvironmentInterface::class),
-            $this->createMock(CookiesInterface::class),
+            $this->createMock(Method::class),
+            $this->createMock(ProtocolVersion::class),
+            $this->createMock(Headers::class),
+            $this->createMock(Readable::class),
+            $this->createMock(Environment::class),
+            $this->createMock(Cookies::class),
             new Query(
                 (new Map('string', ParameterInterface::class))
                     ->put('foo', new Parameter('foo', 'bar'))
             ),
-            $this->createMock(FormInterface::class),
-            $this->createMock(FilesInterface::class)
+            $this->createMock(Form::class),
+            $this->createMock(Files::class)
         );
         $definition = new HttpResource(
             'foo',
@@ -144,15 +144,15 @@ class BuilderTest extends TestCase
     {
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
-            $this->createMock(MethodInterface::class),
-            $this->createMock(ProtocolVersionInterface::class),
-            $this->createMock(HeadersInterface::class),
-            $this->createMock(StreamInterface::class),
-            $this->createMock(EnvironmentInterface::class),
-            $this->createMock(CookiesInterface::class),
+            $this->createMock(Method::class),
+            $this->createMock(ProtocolVersion::class),
+            $this->createMock(Headers::class),
+            $this->createMock(Readable::class),
+            $this->createMock(Environment::class),
+            $this->createMock(Cookies::class),
             new Query(new Map('string', ParameterInterface::class)),
-            $this->createMock(FormInterface::class),
-            $this->createMock(FilesInterface::class)
+            $this->createMock(Form::class),
+            $this->createMock(Files::class)
         );
         $definition = new HttpResource(
             'foo',

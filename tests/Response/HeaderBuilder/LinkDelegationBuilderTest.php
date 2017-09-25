@@ -14,8 +14,8 @@ use Innmind\Rest\Server\{
     Definition\Gateway
 };
 use Innmind\Http\{
-    Message\ServerRequestInterface,
-    Header\HeaderInterface
+    Message\ServerRequest,
+    Header
 };
 use Innmind\Immutable\{
     Set,
@@ -34,7 +34,7 @@ class LinkDelegationBuilderTest extends TestCase
 
         $this->assertInstanceOf(LinkBuilderInterface::class, $builder);
         $headers = $builder->build(
-            $this->createMock(ServerRequestInterface::class),
+            $this->createMock(ServerRequest::class),
             new Reference(
                 new Httpresource(
                     'foobar',
@@ -52,7 +52,7 @@ class LinkDelegationBuilderTest extends TestCase
         );
         $this->assertInstanceOf(MapInterface::class, $headers);
         $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(HeaderInterface::class, (string) $headers->valueType());
+        $this->assertSame(Header::class, (string) $headers->valueType());
     }
 
     /**
@@ -73,7 +73,7 @@ class LinkDelegationBuilderTest extends TestCase
         );
 
         $builder->build(
-            $this->createMock(ServerRequestInterface::class),
+            $this->createMock(ServerRequest::class),
             new Reference(
                 new Httpresource(
                     'foobar',
@@ -101,18 +101,18 @@ class LinkDelegationBuilderTest extends TestCase
         $mock1
             ->method('build')
             ->willReturn(
-                (new Map('string', HeaderInterface::class))
-                    ->put('foo', $this->createMock(HeaderInterface::class))
+                (new Map('string', Header::class))
+                    ->put('foo', $this->createMock(Header::class))
             );
         $mock2
             ->method('build')
             ->willReturn(
-                (new Map('string', HeaderInterface::class))
-                    ->put('bar', $this->createMock(HeaderInterface::class))
+                (new Map('string', Header::class))
+                    ->put('bar', $this->createMock(Header::class))
             );
 
         $headers = $builder->build(
-            $this->createMock(ServerRequestInterface::class),
+            $this->createMock(ServerRequest::class),
             new Reference(
                 new Httpresource(
                     'foobar',

@@ -7,7 +7,7 @@ use Innmind\Rest\Server\{
     Definition\HttpResource,
     Exception\InvalidArgumentException
 };
-use Innmind\Http\Message\ServerRequestInterface;
+use Innmind\Http\Message\ServerRequest;
 use Innmind\Immutable\MapInterface;
 
 final class DelegationVerifier implements VerifierInterface
@@ -30,7 +30,7 @@ final class DelegationVerifier implements VerifierInterface
      * {@inheritdoc}
      */
     public function verify(
-        ServerRequestInterface $request,
+        ServerRequest $request,
         HttpResource $definition
     ) {
         $this

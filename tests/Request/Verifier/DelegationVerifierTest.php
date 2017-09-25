@@ -11,7 +11,7 @@ use Innmind\Rest\Server\{
     Definition\Gateway,
     Definition\Property
 };
-use Innmind\Http\Message\ServerRequestInterface;
+use Innmind\Http\Message\ServerRequest;
 use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
@@ -62,7 +62,7 @@ class DelegationVerifierTest extends TestCase
         $this->assertSame(
             null,
             $verifier->verify(
-                $this->createMock(ServerRequestInterface::class),
+                $this->createMock(ServerRequest::class),
                 new HttpResource(
                     'foo',
                     new Identity('uuid'),
@@ -97,7 +97,7 @@ class DelegationVerifierTest extends TestCase
             }));
 
         $verifier->verify(
-            $this->createMock(ServerRequestInterface::class),
+            $this->createMock(ServerRequest::class),
             new HttpResource(
                 'foo',
                 new Identity('uuid'),

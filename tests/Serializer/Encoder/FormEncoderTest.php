@@ -5,20 +5,20 @@ namespace Tests\Innmind\Rest\Server\Serializer\Encoder;
 
 use Innmind\Rest\Server\Serializer\Encoder\FormEncoder;
 use Innmind\Http\{
-    Message\ServerRequest,
-    Message\MethodInterface,
-    ProtocolVersionInterface,
-    HeadersInterface,
-    Message\EnvironmentInterface,
-    Message\CookiesInterface,
-    Message\QueryInterface,
-    Message\Form,
-    Message\Form\Parameter,
-    Message\Form\ParameterInterface,
-    Message\FilesInterface
+    Message\ServerRequest\ServerRequest,
+    Message\Method,
+    ProtocolVersion,
+    Headers,
+    Message\Environment,
+    Message\Cookies,
+    Message\Query,
+    Message\Form\Form,
+    Message\Form\Parameter\Parameter,
+    Message\Form\Parameter as ParameterInterface,
+    Message\Files
 };
 use Innmind\Url\UrlInterface;
-use Innmind\Filesystem\StreamInterface;
+use Innmind\Stream\Readable;
 use Innmind\Immutable\Map;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use PHPUnit\Framework\TestCase;
@@ -48,13 +48,13 @@ class FormEncoderTest extends TestCase
         $data = $decoder->decode(
             new ServerRequest(
                 $this->createMock(UrlInterface::class),
-                $this->createMock(MethodInterface::class),
-                $this->createMock(ProtocolVersionInterface::class),
-                $this->createMock(HeadersInterface::class),
-                $this->createMock(StreamInterface::class),
-                $this->createMock(EnvironmentInterface::class),
-                $this->createMock(CookiesInterface::class),
-                $this->createMock(QueryInterface::class),
+                $this->createMock(Method::class),
+                $this->createMock(ProtocolVersion::class),
+                $this->createMock(Headers::class),
+                $this->createMock(Readable::class),
+                $this->createMock(Environment::class),
+                $this->createMock(Cookies::class),
+                $this->createMock(Query::class),
                 new Form(
                     (new Map('scalar', ParameterInterface::class))
                         ->put('foo', new Parameter('foo', 'bar'))
@@ -67,7 +67,7 @@ class FormEncoderTest extends TestCase
                             )
                         )
                 ),
-                $this->createMock(FilesInterface::class)
+                $this->createMock(Files::class)
             ),
             'form'
         );

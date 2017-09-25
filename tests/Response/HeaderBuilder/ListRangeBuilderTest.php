@@ -15,8 +15,8 @@ use Innmind\Rest\Server\{
     Request\Range
 };
 use Innmind\Http\{
-    Message\ServerRequestInterface,
-    Header\HeaderInterface
+    Message\ServerRequest,
+    Header
 };
 use Innmind\Immutable\{
     Set,
@@ -41,7 +41,7 @@ class ListRangeBuilderTest extends TestCase
 
         $headers = $builder->build(
             new Set(IdentityInterface::class),
-            $this->createMock(ServerRequestInterface::class),
+            $this->createMock(ServerRequest::class),
             new HttpResource(
                 'foo',
                 new Identity('uuid'),
@@ -56,7 +56,7 @@ class ListRangeBuilderTest extends TestCase
 
         $this->assertInstanceOf(MapInterface::class, $headers);
         $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(HeaderInterface::class, (string) $headers->valueType());
+        $this->assertSame(Header::class, (string) $headers->valueType());
         $this->assertSame(0, $headers->size());
     }
 
@@ -66,7 +66,7 @@ class ListRangeBuilderTest extends TestCase
 
         $headers = $builder->build(
             new Set(IdentityInterface::class),
-            $this->createMock(ServerRequestInterface::class),
+            $this->createMock(ServerRequest::class),
             new HttpResource(
                 'foo',
                 new Identity('uuid'),
@@ -81,7 +81,7 @@ class ListRangeBuilderTest extends TestCase
 
         $this->assertInstanceOf(MapInterface::class, $headers);
         $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(HeaderInterface::class, (string) $headers->valueType());
+        $this->assertSame(Header::class, (string) $headers->valueType());
         $this->assertSame(1, $headers->size());
         $this->assertSame(
             'Accept-Ranges : resources',
@@ -96,7 +96,7 @@ class ListRangeBuilderTest extends TestCase
         $headers = $builder->build(
             (new Set(IdentityInterface::class))
                 ->add(new Id(42)),
-            $this->createMock(ServerRequestInterface::class),
+            $this->createMock(ServerRequest::class),
             new HttpResource(
                 'foo',
                 new Identity('uuid'),
@@ -113,7 +113,7 @@ class ListRangeBuilderTest extends TestCase
 
         $this->assertInstanceOf(MapInterface::class, $headers);
         $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(HeaderInterface::class, (string) $headers->valueType());
+        $this->assertSame(Header::class, (string) $headers->valueType());
         $this->assertSame(2, $headers->size());
         $this->assertSame(
             'Accept-Ranges : resources',
@@ -141,7 +141,7 @@ class ListRangeBuilderTest extends TestCase
                 ->add(new Id(49))
                 ->add(new Id(50))
                 ->add(new Id(51)),
-            $this->createMock(ServerRequestInterface::class),
+            $this->createMock(ServerRequest::class),
             new HttpResource(
                 'foo',
                 new Identity('uuid'),
@@ -158,7 +158,7 @@ class ListRangeBuilderTest extends TestCase
 
         $this->assertInstanceOf(MapInterface::class, $headers);
         $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(HeaderInterface::class, (string) $headers->valueType());
+        $this->assertSame(Header::class, (string) $headers->valueType());
         $this->assertSame(2, $headers->size());
         $this->assertSame(
             'Accept-Ranges : resources',

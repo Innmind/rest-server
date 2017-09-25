@@ -7,7 +7,7 @@ use Innmind\Rest\Server\{
     Exception\NoFilterFoundException,
     Definition\HttpResource
 };
-use Innmind\Http\Message\ServerRequestInterface;
+use Innmind\Http\Message\ServerRequest;
 use Innmind\Specification\SpecificationInterface;
 
 interface BuilderInterface
@@ -15,7 +15,7 @@ interface BuilderInterface
     /**
      * Transform request filters into a specification
      *
-     * @param ServerRequestInterface $request
+     * @param ServerRequest $request
      * @param HttpResource $definition
      *
      * @throws NoFilterFoundException
@@ -24,7 +24,7 @@ interface BuilderInterface
      * @return SpecificationInterface
      */
     public function buildFrom(
-        ServerRequestInterface $request,
+        ServerRequest $request,
         HttpResource $definition
     ): SpecificationInterface;
 }

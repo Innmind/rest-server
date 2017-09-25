@@ -17,23 +17,22 @@ use Innmind\Rest\Server\{
     Definition\Gateway
 };
 use Innmind\Http\{
-    Message\ServerRequest,
-    Message\MethodInterface,
-    ProtocolVersionInterface,
-    Headers,
-    Header\HeaderInterface,
-    Header\HeaderValueInterface,
+    Message\ServerRequest\ServerRequest,
+    Message\Method,
+    ProtocolVersion,
+    Headers\Headers,
+    Header,
     Header\Accept,
     Header\AcceptValue,
-    Header\ParameterInterface,
-    Message\EnvironmentInterface,
-    Message\CookiesInterface,
-    Message\QueryInterface,
-    Message\FormInterface,
-    Message\FilesInterface
+    Header\Parameter,
+    Message\Environment,
+    Message\Cookies,
+    Message\Query,
+    Message\Form,
+    Message\Files
 };
 use Innmind\Url\UrlInterface;
-use Innmind\Filesystem\StreamInterface;
+use Innmind\Stream\Readable;
 use Innmind\Immutable\{
     Map,
     Set,
@@ -84,28 +83,27 @@ class GetContentTypeBuilderTest extends TestCase
             $this->createMock(HttpResourceInterface::class),
             new ServerRequest(
                 $this->createMock(UrlInterface::class),
-                $this->createMock(MethodInterface::class),
-                $this->createMock(ProtocolVersionInterface::class),
+                $this->createMock(Method::class),
+                $this->createMock(ProtocolVersion::class),
                 new Headers(
-                    (new Map('string', HeaderInterface::class))
+                    (new Map('string', Header::class))
                         ->put(
                             'Accept',
                             new Accept(
-                                (new Set(HeaderValueInterface::class))
-                                    ->add(new AcceptValue(
-                                        'text',
-                                        'xhtml',
-                                        new Map('string', ParameterInterface::class)
-                                    ))
+                                new AcceptValue(
+                                    'text',
+                                    'xhtml',
+                                    new Map('string', Parameter::class)
+                                )
                             )
                         )
                 ),
-                $this->createMock(StreamInterface::class),
-                $this->createMock(EnvironmentInterface::class),
-                $this->createMock(CookiesInterface::class),
-                $this->createMock(QueryInterface::class),
-                $this->createMock(FormInterface::class),
-                $this->createMock(FilesInterface::class)
+                $this->createMock(Readable::class),
+                $this->createMock(Environment::class),
+                $this->createMock(Cookies::class),
+                $this->createMock(Query::class),
+                $this->createMock(Form::class),
+                $this->createMock(Files::class)
             ),
             new HttpResource(
                 'foo',
@@ -122,7 +120,7 @@ class GetContentTypeBuilderTest extends TestCase
 
         $this->assertInstanceOf(MapInterface::class, $headers);
         $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(HeaderInterface::class, (string) $headers->valueType());
+        $this->assertSame(Header::class, (string) $headers->valueType());
         $this->assertSame(1, $headers->size());
         $this->assertSame(
             'Content-Type : text/html',

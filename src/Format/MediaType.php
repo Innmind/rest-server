@@ -5,7 +5,6 @@ namespace Innmind\Rest\Server\Format;
 
 use Innmind\Rest\Server\Exception\InvalidArgumentException;
 use Innmind\Filesystem\MediaType\MediaType as FilesystemMediaType;
-use Innmind\Immutable\StringPrimitive as Str;
 
 final class MediaType
 {

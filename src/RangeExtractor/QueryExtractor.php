@@ -7,14 +7,14 @@ use Innmind\Rest\Server\{
     Exception\RangeNotFoundException,
     Request\Range
 };
-use Innmind\Http\Message\ServerRequestInterface;
+use Innmind\Http\Message\ServerRequest;
 
 final class QueryExtractor implements ExtractorInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function extract(ServerRequestInterface $request): Range
+    public function extract(ServerRequest $request): Range
     {
         if (
             !$request->query()->has('range') ||

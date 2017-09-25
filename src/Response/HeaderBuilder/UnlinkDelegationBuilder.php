@@ -8,8 +8,8 @@ use Innmind\Rest\Server\{
     Exception\InvalidArgumentException
 };
 use Innmind\Http\{
-    Message\ServerRequestInterface,
-    Header\HeaderInterface
+    Message\ServerRequest,
+    Header
 };
 use Innmind\Immutable\{
     SetInterface,
@@ -34,7 +34,7 @@ final class UnlinkDelegationBuilder implements UnlinkBuilderInterface
      * {@inheritdoc}
      */
     public function build(
-        ServerRequestInterface $request,
+        ServerRequest $request,
         Reference $from,
         MapInterface $tos
     ): MapInterface {
@@ -48,7 +48,7 @@ final class UnlinkDelegationBuilder implements UnlinkBuilderInterface
         return $this
             ->builders
             ->reduce(
-                new Map('string', HeaderInterface::class),
+                new Map('string', Header::class),
                 function(
                     MapInterface $carry,
                     UnlinkBuilderInterface $builder

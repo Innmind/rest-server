@@ -9,7 +9,7 @@ use Innmind\Rest\Server\{
     HttpResourceInterface,
     IdentityInterface
 };
-use Innmind\Http\Message\ServerRequestInterface;
+use Innmind\Http\Message\ServerRequest;
 use Innmind\Immutable\MapInterface;
 
 final class CreateContentTypeBuilder implements CreateBuilderInterface
@@ -28,7 +28,7 @@ final class CreateContentTypeBuilder implements CreateBuilderInterface
      */
     public function build(
         IdentityInterface $identity,
-        ServerRequestInterface $request,
+        ServerRequest $request,
         HttpResource $definition,
         HttpResourceInterface $resource
     ): MapInterface {

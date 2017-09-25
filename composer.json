@@ -20,8 +20,8 @@
         "symfony/serializer": "~3.0",
         "symfony/config": "~3.0",
         "innmind/specification": "^1.0",
-        "innmind/filesystem": "~2.0",
-        "innmind/http": "~2.0",
+        "innmind/filesystem": "~3.0",
+        "innmind/http": "~3.0",
         "willdurand/negotiation": "^2.0",
         "symfony/yaml": "~3.0"
     },

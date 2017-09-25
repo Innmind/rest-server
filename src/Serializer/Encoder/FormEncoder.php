@@ -5,8 +5,8 @@ namespace Innmind\Rest\Server\Serializer\Encoder;
 
 use Innmind\Rest\Server\Exception\InvalidArgumentException;
 use Innmind\Http\{
-    Message\ServerRequestInterface,
-    Message\Form\ParameterInterface
+    Message\ServerRequest,
+    Message\Form\Parameter
 };
 use Innmind\Immutable\{
     Map,
@@ -21,7 +21,7 @@ final class FormEncoder implements DecoderInterface
      */
     public function decode($data, $format, array $context = [])
     {
-        if (!$data instanceof ServerRequestInterface) {
+        if (!$data instanceof ServerRequest) {
             throw new InvalidArgumentException;
         }
 
@@ -42,7 +42,7 @@ final class FormEncoder implements DecoderInterface
         return $format === 'request_form';
     }
 
-    private function translate(ParameterInterface $parameter)
+    private function translate(Parameter $parameter)
     {
         if ($parameter->value() instanceof MapInterface) {
             return $parameter
@@ -50,7 +50,7 @@ final class FormEncoder implements DecoderInterface
                 ->reduce(
                     [],
                     function(array $carry, $key, $value): array {
-                        $carry[$key] = $value instanceof ParameterInterface ?
+                        $carry[$key] = $value instanceof Parameter ?
                             $this->translate($value) : $value;
 
                         return $carry;

@@ -9,12 +9,11 @@ use Innmind\Rest\Server\{
     IdentityInterface
 };
 use Innmind\Http\{
-    Message\ServerRequestInterface,
-    Header\HeaderInterface,
-    Header\HeaderValueInterface,
+    Message\ServerRequest,
+    Header,
+    Header\Value,
     Header\Link,
-    Header\LinkValue,
-    Header\ParameterInterface
+    Header\LinkValue
 };
 use Innmind\Specification\SpecificationInterface;
 use Innmind\Url\Url;
@@ -32,12 +31,12 @@ final class ListLinksBuilder implements ListBuilderInterface
      */
     public function build(
         SetInterface $identities,
-        ServerRequestInterface $request,
+        ServerRequest $request,
         HttpResource $definition,
         SpecificationInterface $specification = null,
         Range $range = null
     ): MapInterface {
-        $map = new Map('string', HeaderInterface::class);
+        $map = new Map('string', Header::class);
 
         if ($identities->size() === 0) {
             return $map;
@@ -48,15 +47,14 @@ final class ListLinksBuilder implements ListBuilderInterface
         return $map->put(
             'Link',
             new Link(
-                $identities->reduce(
-                    new Set(HeaderValueInterface::class),
+                ...$identities->reduce(
+                    new Set(Value::class),
                     function(Set $carry, IdentityInterface $identity) use ($path): Set {
                         return $carry->add(new LinkValue(
                             Url::fromString(
                                 rtrim((string) $path, '/').'/'.$identity
                             ),
-                            'resource',
-                            new Map('string', ParameterInterface::class)
+                            'resource'
                         ));
                     }
                 )

@@ -9,21 +9,20 @@ use Innmind\Rest\Server\{
     Request\Range
 };
 use Innmind\Http\{
-    Message\ServerRequest,
-    Message\Method,
-    ProtocolVersion,
-    Message\ResponseInterface,
-    Message\Environment,
-    Message\Cookies,
-    Message\Query,
-    Message\Query\ParameterInterface as QueryParameterInterface,
-    Message\Query\Parameter,
-    Message\Form,
-    Message\Form\ParameterInterface as FormParameterInterface,
-    Message\Files,
-    File\FileInterface,
-    Headers,
-    Header\HeaderInterface
+    Message\ServerRequest\ServerRequest,
+    Message\Method\Method,
+    ProtocolVersion\ProtocolVersion,
+    Message\Environment\Environment,
+    Message\Cookies\Cookies,
+    Message\Query\Query,
+    Message\Query\Parameter as QueryParameterInterface,
+    Message\Query\Parameter\Parameter,
+    Message\Form\Form,
+    Message\Form\Parameter as FormParameterInterface,
+    Message\Files\Files,
+    File,
+    Headers\Headers,
+    Header
 };
 use Innmind\Url\Url;
 use Innmind\Filesystem\Stream\StringStream;
@@ -46,7 +45,7 @@ class QueryExtractorTest extends TestCase
             Url::fromString('/'),
             new Method('GET'),
             $protocol = new ProtocolVersion(1, 1),
-            new Headers(new Map('string', HeaderInterface::class)),
+            new Headers(new Map('string', Header::class)),
             new StringStream(''),
             new Environment(new Map('string', 'scalar')),
             new Cookies(new Map('string', 'scalar')),
@@ -58,7 +57,7 @@ class QueryExtractorTest extends TestCase
                     )
             ),
             new Form(new Map('scalar', FormParameterInterface::class)),
-            new Files(new Map('string', FileInterface::class))
+            new Files(new Map('string', File::class))
         );
 
         $range = $extractor->extract($request);
@@ -78,7 +77,7 @@ class QueryExtractorTest extends TestCase
             Url::fromString('/'),
             new Method('GET'),
             $protocol = new ProtocolVersion(1, 1),
-            new Headers(new Map('string', HeaderInterface::class)),
+            new Headers(new Map('string', Header::class)),
             new StringStream(''),
             new Environment(new Map('string', 'scalar')),
             new Cookies(new Map('string', 'scalar')),
@@ -90,7 +89,7 @@ class QueryExtractorTest extends TestCase
                     )
             ),
             new Form(new Map('scalar', FormParameterInterface::class)),
-            new Files(new Map('string', FileInterface::class))
+            new Files(new Map('string', File::class))
         );
 
         $extractor->extract($request);

@@ -10,8 +10,8 @@ use Innmind\Rest\Server\{
     HttpResourceInterface
 };
 use Innmind\Http\{
-    Message\ServerRequestInterface,
-    Header\HeaderInterface
+    Message\ServerRequest,
+    Header
 };
 use Innmind\Immutable\{
     SetInterface,
@@ -37,14 +37,14 @@ final class CreateDelegationBuilder implements CreateBuilderInterface
      */
     public function build(
         IdentityInterface $identity,
-        ServerRequestInterface $request,
+        ServerRequest $request,
         HttpResource $definition,
         HttpResourceInterface $resource
     ): MapInterface {
         return $this
             ->builders
             ->reduce(
-                new Map('string', HeaderInterface::class),
+                new Map('string', Header::class),
                 function(
                     MapInterface $carry,
                     CreateBuilderInterface $builder

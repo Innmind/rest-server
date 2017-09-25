@@ -8,14 +8,14 @@ use Innmind\Rest\Server\{
     HttpResourceInterface,
     IdentityInterface
 };
-use Innmind\Http\Message\ServerRequestInterface;
+use Innmind\Http\Message\ServerRequest;
 use Innmind\Immutable\MapInterface;
 
 interface CreateBuilderInterface
 {
     /**
      * @param IdentityInterface $identity
-     * @param ServerRequestInterface $request
+     * @param ServerRequest $request
      * @param HttpResource $definition
      * @param HttpResourceInterface $resource
      *
@@ -23,7 +23,7 @@ interface CreateBuilderInterface
      */
     public function build(
         IdentityInterface $identity,
-        ServerRequestInterface $request,
+        ServerRequest $request,
         HttpResource $definition,
         HttpResourceInterface $resource
     ): MapInterface;

@@ -9,8 +9,8 @@ use Innmind\Rest\Server\{
     Definition\HttpResource
 };
 use Innmind\Http\{
-    Message\ServerRequestInterface,
-    Exception\Http\NotAcceptableException
+    Message\ServerRequest,
+    Exception\Http\NotAcceptable
 };
 use Negotiation\{
     Negotiator,
@@ -31,10 +31,10 @@ final class AcceptVerifier implements VerifierInterface
     /**
      * {@inheritdoc}
      *
-     * @throws NotAcceptableException
+     * @throws NotAcceptable
      */
     public function verify(
-        ServerRequestInterface $request,
+        ServerRequest $request,
         HttpResource $definition
     ) {
         $types = $this
@@ -58,7 +58,7 @@ final class AcceptVerifier implements VerifierInterface
         );
 
         if (!$best instanceof Accept) {
-            throw new NotAcceptableException;
+            throw new NotAcceptable;
         }
     }
 }

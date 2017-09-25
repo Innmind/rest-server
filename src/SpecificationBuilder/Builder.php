@@ -9,7 +9,7 @@ use Innmind\Rest\Server\{
     Definition\HttpResource,
     Specification\Filter
 };
-use Innmind\Http\Message\ServerRequestInterface;
+use Innmind\Http\Message\ServerRequest;
 use Innmind\Specification\SpecificationInterface;
 
 final class Builder implements BuilderInterface
@@ -18,7 +18,7 @@ final class Builder implements BuilderInterface
      * {@inheritdoc}
      */
     public function buildFrom(
-        ServerRequestInterface $request,
+        ServerRequest $request,
         HttpResource $definition
     ): SpecificationInterface {
         $specification = null;

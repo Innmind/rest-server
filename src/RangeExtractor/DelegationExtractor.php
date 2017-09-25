@@ -8,7 +8,7 @@ use Innmind\Rest\Server\{
     Exception\InvalidArgumentException,
     Request\Range
 };
-use Innmind\Http\Message\ServerRequestInterface;
+use Innmind\Http\Message\ServerRequest;
 use Innmind\Immutable\SetInterface;
 
 final class DelegationExtractor implements ExtractorInterface
@@ -27,7 +27,7 @@ final class DelegationExtractor implements ExtractorInterface
     /**
      * {@inheritdoc}
      */
-    public function extract(ServerRequestInterface $request): Range
+    public function extract(ServerRequest $request): Range
     {
         $range = $this
             ->extractors

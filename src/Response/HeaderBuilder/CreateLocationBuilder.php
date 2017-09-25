@@ -9,10 +9,10 @@ use Innmind\Rest\Server\{
     IdentityInterface
 };
 use Innmind\Http\{
-    Message\ServerRequestInterface,
+    Message\ServerRequest,
     Header\Location,
     Header\LocationValue,
-    Header\HeaderInterface
+    Header
 };
 use Innmind\Url\Url;
 use Innmind\Immutable\{
@@ -27,11 +27,11 @@ final class CreateLocationBuilder implements CreateBuilderInterface
      */
     public function build(
         IdentityInterface $identity,
-        ServerRequestInterface $request,
+        ServerRequest $request,
         HttpResource $definition,
         HttpResourceInterface $resource
     ): MapInterface {
-        $map = new Map('string', HeaderInterface::class);
+        $map = new Map('string', Header::class);
 
         return $map->put(
             'Location',

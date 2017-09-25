@@ -15,19 +15,19 @@ use Innmind\Rest\Server\{
     Definition\Property
 };
 use Innmind\Http\{
-    Message\ServerRequest,
-    Message\MethodInterface,
-    Message\EnvironmentInterface,
-    Message\CookiesInterface,
-    Message\FormInterface,
-    Message\QueryInterface,
-    Message\FilesInterface,
-    HeadersInterface,
-    Header\HeaderInterface,
-    ProtocolVersionInterface
+    Message\ServerRequest\ServerRequest,
+    Message\Method,
+    Message\Environment,
+    Message\Cookies,
+    Message\Form,
+    Message\Query,
+    Message\Files,
+    Headers,
+    Header,
+    ProtocolVersion
 };
 use Innmind\Url\UrlInterface;
-use Innmind\Filesystem\StreamInterface;
+use Innmind\Stream\Readable;
 use Innmind\Immutable\{
     Map,
     Set
@@ -58,7 +58,7 @@ class AcceptVerifierTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Http\Exception\Http\NotAcceptableException
+     * @expectedException Innmind\Http\Exception\Http\NotAcceptable
      */
     public function testThrowWhenHeaderNotAccepted()
     {
@@ -77,11 +77,11 @@ class AcceptVerifierTest extends TestCase
                     )
             )
         );
-        $headers = $this->createMock(HeadersInterface::class);
+        $headers = $this->createMock(Headers::class);
         $headers
             ->method('get')
             ->willReturn(
-                $header = $this->createMock(HeaderInterface::class)
+                $header = $this->createMock(Header::class)
             );
         $header
             ->method('values')
@@ -90,15 +90,15 @@ class AcceptVerifierTest extends TestCase
             );
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
-            $this->createMock(MethodInterface::class),
-            $this->createMock(ProtocolVersionInterface::class),
+            $this->createMock(Method::class),
+            $this->createMock(ProtocolVersion::class),
             $headers,
-            $this->createMock(StreamInterface::class),
-            $this->createMock(EnvironmentInterface::class),
-            $this->createMock(CookiesInterface::class),
-            $this->createMock(QueryInterface::class),
-            $this->createMock(FormInterface::class),
-            $this->createMock(FilesInterface::class)
+            $this->createMock(Readable::class),
+            $this->createMock(Environment::class),
+            $this->createMock(Cookies::class),
+            $this->createMock(Query::class),
+            $this->createMock(Form::class),
+            $this->createMock(Files::class)
         );
 
         $verifier->verify(
@@ -133,11 +133,11 @@ class AcceptVerifierTest extends TestCase
                     )
             )
         );
-        $headers = $this->createMock(HeadersInterface::class);
+        $headers = $this->createMock(Headers::class);
         $headers
             ->method('get')
             ->willReturn(
-                $header = $this->createMock(HeaderInterface::class)
+                $header = $this->createMock(Header::class)
             );
         $header
             ->method('values')
@@ -146,15 +146,15 @@ class AcceptVerifierTest extends TestCase
             );
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
-            $this->createMock(MethodInterface::class),
-            $this->createMock(ProtocolVersionInterface::class),
+            $this->createMock(Method::class),
+            $this->createMock(ProtocolVersion::class),
             $headers,
-            $this->createMock(StreamInterface::class),
-            $this->createMock(EnvironmentInterface::class),
-            $this->createMock(CookiesInterface::class),
-            $this->createMock(QueryInterface::class),
-            $this->createMock(FormInterface::class),
-            $this->createMock(FilesInterface::class)
+            $this->createMock(Readable::class),
+            $this->createMock(Environment::class),
+            $this->createMock(Cookies::class),
+            $this->createMock(Query::class),
+            $this->createMock(Form::class),
+            $this->createMock(Files::class)
         );
 
         $this->assertSame(

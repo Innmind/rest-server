@@ -9,7 +9,7 @@ use Innmind\Rest\Server\{
     Exception\RangeNotFoundException,
     Request\Range
 };
-use Innmind\Http\Message\ServerRequestInterface;
+use Innmind\Http\Message\ServerRequest;
 use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
@@ -47,7 +47,7 @@ class DelegationExtractorTest extends TestCase
             ->willReturn($expected = new Range(0, 42));
 
         $range = $extractor->extract(
-            $this->createMock(ServerRequestInterface::class)
+            $this->createMock(ServerRequest::class)
         );
 
         $this->assertSame($expected, $range);
@@ -59,7 +59,7 @@ class DelegationExtractorTest extends TestCase
     public function testThrowWhenRangeNotFound()
     {
         (new DelegationExtractor(new Set(ExtractorInterface::class)))->extract(
-            $this->createMock(ServerRequestInterface::class)
+            $this->createMock(ServerRequest::class)
         );
     }
 }
