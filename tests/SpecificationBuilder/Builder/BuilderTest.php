@@ -102,7 +102,7 @@ class BuilderTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\FilterNotApplicableException
+     * @expectedException Innmind\Rest\Server\Exception\FilterNotApplicable
      * @expectedExceptionMessage foo
      */
     public function testThrowWhenNoPropertyForTheFilter()
@@ -138,7 +138,7 @@ class BuilderTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\NoFilterFoundException
+     * @expectedException Innmind\Rest\Server\Exception\NoFilterFound
      */
     public function testThrowWhenNoFilterFound()
     {

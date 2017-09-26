@@ -6,7 +6,7 @@ namespace Tests\Innmind\Rest\Server\RangeExtractor;
 use Innmind\Rest\Server\{
     RangeExtractor\DelegationExtractor,
     RangeExtractor\Extractor,
-    Exception\RangeNotFoundException,
+    Exception\RangeNotFound,
     Request\Range
 };
 use Innmind\Http\Message\ServerRequest;
@@ -41,7 +41,7 @@ class DelegationExtractorTest extends TestCase
         );
         $extractor1
             ->method('extract')
-            ->will($this->throwException(new RangeNotFoundException));
+            ->will($this->throwException(new RangeNotFound));
         $extractor2
             ->method('extract')
             ->willReturn($expected = new Range(0, 42));
@@ -54,7 +54,7 @@ class DelegationExtractorTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\RangeNotFoundException
+     * @expectedException Innmind\Rest\Server\Exception\RangeNotFound
      */
     public function testThrowWhenRangeNotFound()
     {

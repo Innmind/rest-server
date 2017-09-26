@@ -13,7 +13,7 @@ interface Extractor
      *
      * @param ServerRequest $request
      *
-     * @throws RangeNotFoundException
+     * @throws RangeNotFound
      *
      * @return Range
      */

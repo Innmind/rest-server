@@ -38,7 +38,7 @@ class DefaultTranslatorTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\SpecificationNotUsableAsQueryException
+     * @expectedException Innmind\Rest\Server\Exception\SpecificationNotUsableAsQuery
      */
     public function testThrowWhenOrConditionFound()
     {
@@ -51,7 +51,7 @@ class DefaultTranslatorTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\SpecificationNotUsableAsQueryException
+     * @expectedException Innmind\Rest\Server\Exception\SpecificationNotUsableAsQuery
      */
     public function testThrowWhenNotConditionFound()
     {

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\SpecificationBuilder;
 
 use Innmind\Rest\Server\{
-    Exception\NoFilterFoundException,
+    Exception\NoFilterFound,
     Definition\HttpResource
 };
 use Innmind\Http\Message\ServerRequest;
@@ -18,8 +18,8 @@ interface Builder
      * @param ServerRequest $request
      * @param HttpResource $definition
      *
-     * @throws NoFilterFoundException
-     * @throws FilterNotApplicableException
+     * @throws NoFilterFound
+     * @throws FilterNotApplicable
      *
      * @return SpecificationInterface
      */

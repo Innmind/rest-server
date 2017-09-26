@@ -5,8 +5,8 @@ namespace Innmind\Rest\Server\SpecificationBuilder\Builder;
 
 use Innmind\Rest\Server\{
     SpecificationBuilder\Builder as BuilderInterface,
-    Exception\NoFilterFoundException,
-    Exception\FilterNotApplicableException,
+    Exception\NoFilterFound,
+    Exception\FilterNotApplicable,
     Definition\HttpResource,
     Specification\Filter
 };
@@ -34,7 +34,7 @@ final class Builder implements BuilderInterface
             }
 
             if (!$definition->properties()->contains($parameter->name())) {
-                throw new FilterNotApplicableException($parameter->name());
+                throw new FilterNotApplicable($parameter->name());
             }
 
             if ($specification === null) {
@@ -51,7 +51,7 @@ final class Builder implements BuilderInterface
         }
 
         if ($specification === null) {
-            throw new NoFilterFoundException;
+            throw new NoFilterFound;
         }
 
         return $specification;

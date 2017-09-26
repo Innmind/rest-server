@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\Definition;
 
 use Innmind\Rest\Server\Exception\{
-    DefinitionNotFoundException,
+    DefinitionNotFound,
     InvalidArgumentException
 };
 use Innmind\Immutable\{
@@ -54,7 +54,7 @@ final class Locator
             );
 
         if (!$resource instanceof HttpResource) {
-            throw new DefinitionNotFoundException;
+            throw new DefinitionNotFound;
         }
 
         $this->cache = $this->cache->put($path, $resource);

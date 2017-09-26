@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\RangeExtractor;
 
 use Innmind\Rest\Server\{
-    Exception\RangeNotFoundException,
+    Exception\RangeNotFound,
     Exception\InvalidArgumentException,
     Request\Range
 };
@@ -40,7 +40,7 @@ final class DelegationExtractor implements Extractor
 
                     try {
                         return $extractor->extract($request);
-                    } catch (RangeNotFoundException $e) {
+                    } catch (RangeNotFound $e) {
                         //pass
                     }
                 }
@@ -50,6 +50,6 @@ final class DelegationExtractor implements Extractor
             return $range;
         }
 
-        throw new RangeNotFoundException;
+        throw new RangeNotFound;
     }
 }

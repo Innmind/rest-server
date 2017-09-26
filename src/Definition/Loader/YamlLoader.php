@@ -13,9 +13,7 @@ use Innmind\Rest\Server\{
     Definition\Access,
     Definition\Loader,
     Configuration,
-    Exception\InvalidArgumentException,
-    Exception\ResourceDefinitionReferenceNotFoundException,
-    Exception\CircularReferenceException
+    Exception\InvalidArgumentException
 };
 use Innmind\Immutable\{
     SetInterface,

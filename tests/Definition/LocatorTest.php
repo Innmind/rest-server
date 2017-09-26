@@ -40,7 +40,7 @@ class LocatorTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\DefinitionNotFoundException
+     * @expectedException Innmind\Rest\Server\Exception\DefinitionNotFound
      */
     public function testThrowWhenResourceNotFound()
     {

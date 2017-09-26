@@ -73,7 +73,7 @@ class HeaderExtractorTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\RangeNotFoundException
+     * @expectedException Innmind\Rest\Server\Exception\RangeNotFound
      */
     public function testThrowWhenRangeHeaderNotFound()
     {

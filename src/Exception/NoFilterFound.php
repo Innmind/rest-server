@@ -3,6 +3,6 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Exception;
 
-final class FilterNotApplicableException extends RuntimeException
+final class NoFilterFound extends RuntimeException
 {
 }

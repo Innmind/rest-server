@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\Translator\Specification;
 
 use Innmind\Rest\Server\{
     Translator\SpecificationTranslator,
-    Exception\SpecificationNotUsableAsQueryException
+    Exception\SpecificationNotUsableAsQuery
 };
 use Innmind\Specification\{
     SpecificationInterface,
@@ -37,7 +37,7 @@ final class DefaultTranslator implements SpecificationTranslator
                 break;
             case $specification instanceof CompositeInterface:
                 if ((string) $specification->operator() === Operator::OR) {
-                    throw new SpecificationNotUsableAsQueryException;
+                    throw new SpecificationNotUsableAsQuery;
                 }
 
                 $data = array_merge(
@@ -47,7 +47,7 @@ final class DefaultTranslator implements SpecificationTranslator
                 );
                 break;
             default:
-                throw new SpecificationNotUsableAsQueryException;
+                throw new SpecificationNotUsableAsQuery;
         }
 
         return $data;

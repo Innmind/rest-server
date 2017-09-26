@@ -3,6 +3,6 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Exception;
 
-final class CircularReferenceException extends InvalidArgumentException
+final class DefinitionNotFound extends LogicException
 {
 }
