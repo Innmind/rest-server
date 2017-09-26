@@ -5,13 +5,13 @@ namespace Tests\Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Response\HeaderBuilder\ListRangeBuilder,
-    Response\HeaderBuilder\ListBuilderInterface,
-    IdentityInterface,
+    Response\HeaderBuilder\ListBuilder,
+    Identity as IdentityInterface,
     Definition\HttpResource,
     Definition\Identity,
     Definition\Property,
     Definition\Gateway,
-    Identity as Id,
+    Identity\Identity as Id,
     Request\Range
 };
 use Innmind\Http\{
@@ -30,7 +30,7 @@ class ListRangeBuilderTest extends TestCase
     public function testInterface()
     {
         $this->assertInstanceOf(
-            ListBuilderInterface::class,
+            ListBuilder::class,
             new ListRangeBuilder
         );
     }

@@ -11,7 +11,7 @@ use Innmind\Rest\Server\{
     Definition\Identity,
     Definition\Gateway,
     Definition\Access,
-    Definition\LoaderInterface,
+    Definition\Loader,
     Configuration,
     Exception\InvalidArgumentException,
     Exception\ResourceDefinitionReferenceNotFoundException,
@@ -29,7 +29,7 @@ use Symfony\Component\{
     Yaml\Yaml
 };
 
-final class YamlLoader implements LoaderInterface
+final class YamlLoader implements Loader
 {
     private $types;
 

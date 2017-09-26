@@ -6,7 +6,7 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 use Innmind\Rest\Server\{
     Definition\HttpResource,
     Request\Range,
-    IdentityInterface
+    Identity
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -24,7 +24,7 @@ use Innmind\Immutable\{
     Set
 };
 
-final class ListLinksBuilder implements ListBuilderInterface
+final class ListLinksBuilder implements ListBuilder
 {
     /**
      * {@inheritdoc}
@@ -49,7 +49,7 @@ final class ListLinksBuilder implements ListBuilderInterface
             new Link(
                 ...$identities->reduce(
                     new Set(Value::class),
-                    function(Set $carry, IdentityInterface $identity) use ($path): Set {
+                    function(Set $carry, Identity $identity) use ($path): Set {
                         return $carry->add(new LinkValue(
                             Url::fromString(
                                 rtrim((string) $path, '/').'/'.$identity

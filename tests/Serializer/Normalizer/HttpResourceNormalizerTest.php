@@ -5,9 +5,9 @@ namespace Tests\Innmind\Rest\Server\Serializer\Normalizer;
 
 use Innmind\Rest\Server\{
     Serializer\Normalizer\HttpResourceNormalizer,
-    HttpResource,
-    HttpResourceInterface,
-    Property,
+    HttpResource\HttpResource,
+    HttpResource as HttpResourceInterface,
+    HttpResource\Property,
     Definition\HttpResource as ResourceDefinition,
     Definition\Identity,
     Definition\Property as PropertyDefinition,

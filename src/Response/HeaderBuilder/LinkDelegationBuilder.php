@@ -17,13 +17,13 @@ use Innmind\Immutable\{
     Map
 };
 
-final class LinkDelegationBuilder implements LinkBuilderInterface
+final class LinkDelegationBuilder implements LinkBuilder
 {
     private $builders;
 
     public function __construct(SetInterface $builders)
     {
-        if ((string) $builders->type() !== LinkBuilderInterface::class) {
+        if ((string) $builders->type() !== LinkBuilder::class) {
             throw new InvalidArgumentException;
         }
 
@@ -51,7 +51,7 @@ final class LinkDelegationBuilder implements LinkBuilderInterface
                 new Map('string', Header::class),
                 function(
                     MapInterface $carry,
-                    LinkBuilderInterface $builder
+                    LinkBuilder $builder
                 ) use (
                     $request,
                     $from,

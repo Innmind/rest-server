@@ -18,7 +18,7 @@ use Negotiation\{
     Accept
 };
 
-final class ContentTypeVerifier implements VerifierInterface
+final class ContentTypeVerifier implements Verifier
 {
     private $formats;
     private $negotiator;

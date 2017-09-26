@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\Definition\{
     Type\FloatType,
-    TypeInterface,
+    Type,
     types
 };
 use Innmind\Immutable\Map;
@@ -15,7 +15,7 @@ class FloatTypeTest extends TestCase
 {
     public function testInterface()
     {
-        $this->assertInstanceOf(TypeInterface::class, new FloatType);
+        $this->assertInstanceOf(Type::class, new FloatType);
         $this->assertSame(
             ['float'],
             FloatType::identifiers()->toPrimitive()

@@ -51,9 +51,9 @@ final class Types
     {
         $refl = new \ReflectionClass($type);
 
-        if (!$refl->implementsInterface(TypeInterface::class)) {
+        if (!$refl->implementsInterface(Type::class)) {
             throw new InvalidArgumentException(sprintf(
-                'The type "%s" must implement TypeInterface',
+                'The type "%s" must implement Type',
                 $type
             ));
         }
@@ -85,9 +85,9 @@ final class Types
      * @param string $type
      * @param MapInterface<scalar, variable> $config
      *
-     * @return TypeInterface
+     * @return Type
      */
-    public function build(string $type, MapInterface $config): TypeInterface
+    public function build(string $type, MapInterface $config): Type
     {
         if (
             (string) $config->keyType() !== 'scalar' ||

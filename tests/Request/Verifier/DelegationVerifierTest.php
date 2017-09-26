@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server\Request\Verifier;
 
 use Innmind\Rest\Server\{
     Request\Verifier\DelegationVerifier,
-    Request\Verifier\VerifierInterface,
+    Request\Verifier\Verifier,
     Definition\HttpResource,
     Definition\Identity,
     Definition\Gateway,
@@ -20,10 +20,10 @@ class DelegationVerifierTest extends TestCase
     public function testInterface()
     {
         $verifier = new DelegationVerifier(
-            new Map('int', VerifierInterface::class)
+            new Map('int', Verifier::class)
         );
 
-        $this->assertInstanceOf(VerifierInterface::class, $verifier);
+        $this->assertInstanceOf(Verifier::class, $verifier);
     }
 
     /**
@@ -37,14 +37,14 @@ class DelegationVerifierTest extends TestCase
     public function testVerify()
     {
         $verifier = new DelegationVerifier(
-            (new Map('int', VerifierInterface::class))
+            (new Map('int', Verifier::class))
                 ->put(
                     100,
-                    $verifier1 = $this->createMock(VerifierInterface::class)
+                    $verifier1 = $this->createMock(Verifier::class)
                 )
                 ->put(
                     20,
-                    $verifier2 = $this->createMock(VerifierInterface::class)
+                    $verifier2 = $this->createMock(Verifier::class)
                 )
         );
         $count = 0;
@@ -84,10 +84,10 @@ class DelegationVerifierTest extends TestCase
     public function testThrowWhenSubVerifierThrows()
     {
         $verifier = new DelegationVerifier(
-            (new Map('int', VerifierInterface::class))
+            (new Map('int', Verifier::class))
                 ->put(
                     1,
-                    $verifier1 = $this->createMock(VerifierInterface::class)
+                    $verifier1 = $this->createMock(Verifier::class)
                 )
         );
         $verifier1

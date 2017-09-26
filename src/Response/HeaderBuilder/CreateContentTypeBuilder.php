@@ -6,13 +6,13 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 use Innmind\Rest\Server\{
     Definition\HttpResource,
     Formats,
-    HttpResourceInterface,
-    IdentityInterface
+    HttpResource as HttpResourceInterface,
+    Identity
 };
 use Innmind\Http\Message\ServerRequest;
 use Innmind\Immutable\MapInterface;
 
-final class CreateContentTypeBuilder implements CreateBuilderInterface
+final class CreateContentTypeBuilder implements CreateBuilder
 {
     use ContentTypeBuilder;
 
@@ -27,7 +27,7 @@ final class CreateContentTypeBuilder implements CreateBuilderInterface
      * {@inheritdoc}
      */
     public function build(
-        IdentityInterface $identity,
+        Identity $identity,
         ServerRequest $request,
         HttpResource $definition,
         HttpResourceInterface $resource

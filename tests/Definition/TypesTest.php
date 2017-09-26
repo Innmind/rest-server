@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server;
 
 use Innmind\Rest\Server\Definition\{
     Types,
-    TypeInterface,
+    Type,
     Type\SetType,
     Type\MapType,
     Type\BoolType,
@@ -58,7 +58,7 @@ class TypesTest extends TestCase
 
     /**
      * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
-     * @expectedExceptionMessage The type "stdClass" must implement TypeInterface
+     * @expectedExceptionMessage The type "stdClass" must implement Type
      */
     public function testThrowWhenRegisteringingInvalidType()
     {

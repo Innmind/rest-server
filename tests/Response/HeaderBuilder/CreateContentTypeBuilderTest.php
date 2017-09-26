@@ -5,12 +5,12 @@ namespace Tests\Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Response\HeaderBuilder\CreateContentTypeBuilder,
-    Response\HeaderBuilder\CreateBuilderInterface,
+    Response\HeaderBuilder\CreateBuilder,
     Formats,
     Format\Format,
     Format\MediaType,
-    IdentityInterface,
-    HttpResourceInterface,
+    Identity as IdentityInterface,
+    HttpResource as HttpResourceInterface,
     Definition\HttpResource,
     Definition\Identity,
     Definition\Property,
@@ -74,7 +74,7 @@ class CreateContentTypeBuilderTest extends TestCase
 
     public function testInterface()
     {
-        $this->assertInstanceOf(CreateBuilderInterface::class, $this->builder);
+        $this->assertInstanceOf(CreateBuilder::class, $this->builder);
     }
 
     public function testBuild()

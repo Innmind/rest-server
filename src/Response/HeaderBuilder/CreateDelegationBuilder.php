@@ -6,8 +6,8 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 use Innmind\Rest\Server\{
     Definition\HttpResource,
     Exception\InvalidArgumentException,
-    IdentityInterface,
-    HttpResourceInterface
+    Identity,
+    HttpResource as HttpResourceInterface
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -19,13 +19,13 @@ use Innmind\Immutable\{
     Map
 };
 
-final class CreateDelegationBuilder implements CreateBuilderInterface
+final class CreateDelegationBuilder implements CreateBuilder
 {
     private $builders;
 
     public function __construct(SetInterface $builders)
     {
-        if ((string) $builders->type() !== CreateBuilderInterface::class) {
+        if ((string) $builders->type() !== CreateBuilder::class) {
             throw new InvalidArgumentException;
         }
 
@@ -36,7 +36,7 @@ final class CreateDelegationBuilder implements CreateBuilderInterface
      * {@inheritdoc}
      */
     public function build(
-        IdentityInterface $identity,
+        Identity $identity,
         ServerRequest $request,
         HttpResource $definition,
         HttpResourceInterface $resource
@@ -47,7 +47,7 @@ final class CreateDelegationBuilder implements CreateBuilderInterface
                 new Map('string', Header::class),
                 function(
                     MapInterface $carry,
-                    CreateBuilderInterface $builder
+                    CreateBuilder $builder
                 ) use (
                     $identity,
                     $request,

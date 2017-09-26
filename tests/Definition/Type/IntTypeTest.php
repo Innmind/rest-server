@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\Definition\{
     Type\IntType,
-    TypeInterface,
+    Type,
     Types
 };
 use Innmind\Immutable\Map;
@@ -15,7 +15,7 @@ class IntTypeTest extends TestCase
 {
     public function testInterface()
     {
-        $this->assertInstanceOf(TypeInterface::class, new IntType);
+        $this->assertInstanceOf(Type::class, new IntType);
         $this->assertSame(
             ['int', 'integer'],
             IntType::identifiers()->toPrimitive()

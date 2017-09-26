@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\Definition\{
     Type\MapType,
-    TypeInterface,
+    Type,
     Types
 };
 use Innmind\Immutable\{
@@ -18,7 +18,7 @@ class MapTypeTest extends TestCase
 {
     public function testInterface()
     {
-        $this->assertInstanceOf(TypeInterface::class, new MapType);
+        $this->assertInstanceOf(Type::class, new MapType);
         $this->assertSame(
             ['map'],
             MapType::identifiers()->toPrimitive()

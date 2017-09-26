@@ -12,7 +12,7 @@ final class Reference
 
     public function __construct(
         ResourceDefinition $definition,
-        IdentityInterface $identity
+        Identity $identity
     ) {
         $this->definition = $definition;
         $this->identity = $identity;
@@ -23,7 +23,7 @@ final class Reference
         return $this->definition;
     }
 
-    public function identity(): IdentityInterface
+    public function identity(): Identity
     {
         return $this->identity;
     }

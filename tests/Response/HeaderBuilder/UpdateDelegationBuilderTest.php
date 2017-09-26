@@ -5,13 +5,13 @@ namespace Tests\Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Response\HeaderBuilder\UpdateDelegationBuilder,
-    Response\HeaderBuilder\UpdateBuilderInterface,
-    IdentityInterface,
+    Response\HeaderBuilder\UpdateBuilder,
+    Identity as IdentityInterface,
     Definition\Httpresource,
     Definition\Identity,
     Definition\Property,
     Definition\Gateway,
-    HttpResourceInterface
+    HttpResource as HttpResourceInterface
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -29,10 +29,10 @@ class UpdateDelegationBuilderTest extends TestCase
     public function testInterface()
     {
         $builder = new UpdateDelegationBuilder(
-            new Set(UpdateBuilderInterface::class)
+            new Set(UpdateBuilder::class)
         );
 
-        $this->assertInstanceOf(UpdateBuilderInterface::class, $builder);
+        $this->assertInstanceOf(UpdateBuilder::class, $builder);
         $headers = $builder->build(
             $this->createMock(ServerRequest::class),
             new Httpresource(
@@ -64,9 +64,9 @@ class UpdateDelegationBuilderTest extends TestCase
     public function testBuild()
     {
         $builder = new UpdateDelegationBuilder(
-            (new Set(UpdateBuilderInterface::class))
-                ->add($mock1 = $this->createMock(UpdateBuilderInterface::class))
-                ->add($mock2 = $this->createMock(UpdateBuilderInterface::class))
+            (new Set(UpdateBuilder::class))
+                ->add($mock1 = $this->createMock(UpdateBuilder::class))
+                ->add($mock2 = $this->createMock(UpdateBuilder::class))
         );
         $mock1
             ->method('build')

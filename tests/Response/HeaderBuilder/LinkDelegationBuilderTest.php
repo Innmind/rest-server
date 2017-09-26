@@ -5,8 +5,8 @@ namespace Tests\Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Response\HeaderBuilder\LinkDelegationBuilder,
-    Response\HeaderBuilder\LinkBuilderInterface,
-    Identity,
+    Response\HeaderBuilder\LinkBuilder,
+    Identity\Identity,
     Reference,
     Definition\Httpresource,
     Definition\Identity as IdentityDefinition,
@@ -29,10 +29,10 @@ class LinkDelegationBuilderTest extends TestCase
     public function testInterface()
     {
         $builder = new LinkDelegationBuilder(
-            new Set(LinkBuilderInterface::class)
+            new Set(LinkBuilder::class)
         );
 
-        $this->assertInstanceOf(LinkBuilderInterface::class, $builder);
+        $this->assertInstanceOf(LinkBuilder::class, $builder);
         $headers = $builder->build(
             $this->createMock(ServerRequest::class),
             new Reference(
@@ -69,7 +69,7 @@ class LinkDelegationBuilderTest extends TestCase
     public function testThrowWhenInvalidTos()
     {
         $builder = new LinkDelegationBuilder(
-            new Set(LinkBuilderInterface::class)
+            new Set(LinkBuilder::class)
         );
 
         $builder->build(
@@ -94,9 +94,9 @@ class LinkDelegationBuilderTest extends TestCase
     public function testBuild()
     {
         $builder = new LinkDelegationBuilder(
-            (new Set(LinkBuilderInterface::class))
-                ->add($mock1 = $this->createMock(LinkBuilderInterface::class))
-                ->add($mock2 = $this->createMock(LinkBuilderInterface::class))
+            (new Set(LinkBuilder::class))
+                ->add($mock1 = $this->createMock(LinkBuilder::class))
+                ->add($mock2 = $this->createMock(LinkBuilder::class))
         );
         $mock1
             ->method('build')

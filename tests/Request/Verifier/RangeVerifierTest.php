@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server\Request\Verifier;
 
 use Innmind\Rest\Server\{
     Request\Verifier\RangeVerifier,
-    Request\Verifier\VerifierInterface,
+    Request\Verifier\Verifier,
     Formats,
     Format\Format,
     Format\MediaType,
@@ -37,7 +37,7 @@ class RangeVerifierTest extends TestCase
 {
     public function testInterface()
     {
-        $this->assertInstanceOf(VerifierInterface::class, new RangeVerifier);
+        $this->assertInstanceOf(Verifier::class, new RangeVerifier);
     }
 
     /**

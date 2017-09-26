@@ -5,13 +5,13 @@ namespace Tests\Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Response\HeaderBuilder\CreateDelegationBuilder,
-    Response\HeaderBuilder\CreateBuilderInterface,
-    IdentityInterface,
+    Response\HeaderBuilder\CreateBuilder,
+    Identity as IdentityInterface,
     Definition\Httpresource,
     Definition\Identity,
     Definition\Property,
     Definition\Gateway,
-    HttpResourceInterface
+    HttpResource as HttpResourceInterface
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -29,10 +29,10 @@ class CreateDelegationBuilderTest extends TestCase
     public function testInterface()
     {
         $builder = new CreateDelegationBuilder(
-            new Set(CreateBuilderInterface::class)
+            new Set(CreateBuilder::class)
         );
 
-        $this->assertInstanceOf(CreateBuilderInterface::class, $builder);
+        $this->assertInstanceOf(CreateBuilder::class, $builder);
         $headers = $builder->build(
             $this->createMock(IdentityInterface::class),
             $this->createMock(ServerRequest::class),
@@ -64,9 +64,9 @@ class CreateDelegationBuilderTest extends TestCase
     public function testBuild()
     {
         $builder = new CreateDelegationBuilder(
-            (new Set(CreateBuilderInterface::class))
-                ->add($mock1 = $this->createMock(CreateBuilderInterface::class))
-                ->add($mock2 = $this->createMock(CreateBuilderInterface::class))
+            (new Set(CreateBuilder::class))
+                ->add($mock1 = $this->createMock(CreateBuilder::class))
+                ->add($mock2 = $this->createMock(CreateBuilder::class))
         );
         $mock1
             ->method('build')

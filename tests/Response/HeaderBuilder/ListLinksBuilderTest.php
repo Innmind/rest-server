@@ -5,9 +5,9 @@ namespace Tests\Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Response\HeaderBuilder\ListLinksBuilder,
-    Response\HeaderBuilder\ListBuilderInterface,
-    IdentityInterface,
-    Identity as Id,
+    Response\HeaderBuilder\ListBuilder,
+    Identity as IdentityInterface,
+    Identity\Identity as Id,
     Definition\HttpResource,
     Definition\Identity,
     Definition\Property,
@@ -39,7 +39,7 @@ class ListLinksBuilderTest extends TestCase
     public function testInterface()
     {
         $this->assertInstanceOf(
-            ListBuilderInterface::class,
+            ListBuilder::class,
             new ListLinksBuilder
         );
     }

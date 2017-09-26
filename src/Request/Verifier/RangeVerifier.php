@@ -10,7 +10,7 @@ use Innmind\Http\{
     Exception\Http\PreconditionFailed
 };
 
-final class RangeVerifier implements VerifierInterface
+final class RangeVerifier implements Verifier
 {
     /**
      * {@inheritdoc}

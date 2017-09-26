@@ -9,7 +9,7 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Http\Message\ServerRequest;
 
-final class HeaderExtractor implements ExtractorInterface
+final class HeaderExtractor implements Extractor
 {
     /**
      * {@inheritdoc}

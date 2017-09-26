@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\Definition\{
     Type\DateType,
-    TypeInterface,
+    Type,
     Types
 };
 use Innmind\Immutable\Map;
@@ -15,7 +15,7 @@ class DateTypeTest extends TestCase
 {
     public function testInterface()
     {
-        $this->assertInstanceOf(TypeInterface::class, new DateType);
+        $this->assertInstanceOf(Type::class, new DateType);
         $this->assertSame(
             ['date'],
             DateType::identifiers()->toPrimitive()

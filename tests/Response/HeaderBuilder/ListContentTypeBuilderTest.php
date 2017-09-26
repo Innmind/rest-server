@@ -5,11 +5,11 @@ namespace Tests\Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Response\HeaderBuilder\ListContentTypeBuilder,
-    Response\HeaderBuilder\ListBuilderInterface,
+    Response\HeaderBuilder\ListBuilder,
     Formats,
     Format\Format,
     Format\MediaType,
-    IdentityInterface,
+    Identity as IdentityInterface,
     Definition\HttpResource,
     Definition\Identity,
     Definition\Property,
@@ -73,7 +73,7 @@ class ListContentTypeBuilderTest extends TestCase
 
     public function testInterface()
     {
-        $this->assertInstanceOf(ListBuilderInterface::class, $this->builder);
+        $this->assertInstanceOf(ListBuilder::class, $this->builder);
     }
 
     public function testBuild()

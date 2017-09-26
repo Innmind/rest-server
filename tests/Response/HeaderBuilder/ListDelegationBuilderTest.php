@@ -5,8 +5,8 @@ namespace Tests\Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Response\HeaderBuilder\ListDelegationBuilder,
-    Response\HeaderBuilder\ListBuilderInterface,
-    IdentityInterface,
+    Response\HeaderBuilder\ListBuilder,
+    Identity as IdentityInterface,
     Definition\Httpresource,
     Definition\Identity,
     Definition\Property,
@@ -28,10 +28,10 @@ class ListDelegationBuilderTest extends TestCase
     public function testInterface()
     {
         $builder = new ListDelegationBuilder(
-            new Set(ListBuilderInterface::class)
+            new Set(ListBuilder::class)
         );
 
-        $this->assertInstanceOf(ListBuilderInterface::class, $builder);
+        $this->assertInstanceOf(ListBuilder::class, $builder);
         $headers = $builder->build(
             new Set(IdentityInterface::class),
             $this->createMock(ServerRequest::class),
@@ -65,7 +65,7 @@ class ListDelegationBuilderTest extends TestCase
     public function testThrowWhenInvalidIdentities()
     {
         $builder = new ListDelegationBuilder(
-            new Set(ListBuilderInterface::class)
+            new Set(ListBuilder::class)
         );
 
         $builder->build(
@@ -87,9 +87,9 @@ class ListDelegationBuilderTest extends TestCase
     public function testBuild()
     {
         $builder = new ListDelegationBuilder(
-            (new Set(ListBuilderInterface::class))
-                ->add($mock1 = $this->createMock(ListBuilderInterface::class))
-                ->add($mock2 = $this->createMock(ListBuilderInterface::class))
+            (new Set(ListBuilder::class))
+                ->add($mock1 = $this->createMock(ListBuilder::class))
+                ->add($mock2 = $this->createMock(ListBuilder::class))
         );
         $mock1
             ->method('build')

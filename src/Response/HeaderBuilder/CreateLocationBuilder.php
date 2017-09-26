@@ -5,8 +5,8 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Definition\HttpResource,
-    HttpResourceInterface,
-    IdentityInterface
+    HttpResource as HttpResourceInterface,
+    Identity
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -20,13 +20,13 @@ use Innmind\Immutable\{
     Map
 };
 
-final class CreateLocationBuilder implements CreateBuilderInterface
+final class CreateLocationBuilder implements CreateBuilder
 {
     /**
      * {@inheritdoc}
      */
     public function build(
-        IdentityInterface $identity,
+        Identity $identity,
         ServerRequest $request,
         HttpResource $definition,
         HttpResourceInterface $resource

@@ -10,7 +10,7 @@ use Innmind\Rest\Server\{
 use Innmind\Http\Message\ServerRequest;
 use Innmind\Immutable\MapInterface;
 
-final class DelegationVerifier implements VerifierInterface
+final class DelegationVerifier implements Verifier
 {
     private $verifiers;
 
@@ -18,7 +18,7 @@ final class DelegationVerifier implements VerifierInterface
     {
         if (
             (string) $verifiers->keyType() !== 'int' ||
-            (string) $verifiers->valueType() !== VerifierInterface::class
+            (string) $verifiers->valueType() !== Verifier::class
         ) {
             throw new InvalidArgumentException;
         }

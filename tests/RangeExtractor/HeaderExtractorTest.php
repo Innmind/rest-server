@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server\RangeExtractor;
 
 use Innmind\Rest\Server\{
     RangeExtractor\HeaderExtractor,
-    RangeExtractor\ExtractorInterface,
+    RangeExtractor\Extractor,
     Request\Range
 };
 use Innmind\Http\{
@@ -38,7 +38,7 @@ class HeaderExtractorTest extends TestCase
     {
         $extractor = new HeaderExtractor;
 
-        $this->assertInstanceOf(ExtractorInterface::class, $extractor);
+        $this->assertInstanceOf(Extractor::class, $extractor);
     }
 
     public function testExtract()

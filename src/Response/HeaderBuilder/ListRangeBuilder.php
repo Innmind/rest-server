@@ -22,7 +22,7 @@ use Innmind\Immutable\{
     Map
 };
 
-final class ListRangeBuilder implements ListBuilderInterface
+final class ListRangeBuilder implements ListBuilder
 {
     /**
      * {@inheritdoc}

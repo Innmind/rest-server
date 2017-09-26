@@ -5,8 +5,8 @@ namespace Tests\Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Response\HeaderBuilder\UnlinkDelegationBuilder,
-    Response\HeaderBuilder\UnlinkBuilderInterface,
-    Identity,
+    Response\HeaderBuilder\UnlinkBuilder,
+    Identity\Identity,
     Reference,
     Definition\Httpresource,
     Definition\Identity as IdentityDefinition,
@@ -30,10 +30,10 @@ class UnlinkDelegationBuilderTest extends TestCase
     public function testInterface()
     {
         $builder = new UnlinkDelegationBuilder(
-            new Set(UnlinkBuilderInterface::class)
+            new Set(UnlinkBuilder::class)
         );
 
-        $this->assertInstanceOf(UnlinkBuilderInterface::class, $builder);
+        $this->assertInstanceOf(UnlinkBuilder::class, $builder);
         $headers = $builder->build(
             $this->createMock(ServerRequest::class),
             new Reference(
@@ -70,7 +70,7 @@ class UnlinkDelegationBuilderTest extends TestCase
     public function testThrowWhenInvalidTos()
     {
         $builder = new UnlinkDelegationBuilder(
-            new Set(UnlinkBuilderInterface::class)
+            new Set(UnlinkBuilder::class)
         );
 
         $builder->build(
@@ -95,9 +95,9 @@ class UnlinkDelegationBuilderTest extends TestCase
     public function testBuild()
     {
         $builder = new UnlinkDelegationBuilder(
-            (new Set(UnlinkBuilderInterface::class))
-                ->add($mock1 = $this->createMock(UnlinkBuilderInterface::class))
-                ->add($mock2 = $this->createMock(UnlinkBuilderInterface::class))
+            (new Set(UnlinkBuilder::class))
+                ->add($mock1 = $this->createMock(UnlinkBuilder::class))
+                ->add($mock2 = $this->createMock(UnlinkBuilder::class))
         );
         $mock1
             ->method('build')

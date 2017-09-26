@@ -7,7 +7,7 @@ use Innmind\Rest\Server\{
     Definition\HttpResource,
     Request\Range,
     Exception\InvalidArgumentException,
-    IdentityInterface
+    Identity
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -20,13 +20,13 @@ use Innmind\Immutable\{
     Map
 };
 
-final class ListDelegationBuilder implements ListBuilderInterface
+final class ListDelegationBuilder implements ListBuilder
 {
     private $builders;
 
     public function __construct(SetInterface $builders)
     {
-        if ((string) $builders->type() !== ListBuilderInterface::class) {
+        if ((string) $builders->type() !== ListBuilder::class) {
             throw new InvalidArgumentException;
         }
 
@@ -43,7 +43,7 @@ final class ListDelegationBuilder implements ListBuilderInterface
         SpecificationInterface $specification = null,
         Range $range = null
     ): MapInterface {
-        if ((string) $identities->type() !== IdentityInterface::class) {
+        if ((string) $identities->type() !== Identity::class) {
             throw new InvalidArgumentException;
         }
 
@@ -53,7 +53,7 @@ final class ListDelegationBuilder implements ListBuilderInterface
                 new Map('string', Header::class),
                 function(
                     MapInterface $carry,
-                    ListBuilderInterface $builder
+                    ListBuilder $builder
                 ) use (
                     $identities,
                     $request,

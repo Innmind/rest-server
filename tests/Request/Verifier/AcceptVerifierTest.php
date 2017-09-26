@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server\Request\Verifier;
 
 use Innmind\Rest\Server\{
     Request\Verifier\AcceptVerifier,
-    Request\Verifier\VerifierInterface,
+    Request\Verifier\Verifier,
     Formats,
     Format\Format,
     Format\MediaType,
@@ -54,7 +54,7 @@ class AcceptVerifierTest extends TestCase
             )
         );
 
-        $this->assertInstanceOf(VerifierInterface::class, $verifier);
+        $this->assertInstanceOf(Verifier::class, $verifier);
     }
 
     /**

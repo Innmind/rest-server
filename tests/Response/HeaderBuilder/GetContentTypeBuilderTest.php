@@ -5,12 +5,12 @@ namespace Tests\Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Response\HeaderBuilder\GetContentTypeBuilder,
-    Response\HeaderBuilder\GetBuilderInterface,
+    Response\HeaderBuilder\GetBuilder,
     Formats,
     Format\Format,
     Format\MediaType,
-    IdentityInterface,
-    HttpResourceInterface,
+    Identity as IdentityInterface,
+    HttpResource as HttpResourceInterface,
     Definition\HttpResource,
     Definition\Identity,
     Definition\Property,
@@ -74,7 +74,7 @@ class GetContentTypeBuilderTest extends TestCase
 
     public function testInterface()
     {
-        $this->assertInstanceOf(GetBuilderInterface::class, $this->builder);
+        $this->assertInstanceOf(GetBuilder::class, $this->builder);
     }
 
     public function testBuild()

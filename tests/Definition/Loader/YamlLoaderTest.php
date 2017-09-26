@@ -9,7 +9,7 @@ use Innmind\Rest\Server\Definition\{
     Types,
     Access,
     Type\StringType,
-    LoaderInterface
+    Loader
 };
 use Innmind\Immutable\{
     MapInterface,
@@ -23,7 +23,7 @@ class YamlLoaderTest extends TestCase
     {
         $loader = new YamlLoader(new Types);
 
-        $this->assertInstanceOf(LoaderInterface::class, $loader);
+        $this->assertInstanceOf(Loader::class, $loader);
     }
 
     public function testLoad()

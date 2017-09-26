@@ -11,13 +11,13 @@ use Innmind\Rest\Server\{
 use Innmind\Http\Message\ServerRequest;
 use Innmind\Immutable\SetInterface;
 
-final class DelegationExtractor implements ExtractorInterface
+final class DelegationExtractor implements Extractor
 {
     private $extractors;
 
     public function __construct(SetInterface $extractors)
     {
-        if ((string) $extractors->type() !== ExtractorInterface::class) {
+        if ((string) $extractors->type() !== Extractor::class) {
             throw new InvalidArgumentException;
         }
 
@@ -33,7 +33,7 @@ final class DelegationExtractor implements ExtractorInterface
             ->extractors
             ->reduce(
                 null,
-                function($carry, ExtractorInterface $extractor) use ($request) {
+                function($carry, Extractor $extractor) use ($request) {
                     if ($carry instanceof Range) {
                         return $carry;
                     }

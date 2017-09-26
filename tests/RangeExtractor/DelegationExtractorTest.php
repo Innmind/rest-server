@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server\RangeExtractor;
 
 use Innmind\Rest\Server\{
     RangeExtractor\DelegationExtractor,
-    RangeExtractor\ExtractorInterface,
+    RangeExtractor\Extractor,
     Exception\RangeNotFoundException,
     Request\Range
 };
@@ -18,10 +18,10 @@ class DelegationExtractorTest extends TestCase
     public function testInterface()
     {
         $extractor = new DelegationExtractor(
-            new Set(ExtractorInterface::class)
+            new Set(Extractor::class)
         );
 
-        $this->assertInstanceOf(ExtractorInterface::class, $extractor);
+        $this->assertInstanceOf(Extractor::class, $extractor);
     }
 
     /**
@@ -35,9 +35,9 @@ class DelegationExtractorTest extends TestCase
     public function testExtract()
     {
         $extractor = new DelegationExtractor(
-            (new Set(ExtractorInterface::class))
-                ->add($extractor1 = $this->createMock(ExtractorInterface::class))
-                ->add($extractor2 = $this->createMock(ExtractorInterface::class))
+            (new Set(Extractor::class))
+                ->add($extractor1 = $this->createMock(Extractor::class))
+                ->add($extractor2 = $this->createMock(Extractor::class))
         );
         $extractor1
             ->method('extract')
@@ -58,7 +58,7 @@ class DelegationExtractorTest extends TestCase
      */
     public function testThrowWhenRangeNotFound()
     {
-        (new DelegationExtractor(new Set(ExtractorInterface::class)))->extract(
+        (new DelegationExtractor(new Set(Extractor::class)))->extract(
             $this->createMock(ServerRequest::class)
         );
     }

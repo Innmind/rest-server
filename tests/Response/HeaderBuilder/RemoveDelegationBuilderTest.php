@@ -5,8 +5,8 @@ namespace Tests\Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Response\HeaderBuilder\RemoveDelegationBuilder,
-    Response\HeaderBuilder\RemoveBuilderInterface,
-    IdentityInterface,
+    Response\HeaderBuilder\RemoveBuilder,
+    Identity as IdentityInterface,
     Definition\Httpresource,
     Definition\Identity,
     Definition\Property,
@@ -28,10 +28,10 @@ class RemoveDelegationBuilderTest extends TestCase
     public function testInterface()
     {
         $builder = new RemoveDelegationBuilder(
-            new Set(RemoveBuilderInterface::class)
+            new Set(RemoveBuilder::class)
         );
 
-        $this->assertInstanceOf(RemoveBuilderInterface::class, $builder);
+        $this->assertInstanceOf(RemoveBuilder::class, $builder);
         $headers = $builder->build(
             $this->createMock(ServerRequest::class),
             new Httpresource(
@@ -62,9 +62,9 @@ class RemoveDelegationBuilderTest extends TestCase
     public function testBuild()
     {
         $builder = new RemoveDelegationBuilder(
-            (new Set(RemoveBuilderInterface::class))
-                ->add($mock1 = $this->createMock(RemoveBuilderInterface::class))
-                ->add($mock2 = $this->createMock(RemoveBuilderInterface::class))
+            (new Set(RemoveBuilder::class))
+                ->add($mock1 = $this->createMock(RemoveBuilder::class))
+                ->add($mock2 = $this->createMock(RemoveBuilder::class))
         );
         $mock1
             ->method('build')

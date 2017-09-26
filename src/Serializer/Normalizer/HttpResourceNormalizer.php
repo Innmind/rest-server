@@ -4,8 +4,8 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\Serializer\Normalizer;
 
 use Innmind\Rest\Server\{
-    HttpResource,
-    Property,
+    HttpResource\HttpResource,
+    HttpResource\Property,
     Definition\HttpResource as ResourceDefinition,
     Definition\Property as PropertyDefinition,
     Definition\Access,

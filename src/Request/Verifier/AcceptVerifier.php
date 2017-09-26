@@ -17,7 +17,7 @@ use Negotiation\{
     Accept
 };
 
-final class AcceptVerifier implements VerifierInterface
+final class AcceptVerifier implements Verifier
 {
     private $formats;
     private $negotiator;

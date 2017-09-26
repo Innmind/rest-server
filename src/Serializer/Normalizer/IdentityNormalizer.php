@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Serializer\Normalizer;
 
-use Innmind\Rest\Server\IdentityInterface;
+use Innmind\Rest\Server\Identity;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class IdentityNormalizer implements NormalizerInterface
@@ -21,6 +21,6 @@ final class IdentityNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof IdentityInterface;
+        return $data instanceof Identity;
     }
 }

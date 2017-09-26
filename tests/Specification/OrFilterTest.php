@@ -6,8 +6,8 @@ namespace Tests\Innmind\Rest\Server\Specification;
 use Innmind\Rest\Server\{
     Specification\OrFilter,
     Specification\Filter,
-    HttpResourceInterface,
-    Property
+    HttpResource,
+    HttpResource\Property
 };
 use Innmind\Specification\CompositeInterface;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +25,7 @@ class OrFilterTest extends TestCase
         $this->assertSame($left, $and->left());
         $this->assertSame($right, $and->right());
         $this->assertSame('OR', (string) $and->operator());
-        $resource = $this->createMock(HttpResourceInterface::class);
+        $resource = $this->createMock(HttpResource::class);
         $resource
             ->method('property')
             ->will($this->onConsecutiveCalls(

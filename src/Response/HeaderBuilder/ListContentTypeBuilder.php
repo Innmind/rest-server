@@ -15,7 +15,7 @@ use Innmind\Immutable\{
     MapInterface
 };
 
-final class ListContentTypeBuilder implements ListBuilderInterface
+final class ListContentTypeBuilder implements ListBuilder
 {
     use ContentTypeBuilder;
 

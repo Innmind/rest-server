@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\Definition\{
     Type\SetType,
-    TypeInterface,
+    Type,
     Types
 };
 use Innmind\Immutable\{
@@ -19,7 +19,7 @@ class SetTypeTest extends TestCase
 {
     public function testInterface()
     {
-        $this->assertInstanceOf(TypeInterface::class, new SetType);
+        $this->assertInstanceOf(Type::class, new SetType);
         $this->assertSame(
             ['set'],
             SetType::identifiers()->toPrimitive()
