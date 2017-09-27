@@ -17,7 +17,7 @@ class RangeTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException Innmind\Rest\Server\Exception\DomainException
      */
     public function testThrowWhenFirstPositionNegative()
     {
@@ -25,7 +25,7 @@ class RangeTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException Innmind\Rest\Server\Exception\DomainException
      */
     public function testThrowWhenLastPositionLowerThanFirstOne()
     {

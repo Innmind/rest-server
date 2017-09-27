@@ -27,7 +27,8 @@ class DelegationVerifierTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 1 must be of type MapInterface<int, Innmind\Rest\Server\Request\Verifier\Verifier>
      */
     public function testThrowWhenInvalidMapOfVerifiers()
     {

@@ -5,7 +5,6 @@ namespace Innmind\Rest\Server\RangeExtractor;
 
 use Innmind\Rest\Server\{
     Exception\RangeNotFound,
-    Exception\InvalidArgumentException,
     Request\Range
 };
 use Innmind\Http\Message\ServerRequest;
@@ -18,7 +17,10 @@ final class DelegationExtractor implements Extractor
     public function __construct(SetInterface $extractors)
     {
         if ((string) $extractors->type() !== Extractor::class) {
-            throw new InvalidArgumentException;
+            throw new \TypeError(sprintf(
+                'Argument 1 must be of type SetInterface<%s>',
+                Extractor::class
+            ));
         }
 
         $this->extractors = $extractors;

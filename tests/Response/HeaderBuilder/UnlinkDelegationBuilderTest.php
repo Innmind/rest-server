@@ -57,7 +57,8 @@ class UnlinkDelegationBuilderTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 1 must be of type SetInterface<Innmind\Rest\Server\Response\HeaderBuilder\UnlinkBuilder>
      */
     public function testThrowWhenInvalidBuilderSet()
     {
@@ -65,7 +66,8 @@ class UnlinkDelegationBuilderTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 3 must be of type MapInterface<Innmind\Rest\Server\Reference, Innmind\Immutable\MapInterface>
      */
     public function testThrowWhenInvalidTos()
     {

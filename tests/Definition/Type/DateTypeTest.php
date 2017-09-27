@@ -94,7 +94,8 @@ class DateTypeTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 1 must be of type MapInterface<scalar, variable>
      */
     public function testThrowWhenInvalidConfigMap()
     {

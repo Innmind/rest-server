@@ -3,10 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Response\HeaderBuilder;
 
-use Innmind\Rest\Server\{
-    Reference,
-    Exception\InvalidArgumentException
-};
+use Innmind\Rest\Server\Reference;
 use Innmind\Http\{
     Message\ServerRequest,
     Header
@@ -24,7 +21,10 @@ final class LinkDelegationBuilder implements LinkBuilder
     public function __construct(SetInterface $builders)
     {
         if ((string) $builders->type() !== LinkBuilder::class) {
-            throw new InvalidArgumentException;
+            throw new \TypeError(sprintf(
+                'Argument 1 must be of type SetInterface<%s>',
+                LinkBuilder::class
+            ));
         }
 
         $this->builders = $builders;
@@ -42,7 +42,11 @@ final class LinkDelegationBuilder implements LinkBuilder
             (string) $tos->keyType() !== Reference::class ||
             (string) $tos->valueType() !== MapInterface::class
         ) {
-            throw new InvalidArgumentException;
+            throw new \TypeError(sprintf(
+                'Argument 3 must be of type MapInterface<%s, %s>',
+                Reference::class,
+                MapInterface::class
+            ));
         }
 
         return $this

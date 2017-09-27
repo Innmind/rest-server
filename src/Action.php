@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server;
 
-use Innmind\Rest\Server\Exception\InvalidArgumentException;
+use Innmind\Rest\Server\Exception\DomainException;
 use Innmind\Immutable\{
     SetInterface,
     Set,
@@ -30,7 +30,7 @@ final class Action
             ->prepend('self::');
 
         if (!defined((string) $const)) {
-            throw new InvalidArgumentException;
+            throw new DomainException;
         }
 
         $this->action = constant((string) $const);

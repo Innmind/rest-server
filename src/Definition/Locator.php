@@ -3,10 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Definition;
 
-use Innmind\Rest\Server\Exception\{
-    DefinitionNotFound,
-    InvalidArgumentException
-};
+use Innmind\Rest\Server\Exception\DefinitionNotFound;
 use Innmind\Immutable\{
     MapInterface,
     Map
@@ -23,7 +20,10 @@ final class Locator
             (string) $directories->keyType() !== 'string' ||
             (string) $directories->valueType() !== Directory::class
         ) {
-            throw new InvalidArgumentException;
+            throw new \TypeError(sprintf(
+                'Argument 1 must be of type MapInterface<string, %s>',
+                Directory::class
+            ));
         }
 
         $this->directories = $directories;

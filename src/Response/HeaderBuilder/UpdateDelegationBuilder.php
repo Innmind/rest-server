@@ -5,7 +5,6 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Definition\HttpResource,
-    Exception\InvalidArgumentException,
     Identity,
     HttpResource as HttpResourceInterface
 };
@@ -26,7 +25,10 @@ final class UpdateDelegationBuilder implements UpdateBuilder
     public function __construct(SetInterface $builders)
     {
         if ((string) $builders->type() !== UpdateBuilder::class) {
-            throw new InvalidArgumentException;
+            throw new \TypeError(sprintf(
+                'Argument 1 must be of type SetInterface<%s>',
+                UpdateBuilder::class
+            ));
         }
 
         $this->builders = $builders;

@@ -12,8 +12,7 @@ use Innmind\Rest\Server\{
     Definition\Gateway,
     Definition\Access,
     Definition\Loader,
-    Configuration,
-    Exception\InvalidArgumentException
+    Configuration
 };
 use Innmind\Immutable\{
     SetInterface,
@@ -42,7 +41,7 @@ final class YamlLoader implements Loader
     public function load(SetInterface $files): MapInterface
     {
         if ((string) $files->type() !== 'string') {
-            throw new InvalidArgumentException;
+            throw new \TypeError('Argument 1 must be of type SetInterface<string>');
         }
 
         $config = (new Processor)->processConfiguration(

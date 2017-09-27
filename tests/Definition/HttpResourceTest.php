@@ -39,7 +39,8 @@ class HttpResourceTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Definition\Property>
      */
     public function testThrowForInvalidPropertyMap()
     {
@@ -56,7 +57,8 @@ class HttpResourceTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 8 must be of type MapInterface<string, string>
      */
     public function testThrowForInvalidLinkMap()
     {
@@ -73,7 +75,8 @@ class HttpResourceTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 4 must be of type MapInterface<scalar, variable>
      */
     public function testThrowForInvalidOptionMap()
     {
@@ -90,7 +93,8 @@ class HttpResourceTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 5 must be of type MapInterface<scalar, variable>
      */
     public function testThrowForInvalidMetaMap()
     {

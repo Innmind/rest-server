@@ -36,7 +36,8 @@ class PropertyTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 4 must be of type SetInterface<string>
      */
     public function testThrowWhenGivingInvalidVariants()
     {

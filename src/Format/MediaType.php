@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Format;
 
-use Innmind\Rest\Server\Exception\InvalidArgumentException;
 use Innmind\Filesystem\MediaType\MediaType as FilesystemMediaType;
 
 final class MediaType

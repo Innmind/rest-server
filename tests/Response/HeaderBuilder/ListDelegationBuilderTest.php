@@ -52,7 +52,8 @@ class ListDelegationBuilderTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 1 must be of SetInterface<Innmind\Rest\Server\Response\HeaderBuilder\ListBuilder>
      */
     public function testThrowWhenInvalidBuilderSet()
     {
@@ -60,7 +61,8 @@ class ListDelegationBuilderTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 1 must be of type SetInterface<Innmind\Rest\Server\Identity>
      */
     public function testThrowWhenInvalidIdentities()
     {

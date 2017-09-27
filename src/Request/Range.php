@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Request;
 
-use Innmind\Rest\Server\Exception\InvalidArgumentException;
+use Innmind\Rest\Server\Exception\DomainException;
 
 /**
  * Describe a range of resources to be returned on an index
@@ -19,7 +19,7 @@ final class Range
             $firstPosition < 0 ||
             $lastPosition < $firstPosition
         ) {
-            throw new InvalidArgumentException;
+            throw new DomainException;
         }
 
         $this->firstPosition = $firstPosition;

@@ -7,8 +7,7 @@ use Innmind\Rest\Server\{
     Definition\Type,
     Definition\Types,
     Exception\DenormalizationException,
-    Exception\NormalizationException,
-    Exception\InvalidArgumentException
+    Exception\NormalizationException
 };
 use Innmind\Immutable\{
     MapInterface,
@@ -30,7 +29,7 @@ final class DateType implements Type
             (string) $config->keyType() !== 'scalar' ||
             (string) $config->valueType() !== 'variable'
         ) {
-            throw new InvalidArgumentException;
+            throw new \TypeError('Argument 1 must be of type MapInterface<scalar, variable>');
         }
 
         $type = new self;

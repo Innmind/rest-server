@@ -3,10 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Request\Verifier;
 
-use Innmind\Rest\Server\{
-    Definition\HttpResource,
-    Exception\InvalidArgumentException
-};
+use Innmind\Rest\Server\Definition\HttpResource;
 use Innmind\Http\Message\ServerRequest;
 use Innmind\Immutable\MapInterface;
 
@@ -20,7 +17,10 @@ final class DelegationVerifier implements Verifier
             (string) $verifiers->keyType() !== 'int' ||
             (string) $verifiers->valueType() !== Verifier::class
         ) {
-            throw new InvalidArgumentException;
+            throw new \TypeError(sprintf(
+                'Argument 1 must be of type MapInterface<int, %s>',
+                Verifier::class
+            ));
         }
 
         $this->verifiers = $verifiers;

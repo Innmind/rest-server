@@ -60,7 +60,7 @@ class HttpResourceTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException Innmind\Rest\Server\Exception\DomainException
      */
     public function testThrowWhenBuildingWithUndefinedProperty()
     {

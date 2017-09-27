@@ -42,7 +42,8 @@ class FormatTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 2 must be of type SetInterface<Innmind\Rest\Server\Format\MediaType>
      */
     public function testThrowWhenInvalidMediaType()
     {
@@ -50,7 +51,7 @@ class FormatTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException Innmind\Rest\Server\Exception\DomainException
      */
     public function testThrowWhenNoMediaType()
     {

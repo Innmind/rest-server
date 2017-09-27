@@ -27,7 +27,7 @@ class ActionTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException Innmind\Rest\Server\Exception\DomainException
      */
     public function testThrowWhenInvalidAction()
     {

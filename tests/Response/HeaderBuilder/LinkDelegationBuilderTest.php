@@ -56,7 +56,8 @@ class LinkDelegationBuilderTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 1 must be of type SetInterface<Innmind\Rest\Server\Response\HeaderBuilder\LinkBuilder>
      */
     public function testThrowWhenInvalidBuilderSet()
     {
@@ -64,7 +65,8 @@ class LinkDelegationBuilderTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 3 must be of type MapInterface<Innmind\Rest\Server\Reference, Innmind\Immutable\MapInterface>
      */
     public function testThrowWhenInvalidTos()
     {

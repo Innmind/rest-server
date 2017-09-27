@@ -6,7 +6,7 @@ namespace Innmind\Rest\Server\HttpResource;
 use Innmind\Rest\Server\{
     HttpResource as HttpResourceInterface,
     Definition\HttpResource as ResourceDefinition,
-    Exception\InvalidArgumentException
+    Exception\DomainException
 };
 use Innmind\Immutable\MapInterface;
 
@@ -23,7 +23,10 @@ final class HttpResource implements HttpResourceInterface
             (string) $properties->keyType() !== 'string' ||
             (string) $properties->valueType() !== Property::class
         ) {
-            throw new InvalidArgumentException;
+            throw new \TypeError(sprintf(
+                'Argument 2 must be of type MapInterface<string, %s>',
+                Property::cass
+            ));
         }
 
         $this->definition = $definition;
@@ -33,7 +36,7 @@ final class HttpResource implements HttpResourceInterface
             ->properties
             ->foreach(function(string $name, Property $property) {
                 if (!$this->definition->properties()->contains($name)) {
-                    throw new InvalidArgumentException;
+                    throw new DomainException;
                 }
             });
     }
