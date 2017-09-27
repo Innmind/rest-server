@@ -27,9 +27,7 @@ class ListDelegationBuilderTest extends TestCase
 {
     public function testInterface()
     {
-        $builder = new ListDelegationBuilder(
-            new Set(ListBuilder::class)
-        );
+        $builder = new ListDelegationBuilder;
 
         $this->assertInstanceOf(ListBuilder::class, $builder);
         $headers = $builder->build(
@@ -53,22 +51,11 @@ class ListDelegationBuilderTest extends TestCase
 
     /**
      * @expectedException TypeError
-     * @expectedExceptionMessage Argument 1 must be of SetInterface<Innmind\Rest\Server\Response\HeaderBuilder\ListBuilder>
-     */
-    public function testThrowWhenInvalidBuilderSet()
-    {
-        new ListDelegationBuilder(new Set('object'));
-    }
-
-    /**
-     * @expectedException TypeError
      * @expectedExceptionMessage Argument 1 must be of type SetInterface<Innmind\Rest\Server\Identity>
      */
     public function testThrowWhenInvalidIdentities()
     {
-        $builder = new ListDelegationBuilder(
-            new Set(ListBuilder::class)
-        );
+        $builder = new ListDelegationBuilder;
 
         $builder->build(
             new Set('object'),
@@ -89,9 +76,8 @@ class ListDelegationBuilderTest extends TestCase
     public function testBuild()
     {
         $builder = new ListDelegationBuilder(
-            (new Set(ListBuilder::class))
-                ->add($mock1 = $this->createMock(ListBuilder::class))
-                ->add($mock2 = $this->createMock(ListBuilder::class))
+            $mock1 = $this->createMock(ListBuilder::class),
+            $mock2 = $this->createMock(ListBuilder::class)
         );
         $mock1
             ->method('build')

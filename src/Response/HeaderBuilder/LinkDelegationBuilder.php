@@ -9,7 +9,6 @@ use Innmind\Http\{
     Header
 };
 use Innmind\Immutable\{
-    SetInterface,
     MapInterface,
     Map
 };
@@ -18,15 +17,8 @@ final class LinkDelegationBuilder implements LinkBuilder
 {
     private $builders;
 
-    public function __construct(SetInterface $builders)
+    public function __construct(LinkBuilder ...$builders)
     {
-        if ((string) $builders->type() !== LinkBuilder::class) {
-            throw new \TypeError(sprintf(
-                'Argument 1 must be of type SetInterface<%s>',
-                LinkBuilder::class
-            ));
-        }
-
         $this->builders = $builders;
     }
 
@@ -49,26 +41,16 @@ final class LinkDelegationBuilder implements LinkBuilder
             ));
         }
 
-        return $this
-            ->builders
-            ->reduce(
-                new Map('string', Header::class),
-                function(
-                    MapInterface $carry,
-                    LinkBuilder $builder
-                ) use (
-                    $request,
-                    $from,
-                    $tos
-                ): MapInterface {
-                    return $carry->merge(
-                        $builder->build(
-                            $request,
-                            $from,
-                            $tos
-                        )
-                    );
-                }
-            );
+        $headers = new Map('string', Header::class);
+
+        foreach ($this->builders as $builder) {
+            $headers = $headers->merge($builder->build(
+                $request,
+                $from,
+                $tos
+            ));
+        }
+
+        return $headers;
     }
 }

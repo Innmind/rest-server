@@ -34,9 +34,7 @@ class HttpResourceTest extends TestCase
                         new PropertyDefinition(
                             'foo',
                             new StringType,
-                            new Access(
-                                (new Set('string'))->add(Access::READ)
-                            ),
+                            new Access(Access::READ),
                             new Set('string'),
                             true
                         )

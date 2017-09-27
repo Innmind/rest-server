@@ -23,15 +23,8 @@ final class ListDelegationBuilder implements ListBuilder
 {
     private $builders;
 
-    public function __construct(SetInterface $builders)
+    public function __construct(ListBuilder ...$builders)
     {
-        if ((string) $builders->type() !== ListBuilder::class) {
-            throw new \TypeError(sprintf(
-                'Argument 1 must be of SetInterface<%s>',
-                ListBuilder::class
-            ));
-        }
-
         $this->builders = $builders;
     }
 
@@ -52,30 +45,18 @@ final class ListDelegationBuilder implements ListBuilder
             ));
         }
 
-        return $this
-            ->builders
-            ->reduce(
-                new Map('string', Header::class),
-                function(
-                    MapInterface $carry,
-                    ListBuilder $builder
-                ) use (
-                    $identities,
-                    $request,
-                    $definition,
-                    $specification,
-                    $range
-                ): MapInterface {
-                    return $carry->merge(
-                        $builder->build(
-                            $identities,
-                            $request,
-                            $definition,
-                            $specification,
-                            $range
-                        )
-                    );
-                }
-            );
+        $headers = new Map('string', Header::class);
+
+        foreach ($this->builders as $builder) {
+            $headers = $headers->merge($builder->build(
+                $identities,
+                $request,
+                $definition,
+                $specification,
+                $range
+            ));
+        }
+
+        return $headers;
     }
 }

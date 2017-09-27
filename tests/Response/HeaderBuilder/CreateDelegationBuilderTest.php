@@ -18,7 +18,6 @@ use Innmind\Http\{
     Header
 };
 use Innmind\Immutable\{
-    Set,
     Map,
     MapInterface
 };
@@ -28,9 +27,7 @@ class CreateDelegationBuilderTest extends TestCase
 {
     public function testInterface()
     {
-        $builder = new CreateDelegationBuilder(
-            new Set(CreateBuilder::class)
-        );
+        $builder = new CreateDelegationBuilder;
 
         $this->assertInstanceOf(CreateBuilder::class, $builder);
         $headers = $builder->build(
@@ -53,21 +50,11 @@ class CreateDelegationBuilderTest extends TestCase
         $this->assertSame(Header::class, (string) $headers->valueType());
     }
 
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 1 must be of type SetInterface<Innmind\Rest\Server\Response\HeaderBuilder\CreateBuilder>
-     */
-    public function testThrowWhenInvalidBuilderSet()
-    {
-        new CreateDelegationBuilder(new Set('object'));
-    }
-
     public function testBuild()
     {
         $builder = new CreateDelegationBuilder(
-            (new Set(CreateBuilder::class))
-                ->add($mock1 = $this->createMock(CreateBuilder::class))
-                ->add($mock2 = $this->createMock(CreateBuilder::class))
+            $mock1 = $this->createMock(CreateBuilder::class),
+            $mock2 = $this->createMock(CreateBuilder::class)
         );
         $mock1
             ->method('build')

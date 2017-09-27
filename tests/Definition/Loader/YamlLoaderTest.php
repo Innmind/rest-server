@@ -49,7 +49,7 @@ class YamlLoaderTest extends TestCase
         $this->assertSame('uuid', $uuid->name());
         $this->assertInstanceOf(StringType::class, $uuid->type());
         $this->assertTrue($uuid->access()->matches(
-            new Access((new Set('string'))->add(Access::READ))
+            new Access(Access::READ)
         ));
         $this->assertSame(0, $uuid->variants()->size());
         $this->assertFalse($uuid->isOptional());
@@ -58,10 +58,9 @@ class YamlLoaderTest extends TestCase
         $this->assertInstanceOf(StringType::class, $url->type());
         $this->assertTrue($url->access()->matches(
             new Access(
-                (new Set('string'))
-                    ->add(Access::READ)
-                    ->add(Access::CREATE)
-                    ->add(Access::UPDATE)
+                Access::READ,
+                Access::CREATE,
+                Access::UPDATE
             )
         ));
         $this->assertSame(0, $url->variants()->size());
@@ -75,7 +74,7 @@ class YamlLoaderTest extends TestCase
         $this->assertSame('uuid', $uuid->name());
         $this->assertInstanceOf(StringType::class, $uuid->type());
         $this->assertTrue($uuid->access()->matches(
-            new Access((new Set('string'))->add(Access::READ))
+            new Access(Access::READ)
         ));
         $this->assertSame(0, $uuid->variants()->size());
         $this->assertFalse($uuid->isOptional());

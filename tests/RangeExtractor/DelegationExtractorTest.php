@@ -10,35 +10,22 @@ use Innmind\Rest\Server\{
     Request\Range
 };
 use Innmind\Http\Message\ServerRequest;
-use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class DelegationExtractorTest extends TestCase
 {
     public function testInterface()
     {
-        $extractor = new DelegationExtractor(
-            new Set(Extractor::class)
-        );
+        $extractor = new DelegationExtractor;
 
         $this->assertInstanceOf(Extractor::class, $extractor);
-    }
-
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 1 must be of type SetInterface<Innmind\Rest\Server\RangeExtractor\Extractor>
-     */
-    public function testThrowWhenInvalidExtractorMap()
-    {
-        new DelegationExtractor(new Set('int'));
     }
 
     public function testExtract()
     {
         $extractor = new DelegationExtractor(
-            (new Set(Extractor::class))
-                ->add($extractor1 = $this->createMock(Extractor::class))
-                ->add($extractor2 = $this->createMock(Extractor::class))
+            $extractor1 = $this->createMock(Extractor::class),
+            $extractor2 = $this->createMock(Extractor::class)
         );
         $extractor1
             ->method('extract')
@@ -59,7 +46,7 @@ class DelegationExtractorTest extends TestCase
      */
     public function testThrowWhenRangeNotFound()
     {
-        (new DelegationExtractor(new Set(Extractor::class)))->extract(
+        (new DelegationExtractor)->extract(
             $this->createMock(ServerRequest::class)
         );
     }

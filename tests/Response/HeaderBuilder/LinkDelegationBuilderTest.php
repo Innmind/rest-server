@@ -18,7 +18,6 @@ use Innmind\Http\{
     Header
 };
 use Innmind\Immutable\{
-    Set,
     Map,
     MapInterface
 };
@@ -28,9 +27,7 @@ class LinkDelegationBuilderTest extends TestCase
 {
     public function testInterface()
     {
-        $builder = new LinkDelegationBuilder(
-            new Set(LinkBuilder::class)
-        );
+        $builder = new LinkDelegationBuilder;
 
         $this->assertInstanceOf(LinkBuilder::class, $builder);
         $headers = $builder->build(
@@ -57,22 +54,11 @@ class LinkDelegationBuilderTest extends TestCase
 
     /**
      * @expectedException TypeError
-     * @expectedExceptionMessage Argument 1 must be of type SetInterface<Innmind\Rest\Server\Response\HeaderBuilder\LinkBuilder>
-     */
-    public function testThrowWhenInvalidBuilderSet()
-    {
-        new LinkDelegationBuilder(new Set('object'));
-    }
-
-    /**
-     * @expectedException TypeError
      * @expectedExceptionMessage Argument 3 must be of type MapInterface<Innmind\Rest\Server\Reference, Innmind\Immutable\MapInterface>
      */
     public function testThrowWhenInvalidTos()
     {
-        $builder = new LinkDelegationBuilder(
-            new Set(LinkBuilder::class)
-        );
+        $builder = new LinkDelegationBuilder;
 
         $builder->build(
             $this->createMock(ServerRequest::class),
@@ -96,9 +82,8 @@ class LinkDelegationBuilderTest extends TestCase
     public function testBuild()
     {
         $builder = new LinkDelegationBuilder(
-            (new Set(LinkBuilder::class))
-                ->add($mock1 = $this->createMock(LinkBuilder::class))
-                ->add($mock2 = $this->createMock(LinkBuilder::class))
+            $mock1 = $this->createMock(LinkBuilder::class),
+            $mock2 = $this->createMock(LinkBuilder::class)
         );
         $mock1
             ->method('build')

@@ -18,7 +18,6 @@ use Innmind\Http\{
     Header
 };
 use Innmind\Immutable\{
-    Set,
     Map,
     Collection,
     MapInterface
@@ -29,9 +28,7 @@ class UnlinkDelegationBuilderTest extends TestCase
 {
     public function testInterface()
     {
-        $builder = new UnlinkDelegationBuilder(
-            new Set(UnlinkBuilder::class)
-        );
+        $builder = new UnlinkDelegationBuilder;
 
         $this->assertInstanceOf(UnlinkBuilder::class, $builder);
         $headers = $builder->build(
@@ -58,22 +55,11 @@ class UnlinkDelegationBuilderTest extends TestCase
 
     /**
      * @expectedException TypeError
-     * @expectedExceptionMessage Argument 1 must be of type SetInterface<Innmind\Rest\Server\Response\HeaderBuilder\UnlinkBuilder>
-     */
-    public function testThrowWhenInvalidBuilderSet()
-    {
-        new UnlinkDelegationBuilder(new Set('object'));
-    }
-
-    /**
-     * @expectedException TypeError
      * @expectedExceptionMessage Argument 3 must be of type MapInterface<Innmind\Rest\Server\Reference, Innmind\Immutable\MapInterface>
      */
     public function testThrowWhenInvalidTos()
     {
-        $builder = new UnlinkDelegationBuilder(
-            new Set(UnlinkBuilder::class)
-        );
+        $builder = new UnlinkDelegationBuilder;
 
         $builder->build(
             $this->createMock(ServerRequest::class),
@@ -97,9 +83,8 @@ class UnlinkDelegationBuilderTest extends TestCase
     public function testBuild()
     {
         $builder = new UnlinkDelegationBuilder(
-            (new Set(UnlinkBuilder::class))
-                ->add($mock1 = $this->createMock(UnlinkBuilder::class))
-                ->add($mock2 = $this->createMock(UnlinkBuilder::class))
+            $mock1 = $this->createMock(UnlinkBuilder::class),
+            $mock2 = $this->createMock(UnlinkBuilder::class)
         );
         $mock1
             ->method('build')

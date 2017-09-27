@@ -18,15 +18,8 @@ final class UnlinkDelegationBuilder implements UnlinkBuilder
 {
     private $builders;
 
-    public function __construct(SetInterface $builders)
+    public function __construct(UnlinkBuilder ...$builders)
     {
-        if ((string) $builders->type() !== UnlinkBuilder::class) {
-            throw new \TypeError(sprintf(
-                'Argument 1 must be of type SetInterface<%s>',
-                UnlinkBuilder::class
-            ));
-        }
-
         $this->builders = $builders;
     }
 
@@ -49,26 +42,16 @@ final class UnlinkDelegationBuilder implements UnlinkBuilder
             ));
         }
 
-        return $this
-            ->builders
-            ->reduce(
-                new Map('string', Header::class),
-                function(
-                    MapInterface $carry,
-                    UnlinkBuilder $builder
-                ) use (
-                    $request,
-                    $from,
-                    $tos
-                ): MapInterface {
-                    return $carry->merge(
-                        $builder->build(
-                            $request,
-                            $from,
-                            $tos
-                        )
-                    );
-                }
-            );
+        $headers = new Map('string', Header::class);
+
+        foreach ($this->builders as $builder) {
+            $headers = $headers->merge($builder->build(
+                $request,
+                $from,
+                $tos
+            ));
+        }
+
+        return $headers;
     }
 }

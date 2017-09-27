@@ -65,9 +65,7 @@ class BuilderTest extends TestCase
                     new Property(
                         'foo',
                         new StringType,
-                        new Access(
-                            (new Set('string'))->add(Access::READ)
-                        ),
+                        new Access(Access::READ),
                         new Set('string'),
                         true
                     )
@@ -77,9 +75,7 @@ class BuilderTest extends TestCase
                     new Property(
                         'bar',
                         new StringType,
-                        new Access(
-                            (new Set('string'))->add(Access::READ)
-                        ),
+                        new Access(Access::READ),
                         new Set('string'),
                         true
                     )

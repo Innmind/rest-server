@@ -8,21 +8,13 @@ use Innmind\Rest\Server\{
     Request\Range
 };
 use Innmind\Http\Message\ServerRequest;
-use Innmind\Immutable\SetInterface;
 
 final class DelegationExtractor implements Extractor
 {
     private $extractors;
 
-    public function __construct(SetInterface $extractors)
+    public function __construct(Extractor ...$extractors)
     {
-        if ((string) $extractors->type() !== Extractor::class) {
-            throw new \TypeError(sprintf(
-                'Argument 1 must be of type SetInterface<%s>',
-                Extractor::class
-            ));
-        }
-
         $this->extractors = $extractors;
     }
 
@@ -31,25 +23,12 @@ final class DelegationExtractor implements Extractor
      */
     public function extract(ServerRequest $request): Range
     {
-        $range = $this
-            ->extractors
-            ->reduce(
-                null,
-                function($carry, Extractor $extractor) use ($request) {
-                    if ($carry instanceof Range) {
-                        return $carry;
-                    }
-
-                    try {
-                        return $extractor->extract($request);
-                    } catch (RangeNotFound $e) {
-                        //pass
-                    }
-                }
-            );
-
-        if ($range instanceof Range) {
-            return $range;
+        foreach ($this->extractors as $extractor) {
+            try {
+                return $extractor->extract($request);
+            } catch (RangeNotFound $e) {
+                //pass
+            }
         }
 
         throw new RangeNotFound;

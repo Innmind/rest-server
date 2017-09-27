@@ -18,9 +18,7 @@ class PropertyTest extends TestCase
         $p = new Property(
             'foo',
             $t = new StringType,
-            new Access(
-                (new Set('string'))->add(Access::READ)
-            ),
+            new Access(Access::READ),
             (new Set('string'))->add('bar'),
             true
         );
@@ -44,7 +42,7 @@ class PropertyTest extends TestCase
         new Property(
             'foo',
             new StringType,
-            new Access((new Set('string'))),
+            new Access(),
             (new Set('int')),
             true
         );

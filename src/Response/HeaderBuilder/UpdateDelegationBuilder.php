@@ -13,7 +13,6 @@ use Innmind\Http\{
     Header
 };
 use Innmind\Immutable\{
-    SetInterface,
     MapInterface,
     Map
 };
@@ -22,15 +21,8 @@ final class UpdateDelegationBuilder implements UpdateBuilder
 {
     private $builders;
 
-    public function __construct(SetInterface $builders)
+    public function __construct(UpdateBuilder ...$builders)
     {
-        if ((string) $builders->type() !== UpdateBuilder::class) {
-            throw new \TypeError(sprintf(
-                'Argument 1 must be of type SetInterface<%s>',
-                UpdateBuilder::class
-            ));
-        }
-
         $this->builders = $builders;
     }
 
@@ -43,28 +35,17 @@ final class UpdateDelegationBuilder implements UpdateBuilder
         Identity $identity,
         HttpResourceInterface $resource
     ): MapInterface {
-        return $this
-            ->builders
-            ->reduce(
-                new Map('string', Header::class),
-                function(
-                    MapInterface $carry,
-                    UpdateBuilder $builder
-                ) use (
-                    $request,
-                    $definition,
-                    $identity,
-                    $resource
-                ): MapInterface {
-                    return $carry->merge(
-                        $builder->build(
-                            $request,
-                            $definition,
-                            $identity,
-                            $resource
-                        )
-                    );
-                }
-            );
+        $headers = new Map('string', Header::class);
+
+        foreach ($this->builders as $builder) {
+            $headers = $headers->merge($builder->build(
+                $request,
+                $definition,
+                $identity,
+                $resource
+            ));
+        }
+
+        return $headers;
     }
 }

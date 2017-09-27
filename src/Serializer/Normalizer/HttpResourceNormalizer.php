@@ -35,7 +35,7 @@ final class HttpResourceNormalizer implements NormalizerInterface, DenormalizerI
         $errors = new Map('string', NormalizationException::class);
 
         $definition = $object->definition();
-        $mask = new Access((new Set('string'))->add(Access::READ));
+        $mask = new Access(Access::READ);
         $object
             ->properties()
             ->foreach(function(

@@ -135,12 +135,7 @@ final class YamlLoader implements Loader
 
     private function buildProperty(string $name, array $config): Property
     {
-        $access = new Set('string');
         $variants = new Set('string');
-
-        foreach ($config['access'] ?? [Access::READ] as $value) {
-            $access = $access->add($value);
-        }
 
         foreach ($config['variants'] ?? [] as $variant) {
             $variants = $variants->add($variant);
@@ -158,7 +153,7 @@ final class YamlLoader implements Loader
                 $config['type'],
                 $collection
             ),
-            new Access($access),
+            new Access(...($config['access'] ?? [Access::READ])),
             $variants,
             $config['optional'] ?? false
         );

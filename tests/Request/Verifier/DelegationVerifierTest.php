@@ -19,34 +19,16 @@ class DelegationVerifierTest extends TestCase
 {
     public function testInterface()
     {
-        $verifier = new DelegationVerifier(
-            new Map('int', Verifier::class)
-        );
+        $verifier = new DelegationVerifier;
 
         $this->assertInstanceOf(Verifier::class, $verifier);
-    }
-
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 1 must be of type MapInterface<int, Innmind\Rest\Server\Request\Verifier\Verifier>
-     */
-    public function testThrowWhenInvalidMapOfVerifiers()
-    {
-        new DelegationVerifier(new Map('int', 'object'));
     }
 
     public function testVerify()
     {
         $verifier = new DelegationVerifier(
-            (new Map('int', Verifier::class))
-                ->put(
-                    100,
-                    $verifier1 = $this->createMock(Verifier::class)
-                )
-                ->put(
-                    20,
-                    $verifier2 = $this->createMock(Verifier::class)
-                )
+            $verifier1 = $this->createMock(Verifier::class),
+            $verifier2 = $this->createMock(Verifier::class)
         );
         $count = 0;
         $verifier1
@@ -85,11 +67,7 @@ class DelegationVerifierTest extends TestCase
     public function testThrowWhenSubVerifierThrows()
     {
         $verifier = new DelegationVerifier(
-            (new Map('int', Verifier::class))
-                ->put(
-                    1,
-                    $verifier1 = $this->createMock(Verifier::class)
-                )
+            $verifier1 = $this->createMock(Verifier::class)
         );
         $verifier1
             ->method('verify')
