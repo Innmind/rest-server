@@ -18,7 +18,7 @@ final class Builder implements BuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function buildFrom(
+    public function __invoke(
         ServerRequest $request,
         HttpResource $definition
     ): SpecificationInterface {

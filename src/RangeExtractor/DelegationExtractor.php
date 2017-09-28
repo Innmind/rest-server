@@ -21,11 +21,11 @@ final class DelegationExtractor implements Extractor
     /**
      * {@inheritdoc}
      */
-    public function extract(ServerRequest $request): Range
+    public function __invoke(ServerRequest $request): Range
     {
-        foreach ($this->extractors as $extractor) {
+        foreach ($this->extractors as $extract) {
             try {
-                return $extractor->extract($request);
+                return $extract($request);
             } catch (RangeNotFound $e) {
                 //pass
             }

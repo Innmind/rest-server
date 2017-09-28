@@ -20,7 +20,7 @@ use Innmind\Url\{
 
 final class DefaultTranslator implements SpecificationTranslator
 {
-    public function translate(SpecificationInterface $specification): QueryInterface
+    public function __invoke(SpecificationInterface $specification): QueryInterface
     {
         $data = $this->extract($specification);
 

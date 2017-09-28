@@ -43,7 +43,7 @@ class HeaderExtractorTest extends TestCase
 
     public function testExtract()
     {
-        $extractor = new HeaderExtractor;
+        $extract = new HeaderExtractor;
         $request = new ServerRequest(
             Url::fromString('/'),
             new Method('GET'),
@@ -65,7 +65,7 @@ class HeaderExtractorTest extends TestCase
             new Files(new Map('string', File::class))
         );
 
-        $range = $extractor->extract($request);
+        $range = $extract($request);
 
         $this->assertInstanceOf(Range::class, $range);
         $this->assertSame(0, $range->firstPosition());
@@ -77,7 +77,7 @@ class HeaderExtractorTest extends TestCase
      */
     public function testThrowWhenRangeHeaderNotFound()
     {
-        $extractor = new HeaderExtractor;
+        $extract = new HeaderExtractor;
         $request = new ServerRequest(
             Url::fromString('/'),
             new Method('GET'),
@@ -93,6 +93,6 @@ class HeaderExtractorTest extends TestCase
             new Files(new Map('string', File::class))
         );
 
-        $extractor->extract($request);
+        $extract($request);
     }
 }

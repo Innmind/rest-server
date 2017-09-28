@@ -25,7 +25,7 @@ interface ListBuilder
      *
      * @return MapInterface<string, HeaderInterface>
      */
-    public function build(
+    public function __invoke(
         SetInterface $identities,
         ServerRequest $request,
         HttpResource $definition,

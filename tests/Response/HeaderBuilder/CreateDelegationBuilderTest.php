@@ -27,10 +27,10 @@ class CreateDelegationBuilderTest extends TestCase
 {
     public function testInterface()
     {
-        $builder = new CreateDelegationBuilder;
+        $build = new CreateDelegationBuilder;
 
-        $this->assertInstanceOf(CreateBuilder::class, $builder);
-        $headers = $builder->build(
+        $this->assertInstanceOf(CreateBuilder::class, $build);
+        $headers = $build(
             $this->createMock(IdentityInterface::class),
             $this->createMock(ServerRequest::class),
             new Httpresource(
@@ -52,24 +52,24 @@ class CreateDelegationBuilderTest extends TestCase
 
     public function testBuild()
     {
-        $builder = new CreateDelegationBuilder(
+        $build = new CreateDelegationBuilder(
             $mock1 = $this->createMock(CreateBuilder::class),
             $mock2 = $this->createMock(CreateBuilder::class)
         );
         $mock1
-            ->method('build')
+            ->method('__invoke')
             ->willReturn(
                 (new Map('string', Header::class))
                     ->put('foo', $this->createMock(Header::class))
             );
         $mock2
-            ->method('build')
+            ->method('__invoke')
             ->willReturn(
                 (new Map('string', Header::class))
                     ->put('bar', $this->createMock(Header::class))
             );
 
-        $headers = $builder->build(
+        $headers = $build(
             $this->createMock(IdentityInterface::class),
             $this->createMock(ServerRequest::class),
             new Httpresource(

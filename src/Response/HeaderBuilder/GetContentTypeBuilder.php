@@ -26,7 +26,7 @@ final class GetContentTypeBuilder implements GetBuilder
     /**
      * {@inheritdoc}
      */
-    public function build(
+    public function __invoke(
         HttpResourceInterface $resource,
         ServerRequest $request,
         HttpResource $definition,

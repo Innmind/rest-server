@@ -34,7 +34,7 @@ final class ContentTypeVerifier implements Verifier
      *
      * @throws UnsupportedMediaType
      */
-    public function verify(
+    public function __invoke(
         ServerRequest $request,
         HttpResource $definition
     ): void {

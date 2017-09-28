@@ -42,11 +42,11 @@ use PHPUnit\Framework\TestCase;
 
 class CreateLocationBuilderTest extends TestCase
 {
-    private $builder;
+    private $build;
 
     public function setUp()
     {
-        $this->builder = new CreateLocationBuilder(
+        $this->build = new CreateLocationBuilder(
             new Formats(
                 (new Map('string', Format::class))
                     ->put(
@@ -74,12 +74,12 @@ class CreateLocationBuilderTest extends TestCase
 
     public function testInterface()
     {
-        $this->assertInstanceOf(CreateBuilder::class, $this->builder);
+        $this->assertInstanceOf(CreateBuilder::class, $this->build);
     }
 
     public function testBuild()
     {
-        $headers = $this->builder->build(
+        $headers = ($this->build)(
             new Identity(42),
             new ServerRequest(
                 Url::fromString('/foo/bar/'),

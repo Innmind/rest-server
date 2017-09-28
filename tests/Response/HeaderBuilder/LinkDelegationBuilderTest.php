@@ -27,10 +27,10 @@ class LinkDelegationBuilderTest extends TestCase
 {
     public function testInterface()
     {
-        $builder = new LinkDelegationBuilder;
+        $build = new LinkDelegationBuilder;
 
-        $this->assertInstanceOf(LinkBuilder::class, $builder);
-        $headers = $builder->build(
+        $this->assertInstanceOf(LinkBuilder::class, $build);
+        $headers = $build(
             $this->createMock(ServerRequest::class),
             new Reference(
                 new Httpresource(
@@ -58,9 +58,9 @@ class LinkDelegationBuilderTest extends TestCase
      */
     public function testThrowWhenInvalidTos()
     {
-        $builder = new LinkDelegationBuilder;
+        $build = new LinkDelegationBuilder;
 
-        $builder->build(
+        $build(
             $this->createMock(ServerRequest::class),
             new Reference(
                 new Httpresource(
@@ -81,24 +81,24 @@ class LinkDelegationBuilderTest extends TestCase
 
     public function testBuild()
     {
-        $builder = new LinkDelegationBuilder(
+        $build = new LinkDelegationBuilder(
             $mock1 = $this->createMock(LinkBuilder::class),
             $mock2 = $this->createMock(LinkBuilder::class)
         );
         $mock1
-            ->method('build')
+            ->method('__invoke')
             ->willReturn(
                 (new Map('string', Header::class))
                     ->put('foo', $this->createMock(Header::class))
             );
         $mock2
-            ->method('build')
+            ->method('__invoke')
             ->willReturn(
                 (new Map('string', Header::class))
                     ->put('bar', $this->createMock(Header::class))
             );
 
-        $headers = $builder->build(
+        $headers = $build(
             $this->createMock(ServerRequest::class),
             new Reference(
                 new Httpresource(

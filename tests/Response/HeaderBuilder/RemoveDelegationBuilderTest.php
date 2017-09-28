@@ -26,10 +26,10 @@ class RemoveDelegationBuilderTest extends TestCase
 {
     public function testInterface()
     {
-        $builder = new RemoveDelegationBuilder;
+        $build = new RemoveDelegationBuilder;
 
-        $this->assertInstanceOf(RemoveBuilder::class, $builder);
-        $headers = $builder->build(
+        $this->assertInstanceOf(RemoveBuilder::class, $build);
+        $headers = $build(
             $this->createMock(ServerRequest::class),
             new Httpresource(
                 'foobar',
@@ -50,24 +50,24 @@ class RemoveDelegationBuilderTest extends TestCase
 
     public function testBuild()
     {
-        $builder = new RemoveDelegationBuilder(
+        $build = new RemoveDelegationBuilder(
             $mock1 = $this->createMock(RemoveBuilder::class),
             $mock2 = $this->createMock(RemoveBuilder::class)
         );
         $mock1
-            ->method('build')
+            ->method('__invoke')
             ->willReturn(
                 (new Map('string', Header::class))
                     ->put('foo', $this->createMock(Header::class))
             );
         $mock2
-            ->method('build')
+            ->method('__invoke')
             ->willReturn(
                 (new Map('string', Header::class))
                     ->put('bar', $this->createMock(Header::class))
             );
 
-        $headers = $builder->build(
+        $headers = $build(
             $this->createMock(ServerRequest::class),
             new Httpresource(
                 'foobar',

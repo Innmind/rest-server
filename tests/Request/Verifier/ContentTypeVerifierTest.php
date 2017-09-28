@@ -62,7 +62,7 @@ class ContentTypeVerifierTest extends TestCase
      */
     public function testThrowWhenHeaderNotAccepted()
     {
-        $verifier = new ContentTypeVerifier(
+        $verify = new ContentTypeVerifier(
             new Formats(
                 (new Map('string', Format::class))
                     ->put(
@@ -108,7 +108,7 @@ class ContentTypeVerifierTest extends TestCase
             ->method('__toString')
             ->willReturn(Method::POST);
 
-        $verifier->verify(
+        $verify(
             $request,
             new HttpResource(
                 'foo',
@@ -125,7 +125,7 @@ class ContentTypeVerifierTest extends TestCase
 
     public function testDoesntThrowWhenNotPostOrPutMethod()
     {
-        $verifier = new ContentTypeVerifier(
+        $verify = new ContentTypeVerifier(
             new Formats(
                 (new Map('string', Format::class))
                     ->put(
@@ -171,7 +171,7 @@ class ContentTypeVerifierTest extends TestCase
             ->method('__toString')
             ->willReturn(Method::GET);
 
-        $verifier->verify(
+        $verify(
             $request,
             new HttpResource(
                 'foo',
@@ -188,7 +188,7 @@ class ContentTypeVerifierTest extends TestCase
 
     public function testDoesntThrowWhenAcceptContentType()
     {
-        $verifier = new ContentTypeVerifier(
+        $verify = new ContentTypeVerifier(
             new Formats(
                 (new Map('string', Format::class))
                     ->put(
@@ -234,9 +234,8 @@ class ContentTypeVerifierTest extends TestCase
             ->method('__toString')
             ->willReturn(Method::POST);
 
-        $this->assertSame(
-            null,
-            $verifier->verify(
+        $this->assertNull(
+            $verify(
                 $request,
                 new HttpResource(
                     'foo',
@@ -254,7 +253,7 @@ class ContentTypeVerifierTest extends TestCase
 
     public function testDoesntThrowWhenNoContentType()
     {
-        $verifier = new ContentTypeVerifier(
+        $verify = new ContentTypeVerifier(
             new Formats(
                 (new Map('string', Format::class))
                     ->put(
@@ -286,9 +285,8 @@ class ContentTypeVerifierTest extends TestCase
             $this->createMock(Files::class)
         );
 
-        $this->assertSame(
-            null,
-            $verifier->verify(
+        $this->assertNull(
+            $verify(
                 $request,
                 new HttpResource(
                     'foo',

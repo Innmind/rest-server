@@ -23,12 +23,12 @@ class DefaultTranslatorTest extends TestCase
 
     public function testTranslate()
     {
-        $translator = new DefaultTranslator;
+        $translate = new DefaultTranslator;
 
         $spec = (new Filter('range', [0, 42]))
             ->and(new Filter('foo', 'bar'));
 
-        $query = $translator->translate($spec);
+        $query = $translate($spec);
 
         $this->assertInstanceOf(QueryInterface::class, $query);
         $this->assertSame(
@@ -42,12 +42,12 @@ class DefaultTranslatorTest extends TestCase
      */
     public function testThrowWhenOrConditionFound()
     {
-        $translator = new DefaultTranslator;
+        $translate = new DefaultTranslator;
 
         $spec = (new Filter('range', [0, 42]))
             ->or(new Filter('foo', 'bar'));
 
-        $translator->translate($spec);
+        $translate($spec);
     }
 
     /**
@@ -55,10 +55,10 @@ class DefaultTranslatorTest extends TestCase
      */
     public function testThrowWhenNotConditionFound()
     {
-        $translator = new DefaultTranslator;
+        $translate = new DefaultTranslator;
 
         $spec = (new Filter('range', [0, 42]))->not();
 
-        $translator->translate($spec);
+        $translate($spec);
     }
 }

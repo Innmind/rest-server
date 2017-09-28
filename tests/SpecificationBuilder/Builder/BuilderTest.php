@@ -86,10 +86,10 @@ class BuilderTest extends TestCase
             true,
             new Map('string', 'string')
         );
-        $builder = new Builder;
+        $build = new Builder;
 
-        $this->assertInstanceOf(BuilderInterface::class, $builder);
-        $spec = $builder->buildFrom($request, $definition);
+        $this->assertInstanceOf(BuilderInterface::class, $build);
+        $spec = $build($request, $definition);
         $this->assertInstanceOf(AndFilter::class, $spec);
         $this->assertSame('foo', $spec->left()->property());
         $this->assertSame('bar', $spec->left()->value());
@@ -128,9 +128,9 @@ class BuilderTest extends TestCase
             true,
             new Map('string', 'string')
         );
-        $builder = new Builder;
+        $build = new Builder;
 
-        $spec = $builder->buildFrom($request, $definition);
+        $spec = $build($request, $definition);
     }
 
     /**
@@ -160,8 +160,8 @@ class BuilderTest extends TestCase
             true,
             new Map('string', 'string')
         );
-        $builder = new Builder;
+        $build = new Builder;
 
-        $spec = $builder->buildFrom($request, $definition);
+        $spec = $build($request, $definition);
     }
 }

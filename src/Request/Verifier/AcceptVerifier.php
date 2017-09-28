@@ -33,7 +33,7 @@ final class AcceptVerifier implements Verifier
      *
      * @throws NotAcceptable
      */
-    public function verify(
+    public function __invoke(
         ServerRequest $request,
         HttpResource $definition
     ): void {

@@ -16,7 +16,7 @@ interface LinkBuilder
      *
      * @return MapInterface<string, HeaderInterface>
      */
-    public function build(
+    public function __invoke(
         ServerRequest $request,
         Reference $from,
         MapInterface $tos

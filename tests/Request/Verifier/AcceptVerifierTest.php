@@ -62,7 +62,7 @@ class AcceptVerifierTest extends TestCase
      */
     public function testThrowWhenHeaderNotAccepted()
     {
-        $verifier = new AcceptVerifier(
+        $verify = new AcceptVerifier(
             new Formats(
                 (new Map('string', Format::class))
                     ->put(
@@ -101,7 +101,7 @@ class AcceptVerifierTest extends TestCase
             $this->createMock(Files::class)
         );
 
-        $verifier->verify(
+        $verify(
             $request,
             new HttpResource(
                 'foo',
@@ -118,7 +118,7 @@ class AcceptVerifierTest extends TestCase
 
     public function testDoesntThrowWhenAcceptMediaType()
     {
-        $verifier = new AcceptVerifier(
+        $verify = new AcceptVerifier(
             new Formats(
                 (new Map('string', Format::class))
                     ->put(
@@ -157,9 +157,8 @@ class AcceptVerifierTest extends TestCase
             $this->createMock(Files::class)
         );
 
-        $this->assertSame(
-            null,
-            $verifier->verify(
+        $this->assertNull(
+            $verify(
                 $request,
                 new HttpResource(
                     'foo',

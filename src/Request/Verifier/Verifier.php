@@ -12,7 +12,7 @@ interface Verifier
      * A verifier must throw an exception if the request is not coherent with
      * the action it is asked to do or the server can't answer to it
      */
-    public function verify(
+    public function __invoke(
         ServerRequest $request,
         HttpResource $definition
     ): void;

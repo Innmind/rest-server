@@ -28,13 +28,13 @@ class LocatorTest extends TestCase
 
     public function testLocate()
     {
-        $locator = new Locator(
+        $locate = new Locator(
             (new YamlLoader(new Types))->load(
                 (new Set('string'))->add('fixtures/mapping.yml')
             )
         );
 
-        $resource = $locator->locate('top_dir.sub_dir.res');
+        $resource = $locate('top_dir.sub_dir.res');
 
         $this->assertInstanceOf(HttpResource::class, $resource);
         $this->assertSame('res', $resource->name());
@@ -45,12 +45,12 @@ class LocatorTest extends TestCase
      */
     public function testThrowWhenResourceNotFound()
     {
-        $locator = new Locator(
+        $locate = new Locator(
             (new YamlLoader(new Types))->load(
                 (new Set('string'))->add('fixtures/mapping.yml')
             )
         );
 
-        $locator->locate('unknown');
+        $locate('unknown');
     }
 }

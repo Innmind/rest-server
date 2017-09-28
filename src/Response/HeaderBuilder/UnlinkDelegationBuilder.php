@@ -26,7 +26,7 @@ final class UnlinkDelegationBuilder implements UnlinkBuilder
     /**
      * {@inheritdoc}
      */
-    public function build(
+    public function __invoke(
         ServerRequest $request,
         Reference $from,
         MapInterface $tos
@@ -44,8 +44,8 @@ final class UnlinkDelegationBuilder implements UnlinkBuilder
 
         $headers = new Map('string', Header::class);
 
-        foreach ($this->builders as $builder) {
-            $headers = $headers->merge($builder->build(
+        foreach ($this->builders as $build) {
+            $headers = $headers->merge($build(
                 $request,
                 $from,
                 $tos

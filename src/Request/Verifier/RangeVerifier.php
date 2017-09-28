@@ -17,7 +17,7 @@ final class RangeVerifier implements Verifier
      *
      * @throws PreconditionFailed
      */
-    public function verify(
+    public function __invoke(
         ServerRequest $request,
         HttpResource $definition
     ): void {

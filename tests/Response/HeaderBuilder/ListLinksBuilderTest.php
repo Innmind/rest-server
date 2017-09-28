@@ -46,9 +46,9 @@ class ListLinksBuilderTest extends TestCase
 
     public function testBuild()
     {
-        $builder = new ListLinksBuilder;
+        $build = new ListLinksBuilder;
 
-        $headers = $builder->build(
+        $headers = $build(
             (new Set(IdentityInterface::class))
                 ->add(new Id(24))
                 ->add(new Id(42)),
@@ -88,9 +88,9 @@ class ListLinksBuilderTest extends TestCase
 
     public function testBuildWithoutIdentities()
     {
-        $builder = new ListLinksBuilder;
+        $build = new ListLinksBuilder;
 
-        $headers = $builder->build(
+        $headers = $build(
             new Set(IdentityInterface::class),
             new ServerRequest(
                 Url::fromString('/foo/bar/'),

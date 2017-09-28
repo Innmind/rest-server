@@ -14,7 +14,7 @@ final class QueryExtractor implements Extractor
     /**
      * {@inheritdoc}
      */
-    public function extract(ServerRequest $request): Range
+    public function __invoke(ServerRequest $request): Range
     {
         if (
             !$request->query()->has('range') ||

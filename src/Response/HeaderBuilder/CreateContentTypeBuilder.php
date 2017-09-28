@@ -26,7 +26,7 @@ final class CreateContentTypeBuilder implements CreateBuilder
     /**
      * {@inheritdoc}
      */
-    public function build(
+    public function __invoke(
         Identity $identity,
         ServerRequest $request,
         HttpResource $definition,

@@ -29,7 +29,7 @@ final class UpdateDelegationBuilder implements UpdateBuilder
     /**
      * {@inheritdoc}
      */
-    public function build(
+    public function __invoke(
         ServerRequest $request,
         HttpResource $definition,
         Identity $identity,
@@ -37,8 +37,8 @@ final class UpdateDelegationBuilder implements UpdateBuilder
     ): MapInterface {
         $headers = new Map('string', Header::class);
 
-        foreach ($this->builders as $builder) {
-            $headers = $headers->merge($builder->build(
+        foreach ($this->builders as $build) {
+            $headers = $headers->merge($build(
                 $request,
                 $definition,
                 $identity,

@@ -37,9 +37,9 @@ class ListRangeBuilderTest extends TestCase
 
     public function testDoesntBuild()
     {
-        $builder = new ListRangeBuilder;
+        $build = new ListRangeBuilder;
 
-        $headers = $builder->build(
+        $headers = $build(
             new Set(IdentityInterface::class),
             $this->createMock(ServerRequest::class),
             new HttpResource(
@@ -62,9 +62,9 @@ class ListRangeBuilderTest extends TestCase
 
     public function testBuildWithoutRange()
     {
-        $builder = new ListRangeBuilder;
+        $build = new ListRangeBuilder;
 
-        $headers = $builder->build(
+        $headers = $build(
             new Set(IdentityInterface::class),
             $this->createMock(ServerRequest::class),
             new HttpResource(
@@ -91,9 +91,9 @@ class ListRangeBuilderTest extends TestCase
 
     public function testBuildLastRange()
     {
-        $builder = new ListRangeBuilder;
+        $build = new ListRangeBuilder;
 
-        $headers = $builder->build(
+        $headers = $build(
             (new Set(IdentityInterface::class))
                 ->add(new Id(42)),
             $this->createMock(ServerRequest::class),
@@ -127,9 +127,9 @@ class ListRangeBuilderTest extends TestCase
 
     public function testBuildFirstRange()
     {
-        $builder = new ListRangeBuilder;
+        $build = new ListRangeBuilder;
 
-        $headers = $builder->build(
+        $headers = $build(
             (new Set(IdentityInterface::class))
                 ->add(new Id(42))
                 ->add(new Id(43))

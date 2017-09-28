@@ -14,7 +14,7 @@ final class HeaderExtractor implements Extractor
     /**
      * {@inheritdoc}
      */
-    public function extract(ServerRequest $request): Range
+    public function __invoke(ServerRequest $request): Range
     {
         if (!$request->headers()->has('Range')) {
             throw new RangeNotFound;

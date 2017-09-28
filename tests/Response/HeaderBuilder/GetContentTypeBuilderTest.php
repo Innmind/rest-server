@@ -42,11 +42,11 @@ use PHPUnit\Framework\TestCase;
 
 class GetContentTypeBuilderTest extends TestCase
 {
-    private $builder;
+    private $build;
 
     public function setUp()
     {
-        $this->builder = new GetContentTypeBuilder(
+        $this->build = new GetContentTypeBuilder(
             new Formats(
                 (new Map('string', Format::class))
                     ->put(
@@ -74,12 +74,12 @@ class GetContentTypeBuilderTest extends TestCase
 
     public function testInterface()
     {
-        $this->assertInstanceOf(GetBuilder::class, $this->builder);
+        $this->assertInstanceOf(GetBuilder::class, $this->build);
     }
 
     public function testBuild()
     {
-        $headers = $this->builder->build(
+        $headers = ($this->build)(
             $this->createMock(HttpResourceInterface::class),
             new ServerRequest(
                 $this->createMock(UrlInterface::class),

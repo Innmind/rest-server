@@ -30,7 +30,7 @@ final class Locator
         $this->cache = new Map('string', HttpResource::class);
     }
 
-    public function locate(string $path): HttpResource
+    public function __invoke(string $path): HttpResource
     {
         if ($this->cache->contains($path)) {
             return $this->cache->get($path);

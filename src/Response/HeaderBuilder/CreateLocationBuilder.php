@@ -25,7 +25,7 @@ final class CreateLocationBuilder implements CreateBuilder
     /**
      * {@inheritdoc}
      */
-    public function build(
+    public function __invoke(
         Identity $identity,
         ServerRequest $request,
         HttpResource $definition,

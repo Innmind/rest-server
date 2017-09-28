@@ -29,7 +29,7 @@ final class ListContentTypeBuilder implements ListBuilder
     /**
      * {@inheritdoc}
      */
-    public function build(
+    public function __invoke(
         SetInterface $identities,
         ServerRequest $request,
         HttpResource $definition,

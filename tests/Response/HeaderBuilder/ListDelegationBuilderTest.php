@@ -27,10 +27,10 @@ class ListDelegationBuilderTest extends TestCase
 {
     public function testInterface()
     {
-        $builder = new ListDelegationBuilder;
+        $build = new ListDelegationBuilder;
 
-        $this->assertInstanceOf(ListBuilder::class, $builder);
-        $headers = $builder->build(
+        $this->assertInstanceOf(ListBuilder::class, $build);
+        $headers = $build(
             new Set(IdentityInterface::class),
             $this->createMock(ServerRequest::class),
             new Httpresource(
@@ -55,9 +55,9 @@ class ListDelegationBuilderTest extends TestCase
      */
     public function testThrowWhenInvalidIdentities()
     {
-        $builder = new ListDelegationBuilder;
+        $build = new ListDelegationBuilder;
 
-        $builder->build(
+        $build(
             new Set('object'),
             $this->createMock(ServerRequest::class),
             new Httpresource(
@@ -75,24 +75,24 @@ class ListDelegationBuilderTest extends TestCase
 
     public function testBuild()
     {
-        $builder = new ListDelegationBuilder(
+        $build = new ListDelegationBuilder(
             $mock1 = $this->createMock(ListBuilder::class),
             $mock2 = $this->createMock(ListBuilder::class)
         );
         $mock1
-            ->method('build')
+            ->method('__invoke')
             ->willReturn(
                 (new Map('string', Header::class))
                     ->put('foo', $this->createMock(Header::class))
             );
         $mock2
-            ->method('build')
+            ->method('__invoke')
             ->willReturn(
                 (new Map('string', Header::class))
                     ->put('bar', $this->createMock(Header::class))
             );
 
-        $headers = $builder->build(
+        $headers = $build(
             new Set(IdentityInterface::class),
             $this->createMock(ServerRequest::class),
             new Httpresource(

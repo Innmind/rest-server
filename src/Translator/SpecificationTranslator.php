@@ -8,5 +8,5 @@ use Innmind\Url\QueryInterface;
 
 interface SpecificationTranslator
 {
-    public function translate(SpecificationInterface $specification): QueryInterface;
+    public function __invoke(SpecificationInterface $specification): QueryInterface;
 }

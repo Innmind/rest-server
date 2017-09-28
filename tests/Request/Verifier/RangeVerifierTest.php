@@ -45,7 +45,7 @@ class RangeVerifierTest extends TestCase
      */
     public function testThrowWhenUsingRangeOnNonGETRequest()
     {
-        $verifier = new RangeVerifier;
+        $verify = new RangeVerifier;
         $headers = $this->createMock(Headers::class);
         $headers
             ->method('has')
@@ -65,7 +65,7 @@ class RangeVerifierTest extends TestCase
             $this->createMock(Files::class)
         );
 
-        $verifier->verify(
+        $verify(
             $request,
             new HttpResource(
                 'foo',
@@ -85,7 +85,7 @@ class RangeVerifierTest extends TestCase
      */
     public function testThrowWhenUsingRangeOnNonRageableResource()
     {
-        $verifier = new RangeVerifier;
+        $verify = new RangeVerifier;
         $headers = $this->createMock(Headers::class);
         $headers
             ->method('has')
@@ -105,7 +105,7 @@ class RangeVerifierTest extends TestCase
             $this->createMock(Files::class)
         );
 
-        $verifier->verify(
+        $verify(
             $request,
             new HttpResource(
                 'foo',
@@ -122,7 +122,7 @@ class RangeVerifierTest extends TestCase
 
     public function testVerify()
     {
-        $verifier = new RangeVerifier;
+        $verify = new RangeVerifier;
         $headers = $this->createMock(Headers::class);
         $headers
             ->method('has')
@@ -142,9 +142,8 @@ class RangeVerifierTest extends TestCase
             $this->createMock(Files::class)
         );
 
-        $this->assertSame(
-            null,
-            $verifier->verify(
+        $this->assertNull(
+            $verify(
                 $request,
                 new HttpResource(
                     'foo',
@@ -176,9 +175,8 @@ class RangeVerifierTest extends TestCase
             $this->createMock(Files::class)
         );
 
-        $this->assertSame(
-            null,
-            $verifier->verify(
+        $this->assertNull(
+            $verify(
                 $request,
                 new HttpResource(
                     'foo',

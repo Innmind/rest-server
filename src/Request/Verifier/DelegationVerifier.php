@@ -18,12 +18,12 @@ final class DelegationVerifier implements Verifier
     /**
      * {@inheritdoc}
      */
-    public function verify(
+    public function __invoke(
         ServerRequest $request,
         HttpResource $definition
     ): void {
-        foreach ($this->verifiers as $verifier) {
-            $verifier->verify($request, $definition);
+        foreach ($this->verifiers as $verify) {
+            $verify($request, $definition);
         }
     }
 }

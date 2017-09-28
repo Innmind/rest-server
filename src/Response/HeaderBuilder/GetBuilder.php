@@ -21,7 +21,7 @@ interface GetBuilder
      *
      * @return MapInterface<string, HeaderInterface>
      */
-    public function build(
+    public function __invoke(
         HttpResourceInterface $resource,
         ServerRequest $request,
         HttpResource $definition,

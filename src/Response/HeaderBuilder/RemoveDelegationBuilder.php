@@ -28,15 +28,15 @@ final class RemoveDelegationBuilder implements RemoveBuilder
     /**
      * {@inheritdoc}
      */
-    public function build(
+    public function __invoke(
         ServerRequest $request,
         HttpResource $definition,
         Identity $identity
     ): MapInterface {
         $headers = new Map('string', Header::class);
 
-        foreach ($this->builders as $builder) {
-            $headers = $headers->merge($builder->build(
+        foreach ($this->builders as $build) {
+            $headers = $headers->merge($build(
                 $request,
                 $definition,
                 $identity

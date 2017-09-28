@@ -17,5 +17,5 @@ interface Extractor
      *
      * @return Range
      */
-    public function extract(ServerRequest $request): Range;
+    public function __invoke(ServerRequest $request): Range;
 }

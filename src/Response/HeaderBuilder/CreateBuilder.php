@@ -21,7 +21,7 @@ interface CreateBuilder
      *
      * @return MapInterface<string, HeaderInterface>
      */
-    public function build(
+    public function __invoke(
         Identity $identity,
         ServerRequest $request,
         HttpResource $definition,

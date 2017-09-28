@@ -23,18 +23,18 @@ class DelegationExtractorTest extends TestCase
 
     public function testExtract()
     {
-        $extractor = new DelegationExtractor(
+        $extract = new DelegationExtractor(
             $extractor1 = $this->createMock(Extractor::class),
             $extractor2 = $this->createMock(Extractor::class)
         );
         $extractor1
-            ->method('extract')
+            ->method('__invoke')
             ->will($this->throwException(new RangeNotFound));
         $extractor2
-            ->method('extract')
+            ->method('__invoke')
             ->willReturn($expected = new Range(0, 42));
 
-        $range = $extractor->extract(
+        $range = $extract(
             $this->createMock(ServerRequest::class)
         );
 
@@ -46,7 +46,7 @@ class DelegationExtractorTest extends TestCase
      */
     public function testThrowWhenRangeNotFound()
     {
-        (new DelegationExtractor)->extract(
+        (new DelegationExtractor)(
             $this->createMock(ServerRequest::class)
         );
     }

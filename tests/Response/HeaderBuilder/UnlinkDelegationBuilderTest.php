@@ -28,10 +28,10 @@ class UnlinkDelegationBuilderTest extends TestCase
 {
     public function testInterface()
     {
-        $builder = new UnlinkDelegationBuilder;
+        $build = new UnlinkDelegationBuilder;
 
-        $this->assertInstanceOf(UnlinkBuilder::class, $builder);
-        $headers = $builder->build(
+        $this->assertInstanceOf(UnlinkBuilder::class, $build);
+        $headers = $build(
             $this->createMock(ServerRequest::class),
             new Reference(
                 new Httpresource(
@@ -59,9 +59,9 @@ class UnlinkDelegationBuilderTest extends TestCase
      */
     public function testThrowWhenInvalidTos()
     {
-        $builder = new UnlinkDelegationBuilder;
+        $build = new UnlinkDelegationBuilder;
 
-        $builder->build(
+        $build(
             $this->createMock(ServerRequest::class),
             new Reference(
                 new Httpresource(
@@ -82,24 +82,24 @@ class UnlinkDelegationBuilderTest extends TestCase
 
     public function testBuild()
     {
-        $builder = new UnlinkDelegationBuilder(
+        $build = new UnlinkDelegationBuilder(
             $mock1 = $this->createMock(UnlinkBuilder::class),
             $mock2 = $this->createMock(UnlinkBuilder::class)
         );
         $mock1
-            ->method('build')
+            ->method('__invoke')
             ->willReturn(
                 (new Map('string', Header::class))
                     ->put('foo', $this->createMock(Header::class))
             );
         $mock2
-            ->method('build')
+            ->method('__invoke')
             ->willReturn(
                 (new Map('string', Header::class))
                     ->put('bar', $this->createMock(Header::class))
             );
 
-        $headers = $builder->build(
+        $headers = $build(
             $this->createMock(ServerRequest::class),
             new Reference(
                 new Httpresource(
