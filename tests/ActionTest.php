@@ -11,26 +11,28 @@ class ActionTest extends TestCase
 {
     public function testInterface()
     {
-        $action = new Action(Action::LIST);
+        $action = Action::list();
 
-        $this->assertSame(Action::LIST, (string) $action);
-        $this->assertTrue($action->equals(new Action(Action::LIST)));
-        $this->assertFalse($action->equals(new Action(Action::GET)));
+        $this->assertSame('list', (string) $action);
+        $this->assertTrue($action->equals(Action::list()));
+        $this->assertFalse($action->equals(Action::get()));
+        $this->assertSame(Action::list(), Action::list());
         $all = Action::all();
         $this->assertInstanceOf(SetInterface::class, $all);
-        $this->assertSame('string', (string) $all->type());
+        $this->assertSame(Action::class, (string) $all->type());
         $this->assertSame(8, $all->size());
         $this->assertSame(
-            ['list', 'get', 'create', 'update', 'remove', 'link', 'unlink', 'options'],
+            [
+                Action::list(),
+                Action::get(),
+                Action::create(),
+                Action::update(),
+                Action::remove(),
+                Action::link(),
+                Action::unlink(),
+                Action::options(),
+            ],
             $all->toPrimitive()
         );
-    }
-
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\DomainException
-     */
-    public function testThrowWhenInvalidAction()
-    {
-        new Action('foo');
     }
 }
