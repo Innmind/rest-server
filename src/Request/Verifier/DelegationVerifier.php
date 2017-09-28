@@ -21,7 +21,7 @@ final class DelegationVerifier implements Verifier
     public function verify(
         ServerRequest $request,
         HttpResource $definition
-    ) {
+    ): void {
         foreach ($this->verifiers as $verifier) {
             $verifier->verify($request, $definition);
         }

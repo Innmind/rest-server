@@ -37,7 +37,7 @@ final class ContentTypeVerifier implements Verifier
     public function verify(
         ServerRequest $request,
         HttpResource $definition
-    ) {
+    ): void {
         if (
             !$request->headers()->has('Content-Type') ||
             !in_array(

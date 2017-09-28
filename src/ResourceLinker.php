@@ -8,11 +8,8 @@ use Innmind\Immutable\MapInterface;
 interface ResourceLinker
 {
     /**
-     * @param Reference $from
      * @param MapInterface<Reference, MapInterface<string, ParameterInterface>> $tos
      *     All relationships must be created atomically (all or nothing)
-     *
-     * @return void
      */
-    public function __invoke(Reference $from, MapInterface $tos);
+    public function __invoke(Reference $from, MapInterface $tos): void;
 }

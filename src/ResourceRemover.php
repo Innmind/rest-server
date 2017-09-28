@@ -7,11 +7,8 @@ use Innmind\Rest\Server\Definition\HttpResource as ResourceDefinition;
 
 interface ResourceRemover
 {
-    /**
-     * @return void
-     */
     public function __invoke(
         ResourceDefinition $definition,
         Identity $identity
-    );
+    ): void;
 }

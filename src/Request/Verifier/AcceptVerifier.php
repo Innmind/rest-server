@@ -36,7 +36,7 @@ final class AcceptVerifier implements Verifier
     public function verify(
         ServerRequest $request,
         HttpResource $definition
-    ) {
+    ): void {
         $types = $this
             ->formats
             ->mediaTypes()

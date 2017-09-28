@@ -11,11 +11,9 @@ interface Verifier
     /**
      * A verifier must throw an exception if the request is not coherent with
      * the action it is asked to do or the server can't answer to it
-     *
-     * @return void
      */
     public function verify(
         ServerRequest $request,
         HttpResource $definition
-    );
+    ): void;
 }

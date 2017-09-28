@@ -20,7 +20,7 @@ final class RangeVerifier implements Verifier
     public function verify(
         ServerRequest $request,
         HttpResource $definition
-    ) {
+    ): void {
         if (
             (string) $request->method() !== Method::GET &&
             $request->headers()->has('Range')

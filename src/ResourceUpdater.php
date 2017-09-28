@@ -7,12 +7,9 @@ use Innmind\Rest\Server\Definition\HttpResource as ResourceDefinition;
 
 interface ResourceUpdater
 {
-    /**
-     * @return void
-     */
     public function __invoke(
         ResourceDefinition $definition,
         Identity $identity,
         HttpResource $resource
-    );
+    ): void;
 }
