@@ -5,61 +5,49 @@ namespace Tests\Innmind\Rest\Server\RangeExtractor;
 
 use Innmind\Rest\Server\{
     RangeExtractor\DelegationExtractor,
-    RangeExtractor\ExtractorInterface,
-    Exception\RangeNotFoundException,
+    RangeExtractor\Extractor,
+    Exception\RangeNotFound,
     Request\Range
 };
-use Innmind\Http\Message\ServerRequestInterface;
-use Innmind\Immutable\Set;
+use Innmind\Http\Message\ServerRequest;
 use PHPUnit\Framework\TestCase;
 
 class DelegationExtractorTest extends TestCase
 {
     public function testInterface()
     {
-        $extractor = new DelegationExtractor(
-            new Set(ExtractorInterface::class)
-        );
+        $extractor = new DelegationExtractor;
 
-        $this->assertInstanceOf(ExtractorInterface::class, $extractor);
-    }
-
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
-     */
-    public function testThrowWhenInvalidExtractorMap()
-    {
-        new DelegationExtractor(new Set('int'));
+        $this->assertInstanceOf(Extractor::class, $extractor);
     }
 
     public function testExtract()
     {
-        $extractor = new DelegationExtractor(
-            (new Set(ExtractorInterface::class))
-                ->add($extractor1 = $this->createMock(ExtractorInterface::class))
-                ->add($extractor2 = $this->createMock(ExtractorInterface::class))
+        $extract = new DelegationExtractor(
+            $extractor1 = $this->createMock(Extractor::class),
+            $extractor2 = $this->createMock(Extractor::class)
         );
         $extractor1
-            ->method('extract')
-            ->will($this->throwException(new RangeNotFoundException));
+            ->method('__invoke')
+            ->will($this->throwException(new RangeNotFound));
         $extractor2
-            ->method('extract')
+            ->method('__invoke')
             ->willReturn($expected = new Range(0, 42));
 
-        $range = $extractor->extract(
-            $this->createMock(ServerRequestInterface::class)
+        $range = $extract(
+            $this->createMock(ServerRequest::class)
         );
 
         $this->assertSame($expected, $range);
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\RangeNotFoundException
+     * @expectedException Innmind\Rest\Server\Exception\RangeNotFound
      */
     public function testThrowWhenRangeNotFound()
     {
-        (new DelegationExtractor(new Set(ExtractorInterface::class)))->extract(
-            $this->createMock(ServerRequestInterface::class)
+        (new DelegationExtractor)(
+            $this->createMock(ServerRequest::class)
         );
     }
 }

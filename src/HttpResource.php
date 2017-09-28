@@ -5,67 +5,26 @@ namespace Innmind\Rest\Server;
 
 use Innmind\Rest\Server\{
     Definition\HttpResource as ResourceDefinition,
-    Exception\InvalidArgumentException
+    HttpResource\Property
 };
 use Innmind\Immutable\MapInterface;
 
-final class HttpResource implements HttpResourceInterface
+interface HttpResource
 {
-    private $definition;
-    private $properties;
-
-    public function __construct(
-        ResourceDefinition $definition,
-        MapInterface $properties
-    ) {
-        if (
-            (string) $properties->keyType() !== 'string' ||
-            (string) $properties->valueType() !== Property::class
-        ) {
-            throw new InvalidArgumentException;
-        }
-
-        $this->definition = $definition;
-        $this->properties = $properties;
-
-        $this
-            ->properties
-            ->foreach(function(string $name, Property $property) {
-                if (!$this->definition->properties()->contains($name)) {
-                    throw new InvalidArgumentException;
-                }
-            });
-    }
+    public function definition(): ResourceDefinition;
+    public function property(string $name): Property;
 
     /**
-     * {@inheritdoc}
+     * Check if the wished property is set
+     *
+     * @param string $name
+     *
+     * @return bool
      */
-    public function definition(): ResourceDefinition
-    {
-        return $this->definition;
-    }
+    public function has(string $name): bool;
 
     /**
-     * {@inheritdoc}
+     * @return MapInterface<string, Property>
      */
-    public function property(string $name): Property
-    {
-        return $this->properties->get($name);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function has(string $name): bool
-    {
-        return $this->properties->contains($name);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function properties(): MapInterface
-    {
-        return $this->properties;
-    }
+    public function properties(): MapInterface;
 }

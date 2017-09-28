@@ -3,8 +3,11 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Definition;
 
-use Innmind\Rest\Server\Exception\InvalidArgumentException;
-use Innmind\Immutable\SetInterface;
+use Innmind\Immutable\{
+    Sequence,
+    Set,
+    SetInterface
+};
 
 final class Access
 {
@@ -14,13 +17,14 @@ final class Access
 
     private $mask;
 
-    public function __construct(SetInterface $mask)
+    public function __construct(string ...$mask)
     {
-        if ((string) $mask->type() !== 'string') {
-            throw new InvalidArgumentException;
-        }
-
-        $this->mask = $mask;
+        $this->mask = (new Sequence(...$mask))->reduce(
+            new Set('string'),
+            static function (Set $carry, string $element): Set {
+                return $carry->add($element);
+            }
+        );
     }
 
     public function isReadable(): bool

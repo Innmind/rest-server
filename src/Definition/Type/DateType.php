@@ -4,11 +4,10 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\{
-    Definition\TypeInterface,
+    Definition\Type,
     Definition\Types,
     Exception\DenormalizationException,
-    Exception\NormalizationException,
-    Exception\InvalidArgumentException
+    Exception\NormalizationException
 };
 use Innmind\Immutable\{
     MapInterface,
@@ -16,7 +15,7 @@ use Innmind\Immutable\{
     Set
 };
 
-final class DateType implements TypeInterface
+final class DateType implements Type
 {
     private static $identifiers;
     private $format = \DateTime::ISO8601;
@@ -24,13 +23,13 @@ final class DateType implements TypeInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromConfig(MapInterface $config, Types $types): TypeInterface
+    public static function fromConfig(MapInterface $config, Types $types): Type
     {
         if (
             (string) $config->keyType() !== 'scalar' ||
             (string) $config->valueType() !== 'variable'
         ) {
-            throw new InvalidArgumentException;
+            throw new \TypeError('Argument 1 must be of type MapInterface<scalar, variable>');
         }
 
         $type = new self;

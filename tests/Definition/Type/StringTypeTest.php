@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\Definition\{
     Type\StringType,
-    TypeInterface,
+    Type,
     Types
 };
 use Innmind\Immutable\Map;
@@ -15,7 +15,7 @@ class StringTypeTest extends TestCase
 {
     public function testInterface()
     {
-        $this->assertInstanceOf(TypeInterface::class, new StringType);
+        $this->assertInstanceOf(Type::class, new StringType);
         $this->assertSame(
             ['string'],
             StringType::identifiers()->toPrimitive()

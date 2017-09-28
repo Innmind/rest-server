@@ -56,7 +56,8 @@ class DirectoryTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 2 must be of type MapInterface<string, Innmind\Rest\Server\Definition\Directory>
      */
     public function testThrowWhenGivingInvalidChildren()
     {
@@ -68,7 +69,8 @@ class DirectoryTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Definition\HttpResource>
      */
     public function testThrowWhenGivingInvalidDefinitions()
     {

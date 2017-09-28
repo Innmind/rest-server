@@ -5,11 +5,10 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\Formats;
 use Innmind\Http\{
-    Message\ServerRequestInterface,
-    Header\HeaderInterface,
+    Message\ServerRequest,
+    Header,
     Header\ContentType,
-    Header\ContentTypeValue,
-    Header\ParameterInterface
+    Header\ContentTypeValue
 };
 use Innmind\Immutable\{
     MapInterface,
@@ -20,15 +19,15 @@ trait ContentTypeBuilder
 {
     /**
      * @param Formats $formats
-     * @param ServerRequestInterface $request
+     * @param ServerRequest $request
      *
-     * @return MapInterface<string, HeaderInterface>
+     * @return MapInterface<string, Header>
      */
     private function buildHeaderFrom(
         Formats $formats,
-        ServerRequestInterface $request
+        ServerRequest $request
     ): MapInterface {
-        $map = new Map('string', HeaderInterface::class);
+        $map = new Map('string', Header::class);
         $format = $formats->matching(
             (string) $request
                 ->headers()
@@ -42,8 +41,7 @@ trait ContentTypeBuilder
             new ContentType(
                 new ContentTypeValue(
                     $format->preferredMediaType()->topLevel(),
-                    $format->preferredMediaType()->subType(),
-                    new Map('string', ParameterInterface::class)
+                    $format->preferredMediaType()->subType()
                 )
             )
         );

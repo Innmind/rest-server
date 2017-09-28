@@ -8,14 +8,14 @@ use Innmind\Rest\Server\{
     Request\Range,
     Formats
 };
-use Innmind\Http\Message\ServerRequestInterface;
+use Innmind\Http\Message\ServerRequest;
 use Innmind\Specification\SpecificationInterface;
 use Innmind\Immutable\{
     SetInterface,
     MapInterface
 };
 
-final class ListContentTypeBuilder implements ListBuilderInterface
+final class ListContentTypeBuilder implements ListBuilder
 {
     use ContentTypeBuilder;
 
@@ -29,9 +29,9 @@ final class ListContentTypeBuilder implements ListBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function build(
+    public function __invoke(
         SetInterface $identities,
-        ServerRequestInterface $request,
+        ServerRequest $request,
         HttpResource $definition,
         SpecificationInterface $specification = null,
         Range $range = null

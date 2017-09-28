@@ -11,7 +11,7 @@ use Innmind\Rest\Server\{
     Definition\Type\FloatType,
     Definition\Type\IntType,
     Definition\Type\StringType,
-    Exception\InvalidArgumentException
+    Exception\DomainException
 };
 use Innmind\Immutable\{
     Map,
@@ -51,9 +51,9 @@ final class Types
     {
         $refl = new \ReflectionClass($type);
 
-        if (!$refl->implementsInterface(TypeInterface::class)) {
-            throw new InvalidArgumentException(sprintf(
-                'The type "%s" must implement TypeInterface',
+        if (!$refl->implementsInterface(Type::class)) {
+            throw new DomainException(sprintf(
+                'The type "%s" must implement Type',
                 $type
             ));
         }
@@ -85,15 +85,15 @@ final class Types
      * @param string $type
      * @param MapInterface<scalar, variable> $config
      *
-     * @return TypeInterface
+     * @return Type
      */
-    public function build(string $type, MapInterface $config): TypeInterface
+    public function build(string $type, MapInterface $config): Type
     {
         if (
             (string) $config->keyType() !== 'scalar' ||
             (string) $config->valueType() !== 'variable'
         ) {
-            throw new InvalidArgumentException;
+            throw new \TypeError('Argument 2 must be of type MapInterface<scalar, variable>');
         }
 
         return call_user_func(

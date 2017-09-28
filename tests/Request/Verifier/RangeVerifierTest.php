@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server\Request\Verifier;
 
 use Innmind\Rest\Server\{
     Request\Verifier\RangeVerifier,
-    Request\Verifier\VerifierInterface,
+    Request\Verifier\Verifier,
     Formats,
     Format\Format,
     Format\MediaType,
@@ -15,19 +15,18 @@ use Innmind\Rest\Server\{
     Definition\Property
 };
 use Innmind\Http\{
-    Message\ServerRequest,
-    Message\MethodInterface,
-    Message\EnvironmentInterface,
-    Message\CookiesInterface,
-    Message\FormInterface,
-    Message\QueryInterface,
-    Message\FilesInterface,
-    Message\Method,
-    HeadersInterface,
-    ProtocolVersionInterface
+    Message\ServerRequest\ServerRequest,
+    Message\Environment,
+    Message\Cookies,
+    Message\Form,
+    Message\Query,
+    Message\Files,
+    Message\Method\Method,
+    Headers,
+    ProtocolVersion
 };
 use Innmind\Url\UrlInterface;
-use Innmind\Filesystem\StreamInterface;
+use Innmind\Stream\Readable;
 use Innmind\Immutable\{
     Map,
     Set
@@ -38,16 +37,16 @@ class RangeVerifierTest extends TestCase
 {
     public function testInterface()
     {
-        $this->assertInstanceOf(VerifierInterface::class, new RangeVerifier);
+        $this->assertInstanceOf(Verifier::class, new RangeVerifier);
     }
 
     /**
-     * @expectedException Innmind\Http\Exception\Http\PreconditionFailedException
+     * @expectedException Innmind\Http\Exception\Http\PreconditionFailed
      */
     public function testThrowWhenUsingRangeOnNonGETRequest()
     {
-        $verifier = new RangeVerifier;
-        $headers = $this->createMock(HeadersInterface::class);
+        $verify = new RangeVerifier;
+        $headers = $this->createMock(Headers::class);
         $headers
             ->method('has')
             ->will($this->returnCallback(function(string $header) {
@@ -56,17 +55,17 @@ class RangeVerifierTest extends TestCase
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
             new Method('POST'),
-            $this->createMock(ProtocolVersionInterface::class),
+            $this->createMock(ProtocolVersion::class),
             $headers,
-            $this->createMock(StreamInterface::class),
-            $this->createMock(EnvironmentInterface::class),
-            $this->createMock(CookiesInterface::class),
-            $this->createMock(QueryInterface::class),
-            $this->createMock(FormInterface::class),
-            $this->createMock(FilesInterface::class)
+            $this->createMock(Readable::class),
+            $this->createMock(Environment::class),
+            $this->createMock(Cookies::class),
+            $this->createMock(Query::class),
+            $this->createMock(Form::class),
+            $this->createMock(Files::class)
         );
 
-        $verifier->verify(
+        $verify(
             $request,
             new HttpResource(
                 'foo',
@@ -82,12 +81,12 @@ class RangeVerifierTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Http\Exception\Http\PreconditionFailedException
+     * @expectedException Innmind\Http\Exception\Http\PreconditionFailed
      */
     public function testThrowWhenUsingRangeOnNonRageableResource()
     {
-        $verifier = new RangeVerifier;
-        $headers = $this->createMock(HeadersInterface::class);
+        $verify = new RangeVerifier;
+        $headers = $this->createMock(Headers::class);
         $headers
             ->method('has')
             ->will($this->returnCallback(function(string $header) {
@@ -96,17 +95,17 @@ class RangeVerifierTest extends TestCase
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
             new Method('GET'),
-            $this->createMock(ProtocolVersionInterface::class),
+            $this->createMock(ProtocolVersion::class),
             $headers,
-            $this->createMock(StreamInterface::class),
-            $this->createMock(EnvironmentInterface::class),
-            $this->createMock(CookiesInterface::class),
-            $this->createMock(QueryInterface::class),
-            $this->createMock(FormInterface::class),
-            $this->createMock(FilesInterface::class)
+            $this->createMock(Readable::class),
+            $this->createMock(Environment::class),
+            $this->createMock(Cookies::class),
+            $this->createMock(Query::class),
+            $this->createMock(Form::class),
+            $this->createMock(Files::class)
         );
 
-        $verifier->verify(
+        $verify(
             $request,
             new HttpResource(
                 'foo',
@@ -123,8 +122,8 @@ class RangeVerifierTest extends TestCase
 
     public function testVerify()
     {
-        $verifier = new RangeVerifier;
-        $headers = $this->createMock(HeadersInterface::class);
+        $verify = new RangeVerifier;
+        $headers = $this->createMock(Headers::class);
         $headers
             ->method('has')
             ->will($this->returnCallback(function(string $header) {
@@ -133,19 +132,18 @@ class RangeVerifierTest extends TestCase
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
             new Method('GET'),
-            $this->createMock(ProtocolVersionInterface::class),
+            $this->createMock(ProtocolVersion::class),
             $headers,
-            $this->createMock(StreamInterface::class),
-            $this->createMock(EnvironmentInterface::class),
-            $this->createMock(CookiesInterface::class),
-            $this->createMock(QueryInterface::class),
-            $this->createMock(FormInterface::class),
-            $this->createMock(FilesInterface::class)
+            $this->createMock(Readable::class),
+            $this->createMock(Environment::class),
+            $this->createMock(Cookies::class),
+            $this->createMock(Query::class),
+            $this->createMock(Form::class),
+            $this->createMock(Files::class)
         );
 
-        $this->assertSame(
-            null,
-            $verifier->verify(
+        $this->assertNull(
+            $verify(
                 $request,
                 new HttpResource(
                     'foo',
@@ -160,26 +158,25 @@ class RangeVerifierTest extends TestCase
             )
         );
 
-        $headers = $this->createMock(HeadersInterface::class);
+        $headers = $this->createMock(Headers::class);
         $headers
             ->method('has')
             ->willReturn(false);
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
             new Method('GET'),
-            $this->createMock(ProtocolVersionInterface::class),
+            $this->createMock(ProtocolVersion::class),
             $headers,
-            $this->createMock(StreamInterface::class),
-            $this->createMock(EnvironmentInterface::class),
-            $this->createMock(CookiesInterface::class),
-            $this->createMock(QueryInterface::class),
-            $this->createMock(FormInterface::class),
-            $this->createMock(FilesInterface::class)
+            $this->createMock(Readable::class),
+            $this->createMock(Environment::class),
+            $this->createMock(Cookies::class),
+            $this->createMock(Query::class),
+            $this->createMock(Form::class),
+            $this->createMock(Files::class)
         );
 
-        $this->assertSame(
-            null,
-            $verifier->verify(
+        $this->assertNull(
+            $verify(
                 $request,
                 new HttpResource(
                     'foo',

@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Definition;
 
-use Innmind\Rest\Server\Exception\InvalidArgumentException;
 use Innmind\Immutable\{
     MapInterface,
     Pair
@@ -23,11 +22,22 @@ final class Directory
     ) {
         if (
             (string) $children->keyType() !== 'string' ||
-            (string) $children->valueType() !== self::class ||
+            (string) $children->valueType() !== self::class
+        ) {
+            throw new \TypeError(sprintf(
+                'Argument 2 must be of type MapInterface<string, %s>',
+                self::class
+            ));
+        }
+
+        if (
             (string) $definitions->keyType() !== 'string' ||
             (string) $definitions->valueType() !== HttpResource::class
         ) {
-            throw new InvalidArgumentException;
+            throw new \TypeError(sprintf(
+                'Argument 3 must be of type MapInterface<string, %s>',
+                HttpResource::class
+            ));
         }
 
         $this->name = $name;

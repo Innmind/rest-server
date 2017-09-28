@@ -5,9 +5,9 @@ namespace Tests\Innmind\Rest\Server\Serializer\Normalizer;
 
 use Innmind\Rest\Server\{
     Serializer\Normalizer\HttpResourceNormalizer,
-    HttpResource,
-    HttpResourceInterface,
-    Property,
+    HttpResource\HttpResource,
+    HttpResource as HttpResourceInterface,
+    HttpResource\Property,
     Definition\HttpResource as ResourceDefinition,
     Definition\Identity,
     Definition\Property as PropertyDefinition,
@@ -61,11 +61,7 @@ class HttpResourceNormalizerTest extends TestCase
                     new PropertyDefinition(
                         'bar',
                         new StringType,
-                        new Access(
-                            (new Set('string'))
-                                ->add(Access::READ)
-                                ->add(Access::CREATE)
-                        ),
+                        new Access(Access::READ, Access::CREATE),
                         (new Set('string'))->add('baz'),
                         false
                     )
@@ -87,7 +83,7 @@ class HttpResourceNormalizerTest extends TestCase
             null,
             [
                 'definition' => $def,
-                'mask' => new Access((new Set('string'))->add(Access::CREATE)),
+                'mask' => new Access(Access::CREATE),
             ]
         );
 
@@ -145,11 +141,7 @@ class HttpResourceNormalizerTest extends TestCase
                     new PropertyDefinition(
                         'bar',
                         new StringType,
-                        new Access(
-                            (new Set('string'))
-                                ->add(Access::READ)
-                                ->add(Access::CREATE)
-                        ),
+                        new Access(Access::READ, Access::CREATE),
                         new Set('string'),
                         false
                     )
@@ -159,11 +151,7 @@ class HttpResourceNormalizerTest extends TestCase
                     new PropertyDefinition(
                         'baz',
                         new StringType,
-                        new Access(
-                            (new Set('string'))
-                                ->add(Access::READ)
-                                ->add(Access::CREATE)
-                        ),
+                        new Access(Access::READ, Access::CREATE),
                         new Set('string'),
                         false
                     )
@@ -173,9 +161,7 @@ class HttpResourceNormalizerTest extends TestCase
                     new PropertyDefinition(
                         'foo',
                         new StringType,
-                        new Access(
-                            (new Set('string'))->add(Access::READ)
-                        ),
+                        new Access(Access::READ),
                         new Set('string'),
                         false
                     )
@@ -185,9 +171,7 @@ class HttpResourceNormalizerTest extends TestCase
                     new PropertyDefinition(
                         'foobar',
                         new StringType,
-                        new Access(
-                            (new Set('string'))->add(Access::READ)
-                        ),
+                        new Access(Access::READ),
                         new Set('string'),
                         false
                     )
@@ -211,7 +195,7 @@ class HttpResourceNormalizerTest extends TestCase
                 null,
                 [
                     'definition' => $def,
-                    'mask' => new Access((new Set('string'))->add(Access::CREATE)),
+                    'mask' => new Access(Access::CREATE),
                 ]
             );
             $this->fail('It should throw an exception');
@@ -274,9 +258,7 @@ class HttpResourceNormalizerTest extends TestCase
                     new PropertyDefinition(
                         'bar',
                         new StringType,
-                        new Access(
-                            (new Set('string'))->add(Access::READ)
-                        ),
+                        new Access(Access::READ),
                         (new Set('string')),
                         false
                     )
@@ -286,9 +268,7 @@ class HttpResourceNormalizerTest extends TestCase
                     new PropertyDefinition(
                         'baz',
                         new StringType,
-                        new Access(
-                            (new Set('string'))->add(Access::CREATE)
-                        ),
+                        new Access(Access::CREATE),
                         (new Set('string')),
                         false
                     )
@@ -322,9 +302,7 @@ class HttpResourceNormalizerTest extends TestCase
                     new PropertyDefinition(
                         'bar',
                         new StringType,
-                        new Access(
-                            (new Set('string'))->add(Access::READ)
-                        ),
+                        new Access(Access::READ),
                         (new Set('string'))->add('baz'),
                         false
                     )

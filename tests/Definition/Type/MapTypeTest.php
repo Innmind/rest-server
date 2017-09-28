@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\Definition\{
     Type\MapType,
-    TypeInterface,
+    Type,
     Types
 };
 use Innmind\Immutable\{
@@ -18,7 +18,7 @@ class MapTypeTest extends TestCase
 {
     public function testInterface()
     {
-        $this->assertInstanceOf(TypeInterface::class, new MapType);
+        $this->assertInstanceOf(Type::class, new MapType);
         $this->assertSame(
             ['map'],
             MapType::identifiers()->toPrimitive()
@@ -134,7 +134,8 @@ class MapTypeTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 1 must be of type MapInterface<scalar, variable>
      */
     public function testThrowWhenInvalidConfigMap()
     {

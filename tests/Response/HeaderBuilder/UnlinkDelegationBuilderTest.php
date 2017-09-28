@@ -5,8 +5,8 @@ namespace Tests\Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Response\HeaderBuilder\UnlinkDelegationBuilder,
-    Response\HeaderBuilder\UnlinkBuilderInterface,
-    Identity,
+    Response\HeaderBuilder\UnlinkBuilder,
+    Identity\Identity,
     Reference,
     Definition\Httpresource,
     Definition\Identity as IdentityDefinition,
@@ -14,11 +14,10 @@ use Innmind\Rest\Server\{
     Definition\Gateway
 };
 use Innmind\Http\{
-    Message\ServerRequestInterface,
-    Header\HeaderInterface
+    Message\ServerRequest,
+    Header
 };
 use Innmind\Immutable\{
-    Set,
     Map,
     Collection,
     MapInterface
@@ -29,13 +28,11 @@ class UnlinkDelegationBuilderTest extends TestCase
 {
     public function testInterface()
     {
-        $builder = new UnlinkDelegationBuilder(
-            new Set(UnlinkBuilderInterface::class)
-        );
+        $build = new UnlinkDelegationBuilder;
 
-        $this->assertInstanceOf(UnlinkBuilderInterface::class, $builder);
-        $headers = $builder->build(
-            $this->createMock(ServerRequestInterface::class),
+        $this->assertInstanceOf(UnlinkBuilder::class, $build);
+        $headers = $build(
+            $this->createMock(ServerRequest::class),
             new Reference(
                 new Httpresource(
                     'foobar',
@@ -53,28 +50,19 @@ class UnlinkDelegationBuilderTest extends TestCase
         );
         $this->assertInstanceOf(MapInterface::class, $headers);
         $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(HeaderInterface::class, (string) $headers->valueType());
+        $this->assertSame(Header::class, (string) $headers->valueType());
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
-     */
-    public function testThrowWhenInvalidBuilderSet()
-    {
-        new UnlinkDelegationBuilder(new Set('object'));
-    }
-
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 3 must be of type MapInterface<Innmind\Rest\Server\Reference, Innmind\Immutable\MapInterface>
      */
     public function testThrowWhenInvalidTos()
     {
-        $builder = new UnlinkDelegationBuilder(
-            new Set(UnlinkBuilderInterface::class)
-        );
+        $build = new UnlinkDelegationBuilder;
 
-        $builder->build(
-            $this->createMock(ServerRequestInterface::class),
+        $build(
+            $this->createMock(ServerRequest::class),
             new Reference(
                 new Httpresource(
                     'foobar',
@@ -94,26 +82,25 @@ class UnlinkDelegationBuilderTest extends TestCase
 
     public function testBuild()
     {
-        $builder = new UnlinkDelegationBuilder(
-            (new Set(UnlinkBuilderInterface::class))
-                ->add($mock1 = $this->createMock(UnlinkBuilderInterface::class))
-                ->add($mock2 = $this->createMock(UnlinkBuilderInterface::class))
+        $build = new UnlinkDelegationBuilder(
+            $mock1 = $this->createMock(UnlinkBuilder::class),
+            $mock2 = $this->createMock(UnlinkBuilder::class)
         );
         $mock1
-            ->method('build')
+            ->method('__invoke')
             ->willReturn(
-                (new Map('string', HeaderInterface::class))
-                    ->put('foo', $this->createMock(HeaderInterface::class))
+                (new Map('string', Header::class))
+                    ->put('foo', $this->createMock(Header::class))
             );
         $mock2
-            ->method('build')
+            ->method('__invoke')
             ->willReturn(
-                (new Map('string', HeaderInterface::class))
-                    ->put('bar', $this->createMock(HeaderInterface::class))
+                (new Map('string', Header::class))
+                    ->put('bar', $this->createMock(Header::class))
             );
 
-        $headers = $builder->build(
-            $this->createMock(ServerRequestInterface::class),
+        $headers = $build(
+            $this->createMock(ServerRequest::class),
             new Reference(
                 new Httpresource(
                     'foobar',

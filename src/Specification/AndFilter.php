@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Specification;
 
-use Innmind\Rest\Server\HttpResourceInterface;
+use Innmind\Rest\Server\HttpResource;
 use Innmind\Specification\{
     SpecificationInterface,
     CompositeInterface,
@@ -51,7 +51,7 @@ final class AndFilter implements CompositeInterface
         return $this->operator;
     }
 
-    public function isSatisfiedBy(HttpResourceInterface $resource): bool
+    public function isSatisfiedBy(HttpResource $resource): bool
     {
         return $this->left->isSatisfiedBy($resource) && $this->right->isSatisfiedBy($resource);
     }

@@ -6,12 +6,11 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 use Innmind\Rest\Server\{
     Definition\HttpResource,
     Request\Range,
-    Exception\InvalidArgumentException,
-    IdentityInterface
+    Identity
 };
 use Innmind\Http\{
-    Message\ServerRequestInterface,
-    Header\HeaderInterface
+    Message\ServerRequest,
+    Header
 };
 use Innmind\Specification\SpecificationInterface;
 use Innmind\Immutable\{
@@ -20,57 +19,44 @@ use Innmind\Immutable\{
     Map
 };
 
-final class ListDelegationBuilder implements ListBuilderInterface
+final class ListDelegationBuilder implements ListBuilder
 {
     private $builders;
 
-    public function __construct(SetInterface $builders)
+    public function __construct(ListBuilder ...$builders)
     {
-        if ((string) $builders->type() !== ListBuilderInterface::class) {
-            throw new InvalidArgumentException;
-        }
-
         $this->builders = $builders;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function build(
+    public function __invoke(
         SetInterface $identities,
-        ServerRequestInterface $request,
+        ServerRequest $request,
         HttpResource $definition,
         SpecificationInterface $specification = null,
         Range $range = null
     ): MapInterface {
-        if ((string) $identities->type() !== IdentityInterface::class) {
-            throw new InvalidArgumentException;
+        if ((string) $identities->type() !== Identity::class) {
+            throw new \TypeError(sprintf(
+                'Argument 1 must be of type SetInterface<%s>',
+                Identity::class
+            ));
         }
 
-        return $this
-            ->builders
-            ->reduce(
-                new Map('string', HeaderInterface::class),
-                function(
-                    MapInterface $carry,
-                    ListBuilderInterface $builder
-                ) use (
-                    $identities,
-                    $request,
-                    $definition,
-                    $specification,
-                    $range
-                ): MapInterface {
-                    return $carry->merge(
-                        $builder->build(
-                            $identities,
-                            $request,
-                            $definition,
-                            $specification,
-                            $range
-                        )
-                    );
-                }
-            );
+        $headers = new Map('string', Header::class);
+
+        foreach ($this->builders as $build) {
+            $headers = $headers->merge($build(
+                $identities,
+                $request,
+                $definition,
+                $specification,
+                $range
+            ));
+        }
+
+        return $headers;
     }
 }

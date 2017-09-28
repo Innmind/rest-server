@@ -5,8 +5,8 @@ namespace Tests\Innmind\Rest\Server\Specification;
 
 use Innmind\Rest\Server\{
     Specification\Filter,
-    HttpResourceInterface,
-    Property
+    HttpResource,
+    HttpResource\Property
 };
 use Innmind\Specification\ComparatorInterface;
 use PHPUnit\Framework\TestCase;
@@ -21,7 +21,7 @@ class FilterTest extends TestCase
         $this->assertSame('foo', $filter->property());
         $this->assertSame('bar', $filter->value());
         $this->assertSame('==', $filter->sign());
-        $resource = $this->createMock(HttpResourceInterface::class);
+        $resource = $this->createMock(HttpResource::class);
         $resource
             ->method('property')
             ->willReturn(new Property('foo', 'bar'));

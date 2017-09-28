@@ -6,7 +6,8 @@ namespace Innmind\Rest\Server;
 use Innmind\Rest\Server\{
     Format\Format,
     Format\MediaType,
-    Exception\InvalidArgumentException
+    Exception\InvalidArgumentException,
+    Exception\DomainException
 };
 use Innmind\Immutable\{
     MapInterface,
@@ -24,10 +25,16 @@ final class Formats
     {
         if (
             (string) $formats->keyType() !== 'string' ||
-            (string) $formats->valueType() !== Format::class ||
-            $formats->size() === 0
+            (string) $formats->valueType() !== Format::class
         ) {
-            throw new InvalidArgumentException;
+            throw new \TypeError(sprintf(
+                'Argument 1 must be of type MapInterface<string, %s>',
+                Format::class
+            ));
+        }
+
+        if ($formats->size() === 0) {
+            throw new DomainException;
         }
 
         $this->formats = $formats;

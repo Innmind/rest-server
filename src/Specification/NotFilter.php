@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Specification;
 
-use Innmind\Rest\Server\HttpResourceInterface;
+use Innmind\Rest\Server\HttpResource;
 use Innmind\Specification\{
     NotInterface,
     SpecificationInterface
@@ -28,7 +28,7 @@ final class NotFilter implements NotInterface
         return $this->specification;
     }
 
-    public function isSatisfiedBy(HttpResourceInterface $resource): bool
+    public function isSatisfiedBy(HttpResource $resource): bool
     {
         return !$this->specification->isSatisfiedBy($resource);
     }

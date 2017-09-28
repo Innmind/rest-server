@@ -5,16 +5,16 @@ namespace Tests\Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Response\HeaderBuilder\ListDelegationBuilder,
-    Response\HeaderBuilder\ListBuilderInterface,
-    IdentityInterface,
+    Response\HeaderBuilder\ListBuilder,
+    Identity as IdentityInterface,
     Definition\Httpresource,
     Definition\Identity,
     Definition\Property,
     Definition\Gateway
 };
 use Innmind\Http\{
-    Message\ServerRequestInterface,
-    Header\HeaderInterface
+    Message\ServerRequest,
+    Header
 };
 use Innmind\Immutable\{
     Set,
@@ -27,14 +27,12 @@ class ListDelegationBuilderTest extends TestCase
 {
     public function testInterface()
     {
-        $builder = new ListDelegationBuilder(
-            new Set(ListBuilderInterface::class)
-        );
+        $build = new ListDelegationBuilder;
 
-        $this->assertInstanceOf(ListBuilderInterface::class, $builder);
-        $headers = $builder->build(
+        $this->assertInstanceOf(ListBuilder::class, $build);
+        $headers = $build(
             new Set(IdentityInterface::class),
-            $this->createMock(ServerRequestInterface::class),
+            $this->createMock(ServerRequest::class),
             new Httpresource(
                 'foobar',
                 new Identity('foo'),
@@ -48,29 +46,20 @@ class ListDelegationBuilderTest extends TestCase
         );
         $this->assertInstanceOf(MapInterface::class, $headers);
         $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(HeaderInterface::class, (string) $headers->valueType());
+        $this->assertSame(Header::class, (string) $headers->valueType());
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
-     */
-    public function testThrowWhenInvalidBuilderSet()
-    {
-        new ListDelegationBuilder(new Set('object'));
-    }
-
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 1 must be of type SetInterface<Innmind\Rest\Server\Identity>
      */
     public function testThrowWhenInvalidIdentities()
     {
-        $builder = new ListDelegationBuilder(
-            new Set(ListBuilderInterface::class)
-        );
+        $build = new ListDelegationBuilder;
 
-        $builder->build(
+        $build(
             new Set('object'),
-            $this->createMock(ServerRequestInterface::class),
+            $this->createMock(ServerRequest::class),
             new Httpresource(
                 'foobar',
                 new Identity('foo'),
@@ -86,27 +75,26 @@ class ListDelegationBuilderTest extends TestCase
 
     public function testBuild()
     {
-        $builder = new ListDelegationBuilder(
-            (new Set(ListBuilderInterface::class))
-                ->add($mock1 = $this->createMock(ListBuilderInterface::class))
-                ->add($mock2 = $this->createMock(ListBuilderInterface::class))
+        $build = new ListDelegationBuilder(
+            $mock1 = $this->createMock(ListBuilder::class),
+            $mock2 = $this->createMock(ListBuilder::class)
         );
         $mock1
-            ->method('build')
+            ->method('__invoke')
             ->willReturn(
-                (new Map('string', HeaderInterface::class))
-                    ->put('foo', $this->createMock(HeaderInterface::class))
+                (new Map('string', Header::class))
+                    ->put('foo', $this->createMock(Header::class))
             );
         $mock2
-            ->method('build')
+            ->method('__invoke')
             ->willReturn(
-                (new Map('string', HeaderInterface::class))
-                    ->put('bar', $this->createMock(HeaderInterface::class))
+                (new Map('string', Header::class))
+                    ->put('bar', $this->createMock(Header::class))
             );
 
-        $headers = $builder->build(
+        $headers = $build(
             new Set(IdentityInterface::class),
-            $this->createMock(ServerRequestInterface::class),
+            $this->createMock(ServerRequest::class),
             new Httpresource(
                 'foobar',
                 new Identity('foo'),

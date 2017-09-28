@@ -3,37 +3,76 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server;
 
-use Innmind\Rest\Server\Exception\InvalidArgumentException;
 use Innmind\Immutable\{
     SetInterface,
-    Set,
-    Str
+    Set
 };
 
 final class Action
 {
-    const LIST = 'list';
-    const GET = 'get';
-    const CREATE = 'create';
-    const UPDATE = 'update';
-    const REMOVE = 'remove';
-    const LINK = 'link';
-    const UNLINK = 'unlink';
-    const OPTIONS = 'options';
+    private const LIST = 'list';
+    private const GET = 'get';
+    private const CREATE = 'create';
+    private const UPDATE = 'update';
+    private const REMOVE = 'remove';
+    private const LINK = 'link';
+    private const UNLINK = 'unlink';
+    private const OPTIONS = 'options';
+
+    private static $list;
+    private static $get;
+    private static $create;
+    private static $update;
+    private static $remove;
+    private static $link;
+    private static $unlink;
+    private static $options;
 
     private $action;
 
-    public function __construct(string $action)
+    private function __construct(string $action)
     {
-        $const = (new Str($action))
-            ->toUpper()
-            ->prepend('self::');
+        $this->action = $action;
+    }
 
-        if (!defined((string) $const)) {
-            throw new InvalidArgumentException;
-        }
+    public static function list(): self
+    {
+        return self::$list ?? self::$list = new self(self::LIST);
+    }
 
-        $this->action = constant((string) $const);
+    public static function get(): self
+    {
+        return self::$get ?? self::$get = new self(self::GET);
+    }
+
+    public static function create(): self
+    {
+        return self::$create ?? self::$create = new self(self::CREATE);
+    }
+
+    public static function update(): self
+    {
+        return self::$update ?? self::$update = new self(self::UPDATE);
+    }
+
+    public static function remove(): self
+    {
+        return self::$remove ?? self::$remove = new self(self::REMOVE);
+    }
+
+    public static function link(): self
+    {
+        return self::$link ?? self::$link = new self(self::LINK);
+    }
+
+    public static function unlink(): self
+    {
+        return self::$unlink ?? self::$unlink = new self(self::UNLINK);
+    }
+
+    public static function options(): self
+    {
+        return self::$options ?? self::$options = new self(self::OPTIONS);
     }
 
     public function equals(self $action): bool
@@ -47,18 +86,18 @@ final class Action
     }
 
     /**
-     * @return SetInterface<string>
+     * @return SetInterface<self>
      */
     public static function all(): SetInterface
     {
-        return (new Set('string'))
-            ->add(self::LIST)
-            ->add(self::GET)
-            ->add(self::CREATE)
-            ->add(self::UPDATE)
-            ->add(self::REMOVE)
-            ->add(self::LINK)
-            ->add(self::UNLINK)
-            ->add(self::OPTIONS);
+        return (new Set(self::class))
+            ->add(self::list())
+            ->add(self::get())
+            ->add(self::create())
+            ->add(self::update())
+            ->add(self::remove())
+            ->add(self::link())
+            ->add(self::unlink())
+            ->add(self::options());
     }
 }

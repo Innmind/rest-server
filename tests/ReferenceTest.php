@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server;
 
 use Innmind\Rest\Server\{
     Reference,
-    IdentityInterface,
+    Identity as IdentityInterface,
     Definition\HttpResource,
     Definition\Identity,
     Definition\Property,

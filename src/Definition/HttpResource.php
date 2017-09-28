@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Definition;
 
-use Innmind\Rest\Server\Exception\InvalidArgumentException;
 use Innmind\Immutable\MapInterface;
 
 final class HttpResource
@@ -29,15 +28,33 @@ final class HttpResource
     ) {
         if (
             (string) $properties->keyType() !== 'string' ||
-            (string) $properties->valueType() !== Property::class ||
+            (string) $properties->valueType() !== Property::class
+        ) {
+            throw new \TypeError(sprintf(
+                'Argument 3 must be of type MapInterface<string, %s>',
+                Property::class
+            ));
+        }
+
+        if (
             (string) $options->keyType() !== 'scalar' ||
-            (string) $options->valueType() !== 'variable' ||
+            (string) $options->valueType() !== 'variable'
+        ) {
+            throw new \TypeError('Argument 4 must be of type MapInterface<scalar, variable>');
+        }
+
+        if (
             (string) $metas->keyType() !== 'scalar' ||
-            (string) $metas->valueType() !== 'variable' ||
+            (string) $metas->valueType() !== 'variable'
+        ) {
+            throw new \TypeError('Argument 5 must be of type MapInterface<scalar, variable>');
+        }
+
+        if (
             (string) $allowedLinks->keyType() !== 'string' ||
             (string) $allowedLinks->valueType() !== 'string'
         ) {
-            throw new InvalidArgumentException;
+            throw new \TypeError('Argument 8 must be of type MapInterface<string, string>');
         }
 
         $this->name = $name;

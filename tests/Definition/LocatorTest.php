@@ -18,7 +18,8 @@ use PHPUnit\Framework\TestCase;
 class LocatorTest extends TestCase
 {
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Definition\Directory>
      */
     public function testThrowWhenInvalidDirectoryMap()
     {
@@ -27,29 +28,29 @@ class LocatorTest extends TestCase
 
     public function testLocate()
     {
-        $locator = new Locator(
+        $locate = new Locator(
             (new YamlLoader(new Types))->load(
                 (new Set('string'))->add('fixtures/mapping.yml')
             )
         );
 
-        $resource = $locator->locate('top_dir.sub_dir.res');
+        $resource = $locate('top_dir.sub_dir.res');
 
         $this->assertInstanceOf(HttpResource::class, $resource);
         $this->assertSame('res', $resource->name());
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\DefinitionNotFoundException
+     * @expectedException Innmind\Rest\Server\Exception\DefinitionNotFound
      */
     public function testThrowWhenResourceNotFound()
     {
-        $locator = new Locator(
+        $locate = new Locator(
             (new YamlLoader(new Types))->load(
                 (new Set('string'))->add('fixtures/mapping.yml')
             )
         );
 
-        $locator->locate('unknown');
+        $locate('unknown');
     }
 }

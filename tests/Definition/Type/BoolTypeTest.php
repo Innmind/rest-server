@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\Definition\{
     Type\BoolType,
-    TypeInterface,
+    Type,
     Types
 };
 use Innmind\Immutable\Map;
@@ -15,7 +15,7 @@ class BoolTypeTest extends TestCase
 {
     public function testInterface()
     {
-        $this->assertInstanceOf(TypeInterface::class, new BoolType);
+        $this->assertInstanceOf(Type::class, new BoolType);
         $this->assertSame(
             ['bool', 'boolean'],
             BoolType::identifiers()->toPrimitive()

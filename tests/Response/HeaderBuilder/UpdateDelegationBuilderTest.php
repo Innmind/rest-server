@@ -5,20 +5,19 @@ namespace Tests\Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Response\HeaderBuilder\UpdateDelegationBuilder,
-    Response\HeaderBuilder\UpdateBuilderInterface,
-    IdentityInterface,
+    Response\HeaderBuilder\UpdateBuilder,
+    Identity as IdentityInterface,
     Definition\Httpresource,
     Definition\Identity,
     Definition\Property,
     Definition\Gateway,
-    HttpResourceInterface
+    HttpResource as HttpResourceInterface
 };
 use Innmind\Http\{
-    Message\ServerRequestInterface,
-    Header\HeaderInterface
+    Message\ServerRequest,
+    Header
 };
 use Innmind\Immutable\{
-    Set,
     Map,
     MapInterface
 };
@@ -28,13 +27,11 @@ class UpdateDelegationBuilderTest extends TestCase
 {
     public function testInterface()
     {
-        $builder = new UpdateDelegationBuilder(
-            new Set(UpdateBuilderInterface::class)
-        );
+        $build = new UpdateDelegationBuilder;
 
-        $this->assertInstanceOf(UpdateBuilderInterface::class, $builder);
-        $headers = $builder->build(
-            $this->createMock(ServerRequestInterface::class),
+        $this->assertInstanceOf(UpdateBuilder::class, $build);
+        $headers = $build(
+            $this->createMock(ServerRequest::class),
             new Httpresource(
                 'foobar',
                 new Identity('foo'),
@@ -50,39 +47,30 @@ class UpdateDelegationBuilderTest extends TestCase
         );
         $this->assertInstanceOf(MapInterface::class, $headers);
         $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(HeaderInterface::class, (string) $headers->valueType());
-    }
-
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
-     */
-    public function testThrowWhenInvalidBuilderSet()
-    {
-        new UpdateDelegationBuilder(new Set('object'));
+        $this->assertSame(Header::class, (string) $headers->valueType());
     }
 
     public function testBuild()
     {
-        $builder = new UpdateDelegationBuilder(
-            (new Set(UpdateBuilderInterface::class))
-                ->add($mock1 = $this->createMock(UpdateBuilderInterface::class))
-                ->add($mock2 = $this->createMock(UpdateBuilderInterface::class))
+        $build = new UpdateDelegationBuilder(
+            $mock1 = $this->createMock(UpdateBuilder::class),
+            $mock2 = $this->createMock(UpdateBuilder::class)
         );
         $mock1
-            ->method('build')
+            ->method('__invoke')
             ->willReturn(
-                (new Map('string', HeaderInterface::class))
-                    ->put('foo', $this->createMock(HeaderInterface::class))
+                (new Map('string', Header::class))
+                    ->put('foo', $this->createMock(Header::class))
             );
         $mock2
-            ->method('build')
+            ->method('__invoke')
             ->willReturn(
-                (new Map('string', HeaderInterface::class))
-                    ->put('bar', $this->createMock(HeaderInterface::class))
+                (new Map('string', Header::class))
+                    ->put('bar', $this->createMock(Header::class))
             );
 
-        $headers = $builder->build(
-            $this->createMock(ServerRequestInterface::class),
+        $headers = $build(
+            $this->createMock(ServerRequest::class),
             new Httpresource(
                 'foobar',
                 new Identity('foo'),

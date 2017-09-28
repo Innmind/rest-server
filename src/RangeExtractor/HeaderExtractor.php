@@ -4,20 +4,20 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\RangeExtractor;
 
 use Innmind\Rest\Server\{
-    Exception\RangeNotFoundException,
+    Exception\RangeNotFound,
     Request\Range
 };
-use Innmind\Http\Message\ServerRequestInterface;
+use Innmind\Http\Message\ServerRequest;
 
-final class HeaderExtractor implements ExtractorInterface
+final class HeaderExtractor implements Extractor
 {
     /**
      * {@inheritdoc}
      */
-    public function extract(ServerRequestInterface $request): Range
+    public function __invoke(ServerRequest $request): Range
     {
         if (!$request->headers()->has('Range')) {
-            throw new RangeNotFoundException;
+            throw new RangeNotFound;
         }
 
         return new Range(

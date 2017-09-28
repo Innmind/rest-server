@@ -5,64 +5,47 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Definition\HttpResource,
-    Exception\InvalidArgumentException,
-    IdentityInterface,
-    HttpResourceInterface
+    Identity,
+    HttpResource as HttpResourceInterface
 };
 use Innmind\Http\{
-    Message\ServerRequestInterface,
-    Header\HeaderInterface
+    Message\ServerRequest,
+    Header
 };
 use Innmind\Immutable\{
-    SetInterface,
     MapInterface,
     Map
 };
 
-final class UpdateDelegationBuilder implements UpdateBuilderInterface
+final class UpdateDelegationBuilder implements UpdateBuilder
 {
     private $builders;
 
-    public function __construct(SetInterface $builders)
+    public function __construct(UpdateBuilder ...$builders)
     {
-        if ((string) $builders->type() !== UpdateBuilderInterface::class) {
-            throw new InvalidArgumentException;
-        }
-
         $this->builders = $builders;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function build(
-        ServerRequestInterface $request,
+    public function __invoke(
+        ServerRequest $request,
         HttpResource $definition,
-        IdentityInterface $identity,
+        Identity $identity,
         HttpResourceInterface $resource
     ): MapInterface {
-        return $this
-            ->builders
-            ->reduce(
-                new Map('string', HeaderInterface::class),
-                function(
-                    MapInterface $carry,
-                    UpdateBuilderInterface $builder
-                ) use (
-                    $request,
-                    $definition,
-                    $identity,
-                    $resource
-                ): MapInterface {
-                    return $carry->merge(
-                        $builder->build(
-                            $request,
-                            $definition,
-                            $identity,
-                            $resource
-                        )
-                    );
-                }
-            );
+        $headers = new Map('string', Header::class);
+
+        foreach ($this->builders as $build) {
+            $headers = $headers->merge($build(
+                $request,
+                $definition,
+                $identity,
+                $resource
+            ));
+        }
+
+        return $headers;
     }
 }

@@ -9,15 +9,15 @@ use Innmind\Rest\Server\{
     Definition\HttpResource
 };
 use Innmind\Http\{
-    Message\ServerRequestInterface,
-    Exception\Http\NotAcceptableException
+    Message\ServerRequest,
+    Exception\Http\NotAcceptable
 };
 use Negotiation\{
     Negotiator,
     Accept
 };
 
-final class AcceptVerifier implements VerifierInterface
+final class AcceptVerifier implements Verifier
 {
     private $formats;
     private $negotiator;
@@ -31,12 +31,12 @@ final class AcceptVerifier implements VerifierInterface
     /**
      * {@inheritdoc}
      *
-     * @throws NotAcceptableException
+     * @throws NotAcceptable
      */
-    public function verify(
-        ServerRequestInterface $request,
+    public function __invoke(
+        ServerRequest $request,
         HttpResource $definition
-    ) {
+    ): void {
         $types = $this
             ->formats
             ->mediaTypes()
@@ -58,7 +58,7 @@ final class AcceptVerifier implements VerifierInterface
         );
 
         if (!$best instanceof Accept) {
-            throw new NotAcceptableException;
+            throw new NotAcceptable;
         }
     }
 }

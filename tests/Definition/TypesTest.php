@@ -1,11 +1,11 @@
 <?php
 declare(strict_types = 1);
 
-namespace Tests\Innmind\Rest\Server;
+namespace Tests\Innmind\Rest\Server\Definition;
 
 use Innmind\Rest\Server\Definition\{
     Types,
-    TypeInterface,
+    Type,
     Type\SetType,
     Type\MapType,
     Type\BoolType,
@@ -57,8 +57,8 @@ class TypesTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
-     * @expectedExceptionMessage The type "stdClass" must implement TypeInterface
+     * @expectedException Innmind\Rest\Server\Exception\DomainException
+     * @expectedExceptionMessage The type "stdClass" must implement Type
      */
     public function testThrowWhenRegisteringingInvalidType()
     {
@@ -66,7 +66,8 @@ class TypesTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 2 must be of type MapInterface<scalar, variable>
      */
     public function testThrowWhenInvalidConfigMap()
     {

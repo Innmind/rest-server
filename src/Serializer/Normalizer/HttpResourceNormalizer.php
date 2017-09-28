@@ -4,8 +4,8 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\Serializer\Normalizer;
 
 use Innmind\Rest\Server\{
-    HttpResource,
-    Property,
+    HttpResource\HttpResource,
+    HttpResource\Property,
     Definition\HttpResource as ResourceDefinition,
     Definition\Property as PropertyDefinition,
     Definition\Access,
@@ -35,7 +35,7 @@ final class HttpResourceNormalizer implements NormalizerInterface, DenormalizerI
         $errors = new Map('string', NormalizationException::class);
 
         $definition = $object->definition();
-        $mask = new Access((new Set('string'))->add(Access::READ));
+        $mask = new Access(Access::READ);
         $object
             ->properties()
             ->foreach(function(

@@ -3,10 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Definition;
 
-use Innmind\Rest\Server\Exception\{
-    DefinitionNotFoundException,
-    InvalidArgumentException
-};
+use Innmind\Rest\Server\Exception\DefinitionNotFound;
 use Innmind\Immutable\{
     MapInterface,
     Map
@@ -23,14 +20,17 @@ final class Locator
             (string) $directories->keyType() !== 'string' ||
             (string) $directories->valueType() !== Directory::class
         ) {
-            throw new InvalidArgumentException;
+            throw new \TypeError(sprintf(
+                'Argument 1 must be of type MapInterface<string, %s>',
+                Directory::class
+            ));
         }
 
         $this->directories = $directories;
         $this->cache = new Map('string', HttpResource::class);
     }
 
-    public function locate(string $path): HttpResource
+    public function __invoke(string $path): HttpResource
     {
         if ($this->cache->contains($path)) {
             return $this->cache->get($path);
@@ -54,7 +54,7 @@ final class Locator
             );
 
         if (!$resource instanceof HttpResource) {
-            throw new DefinitionNotFoundException;
+            throw new DefinitionNotFound;
         }
 
         $this->cache = $this->cache->put($path, $resource);

@@ -5,34 +5,34 @@ namespace Innmind\Rest\Server\Request\Verifier;
 
 use Innmind\Rest\Server\Definition\HttpResource;
 use Innmind\Http\{
-    Message\ServerRequestInterface,
-    Message\MethodInterface,
-    Exception\Http\PreconditionFailedException
+    Message\ServerRequest,
+    Message\Method,
+    Exception\Http\PreconditionFailed
 };
 
-final class RangeVerifier implements VerifierInterface
+final class RangeVerifier implements Verifier
 {
     /**
      * {@inheritdoc}
      *
-     * @throws PreconditionFailedException
+     * @throws PreconditionFailed
      */
-    public function verify(
-        ServerRequestInterface $request,
+    public function __invoke(
+        ServerRequest $request,
         HttpResource $definition
-    ) {
+    ): void {
         if (
-            (string) $request->method() !== MethodInterface::GET &&
+            (string) $request->method() !== Method::GET &&
             $request->headers()->has('Range')
         ) {
-            throw new PreconditionFailedException;
+            throw new PreconditionFailed;
         }
 
         if (
             !$definition->isRangeable() &&
             $request->headers()->has('Range')
         ) {
-            throw new PreconditionFailedException;
+            throw new PreconditionFailed;
         }
     }
 }

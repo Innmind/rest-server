@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Specification;
 
-use Innmind\Rest\Server\HttpResourceInterface;
+use Innmind\Rest\Server\HttpResource;
 use Innmind\Specification\ComparatorInterface;
 
 final class Filter implements ComparatorInterface
@@ -43,7 +43,7 @@ final class Filter implements ComparatorInterface
         return $this->value;
     }
 
-    public function isSatisfiedBy(HttpResourceInterface $resource): bool
+    public function isSatisfiedBy(HttpResource $resource): bool
     {
         return $resource->property($this->property)->value() === $this->value;
     }

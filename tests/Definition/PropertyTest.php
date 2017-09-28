@@ -18,9 +18,7 @@ class PropertyTest extends TestCase
         $p = new Property(
             'foo',
             $t = new StringType,
-            new Access(
-                (new Set('string'))->add(Access::READ)
-            ),
+            new Access(Access::READ),
             (new Set('string'))->add('bar'),
             true
         );
@@ -36,14 +34,15 @@ class PropertyTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 4 must be of type SetInterface<string>
      */
     public function testThrowWhenGivingInvalidVariants()
     {
         new Property(
             'foo',
             new StringType,
-            new Access((new Set('string'))),
+            new Access(),
             (new Set('int')),
             true
         );

@@ -5,35 +5,34 @@ namespace Tests\Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Response\HeaderBuilder\CreateLocationBuilder,
-    Response\HeaderBuilder\CreateBuilderInterface,
+    Response\HeaderBuilder\CreateBuilder,
     Formats,
     Format\Format,
     Format\MediaType,
-    Identity,
-    HttpResourceInterface,
+    Identity\Identity,
+    HttpResource as HttpResourceInterface,
     Definition\HttpResource,
     Definition\Identity as IdentityDefinition,
     Definition\Property,
     Definition\Gateway
 };
 use Innmind\Http\{
-    Message\ServerRequest,
-    Message\MethodInterface,
-    ProtocolVersionInterface,
-    Headers,
-    Header\HeaderInterface,
-    Header\HeaderValueInterface,
+    Message\ServerRequest\ServerRequest,
+    Message\Method,
+    ProtocolVersion,
+    Headers\Headers,
+    Header,
     Header\Accept,
     Header\AcceptValue,
-    Header\ParameterInterface,
-    Message\EnvironmentInterface,
-    Message\CookiesInterface,
-    Message\QueryInterface,
-    Message\FormInterface,
-    Message\FilesInterface
+    Header\Parameter,
+    Message\Environment,
+    Message\Cookies,
+    Message\Query,
+    Message\Form,
+    Message\Files
 };
 use Innmind\Url\Url;
-use Innmind\Filesystem\StreamInterface;
+use Innmind\Stream\Readable;
 use Innmind\Immutable\{
     Map,
     Set,
@@ -43,11 +42,11 @@ use PHPUnit\Framework\TestCase;
 
 class CreateLocationBuilderTest extends TestCase
 {
-    private $builder;
+    private $build;
 
     public function setUp()
     {
-        $this->builder = new CreateLocationBuilder(
+        $this->build = new CreateLocationBuilder(
             new Formats(
                 (new Map('string', Format::class))
                     ->put(
@@ -75,37 +74,36 @@ class CreateLocationBuilderTest extends TestCase
 
     public function testInterface()
     {
-        $this->assertInstanceOf(CreateBuilderInterface::class, $this->builder);
+        $this->assertInstanceOf(CreateBuilder::class, $this->build);
     }
 
     public function testBuild()
     {
-        $headers = $this->builder->build(
+        $headers = ($this->build)(
             new Identity(42),
             new ServerRequest(
                 Url::fromString('/foo/bar/'),
-                $this->createMock(MethodInterface::class),
-                $this->createMock(ProtocolVersionInterface::class),
+                $this->createMock(Method::class),
+                $this->createMock(ProtocolVersion::class),
                 new Headers(
-                    (new Map('string', HeaderInterface::class))
+                    (new Map('string', Header::class))
                         ->put(
                             'Accept',
                             new Accept(
-                                (new Set(HeaderValueInterface::class))
-                                    ->add(new AcceptValue(
-                                        'text',
-                                        'xhtml',
-                                        new Map('string', ParameterInterface::class)
-                                    ))
+                                new AcceptValue(
+                                    'text',
+                                    'xhtml',
+                                    new Map('string', Parameter::class)
+                                )
                             )
                         )
                 ),
-                $this->createMock(StreamInterface::class),
-                $this->createMock(EnvironmentInterface::class),
-                $this->createMock(CookiesInterface::class),
-                $this->createMock(QueryInterface::class),
-                $this->createMock(FormInterface::class),
-                $this->createMock(FilesInterface::class)
+                $this->createMock(Readable::class),
+                $this->createMock(Environment::class),
+                $this->createMock(Cookies::class),
+                $this->createMock(Query::class),
+                $this->createMock(Form::class),
+                $this->createMock(Files::class)
             ),
             new HttpResource(
                 'foo',
@@ -122,7 +120,7 @@ class CreateLocationBuilderTest extends TestCase
 
         $this->assertInstanceOf(MapInterface::class, $headers);
         $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(HeaderInterface::class, (string) $headers->valueType());
+        $this->assertSame(Header::class, (string) $headers->valueType());
         $this->assertSame(1, $headers->size());
         $this->assertSame(
             'Location : /foo/bar/42',

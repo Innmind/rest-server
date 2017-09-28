@@ -11,26 +11,22 @@ use Innmind\Rest\Server\{
     Definition\Identity,
     Definition\Gateway,
     Definition\Access,
-    Definition\LoaderInterface,
-    Configuration,
-    Exception\InvalidArgumentException,
-    Exception\ResourceDefinitionReferenceNotFoundException,
-    Exception\CircularReferenceException
+    Definition\Loader,
+    Configuration
 };
 use Innmind\Immutable\{
     SetInterface,
     MapInterface,
     Map,
     Set,
-    Sequence,
-    StringPrimitive as Str
+    Sequence
 };
 use Symfony\Component\{
     Config\Definition\Processor,
     Yaml\Yaml
 };
 
-final class YamlLoader implements LoaderInterface
+final class YamlLoader implements Loader
 {
     private $types;
 
@@ -45,7 +41,7 @@ final class YamlLoader implements LoaderInterface
     public function load(SetInterface $files): MapInterface
     {
         if ((string) $files->type() !== 'string') {
-            throw new InvalidArgumentException;
+            throw new \TypeError('Argument 1 must be of type SetInterface<string>');
         }
 
         $config = (new Processor)->processConfiguration(
@@ -139,12 +135,7 @@ final class YamlLoader implements LoaderInterface
 
     private function buildProperty(string $name, array $config): Property
     {
-        $access = new Set('string');
         $variants = new Set('string');
-
-        foreach ($config['access'] ?? [Access::READ] as $value) {
-            $access = $access->add($value);
-        }
 
         foreach ($config['variants'] ?? [] as $variant) {
             $variants = $variants->add($variant);
@@ -162,7 +153,7 @@ final class YamlLoader implements LoaderInterface
                 $config['type'],
                 $collection
             ),
-            new Access($access),
+            new Access(...($config['access'] ?? [Access::READ])),
             $variants,
             $config['optional'] ?? false
         );

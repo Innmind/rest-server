@@ -5,28 +5,28 @@ namespace Tests\Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Response\HeaderBuilder\ListLinksBuilder,
-    Response\HeaderBuilder\ListBuilderInterface,
-    IdentityInterface,
-    Identity as Id,
+    Response\HeaderBuilder\ListBuilder,
+    Identity as IdentityInterface,
+    Identity\Identity as Id,
     Definition\HttpResource,
     Definition\Identity,
     Definition\Property,
     Definition\Gateway
 };
 use Innmind\Http\{
-    Message\ServerRequest,
-    Message\MethodInterface,
-    ProtocolVersionInterface,
-    HeadersInterface,
-    Message\EnvironmentInterface,
-    Message\CookiesInterface,
-    Message\QueryInterface,
-    Message\FormInterface,
-    Message\FilesInterface,
-    Header\HeaderInterface
+    Message\ServerRequest\ServerRequest,
+    Message\Method,
+    ProtocolVersion,
+    Headers,
+    Message\Environment,
+    Message\Cookies,
+    Message\Query,
+    Message\Form,
+    Message\Files,
+    Header
 };
 use Innmind\Url\Url;
-use Innmind\Filesystem\StreamInterface;
+use Innmind\Stream\Readable;
 use Innmind\Immutable\{
     Set,
     Map,
@@ -39,30 +39,30 @@ class ListLinksBuilderTest extends TestCase
     public function testInterface()
     {
         $this->assertInstanceOf(
-            ListBuilderInterface::class,
+            ListBuilder::class,
             new ListLinksBuilder
         );
     }
 
     public function testBuild()
     {
-        $builder = new ListLinksBuilder;
+        $build = new ListLinksBuilder;
 
-        $headers = $builder->build(
+        $headers = $build(
             (new Set(IdentityInterface::class))
                 ->add(new Id(24))
                 ->add(new Id(42)),
             new ServerRequest(
                 Url::fromString('/foo/bar/'),
-                $this->createMock(MethodInterface::class),
-                $this->createMock(ProtocolVersionInterface::class),
-                $this->createMock(HeadersInterface::class),
-                $this->createMock(StreamInterface::class),
-                $this->createMock(EnvironmentInterface::class),
-                $this->createMock(CookiesInterface::class),
-                $this->createMock(QueryInterface::class),
-                $this->createMock(FormInterface::class),
-                $this->createMock(FilesInterface::class)
+                $this->createMock(Method::class),
+                $this->createMock(ProtocolVersion::class),
+                $this->createMock(Headers::class),
+                $this->createMock(Readable::class),
+                $this->createMock(Environment::class),
+                $this->createMock(Cookies::class),
+                $this->createMock(Query::class),
+                $this->createMock(Form::class),
+                $this->createMock(Files::class)
             ),
             new HttpResource(
                 'foo',
@@ -78,7 +78,7 @@ class ListLinksBuilderTest extends TestCase
 
         $this->assertInstanceOf(MapInterface::class, $headers);
         $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(HeaderInterface::class, (string) $headers->valueType());
+        $this->assertSame(Header::class, (string) $headers->valueType());
         $this->assertSame(1, $headers->size());
         $this->assertSame(
             'Link : </foo/bar/24>; rel="resource", </foo/bar/42>; rel="resource"',
@@ -88,21 +88,21 @@ class ListLinksBuilderTest extends TestCase
 
     public function testBuildWithoutIdentities()
     {
-        $builder = new ListLinksBuilder;
+        $build = new ListLinksBuilder;
 
-        $headers = $builder->build(
+        $headers = $build(
             new Set(IdentityInterface::class),
             new ServerRequest(
                 Url::fromString('/foo/bar/'),
-                $this->createMock(MethodInterface::class),
-                $this->createMock(ProtocolVersionInterface::class),
-                $this->createMock(HeadersInterface::class),
-                $this->createMock(StreamInterface::class),
-                $this->createMock(EnvironmentInterface::class),
-                $this->createMock(CookiesInterface::class),
-                $this->createMock(QueryInterface::class),
-                $this->createMock(FormInterface::class),
-                $this->createMock(FilesInterface::class)
+                $this->createMock(Method::class),
+                $this->createMock(ProtocolVersion::class),
+                $this->createMock(Headers::class),
+                $this->createMock(Readable::class),
+                $this->createMock(Environment::class),
+                $this->createMock(Cookies::class),
+                $this->createMock(Query::class),
+                $this->createMock(Form::class),
+                $this->createMock(Files::class)
             ),
             new HttpResource(
                 'foo',
@@ -118,7 +118,7 @@ class ListLinksBuilderTest extends TestCase
 
         $this->assertInstanceOf(MapInterface::class, $headers);
         $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(HeaderInterface::class, (string) $headers->valueType());
+        $this->assertSame(Header::class, (string) $headers->valueType());
         $this->assertSame(0, $headers->size());
     }
 }

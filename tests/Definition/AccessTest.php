@@ -4,34 +4,21 @@ declare(strict_types = 1);
 namespace Tests\Innmind\Rest\Server\Definition;
 
 use Innmind\Rest\Server\Definition\Access;
-use Innmind\Immutable\Set;
+use Innmind\Immutable\SetInterface;
 use PHPUnit\Framework\TestCase;
 
 class AccessTest extends TestCase
 {
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
-     */
-    public function testThrowWhenGivingInvalidMask()
-    {
-        new Access(new Set('int'));
-    }
-
     public function testIsReadable()
     {
         $this->assertTrue(
-            (new Access(
-                (new Set('string'))
-                    ->add(Access::READ)
-            ))
-                ->isReadable()
+            (new Access(Access::READ))->isReadable()
         );
         $this->assertTrue(
             (new Access(
-                (new Set('string'))
-                    ->add(Access::READ)
-                    ->add(Access::CREATE)
-                    ->add(Access::UPDATE)
+                Access::READ,
+                Access::CREATE,
+                Access::UPDATE
             ))
                 ->isReadable()
         );
@@ -40,18 +27,13 @@ class AccessTest extends TestCase
     public function testIsCreatable()
     {
         $this->assertTrue(
-            (new Access(
-                (new Set('string'))
-                    ->add(Access::CREATE)
-            ))
-                ->isCreatable()
+            (new Access(Access::CREATE))->isCreatable()
         );
         $this->assertTrue(
             (new Access(
-                (new Set('string'))
-                    ->add(Access::READ)
-                    ->add(Access::CREATE)
-                    ->add(Access::UPDATE)
+                Access::READ,
+                Access::CREATE,
+                Access::UPDATE
             ))
                 ->isCreatable()
         );
@@ -60,18 +42,13 @@ class AccessTest extends TestCase
     public function testIsUpdatable()
     {
         $this->assertTrue(
-            (new Access(
-                (new Set('string'))
-                    ->add(Access::UPDATE)
-            ))
-                ->isUpdatable()
+            (new Access(Access::UPDATE))->isUpdatable()
         );
         $this->assertTrue(
             (new Access(
-                (new Set('string'))
-                    ->add(Access::READ)
-                    ->add(Access::CREATE)
-                    ->add(Access::UPDATE)
+                Access::READ,
+                Access::CREATE,
+                Access::UPDATE
             ))
                 ->isUpdatable()
         );
@@ -80,57 +57,45 @@ class AccessTest extends TestCase
     public function testMask()
     {
         $a = (new Access(
-            $m = (new Set('string'))
-                ->add(Access::READ)
-                ->add(Access::CREATE)
-                ->add(Access::UPDATE)
+            Access::READ,
+            Access::CREATE,
+            Access::UPDATE
         ));
 
-        $this->assertSame($m, $a->mask());
+        $this->assertInstanceOf(SetInterface::class, $a->mask());
+        $this->assertSame('string', (string) $a->mask()->type());
+        $this->assertSame(
+            [Access::READ, Access::CREATE, Access::UPDATE],
+            $a->mask()->toPrimitive()
+        );
     }
 
     public function testMatches()
     {
         $a = (new Access(
-            (new Set('string'))
-                ->add(Access::READ)
-                ->add(Access::CREATE)
-                ->add(Access::UPDATE)
+            Access::READ,
+            Access::CREATE,
+            Access::UPDATE
         ));
         $this->assertTrue($a->matches(
-            new Access(
-                (new Set('string'))->add(Access::READ)
-            )
+            new Access(Access::READ)
         ));
         $this->assertTrue($a->matches(
-            new Access(
-                (new Set('string'))->add(Access::CREATE)
-            )
+            new Access(Access::CREATE)
         ));
         $this->assertTrue($a->matches(
-            new Access(
-                (new Set('string'))->add(Access::UPDATE)
-            )
+            new Access(Access::UPDATE)
         ));
 
-        $a = (new Access(
-            $m = (new Set('string'))
-                ->add(Access::READ)
-        ));
+        $a = new Access(Access::READ);
         $this->assertTrue($a->matches(
-            new Access(
-                (new Set('string'))->add(Access::READ)
-            )
+            new Access(Access::READ)
         ));
         $this->assertFalse($a->matches(
-            new Access(
-                (new Set('string'))->add(Access::CREATE)
-            )
+            new Access(Access::CREATE)
         ));
         $this->assertFalse($a->matches(
-            new Access(
-                (new Set('string'))->add(Access::UPDATE)
-            )
+            new Access(Access::UPDATE)
         ));
     }
 }

@@ -8,8 +8,8 @@ use Innmind\Rest\Server\{
     Request\Range
 };
 use Innmind\Http\{
-    Message\ServerRequestInterface,
-    Header\HeaderInterface,
+    Message\ServerRequest,
+    Header,
     Header\AcceptRanges,
     Header\AcceptRangesValue,
     Header\ContentRange,
@@ -22,19 +22,19 @@ use Innmind\Immutable\{
     Map
 };
 
-final class ListRangeBuilder implements ListBuilderInterface
+final class ListRangeBuilder implements ListBuilder
 {
     /**
      * {@inheritdoc}
      */
-    public function build(
+    public function __invoke(
         SetInterface $identities,
-        ServerRequestInterface $request,
+        ServerRequest $request,
         HttpResource $definition,
         SpecificationInterface $specification = null,
         Range $range = null
     ): MapInterface {
-        $map = new Map('string', HeaderInterface::class);
+        $map = new Map('string', Header::class);
 
         if (!$definition->isRangeable()) {
             return $map;

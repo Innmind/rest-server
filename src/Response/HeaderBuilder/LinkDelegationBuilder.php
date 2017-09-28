@@ -3,38 +3,30 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Response\HeaderBuilder;
 
-use Innmind\Rest\Server\{
-    Reference,
-    Exception\InvalidArgumentException
-};
+use Innmind\Rest\Server\Reference;
 use Innmind\Http\{
-    Message\ServerRequestInterface,
-    Header\HeaderInterface
+    Message\ServerRequest,
+    Header
 };
 use Innmind\Immutable\{
-    SetInterface,
     MapInterface,
     Map
 };
 
-final class LinkDelegationBuilder implements LinkBuilderInterface
+final class LinkDelegationBuilder implements LinkBuilder
 {
     private $builders;
 
-    public function __construct(SetInterface $builders)
+    public function __construct(LinkBuilder ...$builders)
     {
-        if ((string) $builders->type() !== LinkBuilderInterface::class) {
-            throw new InvalidArgumentException;
-        }
-
         $this->builders = $builders;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function build(
-        ServerRequestInterface $request,
+    public function __invoke(
+        ServerRequest $request,
         Reference $from,
         MapInterface $tos
     ): MapInterface {
@@ -42,29 +34,23 @@ final class LinkDelegationBuilder implements LinkBuilderInterface
             (string) $tos->keyType() !== Reference::class ||
             (string) $tos->valueType() !== MapInterface::class
         ) {
-            throw new InvalidArgumentException;
+            throw new \TypeError(sprintf(
+                'Argument 3 must be of type MapInterface<%s, %s>',
+                Reference::class,
+                MapInterface::class
+            ));
         }
 
-        return $this
-            ->builders
-            ->reduce(
-                new Map('string', HeaderInterface::class),
-                function(
-                    MapInterface $carry,
-                    LinkBuilderInterface $builder
-                ) use (
-                    $request,
-                    $from,
-                    $tos
-                ): MapInterface {
-                    return $carry->merge(
-                        $builder->build(
-                            $request,
-                            $from,
-                            $tos
-                        )
-                    );
-                }
-            );
+        $headers = new Map('string', Header::class);
+
+        foreach ($this->builders as $build) {
+            $headers = $headers->merge($build(
+                $request,
+                $from,
+                $tos
+            ));
+        }
+
+        return $headers;
     }
 }

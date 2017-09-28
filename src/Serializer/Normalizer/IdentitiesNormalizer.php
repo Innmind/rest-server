@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Serializer\Normalizer;
 
-use Innmind\Rest\Server\IdentityInterface;
+use Innmind\Rest\Server\Identity;
 use Innmind\Immutable\SetInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -16,7 +16,7 @@ final class IdentitiesNormalizer implements NormalizerInterface
     {
         return $object->reduce(
             ['identities' => []],
-            function(array $carry, IdentityInterface $identity): array {
+            function(array $carry, Identity $identity): array {
                 $carry['identities'][] = $identity->value();
 
                 return $carry;
@@ -29,6 +29,6 @@ final class IdentitiesNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof SetInterface && (string) $data->type() === IdentityInterface::class;
+        return $data instanceof SetInterface && (string) $data->type() === Identity::class;
     }
 }

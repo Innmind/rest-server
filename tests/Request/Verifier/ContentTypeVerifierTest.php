@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server\Request\Verifier;
 
 use Innmind\Rest\Server\{
     Request\Verifier\ContentTypeVerifier,
-    Request\Verifier\VerifierInterface,
+    Request\Verifier\Verifier,
     Formats,
     Format\Format,
     Format\MediaType,
@@ -15,19 +15,19 @@ use Innmind\Rest\Server\{
     Definition\Property
 };
 use Innmind\Http\{
-    Message\ServerRequest,
-    Message\MethodInterface,
-    Message\EnvironmentInterface,
-    Message\CookiesInterface,
-    Message\FormInterface,
-    Message\QueryInterface,
-    Message\FilesInterface,
-    HeadersInterface,
-    Header\HeaderInterface,
-    ProtocolVersionInterface
+    Message\ServerRequest\ServerRequest,
+    Message\Method,
+    Message\Environment,
+    Message\Cookies,
+    Message\Form,
+    Message\Query,
+    Message\Files,
+    Headers,
+    Header,
+    ProtocolVersion
 };
 use Innmind\Url\UrlInterface;
-use Innmind\Filesystem\StreamInterface;
+use Innmind\Stream\Readable;
 use Innmind\Immutable\{
     Map,
     Set
@@ -54,15 +54,15 @@ class ContentTypeVerifierTest extends TestCase
             )
         );
 
-        $this->assertInstanceOf(VerifierInterface::class, $verifier);
+        $this->assertInstanceOf(Verifier::class, $verifier);
     }
 
     /**
-     * @expectedException Innmind\Http\Exception\Http\UnsupportedMediaTypeException
+     * @expectedException Innmind\Http\Exception\Http\UnsupportedMediaType
      */
     public function testThrowWhenHeaderNotAccepted()
     {
-        $verifier = new ContentTypeVerifier(
+        $verify = new ContentTypeVerifier(
             new Formats(
                 (new Map('string', Format::class))
                     ->put(
@@ -77,11 +77,11 @@ class ContentTypeVerifierTest extends TestCase
                     )
             )
         );
-        $headers = $this->createMock(HeadersInterface::class);
+        $headers = $this->createMock(Headers::class);
         $headers
             ->method('get')
             ->willReturn(
-                $header = $this->createMock(HeaderInterface::class)
+                $header = $this->createMock(Header::class)
             );
         $headers
             ->method('has')
@@ -93,22 +93,22 @@ class ContentTypeVerifierTest extends TestCase
             );
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
-            $method = $this->createMock(MethodInterface::class),
-            $this->createMock(ProtocolVersionInterface::class),
+            $method = $this->createMock(Method::class),
+            $this->createMock(ProtocolVersion::class),
             $headers,
-            $this->createMock(StreamInterface::class),
-            $this->createMock(EnvironmentInterface::class),
-            $this->createMock(CookiesInterface::class),
-            $this->createMock(QueryInterface::class),
-            $this->createMock(FormInterface::class),
-            $this->createMock(FilesInterface::class)
+            $this->createMock(Readable::class),
+            $this->createMock(Environment::class),
+            $this->createMock(Cookies::class),
+            $this->createMock(Query::class),
+            $this->createMock(Form::class),
+            $this->createMock(Files::class)
         );
         $method
             ->expects($this->once())
             ->method('__toString')
-            ->willReturn(MethodInterface::POST);
+            ->willReturn(Method::POST);
 
-        $verifier->verify(
+        $verify(
             $request,
             new HttpResource(
                 'foo',
@@ -125,7 +125,7 @@ class ContentTypeVerifierTest extends TestCase
 
     public function testDoesntThrowWhenNotPostOrPutMethod()
     {
-        $verifier = new ContentTypeVerifier(
+        $verify = new ContentTypeVerifier(
             new Formats(
                 (new Map('string', Format::class))
                     ->put(
@@ -140,11 +140,11 @@ class ContentTypeVerifierTest extends TestCase
                     )
             )
         );
-        $headers = $this->createMock(HeadersInterface::class);
+        $headers = $this->createMock(Headers::class);
         $headers
             ->method('get')
             ->willReturn(
-                $header = $this->createMock(HeaderInterface::class)
+                $header = $this->createMock(Header::class)
             );
         $headers
             ->method('has')
@@ -156,22 +156,22 @@ class ContentTypeVerifierTest extends TestCase
             );
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
-            $method = $this->createMock(MethodInterface::class),
-            $this->createMock(ProtocolVersionInterface::class),
+            $method = $this->createMock(Method::class),
+            $this->createMock(ProtocolVersion::class),
             $headers,
-            $this->createMock(StreamInterface::class),
-            $this->createMock(EnvironmentInterface::class),
-            $this->createMock(CookiesInterface::class),
-            $this->createMock(QueryInterface::class),
-            $this->createMock(FormInterface::class),
-            $this->createMock(FilesInterface::class)
+            $this->createMock(Readable::class),
+            $this->createMock(Environment::class),
+            $this->createMock(Cookies::class),
+            $this->createMock(Query::class),
+            $this->createMock(Form::class),
+            $this->createMock(Files::class)
         );
         $method
             ->expects($this->once())
             ->method('__toString')
-            ->willReturn(MethodInterface::GET);
+            ->willReturn(Method::GET);
 
-        $verifier->verify(
+        $verify(
             $request,
             new HttpResource(
                 'foo',
@@ -188,7 +188,7 @@ class ContentTypeVerifierTest extends TestCase
 
     public function testDoesntThrowWhenAcceptContentType()
     {
-        $verifier = new ContentTypeVerifier(
+        $verify = new ContentTypeVerifier(
             new Formats(
                 (new Map('string', Format::class))
                     ->put(
@@ -203,11 +203,11 @@ class ContentTypeVerifierTest extends TestCase
                     )
             )
         );
-        $headers = $this->createMock(HeadersInterface::class);
+        $headers = $this->createMock(Headers::class);
         $headers
             ->method('get')
             ->willReturn(
-                $header = $this->createMock(HeaderInterface::class)
+                $header = $this->createMock(Header::class)
             );
         $headers
             ->method('has')
@@ -219,24 +219,23 @@ class ContentTypeVerifierTest extends TestCase
             );
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
-            $method = $this->createMock(MethodInterface::class),
-            $this->createMock(ProtocolVersionInterface::class),
+            $method = $this->createMock(Method::class),
+            $this->createMock(ProtocolVersion::class),
             $headers,
-            $this->createMock(StreamInterface::class),
-            $this->createMock(EnvironmentInterface::class),
-            $this->createMock(CookiesInterface::class),
-            $this->createMock(QueryInterface::class),
-            $this->createMock(FormInterface::class),
-            $this->createMock(FilesInterface::class)
+            $this->createMock(Readable::class),
+            $this->createMock(Environment::class),
+            $this->createMock(Cookies::class),
+            $this->createMock(Query::class),
+            $this->createMock(Form::class),
+            $this->createMock(Files::class)
         );
         $method
             ->expects($this->once())
             ->method('__toString')
-            ->willReturn(MethodInterface::POST);
+            ->willReturn(Method::POST);
 
-        $this->assertSame(
-            null,
-            $verifier->verify(
+        $this->assertNull(
+            $verify(
                 $request,
                 new HttpResource(
                     'foo',
@@ -254,7 +253,7 @@ class ContentTypeVerifierTest extends TestCase
 
     public function testDoesntThrowWhenNoContentType()
     {
-        $verifier = new ContentTypeVerifier(
+        $verify = new ContentTypeVerifier(
             new Formats(
                 (new Map('string', Format::class))
                     ->put(
@@ -269,26 +268,25 @@ class ContentTypeVerifierTest extends TestCase
                     )
             )
         );
-        $headers = $this->createMock(HeadersInterface::class);
+        $headers = $this->createMock(Headers::class);
         $headers
             ->method('has')
             ->willReturn(false);
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
-            $this->createMock(MethodInterface::class),
-            $this->createMock(ProtocolVersionInterface::class),
+            $this->createMock(Method::class),
+            $this->createMock(ProtocolVersion::class),
             $headers,
-            $this->createMock(StreamInterface::class),
-            $this->createMock(EnvironmentInterface::class),
-            $this->createMock(CookiesInterface::class),
-            $this->createMock(QueryInterface::class),
-            $this->createMock(FormInterface::class),
-            $this->createMock(FilesInterface::class)
+            $this->createMock(Readable::class),
+            $this->createMock(Environment::class),
+            $this->createMock(Cookies::class),
+            $this->createMock(Query::class),
+            $this->createMock(Form::class),
+            $this->createMock(Files::class)
         );
 
-        $this->assertSame(
-            null,
-            $verifier->verify(
+        $this->assertNull(
+            $verify(
                 $request,
                 new HttpResource(
                     'foo',
