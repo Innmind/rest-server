@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server;
 
 use Innmind\Rest\Server\{
-    Formats,
     Format\Format as FormatFormat,
     Format\MediaType
 };
