@@ -11,9 +11,9 @@ use Innmind\Immutable\{
 
 final class Access
 {
-    const READ = 'READ';
-    const CREATE = 'CREATE';
-    const UPDATE = 'UPDATE';
+    public const READ = 'READ';
+    public const CREATE = 'CREATE';
+    public const UPDATE = 'UPDATE';
 
     private $mask;
 
