@@ -36,7 +36,7 @@ final class CatchHttpException implements Controller
             if ($e instanceof Exception\Http\Exception) {
                 $code = $e->httpCode();
             } else {
-                $code = $code = StatusCode::codes()->get('BAD_REQUEST');
+                $code = StatusCode::codes()->get('BAD_REQUEST');
             }
 
             return new Response\Response(
