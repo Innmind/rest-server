@@ -11,8 +11,10 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Immutable\{
     MapInterface,
+    Map,
     SetInterface,
-    Set
+    Set,
+    Sequence
 };
 use Negotiation\Negotiator;
 
@@ -39,6 +41,21 @@ final class Formats
 
         $this->formats = $formats;
         $this->negotiator = new Negotiator;
+    }
+
+    public static function of(Format ...$formats): self
+    {
+        return new self(
+            Sequence::of(...$formats)->reduce(
+                new Map('string', Format::class),
+                static function(MapInterface $formats, Format $format): MapInterface {
+                    return $formats->put(
+                        $format->name(),
+                        $format
+                    );
+                }
+            )
+        );
     }
 
     public function get(string $name): Format
