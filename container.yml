@@ -1,0 +1,198 @@
+arguments:
+    gateways: map<string, Innmind\Rest\Server\Gateway>
+    files: set<string>
+    acceptFormats: Innmind\Rest\Server\Formats
+    contentTypeFormats: Innmind\Rest\Server\Formats
+    rangeExtractor: Innmind\Rest\Server\RangeExtractor ?? $rangeExtractor.delegate
+    specificationBuilder: Innmind\Rest\Server\SpecificationBuilder\Builder ?? $specification.builder
+    requestVerifier: Innmind\Rest\Server\Request\Verifier\Verifier ?? $request.verifier.delegate
+
+expose:
+    directories: $definition.directories
+    create: $controller.create
+    get: $controller.get
+    index: $controller.index
+    options: $controller.options
+    remove: $controller.remove
+    update: $controller.update
+
+services:
+    controller:
+        create stack:
+            - $controller.catchHttpException
+            - $controller.verify
+            - $controller.catchActionNotImplemented
+            - $controller.catchHttpResourceDenormalizationException
+            - $controller.action.create
+
+        get stack:
+            - $controller.catchHttpException
+            - $controller.verify
+            - $controller.catchActionNotImplemented
+            - $controller.action.get
+
+        index stack:
+            - $controller.catchHttpException
+            - $controller.verify
+            - $controller.catchActionNotImplemented
+            - $controller.catchFilterNotApplicable
+            - $controller.action.index
+
+        options stack:
+            - $controller.catchHttpException
+            - $controller.verify
+            - $controller.catchActionNotImplemented
+            - $controller.action.options
+
+        remove stack:
+            - $controller.catchHttpException
+            - $controller.verify
+            - $controller.catchActionNotImplemented
+            - $controller.action.remove
+
+        update stack:
+            - $controller.catchHttpException
+            - $controller.verify
+            - $controller.catchActionNotImplemented
+            - $controller.catchHttpResourceDenormalizationException
+            - $controller.action.update
+
+        action:
+            create Innmind\Rest\Server\Controller\Create:
+                - $format
+                - $serializer
+                - $gateways
+                - $response.headerBuilder.create.delegate
+            get Innmind\Rest\Server\Controller\Get:
+                - $format
+                - $serializer
+                - $gateways
+                - $response.headerBuilder.get.delegate
+            index Innmind\Rest\Server\Controller\Index:
+                - $format
+                - $serializer
+                - $gateways
+                - $response.headerBuilder.list.delegate
+                - $rangeExtractor
+                - $specificationBuilder
+            options Innmind\Rest\Server\Controller\Options:
+                - $format
+                - $serializer
+            remove Innmind\Rest\Server\Controller\Remove:
+                - $gateways
+                - $response.headerBuilder.remove.delegate
+            update Innmind\Rest\Server\Controller\Update:
+                - $format
+                - $serializer
+                - $gateways
+                - $response.headerBuilder.update.delegate
+        verify Innmind\Rest\Server\Controller\Verify:
+            - $requestVerifier
+            - '@decorated'
+        catchActionNotImplemented Innmind\Rest\Server\Controller\CatchActionNotImplemented:
+            - '@decorated'
+        catchFilterNotApplicable Innmind\Rest\Server\Controller\CatchFilterNotApplicable:
+            - '@decorated'
+        catchHttpException Innmind\Rest\Server\Controller\CatchHttpException:
+            - '@decorated'
+        catchHttpResourceDenormalizationException Innmind\Rest\Server\Controller\CatchHttpResourceDenormalizationException:
+            - '@decorated'
+
+    format Innmind\Rest\Server\Format:
+        - $acceptFormats
+        - $contentTypeFormats
+
+    definition:
+        types Innmind\Rest\Server\Definition\Types: []
+
+        loader:
+            yaml Innmind\Rest\Server\Definition\Loader\YamlLoader:
+                - $definition.types
+
+        directories $factory->load:
+            - $definition.loader.yaml
+            - $files
+
+        locator Innmind\Rest\Server\Definition\Locator:
+            - $definition.directories
+
+    specification:
+        builder Innmind\Rest\Server\SpecificationBuilder\Builder\Builder: []
+
+    serializer Innmind\Rest\Server\Serializer::make:
+        - $serializer.encoders
+        - $serializer.normalizers
+
+    serializer:
+        encoders set<Symfony\Component\Serializer\Encoder\EncoderInterace>:
+            - $serializer.encoders.json
+            - $serializer.encoders.form
+            - $serializer.encoders.defaultJson
+            - $serializer.encoders.defaultXml
+        encoders:
+            json Innmind\Rest\Server\Serializer\Encoder\JsonEncoder: []
+            form Innmind\Rest\Server\Serializer\Encoder\FormEncoder: []
+            defaultJson Symfony\Component\Serializer\Encoder\JsonEncoder: []
+            defaultXml Symfony\Component\Serializer\Encoder\XmlEncoder: []
+
+        normalizers set<Symfony\Component\Serializer\Normalizer\NormalizerInterface>:
+            - $serializer.normalizers.definition
+            - $serializer.normalizers.identities
+            - $serializer.normalizers.identity
+            - $serializer.normalizers.httpResource
+        normalizers:
+            definition Innmind\Rest\Server\Serializer\Normalizer\DefinitionNormalizer: []
+            identities Innmind\Rest\Server\Serializer\Normalizer\IdentitiesNormalizer: []
+            identity Innmind\Rest\Server\Serializer\Normalizer\IdentityNormalizer: []
+            httpResource Innmind\Rest\Server\Serializer\Normalizer\HttpResourceNormalizer: []
+
+    rangeExtractor:
+        delegate Innmind\Rest\Server\RangeExtractor\DelegationExtractor:
+            - $rangeExtractor.header
+            - $rangeExtractor.query
+        header Innmind\Rest\Server\RangeExtractor\HeaderExtractor: []
+        query Innmind\Rest\Server\RangeExtractor\QueryExtractor: []
+
+    request:
+        verifier:
+            delegate Innmind\Rest\Server\Request\Verifier\DelegationVerifier:
+                - $request.verifier.accept
+                - $request.verifier.contentType
+                - $request.verifier.range
+            accept Innmind\Rest\Server\Request\Verifier\AcceptVerifier:
+                - $acceptFormats
+            contentType Innmind\Rest\Server\Request\Verifier\ContentTypeVerifier:
+                - $contentTypeFormats
+            range Innmind\Rest\Server\Request\Verifier\RangeVerifier: []
+
+    response:
+        headerBuilder:
+            list:
+                delegate Innmind\Rest\Server\Response\HeaderBuilder\ListDelegationBuilder:
+                    - $response.headerBuilder.list.contentType
+                    - $response.headerBuilder.list.links
+                    - $response.headerBuilder.list.range
+                contentType Innmind\Rest\Server\Response\HeaderBuilder\ListContentTypeBuilder:
+                    - $acceptFormats
+                links Innmind\Rest\Server\Response\HeaderBuilder\ListLinksBuilder: []
+                range Innmind\Rest\Server\Response\HeaderBuilder\ListRangeBuilder: []
+            get:
+                delegate Innmind\Rest\Server\Response\HeaderBuilder\GetDelegationBuilder:
+                    - $response.headerBuilder.get.contentType
+                contentType Innmind\Rest\Server\Response\HeaderBuilder\GetContentTypeBuilder:
+                    - $acceptFormats
+            create:
+                delegate Innmind\Rest\Server\Response\HeaderBuilder\CreateDelegationBuilder:
+                    - $response.headerBuilder.create.contentType
+                    - $response.headerBuilder.create.location
+                contentType Innmind\Rest\Server\Response\HeaderBuilder\CreateContentTypeBuilder:
+                    - $acceptFormats
+                location Innmind\Rest\Server\Response\HeaderBuilder\CreateLocationBuilder: []
+            update:
+                delegate Innmind\Rest\Server\Response\HeaderBuilder\UpdateDelegationBuilder: []
+            remove:
+                delegate Innmind\Rest\Server\Response\HeaderBuilder\RemoveDelegationBuilder: []
+            link:
+                delegate Innmind\Rest\Server\Response\HeaderBuilder\LinkDelegationBuilder: []
+            unlink:
+                delegate Innmind\Rest\Server\Response\HeaderBuilder\UnlinkDelegationBuilder: []
