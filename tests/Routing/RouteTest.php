@@ -10,6 +10,7 @@ use Innmind\Rest\Server\{
     Action,
 };
 use Innmind\UrlTemplate\Template;
+use Innmind\Url\Path;
 use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
@@ -61,17 +62,38 @@ class RouteTest extends TestCase
         $this->assertSame($expected, (string) $route->template());
     }
 
+    public function testMatches()
+    {
+        $route = Route::of(
+            Action::list(),
+            new Name('foo.bar.baz'),
+            $this->definition
+        );
+
+        $this->assertTrue($route->matches(new Path('/foo/bar/baz/')));
+        $this->assertFalse($route->matches(new Path('/foo/bar/baz')));
+
+        $route = Route::of(
+            Action::get(),
+            new Name('foo.bar.baz'),
+            $this->definition
+        );
+
+        $this->assertTrue($route->matches(new Path('/foo/bar/baz/some-uuid')));
+        $this->assertFalse($route->matches(new Path('/foo/bar/baz/')));
+    }
+
     public function cases(): array
     {
         return [
-            [Action::list(), '{/prefix}/foo/bar/baz/'],
-            [Action::get(), '{/prefix}/foo/bar/baz/{identity}'],
-            [Action::create(), '{/prefix}/foo/bar/baz/'],
-            [Action::update(), '{/prefix}/foo/bar/baz/{identity}'],
-            [Action::remove(), '{/prefix}/foo/bar/baz/{identity}'],
-            [Action::link(), '{/prefix}/foo/bar/baz/{identity}'],
-            [Action::unlink(), '{/prefix}/foo/bar/baz/{identity}'],
-            [Action::options(), '{/prefix}/foo/bar/baz/'],
+            [Action::list(), '{+prefix}/foo/bar/baz/'],
+            [Action::get(), '{+prefix}/foo/bar/baz/{identity}'],
+            [Action::create(), '{+prefix}/foo/bar/baz/'],
+            [Action::update(), '{+prefix}/foo/bar/baz/{identity}'],
+            [Action::remove(), '{+prefix}/foo/bar/baz/{identity}'],
+            [Action::link(), '{+prefix}/foo/bar/baz/{identity}'],
+            [Action::unlink(), '{+prefix}/foo/bar/baz/{identity}'],
+            [Action::options(), '{+prefix}/foo/bar/baz/'],
         ];
     }
 }

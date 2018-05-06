@@ -8,6 +8,7 @@ use Innmind\Rest\Server\{
     Action,
 };
 use Innmind\UrlTemplate\Template;
+use Innmind\Url\PathInterface;
 use Innmind\Immutable\Str;
 
 final class Route
@@ -35,7 +36,7 @@ final class Route
         HttpResource $definition
     ): self {
         $template = Str::of((string) $name->asPath())
-            ->prepend('{/prefix}');
+            ->prepend('{+prefix}');
 
         switch ($action) {
             case Action::get():
@@ -53,6 +54,17 @@ final class Route
             $name,
             $definition
         );
+    }
+
+    public function matches(PathInterface $path): bool
+    {
+        $pattern = (string) Str::of((string) $this->template)
+            ->replace('{+prefix}', '')
+            ->replace('{identity}', '.+')
+            ->prepend('~^')
+            ->append('$~');
+
+        return Str::of((string) $path)->matches($pattern);
     }
 
     public function action(): Action

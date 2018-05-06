@@ -41,4 +41,9 @@ final class Prefix
             (string) $path->substring($this->value->length())
         );
     }
+
+    public function __toString(): string
+    {
+        return (string) $this->value;
+    }
 }

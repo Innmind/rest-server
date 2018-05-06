@@ -7,8 +7,11 @@ use Innmind\Rest\Server\{
     Action,
     Definition\HttpResource,
     Definition\Directory,
+    Exception\RouteNotFound,
 };
+use Innmind\Url\PathInterface;
 use Innmind\Immutable\{
+    SetInterface,
     Set,
     SequenceInterface,
     Sequence,
@@ -19,10 +22,33 @@ use Innmind\Immutable\{
 final class Routes implements \Iterator
 {
     private $routes;
+    private $definitions;
 
     public function __construct(Route ...$routes)
     {
         $this->routes = Set::of(Route::class, ...$routes);
+        $this->definitions = new Map(HttpResource::class, MapInterface::class);
+
+        if ($this->routes->size() === 0) {
+            return;
+        }
+
+        $this->definitions = $this
+            ->routes
+            ->groupBy(static function(Route $route): HttpResource {
+                return $route->definition();
+            })
+            ->reduce(
+                $this->definitions,
+                static function(MapInterface $definitions, HttpResource $definition, SetInterface $routes): MapInterface {
+                    return $definitions->put(
+                        $definition,
+                        $routes->groupBy(static function(Route $route): Action {
+                            return $route->action();
+                        })
+                    );
+                }
+            );
     }
 
     public static function of(Name $name, HttpResource $definition): self
@@ -80,10 +106,40 @@ final class Routes implements \Iterator
 
     public function merge(self $routes): self
     {
-        $self = clone $this;
-        $self->routes = $self->routes->merge($routes->routes);
+        return new self(...$this, ...$routes);
+    }
 
-        return $self;
+    public function match(PathInterface $path): HttpResource
+    {
+        $definition = $this->routes->reduce(
+            null,
+            static function(?HttpResource $definition, Route $route) use ($path): ?HttpResource {
+                if ($definition instanceof HttpResource) {
+                    return $definition;
+                }
+
+                if ($route->matches($path)) {
+                    return $route->definition();
+                }
+
+                return null;
+            }
+        );
+
+        if ($definition instanceof HttpResource) {
+            return $definition;
+        }
+
+        throw new RouteNotFound((string) $path);
+    }
+
+    public function get(Action $action, HttpResource $definition): Route
+    {
+        return $this
+            ->definitions
+            ->get($definition)
+            ->get($action)
+            ->current();
     }
 
     public function current(): Route
