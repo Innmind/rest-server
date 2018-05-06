@@ -16,6 +16,7 @@ expose:
     options: $controller.options
     remove: $controller.remove
     update: $controller.update
+    link: $controller.link
 
 services:
     controller:
@@ -58,6 +59,12 @@ services:
             - $controller.catchHttpResourceDenormalizationException
             - $controller.action.update
 
+        link stack:
+            - $controller.catchHttpException
+            - $controller.verify
+            - $controller.catchActionNotImplemented
+            - $controller.action.link
+
         action:
             create Innmind\Rest\Server\Controller\Create:
                 - $format
@@ -87,6 +94,10 @@ services:
                 - $serializer
                 - $gateways
                 - $response.headerBuilder.update.delegate
+            link Innmind\Rest\Server\Controller\Link:
+                - $gateways
+                - $response.headerBuilder.link.delegate
+                - $translator.link
         verify Innmind\Rest\Server\Controller\Verify:
             - $requestVerifier
             - '@decorated'
@@ -206,3 +217,7 @@ services:
     router Innmind\Rest\Server\Router:
         - $routes
         - $prefix
+
+    translator:
+        link Innmind\Rest\Server\Translator\LinkTranslator:
+            - $router

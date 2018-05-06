@@ -14,15 +14,19 @@ use Innmind\Rest\Server\{
     Serializer\Normalizer\HttpResourceNormalizer,
     Serializer\Encoder\JsonEncoder,
     Serializer\Encoder\FormEncoder,
-    Definition
+    Definition,
+    Definition\Loader\YamlLoader,
+    Definition\Types,
+    Router,
+    Routing\Routes,
 };
 use Innmind\Immutable\{
     Map,
-    Set
+    Set,
 };
 use Symfony\Component\Serializer\{
     Serializer,
-    Encoder\JsonEncoder as SfJsonEncoder
+    Encoder\JsonEncoder as SfJsonEncoder,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -31,6 +35,8 @@ class AbstractTestCase extends TestCase
     protected $format;
     protected $serializer;
     protected $definition;
+    protected $router;
+    protected $directories;
 
     public function setUp()
     {
@@ -98,6 +104,13 @@ class AbstractTestCase extends TestCase
             new Definition\Gateway('foo'),
             false,
             new Map('string', 'string')
+        );
+        $this->router = new Router(
+            Routes::from(
+                $this->directories = (new YamlLoader(new Types))->load(
+                    Set::of('string', 'fixtures/mapping.yml')
+                )
+            )
         );
     }
 }
