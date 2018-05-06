@@ -8,7 +8,7 @@ arguments:
     requestVerifier: Innmind\Rest\Server\Request\Verifier\Verifier ?? $request.verifier.delegate
 
 expose:
-    directories: $definition.directories
+    routes: $routes
     create: $controller.create
     get: $controller.get
     index: $controller.index
@@ -196,3 +196,6 @@ services:
                 delegate Innmind\Rest\Server\Response\HeaderBuilder\LinkDelegationBuilder: []
             unlink:
                 delegate Innmind\Rest\Server\Response\HeaderBuilder\UnlinkDelegationBuilder: []
+
+    routes Innmind\Rest\Server\Routing\Routes::from:
+        - $definition.directories

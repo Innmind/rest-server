@@ -8,12 +8,12 @@ use Innmind\Rest\Server\{
     Format\Format,
     Format\MediaType,
     Controller,
-    Gateway
+    Gateway,
+    Routing\Routes,
 };
 use Innmind\Compose\ContainerBuilder\ContainerBuilder;
 use Innmind\Url\Path;
 use Innmind\Immutable\{
-    MapInterface,
     Map,
     Set
 };
@@ -56,7 +56,7 @@ class ContainerTest extends TestCase
                 )
         );
 
-        $this->assertInstanceOf(MapInterface::class, $container->get('directories'));
+        $this->assertInstanceOf(Routes::class, $container->get('routes'));
         $this->assertInstanceOf(Controller::class, $container->get('create'));
         $this->assertInstanceOf(Controller::class, $container->get('get'));
         $this->assertInstanceOf(Controller::class, $container->get('index'));
