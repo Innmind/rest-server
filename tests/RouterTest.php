@@ -14,7 +14,7 @@ use Innmind\Rest\Server\{
     Exception\RouteNotFound,
 };
 use Innmind\Url\{
-    PathInterface,
+    UrlInterface,
     Path,
 };
 use Innmind\Immutable\Set;
@@ -64,7 +64,7 @@ class RouterTest extends TestCase
             $this->directories->get('top_dir')->definition('image')
         );
 
-        $this->assertInstanceOf(PathInterface::class, $path);
+        $this->assertInstanceOf(UrlInterface::class, $path);
         $this->assertSame('/foo/top_dir/image/', (string) $path);
 
         $path = $this->router->generate(

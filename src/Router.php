@@ -10,7 +10,10 @@ use Innmind\Rest\Server\{
     Exception\LogicException,
     Exception\RouteNotFound,
 };
-use Innmind\Url\PathInterface;
+use Innmind\Url\{
+    PathInterface,
+    UrlInterface,
+};
 use Innmind\Immutable\Map;
 
 final class Router
@@ -45,14 +48,13 @@ final class Router
         Action $action,
         HttpResource $definition,
         Identity $identity = null
-    ): PathInterface {
+    ): UrlInterface {
         $route = $this->routes->get($action, $definition);
 
         return $route
             ->template()
             ->expand(
                 $this->variables->put('identity', (string) $identity)
-            )
-            ->path();
+            );
     }
 }
