@@ -64,5 +64,6 @@ class ContainerTest extends TestCase
         $this->assertInstanceOf(Controller::class, $container->get('remove'));
         $this->assertInstanceOf(Controller::class, $container->get('update'));
         $this->assertInstanceOf(Controller::class, $container->get('link'));
+        $this->assertInstanceOf(Controller::class, $container->get('unlink'));
     }
 }

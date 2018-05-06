@@ -17,6 +17,7 @@ expose:
     remove: $controller.remove
     update: $controller.update
     link: $controller.link
+    unlink: $controller.unlink
 
 services:
     controller:
@@ -65,6 +66,12 @@ services:
             - $controller.catchActionNotImplemented
             - $controller.action.link
 
+        unlink stack:
+            - $controller.catchHttpException
+            - $controller.verify
+            - $controller.catchActionNotImplemented
+            - $controller.action.unlink
+
         action:
             create Innmind\Rest\Server\Controller\Create:
                 - $format
@@ -97,6 +104,10 @@ services:
             link Innmind\Rest\Server\Controller\Link:
                 - $gateways
                 - $response.headerBuilder.link.delegate
+                - $translator.link
+            unlink Innmind\Rest\Server\Controller\Unlink:
+                - $gateways
+                - $response.headerBuilder.unlink.delegate
                 - $translator.link
         verify Innmind\Rest\Server\Controller\Verify:
             - $requestVerifier
