@@ -18,6 +18,7 @@ expose:
     update: $controller.update
     link: $controller.link
     unlink: $controller.unlink
+    capabilities: $controller.capabilities
 
 services:
     controller:
@@ -71,6 +72,10 @@ services:
             - $controller.verify
             - $controller.catchActionNotImplemented
             - $controller.action.unlink
+
+        capabilities Innmind\Rest\Server\Controller\Capabilities:
+            - $routes
+            - $router
 
         action:
             create Innmind\Rest\Server\Controller\Create:
