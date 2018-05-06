@@ -8,7 +8,8 @@ use Innmind\Rest\Server\Definition\{
     HttpResource,
     Identity,
     Property,
-    Gateway
+    Gateway,
+    Name,
 };
 use Innmind\Immutable\{
     Map,
@@ -47,7 +48,8 @@ class DirectoryTest extends TestCase
                 )
         );
 
-        $this->assertSame('foo', $d->name());
+        $this->assertInstanceOf(Name::class, $d->name());
+        $this->assertSame('foo', (string) $d->name());
         $this->assertSame('foo', (string) $d);
         $this->assertSame($d2, $d->child('bar'));
         $this->assertSame($ds, $d->children());

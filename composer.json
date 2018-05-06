@@ -24,7 +24,8 @@
         "innmind/http": "~3.0",
         "willdurand/negotiation": "^2.0",
         "symfony/yaml": "~3.0",
-        "innmind/compose": "^1.6"
+        "innmind/compose": "^1.6",
+        "innmind/url-template": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -41,7 +42,8 @@
         "innmind/graphviz": "^1.1",
         "mnapoli/silly": "^1.7",
         "innmind/server-control": "^2.5",
-        "innmind/stream": "^1.4"
+        "innmind/stream": "^1.4",
+        "giorgiosironi/eris": "^0.10.0"
     },
     "scripts": {
         "test": "vendor/bin/phpunit --colors=always"

@@ -57,7 +57,7 @@ final class HttpResource
             throw new \TypeError('Argument 8 must be of type MapInterface<string, string>');
         }
 
-        $this->name = $name;
+        $this->name = new Name($name);
         $this->identity = $identity;
         $this->properties = $properties;
         $this->options = $options;
@@ -67,7 +67,7 @@ final class HttpResource
         $this->allowedLinks = $allowedLinks;
     }
 
-    public function name(): string
+    public function name(): Name
     {
         return $this->name;
     }
@@ -121,6 +121,6 @@ final class HttpResource
 
     public function __toString(): string
     {
-        return $this->name;
+        return (string) $this->name;
     }
 }
