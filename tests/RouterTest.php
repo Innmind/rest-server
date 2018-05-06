@@ -41,11 +41,15 @@ class RouterTest extends TestCase
     {
         $this->assertSame(
             $this->directories->get('top_dir')->definition('image'),
-            $this->router->match(new Path('/foo/top_dir/image/'))
+            $this->router->match(new Path('/foo/top_dir/image/'))->definition()
         );
         $this->assertSame(
             $this->directories->get('top_dir')->definition('image'),
-            $this->router->match(new Path('/foo/top_dir/image/42'))
+            $this->router->match(new Path('/foo/top_dir/image/42'))->definition()
+        );
+        $this->assertEquals(
+            new Identity('42'),
+            $this->router->match(new Path('/foo/top_dir/image/42'))->identity()
         );
     }
 

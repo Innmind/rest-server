@@ -109,25 +109,28 @@ final class Routes implements \Iterator
         return new self(...$this, ...$routes);
     }
 
-    public function match(PathInterface $path): HttpResource
+    public function match(PathInterface $path): Match
     {
-        $definition = $this->routes->reduce(
+        $match = $this->routes->reduce(
             null,
-            static function(?HttpResource $definition, Route $route) use ($path): ?HttpResource {
-                if ($definition instanceof HttpResource) {
-                    return $definition;
+            static function(?Match $match, Route $route) use ($path): ?Match {
+                if ($match instanceof Match) {
+                    return $match;
                 }
 
                 if ($route->matches($path)) {
-                    return $route->definition();
+                    return new Match(
+                        $route->definition(),
+                        $route->identity($path)
+                    );
                 }
 
                 return null;
             }
         );
 
-        if ($definition instanceof HttpResource) {
-            return $definition;
+        if ($match instanceof Match) {
+            return $match;
         }
 
         throw new RouteNotFound((string) $path);

@@ -8,6 +8,7 @@ use Innmind\Rest\Server\{
     Routing\Name,
     Definition,
     Action,
+    Identity\Identity,
 };
 use Innmind\UrlTemplate\Template;
 use Innmind\Url\Path;
@@ -81,6 +82,33 @@ class RouteTest extends TestCase
 
         $this->assertTrue($route->matches(new Path('/foo/bar/baz/some-uuid')));
         $this->assertFalse($route->matches(new Path('/foo/bar/baz/')));
+    }
+
+    public function testIdentity()
+    {
+        $route = Route::of(
+            Action::get(),
+            new Name('foo'),
+            $this->definition
+        );
+
+        $identity = $route->identity(new Path('/foo/42'));
+
+        $this->assertInstanceOf(Identity::class, $identity);
+        $this->assertSame('42', (string) $identity);
+    }
+
+    public function testIdentityWhenNotInPath()
+    {
+        $route = Route::of(
+            Action::get(),
+            new Name('foo'),
+            $this->definition
+        );
+
+        $identity = $route->identity(new Path('/foo/'));
+
+        $this->assertNull($identity);
     }
 
     public function cases(): array

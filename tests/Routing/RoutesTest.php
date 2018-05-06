@@ -7,10 +7,12 @@ use Innmind\Rest\Server\{
     Routing\Routes,
     Routing\Route,
     Routing\Name,
+    Routing\Match,
     Definition\Loader\YamlLoader,
     Definition\Types,
     Definition,
     Action,
+    Identity\Identity,
     Exception\RouteNotFound,
 };
 use Innmind\Url\Path;
@@ -164,11 +166,18 @@ class RoutesTest extends TestCase
 
         $this->assertSame(
             $directories->get('top_dir')->definition('image'),
-            $routes->match(new Path('/top_dir/image/'))
+            $routes->match(new Path('/top_dir/image/'))->definition()
+        );
+        $this->assertNull(
+            $routes->match(new Path('/top_dir/image/'))->identity()
         );
         $this->assertSame(
             $directories->get('top_dir')->definition('image'),
-            $routes->match(new Path('/top_dir/image/some-uuid-or-other-identity'))
+            $routes->match(new Path('/top_dir/image/some-uuid-or-other-identity'))->definition()
+        );
+        $this->assertEquals(
+            new Identity('some-uuid-or-other-identity'),
+            $routes->match(new Path('/top_dir/image/some-uuid-or-other-identity'))->identity()
         );
     }
 

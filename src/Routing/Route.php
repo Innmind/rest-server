@@ -6,6 +6,7 @@ namespace Innmind\Rest\Server\Routing;
 use Innmind\Rest\Server\{
     Definition\HttpResource,
     Action,
+    Identity\Identity,
 };
 use Innmind\UrlTemplate\Template;
 use Innmind\Url\PathInterface;
@@ -85,5 +86,22 @@ final class Route
     public function definition(): HttpResource
     {
         return $this->definition;
+    }
+
+    public function identity(PathInterface $path): ?Identity
+    {
+        $pattern = (string) Str::of((string) $this->template)
+            ->replace('{+prefix}', '')
+            ->replace('{identity}', '(?<identity>.+)')
+            ->prepend('~^')
+            ->append('$~');
+
+        $infos = Str::of((string) $path)->capture($pattern);
+
+        if (!$infos->contains('identity')) {
+            return null;
+        }
+
+        return new Identity((string) $infos->get('identity'));
     }
 }
