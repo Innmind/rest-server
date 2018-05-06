@@ -19,6 +19,11 @@ final class Name
         $this->value = $value;
     }
 
+    public function under(self $name): self
+    {
+        return new self($name.'.'.$this);
+    }
+
     public function __toString(): string
     {
         return $this->value;

@@ -44,4 +44,17 @@ class NameTest extends TestCase
                 new Name($string);
             });
     }
+
+    public function testUnder()
+    {
+        $name = new Name('foo');
+        $directory = new Name('bar');
+
+        $joined = $name->under($directory);
+
+        $this->assertInstanceOf(Name::class, $joined);
+        $this->assertSame('foo', (string) $name);
+        $this->assertSame('bar', (string) $directory);
+        $this->assertSame('bar.foo', (string) $joined);
+    }
 }
