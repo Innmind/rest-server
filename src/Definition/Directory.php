@@ -40,12 +40,12 @@ final class Directory
             ));
         }
 
-        $this->name = $name;
+        $this->name = new Name($name);
         $this->children = $children;
         $this->definitions = $definitions;
     }
 
-    public function name(): string
+    public function name(): Name
     {
         return $this->name;
     }
@@ -118,6 +118,6 @@ final class Directory
 
     public function __toString(): string
     {
-        return $this->name;
+        return (string) $this->name;
     }
 }

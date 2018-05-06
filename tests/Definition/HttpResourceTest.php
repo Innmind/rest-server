@@ -7,7 +7,8 @@ use Innmind\Rest\Server\Definition\{
     HttpResource,
     Identity,
     Gateway,
-    Property
+    Property,
+    Name,
 };
 use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
@@ -27,7 +28,8 @@ class HttpResourceTest extends TestCase
             $l = new Map('string', 'string')
         );
 
-        $this->assertSame('foobar', $r->name());
+        $this->assertInstanceOf(Name::class, $r->name());
+        $this->assertSame('foobar', (string) $r->name());
         $this->assertSame('foobar', (string) $r);
         $this->assertSame($i, $r->identity());
         $this->assertSame($p, $r->properties());
