@@ -3,6 +3,7 @@ arguments:
     files: set<string>
     acceptFormats: Innmind\Rest\Server\Formats
     contentTypeFormats: Innmind\Rest\Server\Formats
+    prefix: '?Innmind\Rest\Server\Routing\Prefix'
     rangeExtractor: Innmind\Rest\Server\RangeExtractor ?? $rangeExtractor.delegate
     specificationBuilder: Innmind\Rest\Server\SpecificationBuilder\Builder ?? $specification.builder
     requestVerifier: Innmind\Rest\Server\Request\Verifier\Verifier ?? $request.verifier.delegate
@@ -174,7 +175,8 @@ services:
                     - $response.headerBuilder.list.range
                 contentType Innmind\Rest\Server\Response\HeaderBuilder\ListContentTypeBuilder:
                     - $acceptFormats
-                links Innmind\Rest\Server\Response\HeaderBuilder\ListLinksBuilder: []
+                links Innmind\Rest\Server\Response\HeaderBuilder\ListLinksBuilder:
+                    - $router
                 range Innmind\Rest\Server\Response\HeaderBuilder\ListRangeBuilder: []
             get:
                 delegate Innmind\Rest\Server\Response\HeaderBuilder\GetDelegationBuilder:
@@ -187,7 +189,8 @@ services:
                     - $response.headerBuilder.create.location
                 contentType Innmind\Rest\Server\Response\HeaderBuilder\CreateContentTypeBuilder:
                     - $acceptFormats
-                location Innmind\Rest\Server\Response\HeaderBuilder\CreateLocationBuilder: []
+                location Innmind\Rest\Server\Response\HeaderBuilder\CreateLocationBuilder:
+                    - $router
             update:
                 delegate Innmind\Rest\Server\Response\HeaderBuilder\UpdateDelegationBuilder: []
             remove:
@@ -199,3 +202,7 @@ services:
 
     routes Innmind\Rest\Server\Routing\Routes::from:
         - $definition.directories
+
+    router Innmind\Rest\Server\Router:
+        - $routes
+        - $prefix

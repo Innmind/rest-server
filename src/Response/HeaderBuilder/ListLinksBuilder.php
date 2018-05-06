@@ -6,26 +6,34 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 use Innmind\Rest\Server\{
     Definition\HttpResource,
     Request\Range,
-    Identity
+    Identity,
+    Router,
+    Action,
 };
 use Innmind\Http\{
     Message\ServerRequest,
     Header,
     Header\Value,
     Header\Link,
-    Header\LinkValue
+    Header\LinkValue,
 };
 use Innmind\Specification\SpecificationInterface;
-use Innmind\Url\Url;
 use Innmind\Immutable\{
     SetInterface,
     MapInterface,
     Map,
-    Set
+    Set,
 };
 
 final class ListLinksBuilder implements ListBuilder
 {
+    private $router;
+
+    public function __construct(Router $router)
+    {
+        $this->router = $router;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -42,17 +50,17 @@ final class ListLinksBuilder implements ListBuilder
             return $map;
         }
 
-        $path = $request->url()->path();
-
         return $map->put(
             'Link',
             new Link(
                 ...$identities->reduce(
                     new Set(Value::class),
-                    function(Set $carry, Identity $identity) use ($path): Set {
+                    function(Set $carry, Identity $identity) use ($definition): Set {
                         return $carry->add(new LinkValue(
-                            Url::fromString(
-                                rtrim((string) $path, '/').'/'.$identity
+                            $this->router->generate(
+                                Action::get(),
+                                $definition,
+                                $identity
                             ),
                             'resource'
                         ));

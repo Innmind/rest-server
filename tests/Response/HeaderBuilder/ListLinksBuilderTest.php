@@ -6,12 +6,13 @@ namespace Tests\Innmind\Rest\Server\Response\HeaderBuilder;
 use Innmind\Rest\Server\{
     Response\HeaderBuilder\ListLinksBuilder,
     Response\HeaderBuilder\ListBuilder,
-    Identity as IdentityInterface,
+    Identity,
     Identity\Identity as Id,
-    Definition\HttpResource,
-    Definition\Identity,
     Definition\Property,
-    Definition\Gateway
+    Definition\Loader\YamlLoader,
+    Definition\Types,
+    Router,
+    Routing\Routes,
 };
 use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
@@ -36,20 +37,34 @@ use PHPUnit\Framework\TestCase;
 
 class ListLinksBuilderTest extends TestCase
 {
+    private $build;
+    private $directories;
+
+    public function setUp()
+    {
+        $this->build = new ListLinksBuilder(
+            new Router(
+                Routes::from(
+                    $this->directories = (new YamlLoader(new Types))->load(
+                        Set::of('string', 'fixtures/mapping.yml')
+                    )
+                )
+            )
+        );
+    }
+
     public function testInterface()
     {
         $this->assertInstanceOf(
             ListBuilder::class,
-            new ListLinksBuilder
+            $this->build
         );
     }
 
     public function testBuild()
     {
-        $build = new ListLinksBuilder;
-
-        $headers = $build(
-            (new Set(IdentityInterface::class))
+        $headers = ($this->build)(
+            (new Set(Identity::class))
                 ->add(new Id(24))
                 ->add(new Id(42)),
             new ServerRequest(
@@ -64,16 +79,7 @@ class ListLinksBuilderTest extends TestCase
                 $this->createMock(Form::class),
                 $this->createMock(Files::class)
             ),
-            new HttpResource(
-                'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
-                new Gateway('command'),
-                true,
-                new Map('string', 'string')
-            )
+            $this->directories->get('top_dir')->definition('image')
         );
 
         $this->assertInstanceOf(MapInterface::class, $headers);
@@ -81,17 +87,15 @@ class ListLinksBuilderTest extends TestCase
         $this->assertSame(Header::class, (string) $headers->valueType());
         $this->assertSame(1, $headers->size());
         $this->assertSame(
-            'Link : </foo/bar/24>; rel="resource", </foo/bar/42>; rel="resource"',
+            'Link : </top_dir/image/24>; rel="resource", </top_dir/image/42>; rel="resource"',
             (string) $headers->get('Link')
         );
     }
 
     public function testBuildWithoutIdentities()
     {
-        $build = new ListLinksBuilder;
-
-        $headers = $build(
-            new Set(IdentityInterface::class),
+        $headers = ($this->build)(
+            new Set(Identity::class),
             new ServerRequest(
                 Url::fromString('/foo/bar/'),
                 $this->createMock(Method::class),
@@ -104,16 +108,7 @@ class ListLinksBuilderTest extends TestCase
                 $this->createMock(Form::class),
                 $this->createMock(Files::class)
             ),
-            new HttpResource(
-                'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
-                new Gateway('command'),
-                true,
-                new Map('string', 'string')
-            )
+            $this->directories->get('top_dir')->definition('image')
         );
 
         $this->assertInstanceOf(MapInterface::class, $headers);
