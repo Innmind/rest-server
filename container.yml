@@ -19,6 +19,7 @@ expose:
     link: $controller.link
     unlink: $controller.unlink
     capabilities: $controller.capabilities
+    locator: $definition.locator
 
 services:
     controller:

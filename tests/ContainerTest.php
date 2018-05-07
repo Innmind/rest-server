@@ -10,6 +10,7 @@ use Innmind\Rest\Server\{
     Controller,
     Gateway,
     Routing\Routes,
+    Definition\Locator,
 };
 use Innmind\Compose\ContainerBuilder\ContainerBuilder;
 use Innmind\Url\Path;
@@ -65,5 +66,6 @@ class ContainerTest extends TestCase
         $this->assertInstanceOf(Controller::class, $container->get('update'));
         $this->assertInstanceOf(Controller::class, $container->get('link'));
         $this->assertInstanceOf(Controller::class, $container->get('unlink'));
+        $this->assertInstanceOf(Locator::class, $container->get('locator'));
     }
 }
