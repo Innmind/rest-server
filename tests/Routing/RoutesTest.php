@@ -16,10 +16,7 @@ use Innmind\Rest\Server\{
     Exception\RouteNotFound,
 };
 use Innmind\Url\Path;
-use Innmind\Immutable\{
-    Set,
-    Map,
-};
+use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
 class RoutesTest extends TestCase
@@ -31,9 +28,7 @@ class RoutesTest extends TestCase
 
     public function testOf()
     {
-        $directories = (new YamlLoader(new Types))->load(
-            Set::of('string', 'fixtures/mapping.yml')
-        );
+        $directories = (new YamlLoader(new Types))('fixtures/mapping.yml');
 
         $routes = Routes::of(
             new Name('top_dir.image'),
@@ -94,9 +89,7 @@ class RoutesTest extends TestCase
 
     public function testFrom()
     {
-        $directories = (new YamlLoader(new Types))->load(
-            Set::of('string', 'fixtures/mapping.yml')
-        );
+        $directories = (new YamlLoader(new Types))('fixtures/mapping.yml');
 
         $routes = Routes::from($directories);
 
@@ -158,9 +151,7 @@ class RoutesTest extends TestCase
 
     public function testMatch()
     {
-        $directories = (new YamlLoader(new Types))->load(
-            Set::of('string', 'fixtures/mapping.yml')
-        );
+        $directories = (new YamlLoader(new Types))('fixtures/mapping.yml');
 
         $routes = Routes::from($directories);
 
@@ -191,9 +182,7 @@ class RoutesTest extends TestCase
 
     public function testGet()
     {
-        $directories = (new YamlLoader(new Types))->load(
-            Set::of('string', 'fixtures/mapping.yml')
-        );
+        $directories = (new YamlLoader(new Types))('fixtures/mapping.yml');
 
         $routes = Routes::from($directories);
         $definition = $directories->get('top_dir')->definition('image');

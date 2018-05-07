@@ -17,7 +17,6 @@ use Innmind\Url\{
     UrlInterface,
     Path,
 };
-use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class RouterTest extends TestCase
@@ -27,9 +26,7 @@ class RouterTest extends TestCase
 
     public function setUp()
     {
-        $this->directories = (new YamlLoader(new Types))->load(
-            Set::of('string', 'fixtures/mapping.yml')
-        );
+        $this->directories = (new YamlLoader(new Types))('fixtures/mapping.yml');
 
         $this->router = new Router(
             Routes::from($this->directories),

@@ -32,8 +32,7 @@ use Innmind\Url\Url;
 use Innmind\Stream\Readable;
 use Innmind\Immutable\{
     Map,
-    Set,
-    MapInterface
+    MapInterface,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -47,9 +46,7 @@ class CreateLocationBuilderTest extends TestCase
         $this->build = new CreateLocationBuilder(
             new Router(
                 Routes::from(
-                    $this->directories = (new YamlLoader(new Types))->load(
-                        Set::of('string', 'fixtures/mapping.yml')
-                    )
+                    $this->directories = (new YamlLoader(new Types))('fixtures/mapping.yml')
                 )
             )
         );

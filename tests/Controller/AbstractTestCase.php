@@ -107,9 +107,7 @@ class AbstractTestCase extends TestCase
         );
         $this->router = new Router(
             Routes::from(
-                $this->directories = (new YamlLoader(new Types))->load(
-                    Set::of('string', 'fixtures/mapping.yml')
-                )
+                $this->directories = (new YamlLoader(new Types))('fixtures/mapping.yml')
             )
         );
     }

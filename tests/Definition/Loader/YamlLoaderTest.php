@@ -9,12 +9,9 @@ use Innmind\Rest\Server\Definition\{
     Types,
     Access,
     Type\StringType,
-    Loader
+    Loader,
 };
-use Innmind\Immutable\{
-    MapInterface,
-    Set
-};
+use Innmind\Immutable\MapInterface;
 use PHPUnit\Framework\TestCase;
 
 class YamlLoaderTest extends TestCase
@@ -28,11 +25,9 @@ class YamlLoaderTest extends TestCase
 
     public function testLoad()
     {
-        $loader = new YamlLoader(new Types);
+        $load = new YamlLoader(new Types);
 
-        $directories = $loader->load(
-            (new Set('string'))->add('fixtures/mapping.yml')
-        );
+        $directories = $load('fixtures/mapping.yml');
 
         $this->assertInstanceOf(MapInterface::class, $directories);
         $this->assertSame('string', (string) $directories->keyType());

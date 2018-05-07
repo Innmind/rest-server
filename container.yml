@@ -138,9 +138,9 @@ services:
             yaml Innmind\Rest\Server\Definition\Loader\YamlLoader:
                 - $definition.types
 
-        directories $factory->load:
+        directories $factory->__invoke:
             - $definition.loader.yaml
-            - $files
+            - ...$files
 
         locator Innmind\Rest\Server\Definition\Locator:
             - $definition.directories

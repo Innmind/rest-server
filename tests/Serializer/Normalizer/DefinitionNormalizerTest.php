@@ -10,12 +10,9 @@ use Innmind\Rest\Server\{
     Definition\Property,
     Definition\Gateway,
     Definition\Types,
-    Definition\Loader\YamlLoader
+    Definition\Loader\YamlLoader,
 };
-use Innmind\Immutable\{
-    Map,
-    Set
-};
+use Innmind\Immutable\Map;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -52,11 +49,7 @@ class DefinitionNormalizerTest extends TestCase
     public function testNormalize()
     {
         $normalizer = new DefinitionNormalizer;
-        $directories = (new YamlLoader(new Types))->load(
-            (new Set('string'))->add(
-                'fixtures/mapping.yml'
-            )
-        );
+        $directories = (new YamlLoader(new Types))('fixtures/mapping.yml');
 
         $data = $normalizer->normalize(
             $directories->get('top_dir')->definitions()->get('image')

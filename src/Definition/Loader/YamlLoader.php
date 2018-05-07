@@ -12,18 +12,17 @@ use Innmind\Rest\Server\{
     Definition\Gateway,
     Definition\Access,
     Definition\Loader,
-    Configuration
+    Configuration,
 };
 use Innmind\Immutable\{
-    SetInterface,
     MapInterface,
     Map,
     Set,
-    Sequence
+    Sequence,
 };
 use Symfony\Component\{
     Config\Definition\Processor,
-    Yaml\Yaml
+    Yaml\Yaml,
 };
 
 final class YamlLoader implements Loader
@@ -38,15 +37,11 @@ final class YamlLoader implements Loader
     /**
      * {@inheritdoc}
      */
-    public function load(SetInterface $files): MapInterface
+    public function __invoke(string ...$files): MapInterface
     {
-        if ((string) $files->type() !== 'string') {
-            throw new \TypeError('Argument 1 must be of type SetInterface<string>');
-        }
-
         $config = (new Processor)->processConfiguration(
             new Configuration,
-            $files->reduce(
+            Set::of('string', ...$files)->reduce(
                 [],
                 function(array $carry, string $file) {
                     $carry[] = Yaml::parse(file_get_contents($file));

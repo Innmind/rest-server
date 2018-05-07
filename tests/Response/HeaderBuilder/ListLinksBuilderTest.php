@@ -45,9 +45,7 @@ class ListLinksBuilderTest extends TestCase
         $this->build = new ListLinksBuilder(
             new Router(
                 Routes::from(
-                    $this->directories = (new YamlLoader(new Types))->load(
-                        Set::of('string', 'fixtures/mapping.yml')
-                    )
+                    $this->directories = (new YamlLoader(new Types))('fixtures/mapping.yml')
                 )
             )
         );

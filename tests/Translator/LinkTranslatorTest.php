@@ -21,7 +21,6 @@ use Innmind\Http\Header\{
 };
 use Innmind\Url\Url;
 use Innmind\Immutable\{
-    Set,
     Map,
     MapInterface
 };
@@ -34,9 +33,7 @@ class LinkTranslatorTest extends TestCase
         $translate = new LinkTranslator(
             new Router(
                 Routes::from(
-                    $directories = (new YamlLoader(new Types))->load(
-                        Set::of('string', 'fixtures/mapping.yml')
-                    )
+                    $directories = (new YamlLoader(new Types))('fixtures/mapping.yml')
                 )
             )
         );
