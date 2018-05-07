@@ -6,7 +6,6 @@ namespace Tests\Innmind\Rest\Server\Definition\Loader;
 use Innmind\Rest\Server\Definition\{
     Loader\YamlLoader,
     Directory,
-    Types,
     Access,
     Type\StringType,
     Loader,
@@ -18,14 +17,14 @@ class YamlLoaderTest extends TestCase
 {
     public function testInterface()
     {
-        $loader = new YamlLoader(new Types);
+        $loader = new YamlLoader;
 
         $this->assertInstanceOf(Loader::class, $loader);
     }
 
     public function testLoad()
     {
-        $load = new YamlLoader(new Types);
+        $load = new YamlLoader;
 
         $directories = $load('fixtures/mapping.yml');
 

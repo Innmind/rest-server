@@ -8,7 +8,6 @@ use Innmind\Rest\Server\{
     Router,
     Routing\Routes,
     Definition\Loader\YamlLoader,
-    Definition\Types,
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -22,7 +21,7 @@ class CapabilitiesTest extends TestCase
     public function testInvokation()
     {
         $routes = Routes::from(
-            (new YamlLoader(new Types))('fixtures/mapping.yml')
+            (new YamlLoader)('fixtures/mapping.yml')
         );
 
         $capabilities = new Capabilities($routes, new Router($routes));

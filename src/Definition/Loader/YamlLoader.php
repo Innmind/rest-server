@@ -29,9 +29,9 @@ final class YamlLoader implements Loader
 {
     private $types;
 
-    public function __construct(Types $types)
+    public function __construct(Types $types = null)
     {
-        $this->types = $types;
+        $this->types = $types ?? new Types;
     }
 
     /**

@@ -9,7 +9,6 @@ use Innmind\Rest\Server\{
     Definition\Identity,
     Definition\Property,
     Definition\Gateway,
-    Definition\Types,
     Definition\Loader\YamlLoader,
 };
 use Innmind\Immutable\Map;
@@ -49,7 +48,7 @@ class DefinitionNormalizerTest extends TestCase
     public function testNormalize()
     {
         $normalizer = new DefinitionNormalizer;
-        $directories = (new YamlLoader(new Types))('fixtures/mapping.yml');
+        $directories = (new YamlLoader)('fixtures/mapping.yml');
 
         $data = $normalizer->normalize(
             $directories->get('top_dir')->definitions()->get('image')

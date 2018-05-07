@@ -10,7 +10,6 @@ use Innmind\Rest\Server\{
     Identity\Identity as Id,
     Definition\Property,
     Definition\Loader\YamlLoader,
-    Definition\Types,
     Router,
     Routing\Routes,
 };
@@ -45,7 +44,7 @@ class ListLinksBuilderTest extends TestCase
         $this->build = new ListLinksBuilder(
             new Router(
                 Routes::from(
-                    $this->directories = (new YamlLoader(new Types))('fixtures/mapping.yml')
+                    $this->directories = (new YamlLoader)('fixtures/mapping.yml')
                 )
             )
         );

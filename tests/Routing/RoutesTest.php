@@ -9,7 +9,6 @@ use Innmind\Rest\Server\{
     Routing\Name,
     Routing\Match,
     Definition\Loader\YamlLoader,
-    Definition\Types,
     Definition,
     Action,
     Identity\Identity,
@@ -28,7 +27,7 @@ class RoutesTest extends TestCase
 
     public function testOf()
     {
-        $directories = (new YamlLoader(new Types))('fixtures/mapping.yml');
+        $directories = (new YamlLoader)('fixtures/mapping.yml');
 
         $routes = Routes::of(
             new Name('top_dir.image'),
@@ -89,7 +88,7 @@ class RoutesTest extends TestCase
 
     public function testFrom()
     {
-        $directories = (new YamlLoader(new Types))('fixtures/mapping.yml');
+        $directories = (new YamlLoader)('fixtures/mapping.yml');
 
         $routes = Routes::from($directories);
 
@@ -151,7 +150,7 @@ class RoutesTest extends TestCase
 
     public function testMatch()
     {
-        $directories = (new YamlLoader(new Types))('fixtures/mapping.yml');
+        $directories = (new YamlLoader)('fixtures/mapping.yml');
 
         $routes = Routes::from($directories);
 
@@ -182,7 +181,7 @@ class RoutesTest extends TestCase
 
     public function testGet()
     {
-        $directories = (new YamlLoader(new Types))('fixtures/mapping.yml');
+        $directories = (new YamlLoader)('fixtures/mapping.yml');
 
         $routes = Routes::from($directories);
         $definition = $directories->get('top_dir')->definition('image');

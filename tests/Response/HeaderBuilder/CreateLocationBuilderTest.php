@@ -9,7 +9,6 @@ use Innmind\Rest\Server\{
     Identity\Identity,
     HttpResource,
     Definition\Loader\YamlLoader,
-    Definition\Types,
     Router,
     Routing\Routes,
 };
@@ -46,7 +45,7 @@ class CreateLocationBuilderTest extends TestCase
         $this->build = new CreateLocationBuilder(
             new Router(
                 Routes::from(
-                    $this->directories = (new YamlLoader(new Types))('fixtures/mapping.yml')
+                    $this->directories = (new YamlLoader)('fixtures/mapping.yml')
                 )
             )
         );

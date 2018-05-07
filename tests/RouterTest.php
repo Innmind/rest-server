@@ -8,7 +8,6 @@ use Innmind\Rest\Server\{
     Routing\Routes,
     Routing\Prefix,
     Definition\Loader\YamlLoader,
-    Definition\Types,
     Identity\Identity,
     Action,
     Exception\RouteNotFound,
@@ -26,7 +25,7 @@ class RouterTest extends TestCase
 
     public function setUp()
     {
-        $this->directories = (new YamlLoader(new Types))('fixtures/mapping.yml');
+        $this->directories = (new YamlLoader)('fixtures/mapping.yml');
 
         $this->router = new Router(
             Routes::from($this->directories),

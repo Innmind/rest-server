@@ -5,7 +5,6 @@ namespace Tests\Innmind\Rest\Server\Definition;
 
 use Innmind\Rest\Server\Definition\{
     Locator,
-    Types,
     HttpResource,
     Loader\YamlLoader,
 };
@@ -26,7 +25,7 @@ class LocatorTest extends TestCase
     public function testLocate()
     {
         $locate = new Locator(
-            (new YamlLoader(new Types))('fixtures/mapping.yml')
+            (new YamlLoader)('fixtures/mapping.yml')
         );
 
         $resource = $locate('top_dir.sub_dir.res');
@@ -41,7 +40,7 @@ class LocatorTest extends TestCase
     public function testThrowWhenResourceNotFound()
     {
         $locate = new Locator(
-            (new YamlLoader(new Types))('fixtures/mapping.yml')
+            (new YamlLoader)('fixtures/mapping.yml')
         );
 
         $locate('unknown');

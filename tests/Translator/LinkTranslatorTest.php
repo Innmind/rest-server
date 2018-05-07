@@ -6,7 +6,6 @@ namespace Tests\Innmind\Rest\Server\Translator;
 use Innmind\Rest\Server\{
     Translator\LinkTranslator,
     Definition\Loader\YamlLoader,
-    Definition\Types,
     Link\Parameter,
     Reference,
     Router,
@@ -33,7 +32,7 @@ class LinkTranslatorTest extends TestCase
         $translate = new LinkTranslator(
             new Router(
                 Routes::from(
-                    $directories = (new YamlLoader(new Types))('fixtures/mapping.yml')
+                    $directories = (new YamlLoader)('fixtures/mapping.yml')
                 )
             )
         );

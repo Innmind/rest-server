@@ -16,7 +16,6 @@ use Innmind\Rest\Server\{
     Serializer\Encoder\FormEncoder,
     Definition,
     Definition\Loader\YamlLoader,
-    Definition\Types,
     Router,
     Routing\Routes,
 };
@@ -107,7 +106,7 @@ class AbstractTestCase extends TestCase
         );
         $this->router = new Router(
             Routes::from(
-                $this->directories = (new YamlLoader(new Types))('fixtures/mapping.yml')
+                $this->directories = (new YamlLoader)('fixtures/mapping.yml')
             )
         );
     }
