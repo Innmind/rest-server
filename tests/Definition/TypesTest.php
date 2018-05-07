@@ -24,7 +24,7 @@ class TypesTest extends TestCase
 {
     public function testAll()
     {
-        $t = new Types;
+        $types = new Types;
 
         $this->assertSame(
             [
@@ -38,7 +38,7 @@ class TypesTest extends TestCase
                 'integer',
                 'string',
             ],
-            $t->all()->keys()->toPrimitive()
+            $types->all()->keys()->toPrimitive()
         );
         $this->assertSame(
             [
@@ -52,7 +52,7 @@ class TypesTest extends TestCase
                 IntType::class,
                 StringType::class,
             ],
-            $t->all()->values()->toPrimitive()
+            $types->all()->values()->toPrimitive()
         );
     }
 
@@ -62,7 +62,7 @@ class TypesTest extends TestCase
      */
     public function testThrowWhenRegisteringingInvalidType()
     {
-        (new Types)->register('stdClass');
+        new Types('stdClass');
     }
 
     /**
@@ -76,15 +76,15 @@ class TypesTest extends TestCase
 
     public function testBuild()
     {
-        $t = new Types;
+        $types = new Types;
 
         $this->assertInstanceOf(
             StringType::class,
-            $t->build('string', new Map('scalar', 'variable'))
+            $types->build('string', new Map('scalar', 'variable'))
         );
         $this->assertInstanceOf(
             SetType::class,
-            $t->build(
+            $types->build(
                 'set',
                 (new Map('scalar', 'variable'))
                     ->put('inner', 'string')
