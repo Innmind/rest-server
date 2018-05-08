@@ -23,7 +23,7 @@ use Innmind\Url\Url;
 use Innmind\Immutable\{
     Set,
     Map,
-    MapInterface,
+    SetInterface,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -63,13 +63,12 @@ class ListLinksBuilderTest extends TestCase
             $this->directories->get('top_dir')->definition('image')
         );
 
-        $this->assertInstanceOf(MapInterface::class, $headers);
-        $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(Header::class, (string) $headers->valueType());
+        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertSame(Header::class, (string) $headers->type());
         $this->assertSame(1, $headers->size());
         $this->assertSame(
             'Link : </top_dir/image/24>; rel="resource", </top_dir/image/42>; rel="resource"',
-            (string) $headers->get('Link')
+            (string) $headers->current()
         );
     }
 
@@ -85,9 +84,8 @@ class ListLinksBuilderTest extends TestCase
             $this->directories->get('top_dir')->definition('image')
         );
 
-        $this->assertInstanceOf(MapInterface::class, $headers);
-        $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(Header::class, (string) $headers->valueType());
+        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertSame(Header::class, (string) $headers->type());
         $this->assertSame(0, $headers->size());
     }
 }

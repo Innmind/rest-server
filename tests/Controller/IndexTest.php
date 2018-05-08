@@ -134,7 +134,7 @@ class IndexTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($identities, $request, $this->definition, $spec, $range)
-            ->willReturn(new Map('string', Header::class));
+            ->willReturn(new Set(Header::class));
 
         $response = ($this->index)($request, $this->definition);
 
@@ -189,7 +189,7 @@ class IndexTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($identities, $request, $this->definition, $spec, null)
-            ->willReturn(new Map('string', Header::class));
+            ->willReturn(new Set(Header::class));
 
         $response = ($this->index)($request, $this->definition);
 
@@ -287,7 +287,7 @@ class IndexTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($identities, $request, $this->definition, null, $range)
-            ->willReturn(new Map('string', Header::class));
+            ->willReturn(new Set(Header::class));
 
         $response = ($this->index)($request, $this->definition);
 

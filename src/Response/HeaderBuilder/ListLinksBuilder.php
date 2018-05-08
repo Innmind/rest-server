@@ -20,8 +20,6 @@ use Innmind\Http\{
 use Innmind\Specification\SpecificationInterface;
 use Innmind\Immutable\{
     SetInterface,
-    MapInterface,
-    Map,
     Set,
 };
 
@@ -43,15 +41,14 @@ final class ListLinksBuilder implements ListBuilder
         HttpResource $definition,
         SpecificationInterface $specification = null,
         Range $range = null
-    ): MapInterface {
-        $map = new Map('string', Header::class);
+    ): SetInterface {
+        $headers = Set::of(Header::class);
 
         if ($identities->size() === 0) {
-            return $map;
+            return $headers;
         }
 
-        return $map->put(
-            'Link',
+        return $headers->add(
             new Link(
                 ...$identities->reduce(
                     new Set(Value::class),

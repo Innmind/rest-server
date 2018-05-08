@@ -20,6 +20,8 @@ use Innmind\Http\{
 use Innmind\Immutable\{
     Map,
     MapInterface,
+    SetInterface,
+    Set,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -47,9 +49,8 @@ class LinkDelegationBuilderTest extends TestCase
             ),
             new Map(Reference::class, MapInterface::class)
         );
-        $this->assertInstanceOf(MapInterface::class, $headers);
-        $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(Header::class, (string) $headers->valueType());
+        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertSame(Header::class, (string) $headers->type());
     }
 
     /**
@@ -88,14 +89,12 @@ class LinkDelegationBuilderTest extends TestCase
         $mock1
             ->method('__invoke')
             ->willReturn(
-                (new Map('string', Header::class))
-                    ->put('foo', $this->createMock(Header::class))
+                Set::of(Header::class, $foo = $this->createMock(Header::class))
             );
         $mock2
             ->method('__invoke')
             ->willReturn(
-                (new Map('string', Header::class))
-                    ->put('bar', $this->createMock(Header::class))
+                Set::of(Header::class, $bar = $this->createMock(Header::class))
             );
 
         $headers = $build(
@@ -117,8 +116,8 @@ class LinkDelegationBuilderTest extends TestCase
         );
 
         $this->assertSame(
-            ['foo', 'bar'],
-            $headers->keys()->toPrimitive()
+            [$foo, $bar],
+            $headers->toPrimitive()
         );
     }
 }

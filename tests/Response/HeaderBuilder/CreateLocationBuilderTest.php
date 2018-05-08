@@ -23,7 +23,7 @@ use Innmind\Http\{
     Header\Parameter,
 };
 use Innmind\Url\Url;
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\SetInterface;
 use PHPUnit\Framework\TestCase;
 
 class CreateLocationBuilderTest extends TestCase
@@ -65,13 +65,12 @@ class CreateLocationBuilderTest extends TestCase
             $this->createMock(HttpResource::class)
         );
 
-        $this->assertInstanceOf(MapInterface::class, $headers);
-        $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(Header::class, (string) $headers->valueType());
+        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertSame(Header::class, (string) $headers->type());
         $this->assertSame(1, $headers->size());
         $this->assertSame(
             'Location : /top_dir/image/42',
-            (string) $headers->get('Location')
+            (string) $headers->current()
         );
     }
 }

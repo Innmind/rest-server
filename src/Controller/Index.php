@@ -104,8 +104,8 @@ final class Index implements Controller
             )),
             new ReasonPhrase(ReasonPhrase::defaults()->get($code->value())),
             $request->protocolVersion(),
-            new Headers(
-                ($this->buildHeader)(
+            Headers::of(
+                ...($this->buildHeader)(
                     $identities,
                     $request,
                     $definition,

@@ -30,7 +30,7 @@ use Innmind\Url\UrlInterface;
 use Innmind\Immutable\{
     Map,
     Set,
-    MapInterface,
+    SetInterface,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -103,13 +103,12 @@ class GetContentTypeBuilderTest extends TestCase
             $this->createMock(IdentityInterface::class)
         );
 
-        $this->assertInstanceOf(MapInterface::class, $headers);
-        $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(Header::class, (string) $headers->valueType());
+        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertSame(Header::class, (string) $headers->type());
         $this->assertSame(1, $headers->size());
         $this->assertSame(
             'Content-Type : text/html',
-            (string) $headers->get('Content-Type')
+            (string) $headers->current()
         );
     }
 }

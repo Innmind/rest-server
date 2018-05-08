@@ -12,8 +12,8 @@ use Innmind\Http\{
     Header,
 };
 use Innmind\Immutable\{
-    MapInterface,
-    Map,
+    SetInterface,
+    Set,
 };
 
 final class RemoveDelegationBuilder implements RemoveBuilder
@@ -32,8 +32,8 @@ final class RemoveDelegationBuilder implements RemoveBuilder
         ServerRequest $request,
         HttpResource $definition,
         Identity $identity
-    ): MapInterface {
-        $headers = new Map('string', Header::class);
+    ): SetInterface {
+        $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {
             $headers = $headers->merge($build(

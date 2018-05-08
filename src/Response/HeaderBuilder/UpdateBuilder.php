@@ -9,7 +9,7 @@ use Innmind\Rest\Server\{
     Identity,
 };
 use Innmind\Http\Message\ServerRequest;
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\SetInterface;
 
 interface UpdateBuilder
 {
@@ -19,12 +19,12 @@ interface UpdateBuilder
      * @param Identity $identity
      * @param HttpResourceInterface $resource
      *
-     * @return MapInterface<string, HeaderInterface>
+     * @return SetInterface<Header>
      */
     public function __invoke(
         ServerRequest $request,
         HttpResource $definition,
         Identity $identity,
         HttpResourceInterface $resource
-    ): MapInterface;
+    ): SetInterface;
 }

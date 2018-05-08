@@ -21,7 +21,7 @@ use Innmind\Http\{
 use Innmind\Immutable\{
     Set,
     Map,
-    MapInterface,
+    SetInterface,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -54,9 +54,8 @@ class ListRangeBuilderTest extends TestCase
             )
         );
 
-        $this->assertInstanceOf(MapInterface::class, $headers);
-        $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(Header::class, (string) $headers->valueType());
+        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertSame(Header::class, (string) $headers->type());
         $this->assertSame(0, $headers->size());
     }
 
@@ -79,13 +78,12 @@ class ListRangeBuilderTest extends TestCase
             )
         );
 
-        $this->assertInstanceOf(MapInterface::class, $headers);
-        $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(Header::class, (string) $headers->valueType());
+        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertSame(Header::class, (string) $headers->type());
         $this->assertSame(1, $headers->size());
         $this->assertSame(
             'Accept-Ranges : resources',
-            (string) $headers->get('Accept-Ranges')
+            (string) $headers->current()
         );
     }
 
@@ -110,17 +108,17 @@ class ListRangeBuilderTest extends TestCase
             new Range(10, 20)
         );
 
-        $this->assertInstanceOf(MapInterface::class, $headers);
-        $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(Header::class, (string) $headers->valueType());
+        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertSame(Header::class, (string) $headers->type());
         $this->assertSame(2, $headers->size());
         $this->assertSame(
             'Accept-Ranges : resources',
-            (string) $headers->get('Accept-Ranges')
+            (string) $headers->current()
         );
+        $headers->next();
         $this->assertSame(
             'Content-Range : resources 10-11/11',
-            (string) $headers->get('Content-Range')
+            (string) $headers->current()
         );
     }
 
@@ -157,17 +155,17 @@ class ListRangeBuilderTest extends TestCase
             new Range(0, 10)
         );
 
-        $this->assertInstanceOf(MapInterface::class, $headers);
-        $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(Header::class, (string) $headers->valueType());
+        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertSame(Header::class, (string) $headers->type());
         $this->assertSame(2, $headers->size());
         $this->assertSame(
             'Accept-Ranges : resources',
-            (string) $headers->get('Accept-Ranges')
+            (string) $headers->current()
         );
+        $headers->next();
         $this->assertSame(
             'Content-Range : resources 0-10/20',
-            (string) $headers->get('Content-Range')
+            (string) $headers->current()
         );
     }
 }

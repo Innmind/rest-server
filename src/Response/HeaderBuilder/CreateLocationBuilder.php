@@ -17,8 +17,8 @@ use Innmind\Http\{
     Header,
 };
 use Innmind\Immutable\{
-    MapInterface,
-    Map,
+    SetInterface,
+    Set,
 };
 
 final class CreateLocationBuilder implements CreateBuilder
@@ -38,11 +38,9 @@ final class CreateLocationBuilder implements CreateBuilder
         ServerRequest $request,
         HttpResource $definition,
         HttpResourceInterface $resource
-    ): MapInterface {
-        $map = new Map('string', Header::class);
-
-        return $map->put(
-            'Location',
+    ): SetInterface {
+        return Set::of(
+            Header::class,
             new Location(
                 new LocationValue(
                     $this->router->generate(

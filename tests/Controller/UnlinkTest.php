@@ -27,6 +27,7 @@ use Innmind\Url\Url;
 use Innmind\Immutable\{
     MapInterface,
     Map,
+    Set,
 };
 
 class UnlinkTest extends AbstractTestCase
@@ -124,7 +125,7 @@ class UnlinkTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($request, $from, $tos)
-            ->willReturn(new Map('string', Header::class));
+            ->willReturn(new Set(Header::class));
 
         $response = ($this->unlink)($request, $this->definition, $identity);
 

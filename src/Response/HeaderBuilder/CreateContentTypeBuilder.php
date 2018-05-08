@@ -10,7 +10,7 @@ use Innmind\Rest\Server\{
     Identity,
 };
 use Innmind\Http\Message\ServerRequest;
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\SetInterface;
 
 final class CreateContentTypeBuilder implements CreateBuilder
 {
@@ -31,7 +31,7 @@ final class CreateContentTypeBuilder implements CreateBuilder
         ServerRequest $request,
         HttpResource $definition,
         HttpResourceInterface $resource
-    ): MapInterface {
+    ): SetInterface {
         return $this->buildHeaderFrom($this->formats, $request);
     }
 }

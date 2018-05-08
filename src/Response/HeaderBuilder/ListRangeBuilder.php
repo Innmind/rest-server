@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Definition\HttpResource,
-    Request\Range
+    Request\Range,
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -18,8 +18,7 @@ use Innmind\Http\{
 use Innmind\Specification\SpecificationInterface;
 use Innmind\Immutable\{
     SetInterface,
-    MapInterface,
-    Map,
+    Set,
 };
 
 final class ListRangeBuilder implements ListBuilder
@@ -33,26 +32,24 @@ final class ListRangeBuilder implements ListBuilder
         HttpResource $definition,
         SpecificationInterface $specification = null,
         Range $range = null
-    ): MapInterface {
-        $map = new Map('string', Header::class);
+    ): SetInterface {
+        $headers = Set::of(Header::class);
 
         if (!$definition->isRangeable()) {
-            return $map;
+            return $headers;
         }
 
-        $map = $map->put(
-            'Accept-Ranges',
+        $headers = $headers->add(
             new AcceptRanges(new AcceptRangesValue('resources'))
         );
 
         if (!$range instanceof Range) {
-            return $map;
+            return $headers;
         }
 
         $length = $range->lastPosition() - $range->firstPosition();
 
-        return $map->put(
-            'Content-Range',
+        return $headers->add(
             new ContentRange(
                 new ContentRangeValue(
                     'resources',

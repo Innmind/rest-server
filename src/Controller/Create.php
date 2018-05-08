@@ -84,8 +84,8 @@ final class Create implements Controller
             $code = new StatusCode(StatusCode::codes()->get('CREATED')),
             new ReasonPhrase(ReasonPhrase::defaults()->get($code->value())),
             $request->protocolVersion(),
-            new Headers(
-                ($this->buildHeader)($identity, $request, $definition, $resource)
+            Headers::of(
+                ...($this->buildHeader)($identity, $request, $definition, $resource)
             ),
             new StringStream(
                 $this->serializer->serialize(

@@ -27,6 +27,7 @@ use Innmind\Url\Url;
 use Innmind\Immutable\{
     MapInterface,
     Map,
+    Set,
 };
 
 class LinkTest extends AbstractTestCase
@@ -124,7 +125,7 @@ class LinkTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($request, $from, $tos)
-            ->willReturn(new Map('string', Header::class));
+            ->willReturn(new Set(Header::class));
 
         $response = ($this->link)($request, $this->definition, $identity);
 

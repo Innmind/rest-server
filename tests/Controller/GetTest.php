@@ -21,7 +21,10 @@ use Innmind\Http\{
     Header\AcceptValue,
     Headers\Headers,
 };
-use Innmind\Immutable\Map;
+use Innmind\Immutable\{
+    Map,
+    Set,
+};
 
 class GetTest extends AbstractTestCase
 {
@@ -110,7 +113,7 @@ class GetTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($resource, $request, $this->definition, $identity)
-            ->willReturn(new Map('string', Header::class));
+            ->willReturn(new Set(Header::class));
 
         $response = ($this->get)($request, $this->definition, $identity);
 

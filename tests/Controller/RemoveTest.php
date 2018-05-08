@@ -16,7 +16,10 @@ use Innmind\Http\{
     Message\Response,
     Header,
 };
-use Innmind\Immutable\Map;
+use Innmind\Immutable\{
+    Map,
+    Set,
+};
 
 class RemoveTest extends AbstractTestCase
 {
@@ -82,7 +85,7 @@ class RemoveTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($request, $this->definition, $identity)
-            ->willReturn(new Map('string', Header::class));
+            ->willReturn(new Set(Header::class));
 
         $response = ($this->remove)($request, $this->definition, $identity);
 

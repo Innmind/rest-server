@@ -23,7 +23,10 @@ use Innmind\Http\{
     Header\ContentTypeValue,
 };
 use Innmind\Filesystem\Stream\StringStream;
-use Innmind\Immutable\Map;
+use Innmind\Immutable\{
+    Map,
+    Set,
+};
 use PHPUnit\Framework\TestCase;
 
 class CreateTest extends AbstractTestCase
@@ -119,7 +122,7 @@ class CreateTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($identity, $request, $this->definition)
-            ->willReturn(new Map('string', Header::class));
+            ->willReturn(new Set(Header::class));
 
         $response = ($this->create)($request, $this->definition);
 

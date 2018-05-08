@@ -66,8 +66,8 @@ final class Get implements Controller
             $code = new StatusCode(StatusCode::codes()->get('OK')),
             new ReasonPhrase(ReasonPhrase::defaults()->get($code->value())),
             $request->protocolVersion(),
-            new Headers(
-                ($this->buildHeader)($resource, $request, $definition, $identity)
+            Headers::of(
+                ...($this->buildHeader)($resource, $request, $definition, $identity)
             ),
             new StringStream(
                 $this->serializer->serialize(

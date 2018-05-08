@@ -13,8 +13,8 @@ use Innmind\Http\{
     Header,
 };
 use Innmind\Immutable\{
-    MapInterface,
-    Map,
+    SetInterface,
+    Set,
 };
 
 final class CreateDelegationBuilder implements CreateBuilder
@@ -34,8 +34,8 @@ final class CreateDelegationBuilder implements CreateBuilder
         ServerRequest $request,
         HttpResource $definition,
         HttpResourceInterface $resource
-    ): MapInterface {
-        $headers = new Map('string', Header::class);
+    ): SetInterface {
+        $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {
             $headers = $headers->merge($build(

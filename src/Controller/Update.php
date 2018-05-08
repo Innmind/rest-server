@@ -80,8 +80,8 @@ final class Update implements Controller
             $code = new StatusCode(StatusCode::codes()->get('NO_CONTENT')),
             new ReasonPhrase(ReasonPhrase::defaults()->get($code->value())),
             $request->protocolVersion(),
-            new Headers(
-                ($this->buildHeader)($request, $definition, $identity, $resource)
+            Headers::of(
+                ...($this->buildHeader)($request, $definition, $identity, $resource)
             )
         );
     }

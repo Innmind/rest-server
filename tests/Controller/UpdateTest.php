@@ -20,7 +20,10 @@ use Innmind\Http\{
     Header\ContentTypeValue,
 };
 use Innmind\Filesystem\Stream\StringStream;
-use Innmind\Immutable\Map;
+use Innmind\Immutable\{
+    Map,
+    Set,
+};
 
 class UpdateTest extends AbstractTestCase
 {
@@ -110,7 +113,7 @@ class UpdateTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($request, $this->definition, $identity)
-            ->willReturn(new Map('string', Header::class));
+            ->willReturn(new Set(Header::class));
 
         $response = ($this->update)($request, $this->definition, $identity);
 
