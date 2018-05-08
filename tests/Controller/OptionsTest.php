@@ -6,6 +6,8 @@ namespace Tests\Innmind\Rest\Server\Controller;
 use Innmind\Rest\Server\{
     Controller\Options,
     Controller,
+    Identity\Identity,
+    Exception\LogicException,
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -58,6 +60,17 @@ class OptionsTest extends AbstractTestCase
         $this->assertSame(
             '{"identity":"uuid","properties":{"uuid":{"type":"string","access":["READ"],"variants":[],"optional":false},"url":{"type":"string","access":["READ","CREATE","UPDATE"],"variants":[],"optional":false}},"metas":[],"rangeable":false,"linkable_to":[]}',
             (string) $response->body()
+        );
+    }
+
+    public function testThrowWhenProvidingUnwantedIdentity()
+    {
+        $this->expectException(LogicException::class);
+
+        ($this->options)(
+            $this->createMock(ServerRequest::class),
+            $this->definition,
+            new Identity(42)
         );
     }
 }

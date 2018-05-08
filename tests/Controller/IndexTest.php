@@ -15,6 +15,7 @@ use Innmind\Rest\Server\{
     Request\Range,
     Exception\RangeNotFound,
     Exception\NoFilterFound,
+    Exception\LogicException,
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -296,6 +297,17 @@ class IndexTest extends AbstractTestCase
         $this->assertSame(
             '{"identities":["uuid1","uuid2"]}',
             (string) $response->body()
+        );
+    }
+
+    public function testThrowWhenProvidingUnwantedIdentity()
+    {
+        $this->expectException(LogicException::class);
+
+        ($this->index)(
+            $this->createMock(ServerRequest::class),
+            $this->definition,
+            new Identity\Identity(42)
         );
     }
 }

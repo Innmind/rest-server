@@ -10,6 +10,7 @@ use Innmind\Rest\Server\{
     Gateway,
     ResourceCreator,
     Response\HeaderBuilder\CreateBuilder,
+    Exception\LogicException,
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -128,6 +129,17 @@ class CreateTest extends AbstractTestCase
         $this->assertSame(
             '{"identity":"some uuid"}',
             (string) $response->body()
+        );
+    }
+
+    public function testThrowWhenProvidingUnwantedIdentity()
+    {
+        $this->expectException(LogicException::class);
+
+        ($this->create)(
+            $this->createMock(ServerRequest::class),
+            $this->definition,
+            new Identity(42)
         );
     }
 }

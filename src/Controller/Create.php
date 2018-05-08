@@ -11,14 +11,15 @@ use Innmind\Rest\Server\{
     Gateway,
     Format,
     Response\HeaderBuilder\CreateBuilder,
-    HttpResource\HttpResource as Resource
+    HttpResource\HttpResource as Resource,
+    Exception\LogicException,
 };
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
     Message\StatusCode\StatusCode,
     Message\ReasonPhrase\ReasonPhrase,
-    Headers\Headers
+    Headers\Headers,
 };
 use Innmind\Filesystem\Stream\StringStream;
 use Innmind\Immutable\MapInterface;
@@ -58,6 +59,10 @@ final class Create implements Controller
         HttpResource $definition,
         Identity $identity = null
     ): Response {
+        if (!is_null($identity)) {
+            throw new LogicException;
+        }
+
         $create = $this
             ->gateways
             ->get((string) $definition->gateway())

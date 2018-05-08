@@ -7,7 +7,8 @@ use Innmind\Rest\Server\{
     Controller,
     Format,
     Definition\HttpResource,
-    Identity
+    Identity,
+    Exception\LogicException,
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -16,7 +17,7 @@ use Innmind\Http\{
     Message\ReasonPhrase\ReasonPhrase,
     Headers\Headers,
     Header\ContentType,
-    Header\ContentTypeValue
+    Header\ContentTypeValue,
 };
 use Innmind\Filesystem\Stream\StringStream;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -39,6 +40,10 @@ final class Options implements Controller
         HttpResource $definition,
         Identity $identity = null
     ): Response {
+        if (!is_null($identity)) {
+            throw new LogicException;
+        }
+
         $format = $this->format->acceptable($request);
         $mediaType = $format->preferredMediaType();
 

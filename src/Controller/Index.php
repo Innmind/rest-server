@@ -14,7 +14,8 @@ use Innmind\Rest\Server\{
     SpecificationBuilder\Builder,
     Request\Range,
     Exception\RangeNotFound,
-    Exception\NoFilterFound
+    Exception\NoFilterFound,
+    Exception\LogicException,
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -22,7 +23,7 @@ use Innmind\Http\{
     Message\StatusCode\StatusCode,
     Message\ReasonPhrase\ReasonPhrase,
     Headers\Headers,
-    Exception\Http\RangeNotSatisfiable
+    Exception\Http\RangeNotSatisfiable,
 };
 use Innmind\Filesystem\Stream\StringStream;
 use Innmind\Immutable\MapInterface;
@@ -68,6 +69,10 @@ final class Index implements Controller
         HttpResource $definition,
         Identity $identity = null
     ): Response {
+        if (!is_null($identity)) {
+            throw new LogicException;
+        }
+
         try {
             $range = ($this->extractRange)($request);
         } catch (RangeNotFound $e) {
