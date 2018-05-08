@@ -6,13 +6,13 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 use Innmind\Rest\Server\{
     Definition\HttpResource,
     Request\Range,
-    Formats
+    Formats,
 };
 use Innmind\Http\Message\ServerRequest;
 use Innmind\Specification\SpecificationInterface;
 use Innmind\Immutable\{
     SetInterface,
-    MapInterface
+    MapInterface,
 };
 
 final class ListContentTypeBuilder implements ListBuilder

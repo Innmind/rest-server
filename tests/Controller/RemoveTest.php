@@ -9,12 +9,12 @@ use Innmind\Rest\Server\{
     Gateway,
     Identity,
     Response\HeaderBuilder\RemoveBuilder,
-    ResourceRemover
+    ResourceRemover,
 };
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
-    Header
+    Header,
 };
 use Innmind\Immutable\Map;
 

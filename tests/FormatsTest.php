@@ -6,12 +6,12 @@ namespace Tests\Innmind\Rest\Server;
 use Innmind\Rest\Server\{
     Formats,
     Format\Format,
-    Format\MediaType
+    Format\MediaType,
 };
 use Innmind\Immutable\{
     Map,
     Set,
-    SetInterface
+    SetInterface,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -19,21 +19,20 @@ class FormatsTest extends TestCase
 {
     public function testInterface()
     {
-        $fs = new Formats(
-            $m = (new Map('string', Format::class))
+        $formats = new Formats(
+            $all = (new Map('string', Format::class))
                 ->put(
                     'json',
-                    $f = new Format(
+                    $format = new Format(
                         'json',
-                        (new Set(MediaType::class))
-                            ->add(new MediaType('application/json', 42)),
+                        Set::of(MediaType::class, new MediaType('application/json', 42)),
                         42
                     )
                 )
         );
 
-        $this->assertSame($m, $fs->all());
-        $this->assertSame($f, $fs->get('json'));
+        $this->assertSame($all, $formats->all());
+        $this->assertSame($format, $formats->get('json'));
     }
 
     public function testOf()
@@ -78,14 +77,16 @@ class FormatsTest extends TestCase
 
     public function testMediaTypes()
     {
-        $fs = new Formats(
+        $formats = new Formats(
             (new Map('string', Format::class))
                 ->put(
                     'json',
                     new Format(
                         'json',
-                        (new Set(MediaType::class))
-                            ->add($json = new MediaType('application/json', 42)),
+                        Set::of(
+                            MediaType::class,
+                            $json = new MediaType('application/json', 42)
+                        ),
                         42
                     )
                 )
@@ -93,15 +94,17 @@ class FormatsTest extends TestCase
                     'html',
                     new Format(
                         'html',
-                        (new Set(MediaType::class))
-                            ->add($html = new MediaType('text/html', 40))
-                            ->add($xhtml = new MediaType('text/xhtml', 0)),
+                        Set::of(
+                            MediaType::class,
+                            $html = new MediaType('text/html', 40),
+                            $xhtml = new MediaType('text/xhtml', 0)
+                        ),
                         0
                     )
                 )
         );
 
-        $types = $fs->mediaTypes();
+        $types = $formats->mediaTypes();
         $this->assertInstanceOf(SetInterface::class, $types);
         $this->assertSame(MediaType::class, (string) $types->type());
         $this->assertSame(3, $types->size());
@@ -112,32 +115,33 @@ class FormatsTest extends TestCase
 
     public function testFromMediaType()
     {
-        $fs = new Formats(
+        $formats = new Formats(
             (new Map('string', Format::class))
                 ->put(
                     'json',
-                    $j = new Format(
+                    $json = new Format(
                         'json',
-                        (new Set(MediaType::class))
-                            ->add(new MediaType('application/json', 42)),
+                        Set::of(MediaType::class, new MediaType('application/json', 42)),
                         42
                     )
                 )
                 ->put(
                     'html',
-                    $h = new Format(
+                    $html = new Format(
                         'html',
-                        (new Set(MediaType::class))
-                            ->add(new MediaType('text/html', 40))
-                            ->add(new MediaType('text/xhtml', 0)),
+                        Set::of(
+                            MediaType::class,
+                            new MediaType('text/html', 40),
+                            new MediaType('text/xhtml', 0)
+                        ),
                         0
                     )
                 )
         );
 
-        $this->assertSame($j, $fs->fromMediaType('application/json'));
-        $this->assertSame($h, $fs->fromMediaType('text/html'));
-        $this->assertSame($h, $fs->fromMediaType('text/xhtml'));
+        $this->assertSame($json, $formats->fromMediaType('application/json'));
+        $this->assertSame($html, $formats->fromMediaType('text/html'));
+        $this->assertSame($html, $formats->fromMediaType('text/xhtml'));
     }
 
     /**
@@ -145,80 +149,84 @@ class FormatsTest extends TestCase
      */
     public function testThrowWhenNoFormatForWishedMediaType()
     {
-        $fs = new Formats(
+        $formats = new Formats(
             (new Map('string', Format::class))
                 ->put(
                     'html',
                     new Format(
                         'html',
-                        (new Set(MediaType::class))
-                            ->add(new MediaType('text/html', 40))
-                            ->add(new MediaType('text/xhtml', 0)),
+                        Set::of(
+                            MediaType::class,
+                            new MediaType('text/html', 40),
+                            new MediaType('text/xhtml', 0)
+                        ),
                         0
                     )
                 )
         );
 
-        $fs->fromMediaType('application/json');
+        $formats->fromMediaType('application/json');
     }
 
     public function testMatching()
     {
-        $fs = new Formats(
+        $formats = new Formats(
             (new Map('string', Format::class))
                 ->put(
                     'json',
-                    $j = new Format(
+                    new Format(
                         'json',
-                        (new Set(MediaType::class))
-                            ->add(new MediaType('application/json', 42)),
+                        Set::of(MediaType::class, new MediaType('application/json', 42)),
                         42
                     )
                 )
                 ->put(
                     'html',
-                    $h = new Format(
+                    $html = new Format(
                         'html',
-                        (new Set(MediaType::class))
-                            ->add(new MediaType('text/html', 40))
-                            ->add(new MediaType('text/xhtml', 0)),
+                        Set::of(
+                            MediaType::class,
+                            new MediaType('text/html', 40),
+                            new MediaType('text/xhtml', 0)
+                        ),
                         0
                     )
                 )
         );
 
-        $format = $fs->matching('text/html, application/json;q=0.5, *;q=0.1');
+        $format = $formats->matching('text/html, application/json;q=0.5, *;q=0.1');
 
-        $this->assertSame($h, $format);
+        $this->assertSame($html, $format);
     }
 
     public function testMatchingWhenAcceptingEverything()
     {
-        $fs = new Formats(
+        $formats = new Formats(
             (new Map('string', Format::class))
                 ->put(
                     'json',
-                    $j = new Format(
+                    $json = new Format(
                         'json',
-                        (new Set(MediaType::class))
-                            ->add(new MediaType('application/json', 42)),
+                        Set::of(MediaType::class, new MediaType('application/json', 42)),
                         42
                     )
                 )
                 ->put(
                     'html',
-                    $h = new Format(
+                    new Format(
                         'html',
-                        (new Set(MediaType::class))
-                            ->add(new MediaType('text/html', 40))
-                            ->add(new MediaType('text/xhtml', 0)),
+                        Set::of(
+                            MediaType::class,
+                            new MediaType('text/html', 40),
+                            new MediaType('text/xhtml', 0)
+                        ),
                         0
                     )
                 )
         );
 
-        $format = $fs->matching('*');
+        $format = $formats->matching('*');
 
-        $this->assertSame($j, $format);
+        $this->assertSame($json, $format);
     }
 }

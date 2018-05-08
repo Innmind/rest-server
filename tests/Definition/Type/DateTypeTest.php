@@ -6,7 +6,7 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 use Innmind\Rest\Server\Definition\{
     Type\DateType,
     Type,
-    Types
+    Types,
 };
 use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
@@ -69,18 +69,18 @@ class DateTypeTest extends TestCase
 
     public function testNormalize()
     {
-        $t = DateType::fromConfig(
+        $type = DateType::fromConfig(
             (new Map('scalar', 'variable'))
                 ->put('format', 'Y-m-d H:i:s'),
             new Types
         );
         $this->assertSame(
             '2016-01-01 00:00:00',
-            $t->normalize('2016-01-01 00:00:00')
+            $type->normalize('2016-01-01 00:00:00')
         );
         $this->assertSame(
             '2016-01-01 00:00:00',
-            $t->normalize(new \DateTime('2016-01-01'))
+            $type->normalize(new \DateTime('2016-01-01'))
         );
     }
 

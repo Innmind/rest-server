@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Definition\HttpResource,
-    Identity
+    Identity,
 };
 use Innmind\Http\Message\ServerRequest;
 use Innmind\Immutable\MapInterface;

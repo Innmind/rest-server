@@ -6,15 +6,15 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 use Innmind\Rest\Server\{
     Definition\HttpResource,
     Identity,
-    HttpResource as HttpResourceInterface
+    HttpResource as HttpResourceInterface,
 };
 use Innmind\Http\{
     Message\ServerRequest,
-    Header
+    Header,
 };
 use Innmind\Immutable\{
     MapInterface,
-    Map
+    Map,
 };
 
 final class UpdateDelegationBuilder implements UpdateBuilder

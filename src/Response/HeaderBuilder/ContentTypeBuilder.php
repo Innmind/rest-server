@@ -8,11 +8,11 @@ use Innmind\Http\{
     Message\ServerRequest,
     Header,
     Header\ContentType,
-    Header\ContentTypeValue
+    Header\ContentTypeValue,
 };
 use Innmind\Immutable\{
     MapInterface,
-    Map
+    Map,
 };
 
 trait ContentTypeBuilder

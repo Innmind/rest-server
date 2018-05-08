@@ -9,11 +9,11 @@ use Innmind\Rest\Server\{
     Identity,
     Definition,
     Exception\HttpResourceDenormalizationException,
-    Exception\DenormalizationException
+    Exception\DenormalizationException,
 };
 use Innmind\Http\{
     Message\ServerRequest,
-    Message\Response
+    Message\Response,
 };
 use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;

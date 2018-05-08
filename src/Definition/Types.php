@@ -98,10 +98,6 @@ final class Types
             throw new \TypeError('Argument 2 must be of type MapInterface<scalar, variable>');
         }
 
-        return call_user_func(
-            [$this->types->get($type), 'fromConfig'],
-            $config,
-            $this
-        );
+        return [$this->types->get($type), 'fromConfig']($config, $this);
     }
 }

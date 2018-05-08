@@ -7,12 +7,12 @@ use Innmind\Rest\Server\{
     Definition\Type,
     Definition\Types,
     Exception\DenormalizationException,
-    Exception\NormalizationException
+    Exception\NormalizationException,
 };
 use Innmind\Immutable\{
     MapInterface,
     SetInterface,
-    Set
+    Set,
 };
 
 final class StringType implements Type
@@ -56,11 +56,7 @@ final class StringType implements Type
      */
     public static function identifiers(): SetInterface
     {
-        if (self::$identifiers === null) {
-            self::$identifiers = (new Set('string'))->add('string');
-        }
-
-        return self::$identifiers;
+        return self::$identifiers ?? self::$identifiers = Set::of('string', 'string');
     }
 
     public function __toString(): string

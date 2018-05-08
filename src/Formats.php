@@ -7,14 +7,14 @@ use Innmind\Rest\Server\{
     Format\Format,
     Format\MediaType,
     Exception\InvalidArgumentException,
-    Exception\DomainException
+    Exception\DomainException,
 };
 use Innmind\Immutable\{
     MapInterface,
     Map,
     SetInterface,
     Set,
-    Sequence
+    Sequence,
 };
 use Negotiation\Negotiator;
 
@@ -76,14 +76,12 @@ final class Formats
      */
     public function mediaTypes(): SetInterface
     {
-        $types = new Set(MediaType::class);
-        $this
-            ->formats
-            ->foreach(function(string $name, Format $format) use (&$types) {
-                $types = $types->merge($format->mediaTypes());
-            });
-
-        return $types;
+        return $this->formats->reduce(
+            Set::of(MediaType::class),
+            function(SetInterface $types, string $name, Format $format): SetInterface {
+                return $types->merge($format->mediaTypes());
+            }
+        );
     }
 
     public function fromMediaType(string $wished): Format

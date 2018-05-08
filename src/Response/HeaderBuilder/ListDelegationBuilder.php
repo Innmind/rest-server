@@ -6,17 +6,17 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 use Innmind\Rest\Server\{
     Definition\HttpResource,
     Request\Range,
-    Identity
+    Identity,
 };
 use Innmind\Http\{
     Message\ServerRequest,
-    Header
+    Header,
 };
 use Innmind\Specification\SpecificationInterface;
 use Innmind\Immutable\{
     SetInterface,
     MapInterface,
-    Map
+    Map,
 };
 
 final class ListDelegationBuilder implements ListBuilder

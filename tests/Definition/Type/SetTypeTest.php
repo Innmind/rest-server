@@ -6,12 +6,12 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 use Innmind\Rest\Server\Definition\{
     Type\SetType,
     Type,
-    Types
+    Types,
 };
 use Innmind\Immutable\{
     SetInterface,
     Set,
-    Map
+    Map,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -53,13 +53,13 @@ class SetTypeTest extends TestCase
 
     public function testDenormalize()
     {
-        $t = SetType::fromConfig(
+        $type = SetType::fromConfig(
             (new Map('scalar', 'variable'))
                 ->put('inner', 'string'),
             new Types
         );
-        $this->assertInstanceOf(SetInterface::class, $t->denormalize(['foo']));
-        $this->assertSame(['foo'], $t->denormalize(['foo'])->toPrimitive());
+        $this->assertInstanceOf(SetInterface::class, $type->denormalize(['foo']));
+        $this->assertSame(['foo'], $type->denormalize(['foo'])->toPrimitive());
         $this->assertSame(
             ['foo'],
             SetType::fromConfig(
@@ -101,13 +101,12 @@ class SetTypeTest extends TestCase
                 new Types
             ))
                 ->normalize(
-                    (new Set('object'))
-                        ->add(new class {
-                            public function __toString()
-                            {
-                                return 'foo';
-                            }
-                        })
+                    Set::of('object', new class {
+                        public function __toString()
+                        {
+                            return 'foo';
+                        }
+                    })
                 )
         );
     }

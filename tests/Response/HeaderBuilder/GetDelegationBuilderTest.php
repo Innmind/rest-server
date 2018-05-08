@@ -11,15 +11,15 @@ use Innmind\Rest\Server\{
     Definition\Identity,
     Definition\Property,
     Definition\Gateway,
-    HttpResource as HttpResourceInterface
+    HttpResource as HttpResourceInterface,
 };
 use Innmind\Http\{
     Message\ServerRequest,
-    Header
+    Header,
 };
 use Innmind\Immutable\{
     Map,
-    MapInterface
+    MapInterface,
 };
 use PHPUnit\Framework\TestCase;
 

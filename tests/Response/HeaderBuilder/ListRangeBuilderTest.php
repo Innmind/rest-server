@@ -12,16 +12,16 @@ use Innmind\Rest\Server\{
     Definition\Property,
     Definition\Gateway,
     Identity\Identity as Id,
-    Request\Range
+    Request\Range,
 };
 use Innmind\Http\{
     Message\ServerRequest,
-    Header
+    Header,
 };
 use Innmind\Immutable\{
     Set,
     Map,
-    MapInterface
+    MapInterface,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -94,8 +94,7 @@ class ListRangeBuilderTest extends TestCase
         $build = new ListRangeBuilder;
 
         $headers = $build(
-            (new Set(IdentityInterface::class))
-                ->add(new Id(42)),
+            Set::of(IdentityInterface::class, new Id(42)),
             $this->createMock(ServerRequest::class),
             new HttpResource(
                 'foo',
@@ -130,17 +129,19 @@ class ListRangeBuilderTest extends TestCase
         $build = new ListRangeBuilder;
 
         $headers = $build(
-            (new Set(IdentityInterface::class))
-                ->add(new Id(42))
-                ->add(new Id(43))
-                ->add(new Id(44))
-                ->add(new Id(45))
-                ->add(new Id(46))
-                ->add(new Id(47))
-                ->add(new Id(48))
-                ->add(new Id(49))
-                ->add(new Id(50))
-                ->add(new Id(51)),
+            Set::of(
+                IdentityInterface::class,
+                new Id(42),
+                new Id(43),
+                new Id(44),
+                new Id(45),
+                new Id(46),
+                new Id(47),
+                new Id(48),
+                new Id(49),
+                new Id(50),
+                new Id(51)
+            ),
             $this->createMock(ServerRequest::class),
             new HttpResource(
                 'foo',

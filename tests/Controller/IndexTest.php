@@ -14,7 +14,7 @@ use Innmind\Rest\Server\{
     Identity,
     Request\Range,
     Exception\RangeNotFound,
-    Exception\NoFilterFound
+    Exception\NoFilterFound,
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -23,11 +23,11 @@ use Innmind\Http\{
     Header,
     Header\Accept,
     Header\AcceptValue,
-    Exception\Http\RangeNotSatisfiable
+    Exception\Http\RangeNotSatisfiable,
 };
 use Innmind\Immutable\{
     Map,
-    Set
+    Set,
 };
 use Innmind\Specification\SpecificationInterface;
 

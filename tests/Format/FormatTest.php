@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server\Format;
 
 use Innmind\Rest\Server\Format\{
     Format,
-    MediaType
+    MediaType,
 };
 use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
@@ -14,31 +14,33 @@ class FormatTest extends TestCase
 {
     public function testInterface()
     {
-        $f = new Format(
+        $format = new Format(
             'json',
-            $t = (new Set(MediaType::class))->add(new MediaType('application/json', 42)),
+            $types = Set::of(MediaType::class, new MediaType('application/json', 42)),
             24
         );
 
-        $this->assertSame('json', $f->name());
-        $this->assertSame('json', (string) $f);
-        $this->assertSame($t, $f->mediaTypes());
-        $this->assertSame(24, $f->priority());
+        $this->assertSame('json', $format->name());
+        $this->assertSame('json', (string) $format);
+        $this->assertSame($types, $format->mediaTypes());
+        $this->assertSame(24, $format->priority());
     }
 
     public function testPreferredMediaType()
     {
-        $f = new Format(
+        $format = new Format(
             'json',
-            (new Set(MediaType::class))
-                ->add(new MediaType('application/json', 42))
-                ->add(new MediaType('text/json', 0)),
+            Set::of(
+                MediaType::class,
+                new MediaType('application/json', 42),
+                new MediaType('text/json', 0)
+            ),
             24
         );
 
-        $m = $f->preferredMediaType();
-        $this->assertInstanceOf(MediaType::class, $m);
-        $this->assertSame('application/json', $m->mime());
+        $media = $format->preferredMediaType();
+        $this->assertInstanceOf(MediaType::class, $media);
+        $this->assertSame('application/json', $media->mime());
     }
 
     /**

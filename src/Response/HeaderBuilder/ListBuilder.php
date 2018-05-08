@@ -5,13 +5,13 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Definition\HttpResource,
-    Request\Range
+    Request\Range,
 };
 use Innmind\Http\Message\ServerRequest;
 use Innmind\Specification\SpecificationInterface;
 use Innmind\Immutable\{
     SetInterface,
-    MapInterface
+    MapInterface,
 };
 
 interface ListBuilder

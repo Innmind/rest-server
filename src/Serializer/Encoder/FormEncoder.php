@@ -6,11 +6,11 @@ namespace Innmind\Rest\Server\Serializer\Encoder;
 use Innmind\Rest\Server\Exception\InvalidArgumentException;
 use Innmind\Http\{
     Message\ServerRequest,
-    Message\Form\Parameter
+    Message\Form\Parameter,
 };
 use Innmind\Immutable\{
     Map,
-    MapInterface
+    MapInterface,
 };
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 

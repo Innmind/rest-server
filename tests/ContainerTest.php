@@ -16,7 +16,7 @@ use Innmind\Compose\ContainerBuilder\ContainerBuilder;
 use Innmind\Url\Path;
 use Innmind\Immutable\{
     Map,
-    Set
+    Set,
 };
 use PHPUnit\Framework\TestCase;
 

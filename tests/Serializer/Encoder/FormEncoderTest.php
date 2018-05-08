@@ -15,7 +15,7 @@ use Innmind\Http\{
     Message\Form\Form,
     Message\Form\Parameter\Parameter,
     Message\Form\Parameter as ParameterInterface,
-    Message\Files
+    Message\Files,
 };
 use Innmind\Url\UrlInterface;
 use Innmind\Stream\Readable;

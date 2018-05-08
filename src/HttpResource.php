@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server;
 
 use Innmind\Rest\Server\{
     Definition\HttpResource as ResourceDefinition,
-    HttpResource\Property
+    HttpResource\Property,
 };
 use Innmind\Immutable\MapInterface;
 

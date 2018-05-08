@@ -5,14 +5,14 @@ namespace Tests\Innmind\Rest\Server\Controller;
 
 use Innmind\Rest\Server\{
     Controller\Options,
-    Controller
+    Controller,
 };
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
     Headers\Headers,
     Header\Accept,
-    Header\AcceptValue
+    Header\AcceptValue,
 };
 
 class OptionsTest extends AbstractTestCase

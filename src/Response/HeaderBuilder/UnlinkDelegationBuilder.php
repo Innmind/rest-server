@@ -6,12 +6,12 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 use Innmind\Rest\Server\Reference;
 use Innmind\Http\{
     Message\ServerRequest,
-    Header
+    Header,
 };
 use Innmind\Immutable\{
     SetInterface,
     MapInterface,
-    Map
+    Map,
 };
 
 final class UnlinkDelegationBuilder implements UnlinkBuilder

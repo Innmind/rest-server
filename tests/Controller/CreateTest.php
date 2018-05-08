@@ -9,7 +9,7 @@ use Innmind\Rest\Server\{
     Identity\Identity,
     Gateway,
     ResourceCreator,
-    Response\HeaderBuilder\CreateBuilder
+    Response\HeaderBuilder\CreateBuilder,
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -19,7 +19,7 @@ use Innmind\Http\{
     Header\Accept,
     Header\AcceptValue,
     Header\ContentType,
-    Header\ContentTypeValue
+    Header\ContentTypeValue,
 };
 use Innmind\Filesystem\Stream\StringStream;
 use Innmind\Immutable\Map;

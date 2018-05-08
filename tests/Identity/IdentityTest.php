@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server\Identity;
 
 use Innmind\Rest\Server\{
     Identity\Identity,
-    Identity as IdentityInterface
+    Identity as IdentityInterface,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -13,11 +13,11 @@ class IdentityTest extends TestCase
 {
     public function testInterface()
     {
-        $i = new Identity(42);
+        $identity = new Identity(42);
 
-        $this->assertInstanceOf(IdentityInterface::class, $i);
-        $this->assertSame(42, $i->value());
-        $this->assertSame('42', (string) $i);
+        $this->assertInstanceOf(IdentityInterface::class, $identity);
+        $this->assertSame(42, $identity->value());
+        $this->assertSame('42', (string) $identity);
     }
 
     public function testThrowWhenInvalidData()

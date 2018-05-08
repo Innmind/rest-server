@@ -7,7 +7,7 @@ use Innmind\Rest\Server\{
     Specification\NotFilter,
     Specification\Filter,
     HttpResource,
-    HttpResource\Property
+    HttpResource\Property,
 };
 use Innmind\Specification\NotInterface;
 use PHPUnit\Framework\TestCase;

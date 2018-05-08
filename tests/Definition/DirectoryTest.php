@@ -13,7 +13,7 @@ use Innmind\Rest\Server\Definition\{
 };
 use Innmind\Immutable\{
     Map,
-    MapInterface
+    MapInterface,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -21,21 +21,21 @@ class DirectoryTest extends TestCase
 {
     public function testInterface()
     {
-        $d = new Directory(
+        $directory = new Directory(
             'foo',
-            $ds = (new Map('string', Directory::class))
+            $children = (new Map('string', Directory::class))
                 ->put(
                     'bar',
-                    $d2 = new Directory(
+                    $directory2 = new Directory(
                         'bar',
                         new Map('string', Directory::class),
                         new Map('string', HttpResource::class)
                     )
                 ),
-            $hr = (new Map('string', HttpResource::class))
+            $definitions = (new Map('string', HttpResource::class))
                 ->put(
                     'res',
-                    $r = new HttpResource(
+                    $resource = new HttpResource(
                         'res',
                         new Identity('uuid'),
                         new Map('string', Property::class),
@@ -48,13 +48,13 @@ class DirectoryTest extends TestCase
                 )
         );
 
-        $this->assertInstanceOf(Name::class, $d->name());
-        $this->assertSame('foo', (string) $d->name());
-        $this->assertSame('foo', (string) $d);
-        $this->assertSame($d2, $d->child('bar'));
-        $this->assertSame($ds, $d->children());
-        $this->assertSame($r, $d->definition('res'));
-        $this->assertSame($hr, $d->definitions());
+        $this->assertInstanceOf(Name::class, $directory->name());
+        $this->assertSame('foo', (string) $directory->name());
+        $this->assertSame('foo', (string) $directory);
+        $this->assertSame($directory2, $directory->child('bar'));
+        $this->assertSame($children, $directory->children());
+        $this->assertSame($resource, $directory->definition('res'));
+        $this->assertSame($definitions, $directory->definitions());
     }
 
     /**
@@ -85,18 +85,18 @@ class DirectoryTest extends TestCase
 
     public function testFlatten()
     {
-        $d = new Directory(
+        $directory = new Directory(
             'foo',
             (new Map('string', Directory::class))
                 ->put(
                     'bar',
-                    $d2 = new Directory(
+                    new Directory(
                         'bar',
                         new Map('string', Directory::class),
                         (new Map('string', HttpResource::class))
                             ->put(
                                 'res',
-                                $rs = new HttpResource(
+                                $child = new HttpResource(
                                     'res',
                                     new Identity('uuid'),
                                     new Map('string', Property::class),
@@ -112,7 +112,7 @@ class DirectoryTest extends TestCase
             (new Map('string', HttpResource::class))
                 ->put(
                     'res',
-                    $r = new HttpResource(
+                    $resource = new HttpResource(
                         'res',
                         new Identity('uuid'),
                         new Map('string', Property::class),
@@ -125,7 +125,7 @@ class DirectoryTest extends TestCase
                 )
         );
 
-        $defs = $d->flatten();
+        $defs = $directory->flatten();
 
         $this->assertInstanceOf(MapInterface::class, $defs);
         $this->assertSame('string', (string) $defs->keyType());
@@ -133,10 +133,10 @@ class DirectoryTest extends TestCase
         $this->assertTrue(
             $defs->equals(
                 (new Map('string', HttpResource::class))
-                    ->put('foo.res', $r)
-                    ->put('foo.bar.res', $rs)
+                    ->put('foo.res', $resource)
+                    ->put('foo.bar.res', $child)
             )
         );
-        $this->assertSame($defs, $d->flatten());
+        $this->assertSame($defs, $directory->flatten());
     }
 }

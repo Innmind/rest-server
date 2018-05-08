@@ -10,14 +10,14 @@ class MediaTypeTest extends TestCase
 {
     public function testInterface()
     {
-        $m = new MediaType($s = 'application/vnd.media-type+suffix', 42);
+        $media = new MediaType($mime = 'application/vnd.media-type+suffix', 42);
 
-        $this->assertSame($s, $m->mime());
-        $this->assertSame($s, (string) $m);
-        $this->assertSame('application', $m->topLevel());
-        $this->assertSame('vnd.media-type', $m->subType());
-        $this->assertSame('suffix', $m->suffix());
-        $this->assertSame(42, $m->priority());
+        $this->assertSame($mime, $media->mime());
+        $this->assertSame($mime, (string) $media);
+        $this->assertSame('application', $media->topLevel());
+        $this->assertSame('vnd.media-type', $media->subType());
+        $this->assertSame('suffix', $media->suffix());
+        $this->assertSame(42, $media->priority());
     }
 
     /**

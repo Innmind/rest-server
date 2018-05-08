@@ -6,16 +6,16 @@ namespace Innmind\Rest\Server\Request\Verifier;
 use Innmind\Rest\Server\{
     Formats,
     Format\MediaType,
-    Definition\HttpResource
+    Definition\HttpResource,
 };
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Method,
-    Exception\Http\UnsupportedMediaType
+    Exception\Http\UnsupportedMediaType,
 };
 use Negotiation\{
     Negotiator,
-    Accept
+    Accept,
 };
 
 final class ContentTypeVerifier implements Verifier

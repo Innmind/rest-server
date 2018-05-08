@@ -7,12 +7,12 @@ use Innmind\Rest\Server\{
     Definition\Type,
     Definition\Types,
     Exception\DenormalizationException,
-    Exception\NormalizationException
+    Exception\NormalizationException,
 };
 use Innmind\Immutable\{
     MapInterface,
     SetInterface,
-    Set
+    Set,
 };
 
 final class FloatType implements Type
@@ -56,11 +56,7 @@ final class FloatType implements Type
      */
     public static function identifiers(): SetInterface
     {
-        if (self::$identifiers === null) {
-            self::$identifiers = (new Set('string'))->add('float');
-        }
-
-        return self::$identifiers;
+        return self::$identifiers ?? self::$identifiers = Set::of('string', 'float');
     }
 
     public function __toString(): string

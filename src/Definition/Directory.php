@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\Definition;
 
 use Innmind\Immutable\{
     MapInterface,
-    Pair
+    Pair,
 };
 
 final class Directory

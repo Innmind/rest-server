@@ -4,9 +4,8 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\Definition;
 
 use Innmind\Immutable\{
-    Sequence,
     Set,
-    SetInterface
+    SetInterface,
 };
 
 final class Access
@@ -19,12 +18,7 @@ final class Access
 
     public function __construct(string ...$mask)
     {
-        $this->mask = (new Sequence(...$mask))->reduce(
-            new Set('string'),
-            static function (Set $carry, string $element): Set {
-                return $carry->add($element);
-            }
-        );
+        $this->mask = Set::of('string', ...$mask);
     }
 
     public function isReadable(): bool

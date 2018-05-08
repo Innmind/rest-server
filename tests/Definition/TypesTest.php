@@ -12,12 +12,9 @@ use Innmind\Rest\Server\Definition\{
     Type\DateType,
     Type\FloatType,
     Type\IntType,
-    Type\StringType
+    Type\StringType,
 };
-use Innmind\Immutable\{
-    Set,
-    Map
-};
+use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
 class TypesTest extends TestCase

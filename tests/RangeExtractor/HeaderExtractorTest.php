@@ -6,7 +6,7 @@ namespace Tests\Innmind\Rest\Server\RangeExtractor;
 use Innmind\Rest\Server\{
     RangeExtractor\HeaderExtractor,
     RangeExtractor\Extractor,
-    Request\Range
+    Request\Range,
 };
 use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
@@ -25,7 +25,7 @@ use Innmind\Http\{
     Header\Accept,
     Header\AcceptValue,
     Header\Range as RangeHeader,
-    Header\RangeValue
+    Header\RangeValue,
 };
 use Innmind\Url\Url;
 use Innmind\Filesystem\Stream\StringStream;

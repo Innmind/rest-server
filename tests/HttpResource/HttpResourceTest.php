@@ -12,11 +12,11 @@ use Innmind\Rest\Server\{
     Definition\Property as PropertyDefinition,
     Definition\Gateway,
     Definition\Type\StringType,
-    Definition\Access
+    Definition\Access,
 };
 use Innmind\Immutable\{
     Map,
-    Set
+    Set,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -24,8 +24,8 @@ class HttpResourceTest extends TestCase
 {
     public function testInterface()
     {
-        $r = new HttpResource(
-            $d = new Definition(
+        $resource = new HttpResource(
+            $definition = new Definition(
                 'foobar',
                 new Identity('foo'),
                 (new Map('string', PropertyDefinition::class))
@@ -45,16 +45,16 @@ class HttpResourceTest extends TestCase
                 true,
                 new Map('string', 'string')
             ),
-            $ps = (new Map('string', Property::class))
-                ->put('foo', $p = new Property('foo', 42))
+            $properties = (new Map('string', Property::class))
+                ->put('foo', $property = new Property('foo', 42))
         );
 
-        $this->assertInstanceOf(HttpResourceInterface::class, $r);
-        $this->assertSame($d, $r->definition());
-        $this->assertTrue($r->has('foo'));
-        $this->assertFalse($r->has('bar'));
-        $this->assertSame($p, $r->property('foo'));
-        $this->assertSame($ps, $r->properties());
+        $this->assertInstanceOf(HttpResourceInterface::class, $resource);
+        $this->assertSame($definition, $resource->definition());
+        $this->assertTrue($resource->has('foo'));
+        $this->assertFalse($resource->has('bar'));
+        $this->assertSame($property, $resource->property('foo'));
+        $this->assertSame($properties, $resource->properties());
     }
 
     /**
@@ -63,7 +63,7 @@ class HttpResourceTest extends TestCase
     public function testThrowWhenBuildingWithUndefinedProperty()
     {
         new HttpResource(
-            $d = new Definition(
+            new Definition(
                 'foobar',
                 new Identity('foo'),
                 (new Map('string', PropertyDefinition::class)),
@@ -73,8 +73,8 @@ class HttpResourceTest extends TestCase
                 true,
                 new Map('string', 'string')
             ),
-            $ps = (new Map('string', Property::class))
-                ->put('foo', $p = new Property('foo', 42))
+            (new Map('string', Property::class))
+                ->put('foo', new Property('foo', 42))
         );
     }
 }

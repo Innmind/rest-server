@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server;
 
 use Innmind\Rest\Server\{
     Definition\HttpResource as ResourceDefinition,
-    Request\Range
+    Request\Range,
 };
 use Innmind\Specification\SpecificationInterface;
 use Innmind\Immutable\SetInterface;

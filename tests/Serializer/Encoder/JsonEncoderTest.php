@@ -9,11 +9,6 @@ use Innmind\Http\{
     Message\Method,
     ProtocolVersion,
     Headers,
-    Message\Environment,
-    Message\Cookies,
-    Message\Query,
-    Message\Form,
-    Message\Files
 };
 use Innmind\Url\UrlInterface;
 use Innmind\Filesystem\Stream\StringStream;
@@ -48,12 +43,7 @@ class JsonEncoderTest extends TestCase
                 $this->createMock(Method::class),
                 $this->createMock(ProtocolVersion::class),
                 $this->createMock(Headers::class),
-                new StringStream('{"identity":42}'),
-                $this->createMock(Environment::class),
-                $this->createMock(Cookies::class),
-                $this->createMock(Query::class),
-                $this->createMock(Form::class),
-                $this->createMock(Files::class)
+                new StringStream('{"identity":42}')
             ),
             'json'
         );

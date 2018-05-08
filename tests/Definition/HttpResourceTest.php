@@ -17,27 +17,27 @@ class HttpResourceTest extends TestCase
 {
     public function testInterface()
     {
-        $r = new HttpResource(
+        $resource = new HttpResource(
             'foobar',
-            $i = new Identity('foo'),
-            $p = (new Map('string', Property::class)),
-            $o = new Map('scalar', 'variable'),
-            $m = new Map('scalar', 'variable'),
-            $g = new Gateway('bar'),
+            $identity = new Identity('foo'),
+            $properties = (new Map('string', Property::class)),
+            $options = new Map('scalar', 'variable'),
+            $metas = new Map('scalar', 'variable'),
+            $gateway = new Gateway('bar'),
             true,
-            $l = new Map('string', 'string')
+            $links = new Map('string', 'string')
         );
 
-        $this->assertInstanceOf(Name::class, $r->name());
-        $this->assertSame('foobar', (string) $r->name());
-        $this->assertSame('foobar', (string) $r);
-        $this->assertSame($i, $r->identity());
-        $this->assertSame($p, $r->properties());
-        $this->assertSame($o, $r->options());
-        $this->assertSame($m, $r->metas());
-        $this->assertSame($g, $r->gateway());
-        $this->assertTrue($r->isRangeable());
-        $this->assertSame($l, $r->allowedLinks());
+        $this->assertInstanceOf(Name::class, $resource->name());
+        $this->assertSame('foobar', (string) $resource->name());
+        $this->assertSame('foobar', (string) $resource);
+        $this->assertSame($identity, $resource->identity());
+        $this->assertSame($properties, $resource->properties());
+        $this->assertSame($options, $resource->options());
+        $this->assertSame($metas, $resource->metas());
+        $this->assertSame($gateway, $resource->gateway());
+        $this->assertTrue($resource->isRangeable());
+        $this->assertSame($links, $resource->allowedLinks());
     }
 
     /**

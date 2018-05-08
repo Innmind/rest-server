@@ -8,11 +8,11 @@ use Innmind\Rest\Server\{
     Controller,
     Identity,
     Definition,
-    Exception\ActionNotImplemented
+    Exception\ActionNotImplemented,
 };
 use Innmind\Http\{
     Message\ServerRequest,
-    Message\Response
+    Message\Response,
 };
 use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;

@@ -21,18 +21,9 @@ use Innmind\Http\{
     Header\Accept,
     Header\AcceptValue,
     Header\Parameter,
-    Message\Environment,
-    Message\Cookies,
-    Message\Query,
-    Message\Form,
-    Message\Files
 };
 use Innmind\Url\Url;
-use Innmind\Stream\Readable;
-use Innmind\Immutable\{
-    Map,
-    MapInterface,
-};
+use Innmind\Immutable\MapInterface;
 use PHPUnit\Framework\TestCase;
 
 class CreateLocationBuilderTest extends TestCase
@@ -64,25 +55,11 @@ class CreateLocationBuilderTest extends TestCase
                 Url::fromString('/foo/bar/'),
                 $this->createMock(Method::class),
                 $this->createMock(ProtocolVersion::class),
-                new Headers(
-                    (new Map('string', Header::class))
-                        ->put(
-                            'Accept',
-                            new Accept(
-                                new AcceptValue(
-                                    'text',
-                                    'xhtml',
-                                    new Map('string', Parameter::class)
-                                )
-                            )
-                        )
-                ),
-                $this->createMock(Readable::class),
-                $this->createMock(Environment::class),
-                $this->createMock(Cookies::class),
-                $this->createMock(Query::class),
-                $this->createMock(Form::class),
-                $this->createMock(Files::class)
+                Headers::of(
+                    new Accept(
+                        new AcceptValue('text', 'xhtml')
+                    )
+                )
             ),
             $this->directories->get('top_dir')->definition('image'),
             $this->createMock(HttpResource::class)

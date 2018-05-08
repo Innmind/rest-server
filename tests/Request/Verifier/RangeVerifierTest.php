@@ -12,25 +12,16 @@ use Innmind\Rest\Server\{
     Definition\HttpResource,
     Definition\Identity,
     Definition\Gateway,
-    Definition\Property
+    Definition\Property,
 };
 use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
-    Message\Environment,
-    Message\Cookies,
-    Message\Form,
-    Message\Query,
-    Message\Files,
     Message\Method\Method,
     Headers,
-    ProtocolVersion
+    ProtocolVersion,
 };
 use Innmind\Url\UrlInterface;
-use Innmind\Stream\Readable;
-use Innmind\Immutable\{
-    Map,
-    Set
-};
+use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
 class RangeVerifierTest extends TestCase
@@ -56,13 +47,7 @@ class RangeVerifierTest extends TestCase
             $this->createMock(UrlInterface::class),
             new Method('POST'),
             $this->createMock(ProtocolVersion::class),
-            $headers,
-            $this->createMock(Readable::class),
-            $this->createMock(Environment::class),
-            $this->createMock(Cookies::class),
-            $this->createMock(Query::class),
-            $this->createMock(Form::class),
-            $this->createMock(Files::class)
+            $headers
         );
 
         $verify(
@@ -96,13 +81,7 @@ class RangeVerifierTest extends TestCase
             $this->createMock(UrlInterface::class),
             new Method('GET'),
             $this->createMock(ProtocolVersion::class),
-            $headers,
-            $this->createMock(Readable::class),
-            $this->createMock(Environment::class),
-            $this->createMock(Cookies::class),
-            $this->createMock(Query::class),
-            $this->createMock(Form::class),
-            $this->createMock(Files::class)
+            $headers
         );
 
         $verify(
@@ -133,13 +112,7 @@ class RangeVerifierTest extends TestCase
             $this->createMock(UrlInterface::class),
             new Method('GET'),
             $this->createMock(ProtocolVersion::class),
-            $headers,
-            $this->createMock(Readable::class),
-            $this->createMock(Environment::class),
-            $this->createMock(Cookies::class),
-            $this->createMock(Query::class),
-            $this->createMock(Form::class),
-            $this->createMock(Files::class)
+            $headers
         );
 
         $this->assertNull(
@@ -166,13 +139,7 @@ class RangeVerifierTest extends TestCase
             $this->createMock(UrlInterface::class),
             new Method('GET'),
             $this->createMock(ProtocolVersion::class),
-            $headers,
-            $this->createMock(Readable::class),
-            $this->createMock(Environment::class),
-            $this->createMock(Cookies::class),
-            $this->createMock(Query::class),
-            $this->createMock(Form::class),
-            $this->createMock(Files::class)
+            $headers
         );
 
         $this->assertNull(

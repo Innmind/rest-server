@@ -13,11 +13,11 @@ use Innmind\Rest\Server\{
     Exception\DenormalizationException,
     Exception\NormalizationException,
     Exception\HttpResourceDenormalizationException,
-    Exception\HttpResourceNormalizationException
+    Exception\HttpResourceNormalizationException,
 };
 use Innmind\Immutable\{
     Map,
-    Set
+    Set,
 };
 use Symfony\Component\Serializer\Normalizer\{
     DenormalizerInterface,

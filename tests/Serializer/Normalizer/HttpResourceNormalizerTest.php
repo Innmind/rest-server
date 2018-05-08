@@ -17,11 +17,11 @@ use Innmind\Rest\Server\{
     Exception\DenormalizationException,
     Exception\NormalizationException,
     Exception\HttpResourceDenormalizationException,
-    Exception\HttpResourceNormalizationException
+    Exception\HttpResourceNormalizationException,
 };
 use Innmind\Immutable\{
     Map,
-    Set
+    Set,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -29,21 +29,21 @@ class HttpResourceNormalizerTest extends TestCase
 {
     public function testSupportsDenormalization()
     {
-        $n = new HttpResourceNormalizer;
+        $normalizer = new HttpResourceNormalizer;
 
-        $this->assertTrue($n->supportsDenormalization(
+        $this->assertTrue($normalizer->supportsDenormalization(
             ['resource' => []],
             HttpResource::class
         ));
-        $this->assertFalse($n->supportsDenormalization(
+        $this->assertFalse($normalizer->supportsDenormalization(
             [],
             HttpResource::class
         ));
-        $this->assertFalse($n->supportsDenormalization(
+        $this->assertFalse($normalizer->supportsDenormalization(
             null,
             HttpResource::class
         ));
-        $this->assertFalse($n->supportsDenormalization(
+        $this->assertFalse($normalizer->supportsDenormalization(
             ['resource' => []],
             HttpResourceInterface::class
         ));
@@ -51,7 +51,7 @@ class HttpResourceNormalizerTest extends TestCase
 
     public function testDenormalize()
     {
-        $n = new HttpResourceNormalizer;
+        $normalizer = new HttpResourceNormalizer;
         $def = new ResourceDefinition(
             'foobar',
             new Identity('foo'),
@@ -73,7 +73,7 @@ class HttpResourceNormalizerTest extends TestCase
             new Map('string', 'string')
         );
 
-        $r = $n->denormalize(
+        $resource = $normalizer->denormalize(
             [
                 'resource' => [
                     'bar' => 'some content',
@@ -87,9 +87,9 @@ class HttpResourceNormalizerTest extends TestCase
             ]
         );
 
-        $this->assertInstanceOf(HttpResource::class, $r);
-        $this->assertSame('some content', $r->property('bar')->value());
-        $this->assertSame(1, $r->properties()->size());
+        $this->assertInstanceOf(HttpResource::class, $resource);
+        $this->assertSame('some content', $resource->property('bar')->value());
+        $this->assertSame(1, $resource->properties()->size());
     }
 
     /**
@@ -131,7 +131,7 @@ class HttpResourceNormalizerTest extends TestCase
 
     public function testThrowWhenDenormalizationFail()
     {
-        $n = new HttpResourceNormalizer;
+        $normalizer = new HttpResourceNormalizer;
         $def = new ResourceDefinition(
             'foobar',
             new Identity('foo'),
@@ -184,7 +184,7 @@ class HttpResourceNormalizerTest extends TestCase
         );
 
         try {
-            $n->denormalize(
+            $normalizer->denormalize(
                 [
                     'resource' => [
                         'baz' => ['foo'],
@@ -227,9 +227,9 @@ class HttpResourceNormalizerTest extends TestCase
 
     public function testSupportsNormalization()
     {
-        $n = new HttpResourceNormalizer;
+        $normalizer = new HttpResourceNormalizer;
 
-        $this->assertTrue($n->supportsNormalization(
+        $this->assertTrue($normalizer->supportsNormalization(
             new HttpResource(
                 new ResourceDefinition(
                     'foobar',
@@ -244,7 +244,7 @@ class HttpResourceNormalizerTest extends TestCase
                 new Map('string', Property::class)
             )
         ));
-        $this->assertFalse($n->supportsNormalization([]));
+        $this->assertFalse($normalizer->supportsNormalization([]));
     }
 
     public function testNormalize()
@@ -279,16 +279,16 @@ class HttpResourceNormalizerTest extends TestCase
             true,
             new Map('string', 'string')
         );
-        $r = new HttpResource(
+        $resource = new HttpResource(
             $def,
             (new Map('string', Property::class))
                 ->put('bar', new Property('bar', 'baz'))
                 ->put('baz', new Property('baz', 'bar'))
         );
 
-        $d = (new HttpResourceNormalizer)->normalize($r);
+        $data = (new HttpResourceNormalizer)->normalize($resource);
 
-        $this->assertSame(['resource' => ['bar' => 'baz']], $d);
+        $this->assertSame(['resource' => ['bar' => 'baz']], $data);
     }
 
     public function testThrowWhenNormalizationFail()
@@ -313,14 +313,14 @@ class HttpResourceNormalizerTest extends TestCase
             true,
             new Map('string', 'string')
         );
-        $r = new HttpResource(
+        $resource = new HttpResource(
             $def,
             (new Map('string', Property::class))
                 ->put('bar', new Property('bar', new \stdClass))
         );
 
         try {
-            (new HttpResourceNormalizer)->normalize($r);
+            (new HttpResourceNormalizer)->normalize($resource);
 
             $this->fail('It should throw an error');
         } catch (HttpResourceNormalizationException $e) {

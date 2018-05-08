@@ -7,30 +7,23 @@ use Innmind\Rest\Server\{
     Format,
     Formats,
     Format\Format as FormatFormat,
-    Format\MediaType
+    Format\MediaType,
 };
 use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
     Message\Method\Method,
     ProtocolVersion\ProtocolVersion,
-    Message\Environment\Environment,
-    Message\Cookies\Cookies,
-    Message\Query\Query,
-    Message\Form\Form,
-    Message\Files\Files,
     Headers\Headers,
-    Header,
     Header\Accept,
     Header\AcceptValue,
     Header\ContentType,
     Header\ContentTypeValue,
-    Header\Value
+    Header\Value,
 };
 use Innmind\Url\Url;
-use Innmind\Filesystem\Stream\StringStream;
 use Innmind\Immutable\{
     Map,
-    Set
+    Set,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -80,21 +73,11 @@ class FormatTest extends TestCase
                 Url::fromString('/'),
                 new Method('GET'),
                 new ProtocolVersion(1, 1),
-                new Headers(
-                    (new Map('string', Header::class))
-                        ->put(
-                            'Accept',
-                            new Accept(
-                                new AcceptValue('application', 'json')
-                            )
-                        )
-                ),
-                new StringStream(''),
-                new Environment,
-                new Cookies,
-                new Query,
-                new Form,
-                new Files
+                Headers::of(
+                    new Accept(
+                        new AcceptValue('application', 'json')
+                    )
+                )
             )
         );
 
@@ -110,21 +93,11 @@ class FormatTest extends TestCase
                 Url::fromString('/'),
                 new Method('GET'),
                 new ProtocolVersion(1, 1),
-                new Headers(
-                    (new Map('string', Header::class))
-                        ->put(
-                            'Accept',
-                            new Accept(
-                                new AcceptValue('*', '*')
-                            )
-                        )
-                ),
-                new StringStream(''),
-                new Environment,
-                new Cookies,
-                new Query,
-                new Form,
-                new Files
+                Headers::of(
+                    new Accept(
+                        new AcceptValue('*', '*')
+                    )
+                )
             )
         );
 
@@ -140,21 +113,11 @@ class FormatTest extends TestCase
                 Url::fromString('/'),
                 new Method('GET'),
                 new ProtocolVersion(1, 1),
-                new Headers(
-                    (new Map('string', Header::class))
-                        ->put(
-                            'Content-Type',
-                            new ContentType(
-                                new ContentTypeValue('application', 'json')
-                            )
-                        )
-                ),
-                new StringStream(''),
-                new Environment,
-                new Cookies,
-                new Query,
-                new Form,
-                new Files
+                Headers::of(
+                    new ContentType(
+                        new ContentTypeValue('application', 'json')
+                    )
+                )
             )
         );
 

@@ -7,12 +7,12 @@ use Innmind\Rest\Server\{
     Controller\CatchHttpException,
     Controller,
     Identity,
-    Definition
+    Definition,
 };
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
-    Exception
+    Exception,
 };
 use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;

@@ -6,7 +6,7 @@ namespace Tests\Innmind\Rest\Server\Serializer\Normalizer;
 use Innmind\Rest\Server\{
     Serializer\Normalizer\IdentitiesNormalizer,
     Identity as IdentityInterface,
-    Identity\Identity
+    Identity\Identity,
 };
 use Innmind\Immutable\Set;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

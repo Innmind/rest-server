@@ -10,9 +10,9 @@ class GatewayTest extends TestCase
 {
     public function testInterface()
     {
-        $g = new Gateway('foo');
+        $gateway = new Gateway('foo');
 
-        $this->assertSame('foo', $g->name());
-        $this->assertSame('foo', (string) $g);
+        $this->assertSame('foo', $gateway->name());
+        $this->assertSame('foo', (string) $gateway);
     }
 }

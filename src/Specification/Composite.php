@@ -6,7 +6,7 @@ namespace Innmind\Rest\Server\Specification;
 use Innmind\Specification\{
     SpecificationInterface,
     CompositeInterface,
-    NotInterface
+    NotInterface,
 };
 
 trait COmposite

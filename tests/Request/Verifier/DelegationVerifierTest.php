@@ -9,7 +9,7 @@ use Innmind\Rest\Server\{
     Definition\HttpResource,
     Definition\Identity,
     Definition\Gateway,
-    Definition\Property
+    Definition\Property,
 };
 use Innmind\Http\Message\ServerRequest;
 use Innmind\Immutable\Map;

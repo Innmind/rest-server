@@ -6,11 +6,11 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 use Innmind\Rest\Server\Definition\{
     Type\MapType,
     Type,
-    Types
+    Types,
 };
 use Innmind\Immutable\{
     MapInterface,
-    Map
+    Map,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -55,14 +55,14 @@ class MapTypeTest extends TestCase
 
     public function testDenormalize()
     {
-        $t = MapType::fromConfig(
+        $type = MapType::fromConfig(
             (new Map('scalar', 'variable'))
                 ->put('inner', 'string')
                 ->put('key', 'int'),
             new Types
         );
-        $this->assertInstanceOf(MapInterface::class, $t->denormalize(['foo']));
-        $this->assertSame('foo', $t->denormalize(['1' => 'foo'])->get(1));
+        $this->assertInstanceOf(MapInterface::class, $type->denormalize(['foo']));
+        $this->assertSame('foo', $type->denormalize(['1' => 'foo'])->get(1));
         $this->assertSame(
             'foo',
             MapType::fromConfig(

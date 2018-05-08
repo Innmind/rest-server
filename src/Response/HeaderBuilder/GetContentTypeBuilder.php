@@ -7,7 +7,7 @@ use Innmind\Rest\Server\{
     Definition\HttpResource,
     Formats,
     HttpResource as HttpResourceInterface,
-    Identity
+    Identity,
 };
 use Innmind\Http\Message\ServerRequest;
 use Innmind\Immutable\MapInterface;

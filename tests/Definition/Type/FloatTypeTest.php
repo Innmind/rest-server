@@ -6,7 +6,7 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 use Innmind\Rest\Server\Definition\{
     Type\FloatType,
     Type,
-    types
+    Types,
 };
 use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;

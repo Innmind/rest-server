@@ -17,20 +17,13 @@ use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
     Message\Method,
     ProtocolVersion,
-    Headers,
-    Message\Environment,
-    Message\Cookies,
-    Message\Query,
-    Message\Form,
-    Message\Files,
-    Header
+    Header,
 };
 use Innmind\Url\Url;
-use Innmind\Stream\Readable;
 use Innmind\Immutable\{
     Set,
     Map,
-    MapInterface
+    MapInterface,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -61,20 +54,11 @@ class ListLinksBuilderTest extends TestCase
     public function testBuild()
     {
         $headers = ($this->build)(
-            (new Set(Identity::class))
-                ->add(new Id(24))
-                ->add(new Id(42)),
+            Set::of(Identity::class, new Id(24), new Id(42)),
             new ServerRequest(
                 Url::fromString('/foo/bar/'),
                 $this->createMock(Method::class),
-                $this->createMock(ProtocolVersion::class),
-                $this->createMock(Headers::class),
-                $this->createMock(Readable::class),
-                $this->createMock(Environment::class),
-                $this->createMock(Cookies::class),
-                $this->createMock(Query::class),
-                $this->createMock(Form::class),
-                $this->createMock(Files::class)
+                $this->createMock(ProtocolVersion::class)
             ),
             $this->directories->get('top_dir')->definition('image')
         );
@@ -96,14 +80,7 @@ class ListLinksBuilderTest extends TestCase
             new ServerRequest(
                 Url::fromString('/foo/bar/'),
                 $this->createMock(Method::class),
-                $this->createMock(ProtocolVersion::class),
-                $this->createMock(Headers::class),
-                $this->createMock(Readable::class),
-                $this->createMock(Environment::class),
-                $this->createMock(Cookies::class),
-                $this->createMock(Query::class),
-                $this->createMock(Form::class),
-                $this->createMock(Files::class)
+                $this->createMock(ProtocolVersion::class)
             ),
             $this->directories->get('top_dir')->definition('image')
         );

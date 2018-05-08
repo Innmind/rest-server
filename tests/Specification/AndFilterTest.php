@@ -7,7 +7,7 @@ use Innmind\Rest\Server\{
     Specification\AndFilter,
     Specification\Filter,
     HttpResource,
-    HttpResource\Property
+    HttpResource\Property,
 };
 use Innmind\Specification\CompositeInterface;
 use PHPUnit\Framework\TestCase;

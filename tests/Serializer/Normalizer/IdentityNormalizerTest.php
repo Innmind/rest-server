@@ -5,7 +5,7 @@ namespace Tests\Innmind\Rest\Server\Serializer\Normalizer;
 
 use Innmind\Rest\Server\{
     Serializer\Normalizer\IdentityNormalizer,
-    Identity\Identity
+    Identity\Identity,
 };
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use PHPUnit\Framework\TestCase;

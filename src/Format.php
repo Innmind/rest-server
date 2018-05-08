@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server;
 
 use Innmind\Rest\Server\{
     Format\Format as FormatFormat,
-    Format\MediaType
+    Format\MediaType,
 };
 use Innmind\Http\Message\ServerRequest;
 use Negotiation\Negotiator;

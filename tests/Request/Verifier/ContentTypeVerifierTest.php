@@ -12,25 +12,19 @@ use Innmind\Rest\Server\{
     Definition\HttpResource,
     Definition\Identity,
     Definition\Gateway,
-    Definition\Property
+    Definition\Property,
 };
 use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
     Message\Method,
-    Message\Environment,
-    Message\Cookies,
-    Message\Form,
-    Message\Query,
-    Message\Files,
     Headers,
     Header,
-    ProtocolVersion
+    ProtocolVersion,
 };
 use Innmind\Url\UrlInterface;
-use Innmind\Stream\Readable;
 use Innmind\Immutable\{
     Map,
-    Set
+    Set,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -45,7 +39,8 @@ class ContentTypeVerifierTest extends TestCase
                         'json',
                         new Format(
                             'json',
-                            (new Set(MediaType::class))->add(
+                            Set::of(
+                                MediaType::class,
                                 new MediaType('application/json', 0)
                             ),
                             0
@@ -69,7 +64,8 @@ class ContentTypeVerifierTest extends TestCase
                         'json',
                         new Format(
                             'json',
-                            (new Set(MediaType::class))->add(
+                            Set::of(
+                                MediaType::class,
                                 new MediaType('application/json', 0)
                             ),
                             0
@@ -89,19 +85,13 @@ class ContentTypeVerifierTest extends TestCase
         $header
             ->method('values')
             ->willReturn(
-                (new Set('string'))->add('text/html')
+                Set::of('string', 'text/html')
             );
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
             $method = $this->createMock(Method::class),
             $this->createMock(ProtocolVersion::class),
-            $headers,
-            $this->createMock(Readable::class),
-            $this->createMock(Environment::class),
-            $this->createMock(Cookies::class),
-            $this->createMock(Query::class),
-            $this->createMock(Form::class),
-            $this->createMock(Files::class)
+            $headers
         );
         $method
             ->expects($this->once())
@@ -132,7 +122,8 @@ class ContentTypeVerifierTest extends TestCase
                         'json',
                         new Format(
                             'json',
-                            (new Set(MediaType::class))->add(
+                            Set::of(
+                                MediaType::class,
                                 new MediaType('application/json', 0)
                             ),
                             0
@@ -152,19 +143,13 @@ class ContentTypeVerifierTest extends TestCase
         $header
             ->method('values')
             ->willReturn(
-                (new Set('string'))->add('text/html')
+                Set::of('string', 'text/html')
             );
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
             $method = $this->createMock(Method::class),
             $this->createMock(ProtocolVersion::class),
-            $headers,
-            $this->createMock(Readable::class),
-            $this->createMock(Environment::class),
-            $this->createMock(Cookies::class),
-            $this->createMock(Query::class),
-            $this->createMock(Form::class),
-            $this->createMock(Files::class)
+            $headers
         );
         $method
             ->expects($this->once())
@@ -195,7 +180,8 @@ class ContentTypeVerifierTest extends TestCase
                         'json',
                         new Format(
                             'json',
-                            (new Set(MediaType::class))->add(
+                            Set::of(
+                                MediaType::class,
                                 new MediaType('application/json', 0)
                             ),
                             0
@@ -215,19 +201,13 @@ class ContentTypeVerifierTest extends TestCase
         $header
             ->method('values')
             ->willReturn(
-                (new Set('string'))->add('application/json')
+                Set::of('string', 'application/json')
             );
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
             $method = $this->createMock(Method::class),
             $this->createMock(ProtocolVersion::class),
-            $headers,
-            $this->createMock(Readable::class),
-            $this->createMock(Environment::class),
-            $this->createMock(Cookies::class),
-            $this->createMock(Query::class),
-            $this->createMock(Form::class),
-            $this->createMock(Files::class)
+            $headers
         );
         $method
             ->expects($this->once())
@@ -260,7 +240,8 @@ class ContentTypeVerifierTest extends TestCase
                         'json',
                         new Format(
                             'json',
-                            (new Set(MediaType::class))->add(
+                            Set::of(
+                                MediaType::class,
                                 new MediaType('application/json', 0)
                             ),
                             0
@@ -276,13 +257,7 @@ class ContentTypeVerifierTest extends TestCase
             $this->createMock(UrlInterface::class),
             $this->createMock(Method::class),
             $this->createMock(ProtocolVersion::class),
-            $headers,
-            $this->createMock(Readable::class),
-            $this->createMock(Environment::class),
-            $this->createMock(Cookies::class),
-            $this->createMock(Query::class),
-            $this->createMock(Form::class),
-            $this->createMock(Files::class)
+            $headers
         );
 
         $this->assertNull(

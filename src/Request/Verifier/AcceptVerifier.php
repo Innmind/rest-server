@@ -6,15 +6,15 @@ namespace Innmind\Rest\Server\Request\Verifier;
 use Innmind\Rest\Server\{
     Formats,
     Format\MediaType,
-    Definition\HttpResource
+    Definition\HttpResource,
 };
 use Innmind\Http\{
     Message\ServerRequest,
-    Exception\Http\NotAcceptable
+    Exception\Http\NotAcceptable,
 };
 use Negotiation\{
     Negotiator,
-    Accept
+    Accept,
 };
 
 final class AcceptVerifier implements Verifier

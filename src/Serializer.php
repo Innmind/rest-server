@@ -6,7 +6,7 @@ namespace Innmind\Rest\Server;
 use Innmind\Immutable\SetInterface;
 use Symfony\Component\Serializer\{
     SerializerInterface,
-    Serializer as SfSerializer
+    Serializer as SfSerializer,
 };
 
 final class Serializer

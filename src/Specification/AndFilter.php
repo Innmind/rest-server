@@ -7,7 +7,7 @@ use Innmind\Rest\Server\HttpResource;
 use Innmind\Specification\{
     SpecificationInterface,
     CompositeInterface,
-    Operator
+    Operator,
 };
 
 final class AndFilter implements CompositeInterface

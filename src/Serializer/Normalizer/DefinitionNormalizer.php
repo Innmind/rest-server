@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\Serializer\Normalizer;
 
 use Innmind\Rest\Server\Definition\{
     HttpResource,
-    Property
+    Property,
 };
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

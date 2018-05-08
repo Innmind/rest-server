@@ -8,11 +8,11 @@ use Innmind\Rest\Server\{
     Controller,
     Identity,
     Definition,
-    Request\Verifier\Verifier
+    Request\Verifier\Verifier,
 };
 use Innmind\Http\{
     Message\ServerRequest,
-    Message\Response
+    Message\Response,
 };
 use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;

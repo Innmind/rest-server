@@ -13,13 +13,13 @@ use Innmind\Http\{
     Header\AcceptRanges,
     Header\AcceptRangesValue,
     Header\ContentRange,
-    Header\ContentRangeValue
+    Header\ContentRangeValue,
 };
 use Innmind\Specification\SpecificationInterface;
 use Innmind\Immutable\{
     SetInterface,
     MapInterface,
-    Map
+    Map,
 };
 
 final class ListRangeBuilder implements ListBuilder

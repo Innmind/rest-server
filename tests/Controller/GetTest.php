@@ -11,7 +11,7 @@ use Innmind\Rest\Server\{
     Response\HeaderBuilder\GetBuilder,
     HttpResource\HttpResource,
     HttpResource\Property,
-    ResourceAccessor
+    ResourceAccessor,
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -19,7 +19,7 @@ use Innmind\Http\{
     Header,
     Header\Accept,
     Header\AcceptValue,
-    Headers\Headers
+    Headers\Headers,
 };
 use Innmind\Immutable\Map;
 

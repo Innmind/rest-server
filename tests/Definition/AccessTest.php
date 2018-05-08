@@ -56,45 +56,45 @@ class AccessTest extends TestCase
 
     public function testMask()
     {
-        $a = (new Access(
+        $access = new Access(
             Access::READ,
             Access::CREATE,
             Access::UPDATE
-        ));
+        );
 
-        $this->assertInstanceOf(SetInterface::class, $a->mask());
-        $this->assertSame('string', (string) $a->mask()->type());
+        $this->assertInstanceOf(SetInterface::class, $access->mask());
+        $this->assertSame('string', (string) $access->mask()->type());
         $this->assertSame(
             [Access::READ, Access::CREATE, Access::UPDATE],
-            $a->mask()->toPrimitive()
+            $access->mask()->toPrimitive()
         );
     }
 
     public function testMatches()
     {
-        $a = (new Access(
+        $access = new Access(
             Access::READ,
             Access::CREATE,
             Access::UPDATE
-        ));
-        $this->assertTrue($a->matches(
+        );
+        $this->assertTrue($access->matches(
             new Access(Access::READ)
         ));
-        $this->assertTrue($a->matches(
+        $this->assertTrue($access->matches(
             new Access(Access::CREATE)
         ));
-        $this->assertTrue($a->matches(
+        $this->assertTrue($access->matches(
             new Access(Access::UPDATE)
         ));
 
-        $a = new Access(Access::READ);
-        $this->assertTrue($a->matches(
+        $access = new Access(Access::READ);
+        $this->assertTrue($access->matches(
             new Access(Access::READ)
         ));
-        $this->assertFalse($a->matches(
+        $this->assertFalse($access->matches(
             new Access(Access::CREATE)
         ));
-        $this->assertFalse($a->matches(
+        $this->assertFalse($access->matches(
             new Access(Access::UPDATE)
         ));
     }

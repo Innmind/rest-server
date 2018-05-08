@@ -6,7 +6,7 @@ namespace Innmind\Rest\Server;
 use Innmind\Rest\Server\Definition\HttpResource;
 use Innmind\Http\Message\{
     ServerRequest,
-    Response
+    Response,
 };
 
 interface Controller
