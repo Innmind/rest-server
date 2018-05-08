@@ -15,7 +15,10 @@ class HttpResourceDenormalizationException extends RuntimeException
             (string) $errors->keyType() !== 'string' ||
             (string) $errors->valueType() !== DenormalizationException::class
         ) {
-            throw new InvalidArgumentException;
+            throw new \TypeError(sprintf(
+                'Argument 1 must be of type MapInterface<string, %s>',
+                DenormalizationException::class
+            ));
         }
 
         $this->errors = $errors;

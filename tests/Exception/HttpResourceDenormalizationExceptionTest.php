@@ -10,7 +10,8 @@ use PHPUnit\Framework\TestCase;
 class HttpResourceDenormalizationExceptionTest extends TestCase
 {
     /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Exception\DenormalizationException>
      */
     public function testThrowWhenBuildingWithInvalidMap()
     {
