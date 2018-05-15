@@ -9,6 +9,7 @@ use Innmind\Rest\Server\{
     Identity\Identity,
     Gateway,
     ResourceCreator,
+    Serializer\RequestDecoder\Json,
     Response\HeaderBuilder\CreateBuilder,
     Exception\LogicException,
 };
@@ -40,6 +41,7 @@ class CreateTest extends AbstractTestCase
         parent::setUp();
 
         $this->create = new Create(
+            new Json,
             $this->format,
             $this->serializer,
             (new Map('string', Gateway::class))->put(
@@ -61,9 +63,10 @@ class CreateTest extends AbstractTestCase
     public function testThrowWhenInvalidGatewayKeyType()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
+        $this->expectExceptionMessage('Argument 4 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
 
         new Create(
+            new Json,
             $this->format,
             $this->serializer,
             new Map('int', Gateway::class),
@@ -74,9 +77,10 @@ class CreateTest extends AbstractTestCase
     public function testThrowWhenInvalidGatewayValueType()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
+        $this->expectExceptionMessage('Argument 4 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
 
         new Create(
+            new Json,
             $this->format,
             $this->serializer,
             new Map('string', 'callable'),

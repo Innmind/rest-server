@@ -12,6 +12,7 @@ use Innmind\Rest\Server\{
     Format,
     Response\HeaderBuilder\CreateBuilder,
     HttpResource\HttpResource as Resource,
+    Serializer\RequestDecoder,
     Exception\LogicException,
 };
 use Innmind\Http\{
@@ -27,12 +28,14 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 final class Create implements Controller
 {
+    private $decode;
     private $gateways;
     private $serializer;
     private $format;
     private $buildHeader;
 
     public function __construct(
+        RequestDecoder $decode,
         Format $format,
         SerializerInterface $serializer,
         MapInterface $gateways,
@@ -43,11 +46,12 @@ final class Create implements Controller
             (string) $gateways->valueType() !== Gateway::class
         ) {
             throw new \TypeError(sprintf(
-                'Argument 3 must be of type MapInterface<string, %s>',
+                'Argument 4 must be of type MapInterface<string, %s>',
                 Gateway::class
             ));
         }
 
+        $this->decode = $decode;
         $this->gateways = $gateways;
         $this->serializer = $serializer;
         $this->format = $format;
@@ -67,12 +71,13 @@ final class Create implements Controller
             ->gateways
             ->get((string) $definition->gateway())
             ->resourceCreator();
+
         $identity = $create(
             $definition,
-            $resource = $this->serializer->deserialize(
-                $request,
+            $resource = $this->serializer->denormalize(
+                ($this->decode)($request),
                 Resource::class,
-                'request_'.$this->format->contentType($request)->name(),
+                null,
                 [
                     'definition' => $definition,
                     'mask' => new Access(Access::CREATE),

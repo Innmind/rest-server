@@ -80,6 +80,7 @@ services:
 
         action:
             create Innmind\Rest\Server\Controller\Create:
+                - $serializer.requestDecoder.delegate
                 - $format
                 - $serializer
                 - $gateways
@@ -174,6 +175,18 @@ services:
             identities Innmind\Rest\Server\Serializer\Normalizer\IdentitiesNormalizer: []
             identity Innmind\Rest\Server\Serializer\Normalizer\IdentityNormalizer: []
             httpResource Innmind\Rest\Server\Serializer\Normalizer\HttpResourceNormalizer: []
+
+        requestDecoder:
+            delegate Innmind\Rest\Server\Serializer\RequestDecoder\Delegate:
+                - $format
+                - $serializer.requestDecoder.map
+
+            map map<string, Innmind\Rest\Server\Serializer\RequestDecoder>:
+                - <json, $serializer.requestDecoder.json>
+                - <form, $serializer.requestDecoder.form>
+
+            json Innmind\Rest\Server\Serializer\RequestDecoder\Json: []
+            form Innmind\Rest\Server\Serializer\RequestDecoder\Form: []
 
     rangeExtractor:
         delegate Innmind\Rest\Server\RangeExtractor\DelegationExtractor:
