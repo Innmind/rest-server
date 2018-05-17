@@ -157,13 +157,9 @@ services:
 
     serializer:
         encoders set<Symfony\Component\Serializer\Encoder\EncoderInterace>:
-            - $serializer.encoders.json
-            - $serializer.encoders.form
             - $serializer.encoders.defaultJson
             - $serializer.encoders.defaultXml
         encoders:
-            json Innmind\Rest\Server\Serializer\Encoder\JsonEncoder: []
-            form Innmind\Rest\Server\Serializer\Encoder\FormEncoder: []
             defaultJson Symfony\Component\Serializer\Encoder\JsonEncoder: []
             defaultXml Symfony\Component\Serializer\Encoder\XmlEncoder: []
 

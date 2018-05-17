@@ -12,8 +12,6 @@ use Innmind\Rest\Server\{
     Serializer\Normalizer\IdentitiesNormalizer,
     Serializer\Normalizer\IdentityNormalizer,
     Serializer\Normalizer\HttpResourceNormalizer,
-    Serializer\Encoder\JsonEncoder,
-    Serializer\Encoder\FormEncoder,
     Definition,
     Definition\Loader\YamlLoader,
     Router,
@@ -69,8 +67,6 @@ class AbstractTestCase extends TestCase
                 new HttpResourceNormalizer,
             ],
             [
-                new JsonEncoder,
-                new FormEncoder,
                 new SfJsonEncoder,
             ]
         );
