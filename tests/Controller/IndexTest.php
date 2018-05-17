@@ -47,7 +47,6 @@ class IndexTest extends AbstractTestCase
 
         $this->index = new Index(
             new Encoder\Json,
-            $this->format,
             $this->serializer,
             (new Map('string', Gateway::class))->put(
                 'foo',
@@ -71,7 +70,6 @@ class IndexTest extends AbstractTestCase
 
         new Index(
             new Encoder\Json,
-            $this->format,
             $this->serializer,
             new Map('int', Gateway::class),
             $this->createMock(ListBuilder::class),
@@ -87,7 +85,6 @@ class IndexTest extends AbstractTestCase
 
         new Index(
             new Encoder\Json,
-            $this->format,
             $this->serializer,
             new Map('string', 'callable'),
             $this->createMock(ListBuilder::class),

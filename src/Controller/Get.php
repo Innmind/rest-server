@@ -7,7 +7,6 @@ use Innmind\Rest\Server\{
     Controller,
     Identity,
     Definition\HttpResource,
-    Format,
     Response\HeaderBuilder\GetBuilder,
     Gateway,
     Serializer\Encoder,
@@ -25,14 +24,12 @@ use Symfony\Component\Serializer\SerializerInterface;
 final class Get implements Controller
 {
     private $encode;
-    private $format;
     private $serializer;
     private $gateways;
     private $buildHeader;
 
     public function __construct(
         Encoder $encode,
-        Format $format,
         SerializerInterface $serializer,
         MapInterface $gateways,
         GetBuilder $headerBuilder
@@ -48,7 +45,6 @@ final class Get implements Controller
         }
 
         $this->encode = $encode;
-        $this->format = $format;
         $this->serializer = $serializer;
         $this->gateways = $gateways;
         $this->buildHeader = $headerBuilder;
@@ -76,7 +72,7 @@ final class Get implements Controller
                 $request,
                 $this->serializer->normalize(
                     $resource,
-                    $this->format->acceptable($request)->name(),
+                    null,
                     [
                         'request' => $request,
                         'definition' => $definition,

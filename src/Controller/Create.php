@@ -9,7 +9,6 @@ use Innmind\Rest\Server\{
     Definition\HttpResource,
     Definition\Access,
     Gateway,
-    Format,
     Response\HeaderBuilder\CreateBuilder,
     HttpResource\HttpResource as Resource,
     Serializer\RequestDecoder,
@@ -32,13 +31,11 @@ final class Create implements Controller
     private $encode;
     private $gateways;
     private $serializer;
-    private $format;
     private $buildHeader;
 
     public function __construct(
         RequestDecoder $decode,
         Encoder $encode,
-        Format $format,
         SerializerInterface $serializer,
         MapInterface $gateways,
         CreateBuilder $headerBuilder
@@ -57,7 +54,6 @@ final class Create implements Controller
         $this->encode = $encode;
         $this->gateways = $gateways;
         $this->serializer = $serializer;
-        $this->format = $format;
         $this->buildHeader = $headerBuilder;
     }
 
@@ -99,7 +95,7 @@ final class Create implements Controller
                 $request,
                 $this->serializer->normalize(
                     $identity,
-                    $this->format->acceptable($request)->name(),
+                    null,
                     [
                         'request' => $request,
                         'definition' => $definition,

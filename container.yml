@@ -84,19 +84,16 @@ services:
             create Innmind\Rest\Server\Controller\Create:
                 - $requestDecoder
                 - $encoder
-                - $format
                 - $serializer
                 - $gateways
                 - $response.headerBuilder.create.delegate
             get Innmind\Rest\Server\Controller\Get:
                 - $encoder
-                - $format
                 - $serializer
                 - $gateways
                 - $response.headerBuilder.get.delegate
             index Innmind\Rest\Server\Controller\Index:
                 - $encoder
-                - $format
                 - $serializer
                 - $gateways
                 - $response.headerBuilder.list.delegate

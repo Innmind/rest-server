@@ -46,8 +46,10 @@ final class Options implements Controller
             throw new LogicException;
         }
 
-        $format = $this->format->acceptable($request);
-        $mediaType = $format->preferredMediaType();
+        $mediaType = $this
+            ->format
+            ->acceptable($request)
+            ->preferredMediaType();
 
         return new Response\Response(
             $code = new StatusCode(StatusCode::codes()->get('OK')),
@@ -63,10 +65,7 @@ final class Options implements Controller
             ),
             ($this->encode)(
                 $request,
-                $this->serializer->normalize(
-                    $definition,
-                    $format->name()
-                )
+                $this->serializer->normalize($definition)
             )
         );
     }

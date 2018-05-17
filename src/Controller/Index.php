@@ -7,7 +7,6 @@ use Innmind\Rest\Server\{
     Controller,
     Identity,
     Definition\HttpResource,
-    Format,
     Gateway,
     Response\HeaderBuilder\ListBuilder,
     RangeExtractor\Extractor,
@@ -32,7 +31,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 final class Index implements Controller
 {
     private $encode;
-    private $format;
     private $serializer;
     private $extractRange;
     private $buildSpecification;
@@ -41,7 +39,6 @@ final class Index implements Controller
 
     public function __construct(
         Encoder $encode,
-        Format $format,
         SerializerInterface $serializer,
         MapInterface $gateways,
         ListBuilder $headerBuilder,
@@ -59,7 +56,6 @@ final class Index implements Controller
         }
 
         $this->encode = $encode;
-        $this->format = $format;
         $this->serializer = $serializer;
         $this->extractRange = $rangeExtractor;
         $this->buildSpecification = $specificationBuilder;
@@ -120,7 +116,7 @@ final class Index implements Controller
                 $request,
                 $this->serializer->normalize(
                     $identities,
-                    $this->format->acceptable($request)->name(),
+                    null,
                     [
                         'request' => $request,
                         'definition' => $definition,

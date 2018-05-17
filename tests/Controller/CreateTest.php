@@ -44,7 +44,6 @@ class CreateTest extends AbstractTestCase
         $this->create = new Create(
             new RequestDecoder\Json,
             new Encoder\Json,
-            $this->format,
             $this->serializer,
             (new Map('string', Gateway::class))->put(
                 'foo',
@@ -70,7 +69,6 @@ class CreateTest extends AbstractTestCase
         new Create(
             new RequestDecoder\Json,
             new Encoder\Json,
-            $this->format,
             $this->serializer,
             new Map('int', Gateway::class),
             $this->createMock(CreateBuilder::class)
@@ -85,7 +83,6 @@ class CreateTest extends AbstractTestCase
         new Create(
             new RequestDecoder\Json,
             new Encoder\Json,
-            $this->format,
             $this->serializer,
             new Map('string', 'callable'),
             $this->createMock(CreateBuilder::class)

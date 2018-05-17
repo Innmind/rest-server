@@ -39,7 +39,6 @@ class GetTest extends AbstractTestCase
 
         $this->get = new Get(
             new Encoder\Json,
-            $this->format,
             $this->serializer,
             (new Map('string', Gateway::class))->put(
                 'foo',
@@ -64,7 +63,6 @@ class GetTest extends AbstractTestCase
 
         new Get(
             new Encoder\Json,
-            $this->format,
             $this->serializer,
             new Map('int', Gateway::class),
             $this->createMock(GetBuilder::class)
@@ -78,7 +76,6 @@ class GetTest extends AbstractTestCase
 
         new Get(
             new Encoder\Json,
-            $this->format,
             $this->serializer,
             new Map('string', 'callable'),
             $this->createMock(GetBuilder::class)
