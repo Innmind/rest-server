@@ -9,27 +9,29 @@ use Innmind\Rest\Server\{
     Definition\HttpResource,
     Format,
     Response\HeaderBuilder\GetBuilder,
-    Gateway
+    Gateway,
+    Serializer\Encoder,
 };
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
     Message\StatusCode\StatusCode,
     Message\ReasonPhrase\ReasonPhrase,
-    Headers\Headers
+    Headers\Headers,
 };
-use Innmind\Filesystem\Stream\StringStream;
 use Innmind\Immutable\MapInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 final class Get implements Controller
 {
+    private $encode;
     private $format;
     private $serializer;
     private $gateways;
     private $buildHeader;
 
     public function __construct(
+        Encoder $encode,
         Format $format,
         SerializerInterface $serializer,
         MapInterface $gateways,
@@ -45,6 +47,7 @@ final class Get implements Controller
             ));
         }
 
+        $this->encode = $encode;
         $this->format = $format;
         $this->serializer = $serializer;
         $this->gateways = $gateways;
@@ -69,8 +72,9 @@ final class Get implements Controller
             Headers::of(
                 ...($this->buildHeader)($resource, $request, $definition, $identity)
             ),
-            new StringStream(
-                $this->serializer->serialize(
+            ($this->encode)(
+                $request,
+                $this->serializer->normalize(
                     $resource,
                     $this->format->acceptable($request)->name(),
                     [

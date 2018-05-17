@@ -13,6 +13,7 @@ use Innmind\Rest\Server\{
     RangeExtractor\Extractor,
     SpecificationBuilder\Builder,
     Request\Range,
+    Serializer\Encoder,
     Exception\RangeNotFound,
     Exception\NoFilterFound,
     Exception\LogicException,
@@ -25,12 +26,12 @@ use Innmind\Http\{
     Headers\Headers,
     Exception\Http\RangeNotSatisfiable,
 };
-use Innmind\Filesystem\Stream\StringStream;
 use Innmind\Immutable\MapInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 final class Index implements Controller
 {
+    private $encode;
     private $format;
     private $serializer;
     private $extractRange;
@@ -39,6 +40,7 @@ final class Index implements Controller
     private $buildHeader;
 
     public function __construct(
+        Encoder $encode,
         Format $format,
         SerializerInterface $serializer,
         MapInterface $gateways,
@@ -56,6 +58,7 @@ final class Index implements Controller
             ));
         }
 
+        $this->encode = $encode;
         $this->format = $format;
         $this->serializer = $serializer;
         $this->extractRange = $rangeExtractor;
@@ -113,8 +116,9 @@ final class Index implements Controller
                     $range
                 )
             ),
-            new StringStream(
-                $this->serializer->serialize(
+            ($this->encode)(
+                $request,
+                $this->serializer->normalize(
                     $identities,
                     $this->format->acceptable($request)->name(),
                     [

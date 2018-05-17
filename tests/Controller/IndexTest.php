@@ -13,6 +13,7 @@ use Innmind\Rest\Server\{
     ResourceListAccessor,
     Identity,
     Request\Range,
+    Serializer\Encoder,
     Exception\RangeNotFound,
     Exception\NoFilterFound,
     Exception\LogicException,
@@ -45,6 +46,7 @@ class IndexTest extends AbstractTestCase
         parent::setUp();
 
         $this->index = new Index(
+            new Encoder\Json,
             $this->format,
             $this->serializer,
             (new Map('string', Gateway::class))->put(
@@ -68,6 +70,7 @@ class IndexTest extends AbstractTestCase
         $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
 
         new Index(
+            new Encoder\Json,
             $this->format,
             $this->serializer,
             new Map('int', Gateway::class),
@@ -83,6 +86,7 @@ class IndexTest extends AbstractTestCase
         $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
 
         new Index(
+            new Encoder\Json,
             $this->format,
             $this->serializer,
             new Map('string', 'callable'),

@@ -12,6 +12,7 @@ use Innmind\Rest\Server\{
     HttpResource\HttpResource,
     HttpResource\Property,
     ResourceAccessor,
+    Serializer\Encoder,
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -37,6 +38,7 @@ class GetTest extends AbstractTestCase
         parent::setUp();
 
         $this->get = new Get(
+            new Encoder\Json,
             $this->format,
             $this->serializer,
             (new Map('string', Gateway::class))->put(
@@ -61,6 +63,7 @@ class GetTest extends AbstractTestCase
         $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
 
         new Get(
+            new Encoder\Json,
             $this->format,
             $this->serializer,
             new Map('int', Gateway::class),
@@ -74,6 +77,7 @@ class GetTest extends AbstractTestCase
         $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
 
         new Get(
+            new Encoder\Json,
             $this->format,
             $this->serializer,
             new Map('string', 'callable'),

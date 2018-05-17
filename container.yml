@@ -8,6 +8,7 @@ arguments:
     specificationBuilder: Innmind\Rest\Server\SpecificationBuilder\Builder ?? $specification.builder
     requestVerifier: Innmind\Rest\Server\Request\Verifier\Verifier ?? $request.verifier.delegate
     requestDecoder: Innmind\Rest\Server\Serializer\RequestDecoder ?? $serializer.requestDecoder.delegate
+    encoder: Innmind\Rest\Server\Serializer\Encoder ?? $serializer.encoder.delegate
 
 expose:
     routes: $routes
@@ -82,16 +83,19 @@ services:
         action:
             create Innmind\Rest\Server\Controller\Create:
                 - $requestDecoder
+                - $encoder
                 - $format
                 - $serializer
                 - $gateways
                 - $response.headerBuilder.create.delegate
             get Innmind\Rest\Server\Controller\Get:
+                - $encoder
                 - $format
                 - $serializer
                 - $gateways
                 - $response.headerBuilder.get.delegate
             index Innmind\Rest\Server\Controller\Index:
+                - $encoder
                 - $format
                 - $serializer
                 - $gateways
@@ -99,6 +103,7 @@ services:
                 - $rangeExtractor
                 - $specificationBuilder
             options Innmind\Rest\Server\Controller\Options:
+                - $encoder
                 - $format
                 - $serializer
             remove Innmind\Rest\Server\Controller\Remove:
@@ -185,6 +190,16 @@ services:
 
             json Innmind\Rest\Server\Serializer\RequestDecoder\Json: []
             form Innmind\Rest\Server\Serializer\RequestDecoder\Form: []
+
+        encoder:
+            delegate Innmind\Rest\Server\Serializer\Encoder\Delegate:
+                - $format
+                - $serializer.encoder.map
+
+            map map<string, Innmind\Rest\Server\Serializer\Encoder>:
+                - <json, $serializer.encoder.json>
+
+            json Innmind\Rest\Server\Serializer\Encoder\Json: []
 
     rangeExtractor:
         delegate Innmind\Rest\Server\RangeExtractor\DelegationExtractor:

@@ -13,6 +13,7 @@ use Innmind\Rest\Server\{
     Response\HeaderBuilder\CreateBuilder,
     HttpResource\HttpResource as Resource,
     Serializer\RequestDecoder,
+    Serializer\Encoder,
     Exception\LogicException,
 };
 use Innmind\Http\{
@@ -22,13 +23,13 @@ use Innmind\Http\{
     Message\ReasonPhrase\ReasonPhrase,
     Headers\Headers,
 };
-use Innmind\Filesystem\Stream\StringStream;
 use Innmind\Immutable\MapInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 final class Create implements Controller
 {
     private $decode;
+    private $encode;
     private $gateways;
     private $serializer;
     private $format;
@@ -36,6 +37,7 @@ final class Create implements Controller
 
     public function __construct(
         RequestDecoder $decode,
+        Encoder $encode,
         Format $format,
         SerializerInterface $serializer,
         MapInterface $gateways,
@@ -52,6 +54,7 @@ final class Create implements Controller
         }
 
         $this->decode = $decode;
+        $this->encode = $encode;
         $this->gateways = $gateways;
         $this->serializer = $serializer;
         $this->format = $format;
@@ -92,8 +95,9 @@ final class Create implements Controller
             Headers::of(
                 ...($this->buildHeader)($identity, $request, $definition, $resource)
             ),
-            new StringStream(
-                $this->serializer->serialize(
+            ($this->encode)(
+                $request,
+                $this->serializer->normalize(
                     $identity,
                     $this->format->acceptable($request)->name(),
                     [
