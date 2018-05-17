@@ -11,26 +11,29 @@ use Innmind\Rest\Server\{
     Definition\HttpResource,
     Definition\Access,
     Response\HeaderBuilder\UpdateBuilder,
-    HttpResource\HttpResource as Resource
+    HttpResource\HttpResource as Resource,
+    Serializer\RequestDecoder,
 };
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
     Message\StatusCode\StatusCode,
     Message\ReasonPhrase\ReasonPhrase,
-    Headers\Headers
+    Headers\Headers,
 };
 use Innmind\Immutable\MapInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 final class Update implements Controller
 {
+    private $decode;
     private $gateways;
     private $serializer;
     private $format;
     private $buildHeader;
 
     public function __construct(
+        RequestDecoder $decode,
         Format $format,
         SerializerInterface $serializer,
         MapInterface $gateways,
@@ -46,6 +49,7 @@ final class Update implements Controller
             ));
         }
 
+        $this->decode = $decode;
         $this->gateways = $gateways;
         $this->serializer = $serializer;
         $this->format = $format;
@@ -65,8 +69,8 @@ final class Update implements Controller
         $update(
             $definition,
             $identity,
-            $resource = $this->serializer->deserialize(
-                $request,
+            $resource = $this->serializer->denormalize(
+                ($this->decode)($request),
                 Resource::class,
                 'request_'.$this->format->contentType($request)->name(),
                 [

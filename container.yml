@@ -104,6 +104,7 @@ services:
                 - $gateways
                 - $response.headerBuilder.remove.delegate
             update Innmind\Rest\Server\Controller\Update:
+                - $serializer.requestDecoder.delegate
                 - $format
                 - $serializer
                 - $gateways

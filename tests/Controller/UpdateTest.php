@@ -10,6 +10,7 @@ use Innmind\Rest\Server\{
     Identity,
     Response\HeaderBuilder\UpdateBuilder,
     ResourceUpdater,
+    Serializer\RequestDecoder\Json,
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -36,6 +37,7 @@ class UpdateTest extends AbstractTestCase
         parent::setUp();
 
         $this->update = new Update(
+            new Json,
             $this->format,
             $this->serializer,
             (new Map('string', Gateway::class))->put(
@@ -57,6 +59,7 @@ class UpdateTest extends AbstractTestCase
         $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
 
         new Update(
+            new Json,
             $this->format,
             $this->serializer,
             new Map('int', Gateway::class),
@@ -70,6 +73,7 @@ class UpdateTest extends AbstractTestCase
         $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
 
         new Update(
+            new Json,
             $this->format,
             $this->serializer,
             new Map('string', 'callable'),
