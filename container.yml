@@ -7,6 +7,7 @@ arguments:
     rangeExtractor: Innmind\Rest\Server\RangeExtractor ?? $rangeExtractor.delegate
     specificationBuilder: Innmind\Rest\Server\SpecificationBuilder\Builder ?? $specification.builder
     requestVerifier: Innmind\Rest\Server\Request\Verifier\Verifier ?? $request.verifier.delegate
+    requestDecoder: Innmind\Rest\Server\Serializer\RequestDecoder ?? $serializer.requestDecoder.delegate
 
 expose:
     routes: $routes
@@ -80,7 +81,7 @@ services:
 
         action:
             create Innmind\Rest\Server\Controller\Create:
-                - $serializer.requestDecoder.delegate
+                - $requestDecoder
                 - $format
                 - $serializer
                 - $gateways
@@ -104,7 +105,7 @@ services:
                 - $gateways
                 - $response.headerBuilder.remove.delegate
             update Innmind\Rest\Server\Controller\Update:
-                - $serializer.requestDecoder.delegate
+                - $requestDecoder
                 - $format
                 - $serializer
                 - $gateways
