@@ -8,7 +8,7 @@ use Innmind\Rest\Server\{
     Exception\NoFilterFound,
     Exception\FilterNotApplicable,
     Definition\HttpResource,
-    Specification\Filter
+    Specification\Filter,
 };
 use Innmind\Http\Message\ServerRequest;
 use Innmind\Specification\SpecificationInterface;

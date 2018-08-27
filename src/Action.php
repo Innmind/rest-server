@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server;
 
 use Innmind\Immutable\{
     SetInterface,
-    Set
+    Set,
 };
 
 final class Action
@@ -90,14 +90,16 @@ final class Action
      */
     public static function all(): SetInterface
     {
-        return (new Set(self::class))
-            ->add(self::list())
-            ->add(self::get())
-            ->add(self::create())
-            ->add(self::update())
-            ->add(self::remove())
-            ->add(self::link())
-            ->add(self::unlink())
-            ->add(self::options());
+        return Set::of(
+            self::class,
+            self::list(),
+            self::get(),
+            self::create(),
+            self::update(),
+            self::remove(),
+            self::link(),
+            self::unlink(),
+            self::options()
+        );
     }
 }

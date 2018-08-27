@@ -6,10 +6,10 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 use Innmind\Rest\Server\{
     Definition\HttpResource,
     HttpResource as HttpResourceInterface,
-    Identity
+    Identity,
 };
 use Innmind\Http\Message\ServerRequest;
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\SetInterface;
 
 interface GetBuilder
 {
@@ -19,12 +19,12 @@ interface GetBuilder
      * @param HttpResource $definition
      * @param Identity $identity
      *
-     * @return MapInterface<string, HeaderInterface>
+     * @return SetInterface<Header>
      */
     public function __invoke(
         HttpResourceInterface $resource,
         ServerRequest $request,
         HttpResource $definition,
         Identity $identity
-    ): MapInterface;
+    ): SetInterface;
 }

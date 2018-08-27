@@ -6,22 +6,30 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 use Innmind\Rest\Server\{
     Definition\HttpResource,
     HttpResource as HttpResourceInterface,
-    Identity
+    Identity,
+    Action,
+    Router,
 };
 use Innmind\Http\{
     Message\ServerRequest,
     Header\Location,
     Header\LocationValue,
-    Header
+    Header,
 };
-use Innmind\Url\Url;
 use Innmind\Immutable\{
-    MapInterface,
-    Map
+    SetInterface,
+    Set,
 };
 
 final class CreateLocationBuilder implements CreateBuilder
 {
+    private $router;
+
+    public function __construct(Router $router)
+    {
+        $this->router = $router;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -30,15 +38,15 @@ final class CreateLocationBuilder implements CreateBuilder
         ServerRequest $request,
         HttpResource $definition,
         HttpResourceInterface $resource
-    ): MapInterface {
-        $map = new Map('string', Header::class);
-
-        return $map->put(
-            'Location',
+    ): SetInterface {
+        return Set::of(
+            Header::class,
             new Location(
                 new LocationValue(
-                    Url::fromString(
-                        rtrim((string) $request->url()->path(), '/').'/'.$identity
+                    $this->router->generate(
+                        Action::get(),
+                        $definition,
+                        $identity
                     )
                 )
             )

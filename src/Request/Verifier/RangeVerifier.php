@@ -7,7 +7,7 @@ use Innmind\Rest\Server\Definition\HttpResource;
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Method,
-    Exception\Http\PreconditionFailed
+    Exception\Http\PreconditionFailed,
 };
 
 final class RangeVerifier implements Verifier

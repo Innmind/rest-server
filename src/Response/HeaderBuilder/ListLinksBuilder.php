@@ -6,26 +6,32 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 use Innmind\Rest\Server\{
     Definition\HttpResource,
     Request\Range,
-    Identity
+    Identity,
+    Router,
+    Action,
 };
 use Innmind\Http\{
     Message\ServerRequest,
     Header,
     Header\Value,
     Header\Link,
-    Header\LinkValue
+    Header\LinkValue,
 };
 use Innmind\Specification\SpecificationInterface;
-use Innmind\Url\Url;
 use Innmind\Immutable\{
     SetInterface,
-    MapInterface,
-    Map,
-    Set
+    Set,
 };
 
 final class ListLinksBuilder implements ListBuilder
 {
+    private $router;
+
+    public function __construct(Router $router)
+    {
+        $this->router = $router;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -35,24 +41,23 @@ final class ListLinksBuilder implements ListBuilder
         HttpResource $definition,
         SpecificationInterface $specification = null,
         Range $range = null
-    ): MapInterface {
-        $map = new Map('string', Header::class);
+    ): SetInterface {
+        $headers = Set::of(Header::class);
 
         if ($identities->size() === 0) {
-            return $map;
+            return $headers;
         }
 
-        $path = $request->url()->path();
-
-        return $map->put(
-            'Link',
+        return $headers->add(
             new Link(
                 ...$identities->reduce(
                     new Set(Value::class),
-                    function(Set $carry, Identity $identity) use ($path): Set {
+                    function(Set $carry, Identity $identity) use ($definition): Set {
                         return $carry->add(new LinkValue(
-                            Url::fromString(
-                                rtrim((string) $path, '/').'/'.$identity
+                            $this->router->generate(
+                                Action::get(),
+                                $definition,
+                                $identity
                             ),
                             'resource'
                         ));

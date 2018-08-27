@@ -6,17 +6,16 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 use Innmind\Rest\Server\{
     Definition\HttpResource,
     Request\Range,
-    Identity
+    Identity,
 };
 use Innmind\Http\{
     Message\ServerRequest,
-    Header
+    Header,
 };
 use Innmind\Specification\SpecificationInterface;
 use Innmind\Immutable\{
     SetInterface,
-    MapInterface,
-    Map
+    Set,
 };
 
 final class ListDelegationBuilder implements ListBuilder
@@ -37,7 +36,7 @@ final class ListDelegationBuilder implements ListBuilder
         HttpResource $definition,
         SpecificationInterface $specification = null,
         Range $range = null
-    ): MapInterface {
+    ): SetInterface {
         if ((string) $identities->type() !== Identity::class) {
             throw new \TypeError(sprintf(
                 'Argument 1 must be of type SetInterface<%s>',
@@ -45,7 +44,7 @@ final class ListDelegationBuilder implements ListBuilder
             ));
         }
 
-        $headers = new Map('string', Header::class);
+        $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {
             $headers = $headers->merge($build(

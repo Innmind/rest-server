@@ -6,11 +6,13 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 use Innmind\Rest\Server\Reference;
 use Innmind\Http\{
     Message\ServerRequest,
-    Header
+    Header,
 };
 use Innmind\Immutable\{
     MapInterface,
-    Map
+    Map,
+    SetInterface,
+    Set,
 };
 
 final class LinkDelegationBuilder implements LinkBuilder
@@ -29,7 +31,7 @@ final class LinkDelegationBuilder implements LinkBuilder
         ServerRequest $request,
         Reference $from,
         MapInterface $tos
-    ): MapInterface {
+    ): SetInterface {
         if (
             (string) $tos->keyType() !== Reference::class ||
             (string) $tos->valueType() !== MapInterface::class
@@ -41,7 +43,7 @@ final class LinkDelegationBuilder implements LinkBuilder
             ));
         }
 
-        $headers = new Map('string', Header::class);
+        $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {
             $headers = $headers->merge($build(

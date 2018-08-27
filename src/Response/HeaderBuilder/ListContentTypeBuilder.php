@@ -6,14 +6,11 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 use Innmind\Rest\Server\{
     Definition\HttpResource,
     Request\Range,
-    Formats
+    Formats,
 };
 use Innmind\Http\Message\ServerRequest;
 use Innmind\Specification\SpecificationInterface;
-use Innmind\Immutable\{
-    SetInterface,
-    MapInterface
-};
+use Innmind\Immutable\SetInterface;
 
 final class ListContentTypeBuilder implements ListBuilder
 {
@@ -35,7 +32,7 @@ final class ListContentTypeBuilder implements ListBuilder
         HttpResource $definition,
         SpecificationInterface $specification = null,
         Range $range = null
-    ): MapInterface {
+    ): SetInterface {
         return $this->buildHeaderFrom($this->formats, $request);
     }
 }

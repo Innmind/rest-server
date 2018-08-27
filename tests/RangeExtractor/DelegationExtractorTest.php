@@ -7,7 +7,7 @@ use Innmind\Rest\Server\{
     RangeExtractor\DelegationExtractor,
     RangeExtractor\Extractor,
     Exception\RangeNotFound,
-    Request\Range
+    Request\Range,
 };
 use Innmind\Http\Message\ServerRequest;
 use PHPUnit\Framework\TestCase;

@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\RangeExtractor;
 
 use Innmind\Rest\Server\{
     Exception\RangeNotFound,
-    Request\Range
+    Request\Range,
 };
 use Innmind\Http\Message\ServerRequest;
 

@@ -6,7 +6,7 @@ namespace Tests\Innmind\Rest\Server\Specification;
 use Innmind\Rest\Server\{
     Specification\Filter,
     HttpResource,
-    HttpResource\Property
+    HttpResource\Property,
 };
 use Innmind\Specification\ComparatorInterface;
 use PHPUnit\Framework\TestCase;

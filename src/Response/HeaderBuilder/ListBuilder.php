@@ -5,14 +5,11 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Definition\HttpResource,
-    Request\Range
+    Request\Range,
 };
 use Innmind\Http\Message\ServerRequest;
 use Innmind\Specification\SpecificationInterface;
-use Innmind\Immutable\{
-    SetInterface,
-    MapInterface
-};
+use Innmind\Immutable\SetInterface;
 
 interface ListBuilder
 {
@@ -23,7 +20,7 @@ interface ListBuilder
      * @param SpecificationInterface $specification
      * @param Range $range
      *
-     * @return MapInterface<string, HeaderInterface>
+     * @return SetInterface<Header>
      */
     public function __invoke(
         SetInterface $identities,
@@ -31,5 +28,5 @@ interface ListBuilder
         HttpResource $definition,
         SpecificationInterface $specification = null,
         Range $range = null
-    ): MapInterface;
+    ): SetInterface;
 }

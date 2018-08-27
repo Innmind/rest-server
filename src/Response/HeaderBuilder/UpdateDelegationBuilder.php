@@ -6,15 +6,15 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 use Innmind\Rest\Server\{
     Definition\HttpResource,
     Identity,
-    HttpResource as HttpResourceInterface
+    HttpResource as HttpResourceInterface,
 };
 use Innmind\Http\{
     Message\ServerRequest,
-    Header
+    Header,
 };
 use Innmind\Immutable\{
-    MapInterface,
-    Map
+    SetInterface,
+    Set,
 };
 
 final class UpdateDelegationBuilder implements UpdateBuilder
@@ -34,8 +34,8 @@ final class UpdateDelegationBuilder implements UpdateBuilder
         HttpResource $definition,
         Identity $identity,
         HttpResourceInterface $resource
-    ): MapInterface {
-        $headers = new Map('string', Header::class);
+    ): SetInterface {
+        $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {
             $headers = $headers->merge($build(

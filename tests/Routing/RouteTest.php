@@ -1,0 +1,127 @@
+<?php
+declare(strict_types = 1);
+
+namespace Tests\Innmind\Rest\Server\Routing;
+
+use Innmind\Rest\Server\{
+    Routing\Route,
+    Routing\Name,
+    Definition,
+    Action,
+    Identity\Identity,
+};
+use Innmind\UrlTemplate\Template;
+use Innmind\Url\Path;
+use Innmind\Immutable\Map;
+use PHPUnit\Framework\TestCase;
+
+class RouteTest extends TestCase
+{
+    private $definition;
+
+    public function setUp()
+    {
+        $this->definition = new Definition\HttpResource(
+            'foo',
+            new Definition\Identity('uuid'),
+            new Map('string', Definition\Property::class),
+            new Map('scalar', 'variable'),
+            new Map('scalar', 'variable'),
+            new Definition\Gateway('foo'),
+            false,
+            new Map('string', 'string')
+        );
+    }
+
+    public function testInterface()
+    {
+        $route = new Route(
+            Action::get(),
+            $template = Template::of('/foo'),
+            $name = new Name('foo'),
+            $this->definition
+       );
+
+        $this->assertSame(Action::get(), $route->action());
+        $this->assertSame($template, $route->template());
+        $this->assertSame($name, $route->name());
+        $this->assertSame($this->definition, $route->definition());
+    }
+
+    /**
+     * @dataProvider cases
+     */
+    public function testOf($action, $expected)
+    {
+        $route = Route::of(
+            $action,
+            new Name('foo.bar.baz'),
+            $this->definition
+        );
+
+        $this->assertInstanceOf(Route::class, $route);
+        $this->assertSame($expected, (string) $route->template());
+    }
+
+    public function testMatches()
+    {
+        $route = Route::of(
+            Action::list(),
+            new Name('foo.bar.baz'),
+            $this->definition
+        );
+
+        $this->assertTrue($route->matches(new Path('/foo/bar/baz/')));
+        $this->assertFalse($route->matches(new Path('/foo/bar/baz')));
+
+        $route = Route::of(
+            Action::get(),
+            new Name('foo.bar.baz'),
+            $this->definition
+        );
+
+        $this->assertTrue($route->matches(new Path('/foo/bar/baz/some-uuid')));
+        $this->assertFalse($route->matches(new Path('/foo/bar/baz/')));
+    }
+
+    public function testIdentity()
+    {
+        $route = Route::of(
+            Action::get(),
+            new Name('foo'),
+            $this->definition
+        );
+
+        $identity = $route->identity(new Path('/foo/42'));
+
+        $this->assertInstanceOf(Identity::class, $identity);
+        $this->assertSame('42', (string) $identity);
+    }
+
+    public function testIdentityWhenNotInPath()
+    {
+        $route = Route::of(
+            Action::get(),
+            new Name('foo'),
+            $this->definition
+        );
+
+        $identity = $route->identity(new Path('/foo/'));
+
+        $this->assertNull($identity);
+    }
+
+    public function cases(): array
+    {
+        return [
+            [Action::list(), '{+prefix}/foo/bar/baz/'],
+            [Action::get(), '{+prefix}/foo/bar/baz/{identity}'],
+            [Action::create(), '{+prefix}/foo/bar/baz/'],
+            [Action::update(), '{+prefix}/foo/bar/baz/{identity}'],
+            [Action::remove(), '{+prefix}/foo/bar/baz/{identity}'],
+            [Action::link(), '{+prefix}/foo/bar/baz/{identity}'],
+            [Action::unlink(), '{+prefix}/foo/bar/baz/{identity}'],
+            [Action::options(), '{+prefix}/foo/bar/baz/'],
+        ];
+    }
+}

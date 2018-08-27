@@ -7,13 +7,13 @@ use Innmind\Rest\Server\{
     Definition\Type,
     Definition\Types,
     Exception\DenormalizationException,
-    Exception\NormalizationException
+    Exception\NormalizationException,
 };
 use Innmind\Immutable\{
     SetInterface,
     Set,
     Map,
-    MapInterface
+    MapInterface,
 };
 
 final class MapType implements Type
@@ -103,11 +103,7 @@ final class MapType implements Type
      */
     public static function identifiers(): SetInterface
     {
-        if (self::$identifiers === null) {
-            self::$identifiers = (new Set('string'))->add('map');
-        }
-
-        return self::$identifiers;
+        return self::$identifiers ?? self::$identifiers = Set::of('string', 'map');
     }
 
     public function __toString(): string

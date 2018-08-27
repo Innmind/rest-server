@@ -5,10 +5,10 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Definition\HttpResource,
-    Identity
+    Identity,
 };
 use Innmind\Http\Message\ServerRequest;
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\SetInterface;
 
 interface RemoveBuilder
 {
@@ -17,11 +17,11 @@ interface RemoveBuilder
      * @param HttpResource $definition
      * @param Identity $identity
      *
-     * @return MapInterface<string, HeaderInterface>
+     * @return SetInterface<Header>
      */
     public function __invoke(
         ServerRequest $request,
         HttpResource $definition,
         Identity $identity
-    ): MapInterface;
+    ): SetInterface;
 }

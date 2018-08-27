@@ -5,7 +5,10 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\Reference;
 use Innmind\Http\Message\ServerRequest;
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\{
+    MapInterface,
+    SetInterface,
+};
 
 interface UnlinkBuilder
 {
@@ -14,11 +17,11 @@ interface UnlinkBuilder
      * @param Reference $from
      * @param MapInterface<Reference, MapInterface<string, ParameterInterface>> $tos
      *
-     * @return MapInterface<string, HeaderInterface>
+     * @return SetInterface<Header>
      */
     public function __invoke(
         ServerRequest $request,
         Reference $from,
         MapInterface $tos
-    ): MapInterface;
+    ): SetInterface;
 }

@@ -6,7 +6,7 @@ namespace Tests\Innmind\Rest\Server\Definition;
 use Innmind\Rest\Server\Definition\{
     Property,
     Type\StringType,
-    Access
+    Access,
 };
 use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
@@ -15,22 +15,22 @@ class PropertyTest extends TestCase
 {
     public function testInterface()
     {
-        $p = new Property(
+        $property = new Property(
             'foo',
-            $t = new StringType,
+            $type = new StringType,
             new Access(Access::READ),
-            (new Set('string'))->add('bar'),
+            Set::of('string', 'bar'),
             true
         );
 
-        $this->assertSame('foo', (string) $p);
-        $this->assertSame('foo', $p->name());
-        $this->assertSame($t, $p->type());
-        $this->assertTrue($p->access()->isReadable());
-        $this->assertFalse($p->access()->isCreatable());
-        $this->assertFalse($p->access()->isUpdatable());
-        $this->assertSame(['bar'], $p->variants()->toPrimitive());
-        $this->assertTrue($p->isOptional());
+        $this->assertSame('foo', (string) $property);
+        $this->assertSame('foo', $property->name());
+        $this->assertSame($type, $property->type());
+        $this->assertTrue($property->access()->isReadable());
+        $this->assertFalse($property->access()->isCreatable());
+        $this->assertFalse($property->access()->isUpdatable());
+        $this->assertSame(['bar'], $property->variants()->toPrimitive());
+        $this->assertTrue($property->isOptional());
     }
 
     /**
@@ -43,7 +43,7 @@ class PropertyTest extends TestCase
             'foo',
             new StringType,
             new Access(),
-            (new Set('int')),
+            new Set('int'),
             true
         );
     }

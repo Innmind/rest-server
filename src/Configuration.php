@@ -6,7 +6,7 @@ namespace Innmind\Rest\Server;
 use Innmind\Rest\Server\Definition\Access;
 use Symfony\Component\Config\Definition\{
     ConfigurationInterface,
-    Builder\TreeBuilder
+    Builder\TreeBuilder,
 };
 
 final class Configuration implements ConfigurationInterface

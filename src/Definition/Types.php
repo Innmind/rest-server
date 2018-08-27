@@ -11,20 +11,21 @@ use Innmind\Rest\Server\{
     Definition\Type\FloatType,
     Definition\Type\IntType,
     Definition\Type\StringType,
-    Exception\DomainException
+    Exception\DomainException,
 };
 use Innmind\Immutable\{
     Map,
-    MapInterface
+    MapInterface,
+    Sequence,
 };
 
 final class Types
 {
     private $types;
 
-    public function __construct()
+    public function __construct(string ...$types)
     {
-        $defaults = [
+        $types = new Sequence(
             SetType::class,
             MapType::class,
             BoolType::class,
@@ -32,11 +33,12 @@ final class Types
             FloatType::class,
             IntType::class,
             StringType::class,
-        ];
-        $this->types = (new Map('string', 'string'));
+            ...$types
+        );
+        $this->types = new Map('string', 'string');
 
-        foreach ($defaults as $default) {
-            $this->register($default);
+        foreach ($types as $type) {
+            $this->register($type);
         }
     }
 
@@ -47,7 +49,7 @@ final class Types
      *
      * @return self
      */
-    public function register(string $type): self
+    private function register(string $type): void
     {
         $refl = new \ReflectionClass($type);
 
@@ -58,15 +60,15 @@ final class Types
             ));
         }
 
-        call_user_func([$type, 'identifiers'])
-            ->foreach(function(string $identifier) use ($type) {
-                $this->types = $this->types->put(
+        $this->types = [$type, 'identifiers']()->reduce(
+            $this->types,
+            static function(MapInterface $types, string $identifier) use ($type): MapInterface {
+                return $types->put(
                     $identifier,
                     $type
                 );
-            });
-
-        return $this;
+            }
+        );
     }
 
     /**
@@ -96,10 +98,6 @@ final class Types
             throw new \TypeError('Argument 2 must be of type MapInterface<scalar, variable>');
         }
 
-        return call_user_func(
-            [$this->types->get($type), 'fromConfig'],
-            $config,
-            $this
-        );
+        return [$this->types->get($type), 'fromConfig']($config, $this);
     }
 }

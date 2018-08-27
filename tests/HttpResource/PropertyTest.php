@@ -10,10 +10,10 @@ class PropertyTest extends TestCase
 {
     public function testInterface()
     {
-        $p = new Property('foo', 42);
+        $property = new Property('foo', 42);
 
-        $this->assertSame('foo', $p->name());
-        $this->assertSame('foo', (string) $p);
-        $this->assertSame(42, $p->value());
+        $this->assertSame('foo', $property->name());
+        $this->assertSame('foo', (string) $property);
+        $this->assertSame(42, $property->value());
     }
 }

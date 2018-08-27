@@ -6,7 +6,7 @@ namespace Tests\Innmind\Rest\Server\Translator\Specification;
 use Innmind\Rest\Server\{
     Translator\Specification\DefaultTranslator,
     Translator\SpecificationTranslator,
-    Specification\Filter
+    Specification\Filter,
 };
 use Innmind\Url\QueryInterface;
 use PHPUnit\Framework\TestCase;

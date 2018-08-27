@@ -11,16 +11,17 @@ use Innmind\Rest\Server\{
     Definition\Httpresource,
     Definition\Identity as IdentityDefinition,
     Definition\Property,
-    Definition\Gateway
+    Definition\Gateway,
 };
 use Innmind\Http\{
     Message\ServerRequest,
-    Header
+    Header,
 };
 use Innmind\Immutable\{
     Map,
-    Collection,
-    MapInterface
+    MapInterface,
+    SetInterface,
+    Set,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -48,9 +49,8 @@ class UnlinkDelegationBuilderTest extends TestCase
             ),
             new Map(Reference::class, MapInterface::class)
         );
-        $this->assertInstanceOf(MapInterface::class, $headers);
-        $this->assertSame('string', (string) $headers->keyType());
-        $this->assertSame(Header::class, (string) $headers->valueType());
+        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertSame(Header::class, (string) $headers->type());
     }
 
     /**
@@ -89,14 +89,12 @@ class UnlinkDelegationBuilderTest extends TestCase
         $mock1
             ->method('__invoke')
             ->willReturn(
-                (new Map('string', Header::class))
-                    ->put('foo', $this->createMock(Header::class))
+                Set::of(Header::class, $foo = $this->createMock(Header::class))
             );
         $mock2
             ->method('__invoke')
             ->willReturn(
-                (new Map('string', Header::class))
-                    ->put('bar', $this->createMock(Header::class))
+                Set::of(Header::class, $bar = $this->createMock(Header::class))
             );
 
         $headers = $build(
@@ -118,8 +116,8 @@ class UnlinkDelegationBuilderTest extends TestCase
         );
 
         $this->assertSame(
-            ['foo', 'bar'],
-            $headers->keys()->toPrimitive()
+            [$foo, $bar],
+            $headers->toPrimitive()
         );
     }
 }

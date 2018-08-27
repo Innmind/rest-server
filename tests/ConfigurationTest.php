@@ -6,7 +6,7 @@ namespace Tests\Innmind\Rest\Server;
 use Innmind\Rest\Server\Configuration;
 use Symfony\Component\{
     Config\Definition\Processor,
-    Yaml\Yaml
+    Yaml\Yaml,
 };
 use PHPUnit\Framework\TestCase;
 

@@ -15,7 +15,10 @@ class HttpResourceNormalizationException extends RuntimeException
             (string) $errors->keyType() !== 'string' ||
             (string) $errors->valueType() !== NormalizationException::class
         ) {
-            throw new InvalidArgumentException;
+            throw new \TypeError(sprintf(
+                'Argument 1 must be of type MapInterface<string, %s>',
+                NormalizationException::class
+            ));
         }
 
         $this->errors = $errors;

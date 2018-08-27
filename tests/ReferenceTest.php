@@ -9,7 +9,7 @@ use Innmind\Rest\Server\{
     Definition\HttpResource,
     Definition\Identity,
     Definition\Property,
-    Definition\Gateway
+    Definition\Gateway,
 };
 use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;

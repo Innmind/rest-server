@@ -12,26 +12,23 @@ use Innmind\Rest\Server\{
     Definition\Type\StringType,
     Definition\Access,
     Definition\Gateway,
-    Specification\AndFilter
+    Specification\AndFilter,
 };
 use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
     Message\Query\Query,
     Message\Query\Parameter\Parameter,
-    Message\Query\Parameter as ParameterInterface,
     Message\Method,
     Message\Environment,
     Message\Cookies,
-    Message\Form,
-    Message\Files,
     ProtocolVersion,
-    Headers
+    Headers,
 };
 use Innmind\Url\UrlInterface;
 use Innmind\Stream\Readable;
 use Innmind\Immutable\{
     Map,
-    Set
+    Set,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -47,14 +44,11 @@ class BuilderTest extends TestCase
             $this->createMock(Readable::class),
             $this->createMock(Environment::class),
             $this->createMock(Cookies::class),
-            new Query(
-                (new Map('string', ParameterInterface::class))
-                    ->put('foo', new Parameter('foo', 'bar'))
-                    ->put('bar', new Parameter('bar', 'baz'))
-                    ->put('range', new Parameter('range', [0, 42]))
-            ),
-            $this->createMock(Form::class),
-            $this->createMock(Files::class)
+            Query::of(
+                new Parameter('foo', 'bar'),
+                new Parameter('bar', 'baz'),
+                new Parameter('range', [0, 42])
+            )
         );
         $definition = new HttpResource(
             'foo',
@@ -111,12 +105,7 @@ class BuilderTest extends TestCase
             $this->createMock(Readable::class),
             $this->createMock(Environment::class),
             $this->createMock(Cookies::class),
-            new Query(
-                (new Map('string', ParameterInterface::class))
-                    ->put('foo', new Parameter('foo', 'bar'))
-            ),
-            $this->createMock(Form::class),
-            $this->createMock(Files::class)
+            Query::of(new Parameter('foo', 'bar'))
         );
         $definition = new HttpResource(
             'foo',
@@ -146,9 +135,7 @@ class BuilderTest extends TestCase
             $this->createMock(Readable::class),
             $this->createMock(Environment::class),
             $this->createMock(Cookies::class),
-            new Query(new Map('string', ParameterInterface::class)),
-            $this->createMock(Form::class),
-            $this->createMock(Files::class)
+            new Query
         );
         $definition = new HttpResource(
             'foo',

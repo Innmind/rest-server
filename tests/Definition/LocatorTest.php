@@ -5,14 +5,10 @@ namespace Tests\Innmind\Rest\Server\Definition;
 
 use Innmind\Rest\Server\Definition\{
     Locator,
-    Types,
     HttpResource,
-    Loader\YamlLoader
+    Loader\YamlLoader,
 };
-use Innmind\Immutable\{
-    Set,
-    Map
-};
+use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
 class LocatorTest extends TestCase
@@ -29,15 +25,13 @@ class LocatorTest extends TestCase
     public function testLocate()
     {
         $locate = new Locator(
-            (new YamlLoader(new Types))->load(
-                (new Set('string'))->add('fixtures/mapping.yml')
-            )
+            (new YamlLoader)('fixtures/mapping.yml')
         );
 
         $resource = $locate('top_dir.sub_dir.res');
 
         $this->assertInstanceOf(HttpResource::class, $resource);
-        $this->assertSame('res', $resource->name());
+        $this->assertSame('res', (string) $resource->name());
     }
 
     /**
@@ -46,9 +40,7 @@ class LocatorTest extends TestCase
     public function testThrowWhenResourceNotFound()
     {
         $locate = new Locator(
-            (new YamlLoader(new Types))->load(
-                (new Set('string'))->add('fixtures/mapping.yml')
-            )
+            (new YamlLoader)('fixtures/mapping.yml')
         );
 
         $locate('unknown');

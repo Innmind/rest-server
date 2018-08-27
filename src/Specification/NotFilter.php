@@ -6,7 +6,7 @@ namespace Innmind\Rest\Server\Specification;
 use Innmind\Rest\Server\HttpResource;
 use Innmind\Specification\{
     NotInterface,
-    SpecificationInterface
+    SpecificationInterface,
 };
 
 final class NotFilter implements NotInterface

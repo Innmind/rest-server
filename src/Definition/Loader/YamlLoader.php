@@ -12,41 +12,36 @@ use Innmind\Rest\Server\{
     Definition\Gateway,
     Definition\Access,
     Definition\Loader,
-    Configuration
+    Configuration,
 };
 use Innmind\Immutable\{
-    SetInterface,
     MapInterface,
     Map,
     Set,
-    Sequence
+    Sequence,
 };
 use Symfony\Component\{
     Config\Definition\Processor,
-    Yaml\Yaml
+    Yaml\Yaml,
 };
 
 final class YamlLoader implements Loader
 {
     private $types;
 
-    public function __construct(Types $types)
+    public function __construct(Types $types = null)
     {
-        $this->types = $types;
+        $this->types = $types ?? new Types;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function load(SetInterface $files): MapInterface
+    public function __invoke(string ...$files): MapInterface
     {
-        if ((string) $files->type() !== 'string') {
-            throw new \TypeError('Argument 1 must be of type SetInterface<string>');
-        }
-
         $config = (new Processor)->processConfiguration(
             new Configuration,
-            $files->reduce(
+            Set::of('string', ...$files)->reduce(
                 [],
                 function(array $carry, string $file) {
                     $carry[] = Yaml::parse(file_get_contents($file));
@@ -98,9 +93,6 @@ final class YamlLoader implements Loader
     private function buildDefinition(string $name, array $config): HttpResource
     {
         $properties = new Map('string', Property::class);
-        $options = new Map('scalar', 'variable');
-        $metas = new Map('scalar', 'variable');
-        $links = new Map('string', 'string');
 
         foreach ($config['properties'] as $key => $value) {
             $properties = $properties->put(
@@ -109,52 +101,48 @@ final class YamlLoader implements Loader
             );
         }
 
-        foreach ($config['options'] ?? [] as $key => $value) {
-            $options = $options->put($key, $value);
-        }
-
-        foreach ($config['metas'] ?? [] as $key => $value) {
-            $metas = $metas->put($key, $value);
-        }
-
-        foreach ($config['linkable_to'] ?? [] as $key => $value) {
-            $links = $links->put($key, $value);
-        }
-
         return new HttpResource(
             $name,
             new Identity($config['identity']),
             $properties,
-            $options,
-            $metas,
+            Map::of(
+                'scalar',
+                'variable',
+                array_keys($config['options'] ?? []),
+                array_values($config['options'] ?? [])
+            ),
+            Map::of(
+                'scalar',
+                'variable',
+                array_keys($config['metas'] ?? []),
+                array_values($config['metas'] ?? [])
+            ),
             new Gateway($config['gateway']),
             $config['rangeable'],
-            $links
+            Map::of(
+                'string',
+                'string',
+                array_keys($config['linkable_to'] ?? []),
+                array_values($config['linkable_to'] ?? [])
+            )
         );
     }
 
     private function buildProperty(string $name, array $config): Property
     {
-        $variants = new Set('string');
-
-        foreach ($config['variants'] ?? [] as $variant) {
-            $variants = $variants->add($variant);
-        }
-
-        $collection = new Map('scalar', 'variable');
-
-        foreach ($config['options'] ?? [] as $key => $value) {
-            $collection = $collection->put($key, $value);
-        }
-
         return new Property(
             $name,
             $this->types->build(
                 $config['type'],
-                $collection
+                Map::of(
+                    'scalar',
+                    'variable',
+                    array_keys($config['options'] ?? []),
+                    array_values($config['options'] ?? [])
+                )
             ),
             new Access(...($config['access'] ?? [Access::READ])),
-            $variants,
+            Set::of('string', ...($config['variants'] ?? [])),
             $config['optional'] ?? false
         );
     }

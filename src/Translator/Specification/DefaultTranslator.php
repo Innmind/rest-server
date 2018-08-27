@@ -5,17 +5,17 @@ namespace Innmind\Rest\Server\Translator\Specification;
 
 use Innmind\Rest\Server\{
     Translator\SpecificationTranslator,
-    Exception\SpecificationNotUsableAsQuery
+    Exception\SpecificationNotUsableAsQuery,
 };
 use Innmind\Specification\{
     SpecificationInterface,
     ComparatorInterface,
     CompositeInterface,
-    Operator
+    Operator,
 };
 use Innmind\Url\{
     QueryInterface,
-    Query
+    Query,
 };
 
 final class DefaultTranslator implements SpecificationTranslator

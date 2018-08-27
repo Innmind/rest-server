@@ -12,7 +12,7 @@ use Innmind\Rest\Server\{
     ResourceUpdater,
     ResourceRemover,
     ResourceLinker,
-    ResourceUnlinker
+    ResourceUnlinker,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -20,23 +20,23 @@ class GatewayTest extends TestCase
 {
     public function testInterface()
     {
-        $g = new Gateway(
-            $la = $this->createMock(ResourceListAccessor::class),
-            $a = $this->createMock(ResourceAccessor::class),
-            $c = $this->createMock(ResourceCreator::class),
-            $u = $this->createMock(ResourceUpdater::class),
-            $r = $this->createMock(ResourceRemover::class),
-            $l = $this->createMock(ResourceLinker::class),
-            $ul = $this->createMock(ResourceUnlinker::class)
+        $gateway = new Gateway(
+            $list = $this->createMock(ResourceListAccessor::class),
+            $accessor = $this->createMock(ResourceAccessor::class),
+            $ccreator = $this->createMock(ResourceCreator::class),
+            $updater = $this->createMock(ResourceUpdater::class),
+            $remover = $this->createMock(ResourceRemover::class),
+            $linker = $this->createMock(ResourceLinker::class),
+            $unlinker = $this->createMock(ResourceUnlinker::class)
         );
 
-        $this->assertInstanceOf(GatewayInterface::class, $g);
-        $this->assertSame($la, $g->resourceListAccessor());
-        $this->assertSame($a, $g->resourceAccessor());
-        $this->assertSame($c, $g->resourceCreator());
-        $this->assertSame($u, $g->resourceUpdater());
-        $this->assertSame($r, $g->resourceRemover());
-        $this->assertSame($l, $g->resourceLinker());
-        $this->assertSame($ul, $g->resourceUnlinker());
+        $this->assertInstanceOf(GatewayInterface::class, $gateway);
+        $this->assertSame($list, $gateway->resourceListAccessor());
+        $this->assertSame($accessor, $gateway->resourceAccessor());
+        $this->assertSame($ccreator, $gateway->resourceCreator());
+        $this->assertSame($updater, $gateway->resourceUpdater());
+        $this->assertSame($remover, $gateway->resourceRemover());
+        $this->assertSame($linker, $gateway->resourceLinker());
+        $this->assertSame($unlinker, $gateway->resourceUnlinker());
     }
 }
