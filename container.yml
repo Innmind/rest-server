@@ -84,17 +84,18 @@ services:
             create Innmind\Rest\Server\Controller\Create:
                 - $requestDecoder
                 - $encoder
-                - $serializer
+                - $serializer.normalizer.identity
+                - $serializer.denormalizer.httpResource
                 - $gateways
                 - $response.headerBuilder.create.delegate
             get Innmind\Rest\Server\Controller\Get:
                 - $encoder
-                - $serializer
+                - $serializer.normalizer.httpResource
                 - $gateways
                 - $response.headerBuilder.get.delegate
             index Innmind\Rest\Server\Controller\Index:
                 - $encoder
-                - $serializer
+                - $serializer.normalizer.identities
                 - $gateways
                 - $response.headerBuilder.list.delegate
                 - $rangeExtractor
@@ -102,14 +103,14 @@ services:
             options Innmind\Rest\Server\Controller\Options:
                 - $encoder
                 - $format
-                - $serializer
+                - $serializer.normalizer.definition
             remove Innmind\Rest\Server\Controller\Remove:
                 - $gateways
                 - $response.headerBuilder.remove.delegate
             update Innmind\Rest\Server\Controller\Update:
                 - $requestDecoder
                 - $format
-                - $serializer
+                - $serializer.denormalizer.httpResource
                 - $gateways
                 - $response.headerBuilder.update.delegate
             link Innmind\Rest\Server\Controller\Link:
@@ -153,29 +154,7 @@ services:
     specification:
         builder Innmind\Rest\Server\SpecificationBuilder\Builder\Builder: []
 
-    serializer Innmind\Rest\Server\Serializer::make:
-        - $serializer.encoders
-        - $serializer.normalizers
-
     serializer:
-        encoders set<Symfony\Component\Serializer\Encoder\EncoderInterace>:
-            - $serializer.encoders.defaultJson
-            - $serializer.encoders.defaultXml
-        encoders:
-            defaultJson Symfony\Component\Serializer\Encoder\JsonEncoder: []
-            defaultXml Symfony\Component\Serializer\Encoder\XmlEncoder: []
-
-        normalizers set<Symfony\Component\Serializer\Normalizer\NormalizerInterface>:
-            - $serializer.normalizers.definition
-            - $serializer.normalizers.identities
-            - $serializer.normalizers.identity
-            - $serializer.normalizers.httpResource
-        normalizers:
-            definition Innmind\Rest\Server\Serializer\Normalizer\DefinitionNormalizer: []
-            identities Innmind\Rest\Server\Serializer\Normalizer\IdentitiesNormalizer: []
-            identity Innmind\Rest\Server\Serializer\Normalizer\IdentityNormalizer: []
-            httpResource Innmind\Rest\Server\Serializer\Normalizer\HttpResourceNormalizer: []
-
         requestDecoder:
             delegate Innmind\Rest\Server\Serializer\RequestDecoder\Delegate:
                 - $format
@@ -197,6 +176,15 @@ services:
                 - <json, $serializer.encoder.json>
 
             json Innmind\Rest\Server\Serializer\Encoder\Json: []
+
+        normalizer:
+            definition Innmind\Rest\Server\Serializer\Normalizer\Definition: []
+            identities Innmind\Rest\Server\Serializer\Normalizer\Identities: []
+            identity Innmind\Rest\Server\Serializer\Normalizer\Identity: []
+            httpResource Innmind\Rest\Server\Serializer\Normalizer\HttpResource: []
+
+        denormalizer:
+            httpResource Innmind\Rest\Server\Serializer\Denormalizer\HttpResource: []
 
     rangeExtractor:
         delegate Innmind\Rest\Server\RangeExtractor\DelegationExtractor:

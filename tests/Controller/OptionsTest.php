@@ -8,6 +8,7 @@ use Innmind\Rest\Server\{
     Controller,
     Identity\Identity,
     Serializer\Encoder,
+    Serializer\Normalizer\Definition,
     Exception\LogicException,
 };
 use Innmind\Http\{
@@ -29,7 +30,7 @@ class OptionsTest extends AbstractTestCase
         $this->options = new Options(
             new Encoder\Json,
             $this->format,
-            $this->serializer
+            new Definition
         );
     }
 

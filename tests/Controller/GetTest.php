@@ -13,6 +13,7 @@ use Innmind\Rest\Server\{
     HttpResource\Property,
     ResourceAccessor,
     Serializer\Encoder,
+    Serializer\Normalizer\HttpResource as ResourceNormalizer,
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -39,7 +40,7 @@ class GetTest extends AbstractTestCase
 
         $this->get = new Get(
             new Encoder\Json,
-            $this->serializer,
+            new ResourceNormalizer,
             (new Map('string', Gateway::class))->put(
                 'foo',
                 $this->gateway = $this->createMock(Gateway::class)
@@ -63,7 +64,7 @@ class GetTest extends AbstractTestCase
 
         new Get(
             new Encoder\Json,
-            $this->serializer,
+            new ResourceNormalizer,
             new Map('int', Gateway::class),
             $this->createMock(GetBuilder::class)
         );
@@ -76,7 +77,7 @@ class GetTest extends AbstractTestCase
 
         new Get(
             new Encoder\Json,
-            $this->serializer,
+            new ResourceNormalizer,
             new Map('string', 'callable'),
             $this->createMock(GetBuilder::class)
         );

@@ -13,6 +13,8 @@ use Innmind\Rest\Server\{
     HttpResource\HttpResource as Resource,
     Serializer\RequestDecoder,
     Serializer\Encoder,
+    Serializer\Normalizer\Identity as IdentityNormalizer,
+    Serializer\Denormalizer\HttpResource as ResourceDenormalizer,
     Exception\LogicException,
 };
 use Innmind\Http\{
@@ -23,20 +25,21 @@ use Innmind\Http\{
     Headers\Headers,
 };
 use Innmind\Immutable\MapInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 final class Create implements Controller
 {
     private $decode;
     private $encode;
     private $gateways;
-    private $serializer;
+    private $normalize;
+    private $denormalize;
     private $buildHeader;
 
     public function __construct(
         RequestDecoder $decode,
         Encoder $encode,
-        SerializerInterface $serializer,
+        IdentityNormalizer $normalize,
+        ResourceDenormalizer $denormalize,
         MapInterface $gateways,
         CreateBuilder $headerBuilder
     ) {
@@ -53,7 +56,8 @@ final class Create implements Controller
         $this->decode = $decode;
         $this->encode = $encode;
         $this->gateways = $gateways;
-        $this->serializer = $serializer;
+        $this->normalize = $normalize;
+        $this->denormalize = $denormalize;
         $this->buildHeader = $headerBuilder;
     }
 
@@ -73,14 +77,10 @@ final class Create implements Controller
 
         $identity = $create(
             $definition,
-            $resource = $this->serializer->denormalize(
+            $resource = ($this->denormalize)(
                 ($this->decode)($request),
-                Resource::class,
-                null,
-                [
-                    'definition' => $definition,
-                    'mask' => new Access(Access::CREATE),
-                ]
+                $definition,
+                new Access(Access::CREATE)
             )
         );
 
@@ -93,14 +93,7 @@ final class Create implements Controller
             ),
             ($this->encode)(
                 $request,
-                $this->serializer->normalize(
-                    $identity,
-                    null,
-                    [
-                        'request' => $request,
-                        'definition' => $definition,
-                    ]
-                )
+                ($this->normalize)($identity)
             )
         );
     }

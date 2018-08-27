@@ -10,6 +10,7 @@ use Innmind\Rest\Server\{
     Response\HeaderBuilder\GetBuilder,
     Gateway,
     Serializer\Encoder,
+    Serializer\Normalizer\HttpResource as ResourceNormalizer,
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -19,18 +20,17 @@ use Innmind\Http\{
     Headers\Headers,
 };
 use Innmind\Immutable\MapInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 final class Get implements Controller
 {
     private $encode;
-    private $serializer;
+    private $normalize;
     private $gateways;
     private $buildHeader;
 
     public function __construct(
         Encoder $encode,
-        SerializerInterface $serializer,
+        ResourceNormalizer $normalize,
         MapInterface $gateways,
         GetBuilder $headerBuilder
     ) {
@@ -45,7 +45,7 @@ final class Get implements Controller
         }
 
         $this->encode = $encode;
-        $this->serializer = $serializer;
+        $this->normalize = $normalize;
         $this->gateways = $gateways;
         $this->buildHeader = $headerBuilder;
     }
@@ -70,15 +70,7 @@ final class Get implements Controller
             ),
             ($this->encode)(
                 $request,
-                $this->serializer->normalize(
-                    $resource,
-                    null,
-                    [
-                        'request' => $request,
-                        'definition' => $definition,
-                        'identity' => $identity,
-                    ]
-                )
+                ($this->normalize)($resource)
             )
         );
     }

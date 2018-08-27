@@ -11,6 +11,8 @@ use Innmind\Rest\Server\{
     ResourceCreator,
     Serializer\RequestDecoder,
     Serializer\Encoder,
+    Serializer\Normalizer\Identity as IdentityNormalizer,
+    Serializer\Denormalizer\HttpResource as ResourceDenormalizer,
     Response\HeaderBuilder\CreateBuilder,
     Exception\LogicException,
 };
@@ -44,7 +46,8 @@ class CreateTest extends AbstractTestCase
         $this->create = new Create(
             new RequestDecoder\Json,
             new Encoder\Json,
-            $this->serializer,
+            new IdentityNormalizer,
+            new ResourceDenormalizer,
             (new Map('string', Gateway::class))->put(
                 'foo',
                 $this->gateway = $this->createMock(Gateway::class)
@@ -69,7 +72,8 @@ class CreateTest extends AbstractTestCase
         new Create(
             new RequestDecoder\Json,
             new Encoder\Json,
-            $this->serializer,
+            new IdentityNormalizer,
+            new ResourceDenormalizer,
             new Map('int', Gateway::class),
             $this->createMock(CreateBuilder::class)
         );
@@ -83,7 +87,8 @@ class CreateTest extends AbstractTestCase
         new Create(
             new RequestDecoder\Json,
             new Encoder\Json,
-            $this->serializer,
+            new IdentityNormalizer,
+            new ResourceDenormalizer,
             new Map('string', 'callable'),
             $this->createMock(CreateBuilder::class)
         );

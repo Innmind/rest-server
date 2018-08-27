@@ -9,6 +9,7 @@ use Innmind\Rest\Server\{
     Definition\HttpResource,
     Identity,
     Serializer\Encoder,
+    Serializer\Normalizer\Definition,
     Exception\LogicException,
 };
 use Innmind\Http\{
@@ -20,21 +21,20 @@ use Innmind\Http\{
     Header\ContentType,
     Header\ContentTypeValue,
 };
-use Symfony\Component\Serializer\SerializerInterface;
 
 final class Options implements Controller
 {
     private $format;
-    private $serializer;
+    private $normalize;
 
     public function __construct(
         Encoder $encode,
         Format $format,
-        SerializerInterface $serializer
+        Definition $normalize
     ) {
         $this->encode = $encode;
         $this->format = $format;
-        $this->serializer = $serializer;
+        $this->normalize = $normalize;
     }
 
     public function __invoke(
@@ -65,7 +65,7 @@ final class Options implements Controller
             ),
             ($this->encode)(
                 $request,
-                $this->serializer->normalize($definition)
+                ($this->normalize)($definition)
             )
         );
     }

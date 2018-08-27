@@ -11,6 +11,7 @@ use Innmind\Rest\Server\{
     Response\HeaderBuilder\UpdateBuilder,
     ResourceUpdater,
     Serializer\RequestDecoder\Json,
+    Serializer\Denormalizer\HttpResource as ResourceDenormalizer,
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -39,7 +40,7 @@ class UpdateTest extends AbstractTestCase
         $this->update = new Update(
             new Json,
             $this->format,
-            $this->serializer,
+            new ResourceDenormalizer,
             (new Map('string', Gateway::class))->put(
                 'foo',
                 $this->gateway = $this->createMock(Gateway::class)
@@ -61,7 +62,7 @@ class UpdateTest extends AbstractTestCase
         new Update(
             new Json,
             $this->format,
-            $this->serializer,
+            new ResourceDenormalizer,
             new Map('int', Gateway::class),
             $this->createMock(UpdateBuilder::class)
         );
@@ -75,7 +76,7 @@ class UpdateTest extends AbstractTestCase
         new Update(
             new Json,
             $this->format,
-            $this->serializer,
+            new ResourceDenormalizer,
             new Map('string', 'callable'),
             $this->createMock(UpdateBuilder::class)
         );
