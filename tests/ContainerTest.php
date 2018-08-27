@@ -4,13 +4,12 @@ declare(strict_types = 1);
 namespace Tests\Innmind\Rest\Server;
 
 use Innmind\Rest\Server\{
-    Formats,
-    Format\Format,
-    Format\MediaType,
     Controller,
     Gateway,
     Routing\Routes,
     Definition\Locator,
+    AcceptFormats,
+    ContentTypeFormats,
 };
 use Innmind\Compose\ContainerBuilder\ContainerBuilder;
 use Innmind\Url\Path;
@@ -31,29 +30,11 @@ class ContainerTest extends TestCase
                 ->put('files', Set::of('string', 'fixtures/mapping.yml'))
                 ->put(
                     'acceptFormats',
-                    new Formats(
-                        (new Map('string', Format::class))->put(
-                            'json',
-                            new Format(
-                                'json',
-                                Set::of(MediaType::class, new MediaType('application/json', 0)),
-                                0
-                            )
-                        )
-                    )
+                    AcceptFormats::default()
                 )
                 ->put(
                     'contentTypeFormats',
-                    new Formats(
-                        (new Map('string', Format::class))->put(
-                            'json',
-                            new Format(
-                                'json',
-                                Set::of(MediaType::class, new MediaType('application/json', 0)),
-                                0
-                            )
-                        )
-                    )
+                    ContentTypeFormats::default()
                 )
         );
 
