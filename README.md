@@ -43,3 +43,9 @@ $container->get('capabilities');
 ```
 
 The gateways are the bridges between this component and your domain. The definition handling which resource is handled by which gateway is done in the resources mapping where a resource can only be managed by one gateway. Take a look at [`fixtures/mapping.yml`](fixtures/mapping.yml) to understand how to define your resources.
+
+## Structure
+
+Container definition:
+
+![](graph.png)
