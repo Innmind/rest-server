@@ -25,7 +25,6 @@ final class HttpResource
         ResourceDefinition $definition,
         Access $mask
     ): Resource {
-        $properties = new Map('string', Property::class);
         $errors = new Map('string', DenormalizationException::class);
         $data = $data['resource'];
 
