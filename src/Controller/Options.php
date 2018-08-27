@@ -24,6 +24,7 @@ use Innmind\Http\{
 
 final class Options implements Controller
 {
+    private $encode;
     private $format;
     private $normalize;
 
