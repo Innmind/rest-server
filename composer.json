@@ -17,12 +17,12 @@
     "require": {
         "php": "~7.2",
         "innmind/immutable": "~2.8",
-        "symfony/config": "~3.0",
+        "symfony/config": "~3.0|~4.0",
         "innmind/specification": "^1.0",
         "innmind/filesystem": "~3.0",
         "innmind/http": "~3.0",
         "willdurand/negotiation": "^2.0",
-        "symfony/yaml": "~3.0",
+        "symfony/yaml": "~3.0|~4.0",
         "innmind/compose": "^1.6",
         "innmind/url-template": "^1.0",
         "innmind/json": "^1.0"
