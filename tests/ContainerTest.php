@@ -8,8 +8,6 @@ use Innmind\Rest\Server\{
     Gateway,
     Routing\Routes,
     Definition\Locator,
-    AcceptFormats,
-    ContentTypeFormats,
 };
 use Innmind\Compose\ContainerBuilder\ContainerBuilder;
 use Innmind\Url\Path;
@@ -28,14 +26,6 @@ class ContainerTest extends TestCase
             (new Map('string', 'mixed'))
                 ->put('gateways', new Map('string', Gateway::class))
                 ->put('files', Set::of('string', 'fixtures/mapping.yml'))
-                ->put(
-                    'acceptFormats',
-                    AcceptFormats::default()
-                )
-                ->put(
-                    'contentTypeFormats',
-                    ContentTypeFormats::default()
-                )
         );
 
         $this->assertInstanceOf(Routes::class, $container->get('routes'));

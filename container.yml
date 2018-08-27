@@ -1,8 +1,8 @@
 arguments:
     gateways: map<string, Innmind\Rest\Server\Gateway>
     files: set<string>
-    acceptFormats: Innmind\Rest\Server\Formats
-    contentTypeFormats: Innmind\Rest\Server\Formats
+    acceptFormats: Innmind\Rest\Server\Formats ?? $format.accept
+    contentTypeFormats: Innmind\Rest\Server\Formats ?? $format.contentType
     prefix: '?Innmind\Rest\Server\Routing\Prefix'
     rangeExtractor: Innmind\Rest\Server\RangeExtractor ?? $rangeExtractor.delegate
     specificationBuilder: Innmind\Rest\Server\SpecificationBuilder\Builder ?? $specification.builder
@@ -136,6 +136,10 @@ services:
     format Innmind\Rest\Server\Format:
         - $acceptFormats
         - $contentTypeFormats
+
+    format:
+        accept Innmind\Rest\Server\AcceptFormats::default: []
+        contentType Innmind\Rest\Server\ContentTypeFormats::default: []
 
     definition:
         types Innmind\Rest\Server\Definition\Types: []
