@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Tests\Innmind\Rest\ServerBundle\Serializer\Normalizer;
 
 use Innmind\Rest\Server\{
-    Serializer\Normalizer\DefinitionNormalizer,
+    Serializer\Normalizer\Definition,
     Definition\Httpresource,
     Definition\Identity,
     Definition\Property,
@@ -12,45 +12,16 @@ use Innmind\Rest\Server\{
     Definition\Loader\YamlLoader,
 };
 use Innmind\Immutable\Map;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use PHPUnit\Framework\TestCase;
 
-class DefinitionNormalizerTest extends TestCase
+class DefinitionTest extends TestCase
 {
-    public function testInterface()
-    {
-        $normalizer = new DefinitionNormalizer;
-
-        $this->assertInstanceOf(NormalizerInterface::class, $normalizer);
-    }
-
-    public function testSupportsNormalization()
-    {
-        $normalizer = new DefinitionNormalizer;
-
-        $this->assertTrue(
-            $normalizer->supportsNormalization(
-                new Httpresource(
-                    'foobar',
-                    new Identity('foo'),
-                    new Map('string', Property::class),
-                    new Map('scalar', 'variable'),
-                    new Map('scalar', 'variable'),
-                    new Gateway('bar'),
-                    true,
-                    new Map('string', 'string')
-                )
-            )
-        );
-        $this->assertFalse($normalizer->supportsNormalization([]));
-    }
-
     public function testNormalize()
     {
-        $normalizer = new DefinitionNormalizer;
+        $normalize = new Definition;
         $directories = (new YamlLoader)('fixtures/mapping.yml');
 
-        $data = $normalizer->normalize(
+        $data = $normalize(
             $directories->get('top_dir')->definitions()->get('image')
         );
 

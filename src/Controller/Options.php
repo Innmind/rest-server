@@ -8,6 +8,8 @@ use Innmind\Rest\Server\{
     Format,
     Definition\HttpResource,
     Identity,
+    Serializer\Encoder,
+    Serializer\Normalizer\Definition,
     Exception\LogicException,
 };
 use Innmind\Http\{
@@ -19,20 +21,20 @@ use Innmind\Http\{
     Header\ContentType,
     Header\ContentTypeValue,
 };
-use Innmind\Filesystem\Stream\StringStream;
-use Symfony\Component\Serializer\SerializerInterface;
 
 final class Options implements Controller
 {
     private $format;
-    private $serializer;
+    private $normalize;
 
     public function __construct(
+        Encoder $encode,
         Format $format,
-        SerializerInterface $serializer
+        Definition $normalize
     ) {
+        $this->encode = $encode;
         $this->format = $format;
-        $this->serializer = $serializer;
+        $this->normalize = $normalize;
     }
 
     public function __invoke(
@@ -44,8 +46,10 @@ final class Options implements Controller
             throw new LogicException;
         }
 
-        $format = $this->format->acceptable($request);
-        $mediaType = $format->preferredMediaType();
+        $mediaType = $this
+            ->format
+            ->acceptable($request)
+            ->preferredMediaType();
 
         return new Response\Response(
             $code = new StatusCode(StatusCode::codes()->get('OK')),
@@ -59,11 +63,9 @@ final class Options implements Controller
                     )
                 )
             ),
-            new StringStream(
-                $this->serializer->serialize(
-                    $definition,
-                    $format->name()
-                )
+            ($this->encode)(
+                $request,
+                ($this->normalize)($definition)
             )
         );
     }

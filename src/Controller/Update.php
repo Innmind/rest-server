@@ -11,28 +11,31 @@ use Innmind\Rest\Server\{
     Definition\HttpResource,
     Definition\Access,
     Response\HeaderBuilder\UpdateBuilder,
-    HttpResource\HttpResource as Resource
+    HttpResource\HttpResource as Resource,
+    Serializer\RequestDecoder,
+    Serializer\Denormalizer\HttpResource as ResourceDenormalizer,
 };
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
     Message\StatusCode\StatusCode,
     Message\ReasonPhrase\ReasonPhrase,
-    Headers\Headers
+    Headers\Headers,
 };
 use Innmind\Immutable\MapInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 final class Update implements Controller
 {
+    private $decode;
     private $gateways;
-    private $serializer;
+    private $denormalize;
     private $format;
     private $buildHeader;
 
     public function __construct(
+        RequestDecoder $decode,
         Format $format,
-        SerializerInterface $serializer,
+        ResourceDenormalizer $denormalize,
         MapInterface $gateways,
         UpdateBuilder $headerBuilder
     ) {
@@ -46,8 +49,9 @@ final class Update implements Controller
             ));
         }
 
+        $this->decode = $decode;
         $this->gateways = $gateways;
-        $this->serializer = $serializer;
+        $this->denormalize = $denormalize;
         $this->format = $format;
         $this->buildHeader = $headerBuilder;
     }
@@ -65,14 +69,10 @@ final class Update implements Controller
         $update(
             $definition,
             $identity,
-            $resource = $this->serializer->deserialize(
-                $request,
-                Resource::class,
-                'request_'.$this->format->contentType($request)->name(),
-                [
-                    'definition' => $definition,
-                    'mask' => new Access(Access::UPDATE),
-                ]
+            $resource = ($this->denormalize)(
+                ($this->decode)($request),
+                $definition,
+                new Access(Access::UPDATE)
             )
         );
 

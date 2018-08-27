@@ -7,31 +7,30 @@ use Innmind\Rest\Server\{
     Controller,
     Identity,
     Definition\HttpResource,
-    Format,
     Response\HeaderBuilder\GetBuilder,
-    Gateway
+    Gateway,
+    Serializer\Encoder,
+    Serializer\Normalizer\HttpResource as ResourceNormalizer,
 };
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
     Message\StatusCode\StatusCode,
     Message\ReasonPhrase\ReasonPhrase,
-    Headers\Headers
+    Headers\Headers,
 };
-use Innmind\Filesystem\Stream\StringStream;
 use Innmind\Immutable\MapInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 final class Get implements Controller
 {
-    private $format;
-    private $serializer;
+    private $encode;
+    private $normalize;
     private $gateways;
     private $buildHeader;
 
     public function __construct(
-        Format $format,
-        SerializerInterface $serializer,
+        Encoder $encode,
+        ResourceNormalizer $normalize,
         MapInterface $gateways,
         GetBuilder $headerBuilder
     ) {
@@ -45,8 +44,8 @@ final class Get implements Controller
             ));
         }
 
-        $this->format = $format;
-        $this->serializer = $serializer;
+        $this->encode = $encode;
+        $this->normalize = $normalize;
         $this->gateways = $gateways;
         $this->buildHeader = $headerBuilder;
     }
@@ -69,16 +68,9 @@ final class Get implements Controller
             Headers::of(
                 ...($this->buildHeader)($resource, $request, $definition, $identity)
             ),
-            new StringStream(
-                $this->serializer->serialize(
-                    $resource,
-                    $this->format->acceptable($request)->name(),
-                    [
-                        'request' => $request,
-                        'definition' => $definition,
-                        'identity' => $identity,
-                    ]
-                )
+            ($this->encode)(
+                $request,
+                ($this->normalize)($resource)
             )
         );
     }

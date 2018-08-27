@@ -9,6 +9,10 @@ use Innmind\Rest\Server\{
     Identity\Identity,
     Gateway,
     ResourceCreator,
+    Serializer\RequestDecoder,
+    Serializer\Encoder,
+    Serializer\Normalizer\Identity as IdentityNormalizer,
+    Serializer\Denormalizer\HttpResource as ResourceDenormalizer,
     Response\HeaderBuilder\CreateBuilder,
     Exception\LogicException,
 };
@@ -40,8 +44,10 @@ class CreateTest extends AbstractTestCase
         parent::setUp();
 
         $this->create = new Create(
-            $this->format,
-            $this->serializer,
+            new RequestDecoder\Json,
+            new Encoder\Json,
+            new IdentityNormalizer,
+            new ResourceDenormalizer,
             (new Map('string', Gateway::class))->put(
                 'foo',
                 $this->gateway = $this->createMock(Gateway::class)
@@ -61,11 +67,13 @@ class CreateTest extends AbstractTestCase
     public function testThrowWhenInvalidGatewayKeyType()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
+        $this->expectExceptionMessage('Argument 4 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
 
         new Create(
-            $this->format,
-            $this->serializer,
+            new RequestDecoder\Json,
+            new Encoder\Json,
+            new IdentityNormalizer,
+            new ResourceDenormalizer,
             new Map('int', Gateway::class),
             $this->createMock(CreateBuilder::class)
         );
@@ -74,11 +82,13 @@ class CreateTest extends AbstractTestCase
     public function testThrowWhenInvalidGatewayValueType()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
+        $this->expectExceptionMessage('Argument 4 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
 
         new Create(
-            $this->format,
-            $this->serializer,
+            new RequestDecoder\Json,
+            new Encoder\Json,
+            new IdentityNormalizer,
+            new ResourceDenormalizer,
             new Map('string', 'callable'),
             $this->createMock(CreateBuilder::class)
         );

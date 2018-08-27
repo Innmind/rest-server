@@ -1,45 +1,26 @@
 <?php
 declare(strict_types = 1);
 
-namespace Innmind\Rest\Server\Serializer\Encoder;
+namespace Innmind\Rest\Server\Serializer\RequestDecoder;
 
-use Innmind\Rest\Server\Exception\InvalidArgumentException;
+use Innmind\Rest\Server\Serializer\RequestDecoder;
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Form\Parameter,
 };
-use Innmind\Immutable\{
-    Map,
-    MapInterface,
-};
-use Symfony\Component\Serializer\Encoder\DecoderInterface;
+use Innmind\Immutable\MapInterface;
 
-final class FormEncoder implements DecoderInterface
+final class Form implements RequestDecoder
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function decode($data, $format, array $context = [])
+    public function __invoke(ServerRequest $request): array
     {
-        if (!$data instanceof ServerRequest) {
-            throw new InvalidArgumentException;
-        }
-
         $form = [];
 
-        foreach ($data->form() as $parameter) {
+        foreach ($request->form() as $parameter) {
             $form[$parameter->name()] = $this->translate($parameter);
         }
 
         return $form;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsDecoding($format)
-    {
-        return $format === 'request_form';
     }
 
     private function translate(Parameter $parameter)

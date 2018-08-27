@@ -7,18 +7,14 @@ use Innmind\Rest\Server\Definition\{
     HttpResource,
     Property,
 };
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-final class DefinitionNormalizer implements NormalizerInterface
+final class Definition
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function __invoke(HttpResource $resource): array
     {
         return [
-            'identity' => (string) $object->identity(),
-            'properties' => $object
+            'identity' => (string) $resource->identity(),
+            'properties' => $resource
                 ->properties()
                 ->reduce(
                     [],
@@ -39,11 +35,11 @@ final class DefinitionNormalizer implements NormalizerInterface
                     }
                 ),
             'metas' => array_combine(
-                $object->metas()->keys()->toPrimitive(),
-                $object->metas()->values()->toPrimitive()
+                $resource->metas()->keys()->toPrimitive(),
+                $resource->metas()->values()->toPrimitive()
             ),
-            'rangeable' => $object->isRangeable(),
-            'linkable_to' => $object
+            'rangeable' => $resource->isRangeable(),
+            'linkable_to' => $resource
                 ->allowedLinks()
                 ->reduce(
                     [],
@@ -54,13 +50,5 @@ final class DefinitionNormalizer implements NormalizerInterface
                     }
                 ),
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsNormalization($data, $format = null)
-    {
-        return $data instanceof HttpResource;
     }
 }

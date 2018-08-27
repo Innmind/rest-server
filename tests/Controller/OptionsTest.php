@@ -7,6 +7,8 @@ use Innmind\Rest\Server\{
     Controller\Options,
     Controller,
     Identity\Identity,
+    Serializer\Encoder,
+    Serializer\Normalizer\Definition,
     Exception\LogicException,
 };
 use Innmind\Http\{
@@ -26,8 +28,9 @@ class OptionsTest extends AbstractTestCase
         parent::setUp();
 
         $this->options = new Options(
+            new Encoder\Json,
             $this->format,
-            $this->serializer
+            new Definition
         );
     }
 

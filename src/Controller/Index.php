@@ -7,12 +7,13 @@ use Innmind\Rest\Server\{
     Controller,
     Identity,
     Definition\HttpResource,
-    Format,
     Gateway,
     Response\HeaderBuilder\ListBuilder,
     RangeExtractor\Extractor,
     SpecificationBuilder\Builder,
     Request\Range,
+    Serializer\Encoder,
+    Serializer\Normalizer\Identities,
     Exception\RangeNotFound,
     Exception\NoFilterFound,
     Exception\LogicException,
@@ -25,22 +26,20 @@ use Innmind\Http\{
     Headers\Headers,
     Exception\Http\RangeNotSatisfiable,
 };
-use Innmind\Filesystem\Stream\StringStream;
 use Innmind\Immutable\MapInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 final class Index implements Controller
 {
-    private $format;
-    private $serializer;
+    private $encode;
+    private $normalize;
     private $extractRange;
     private $buildSpecification;
     private $gateways;
     private $buildHeader;
 
     public function __construct(
-        Format $format,
-        SerializerInterface $serializer,
+        Encoder $encode,
+        Identities $normalize,
         MapInterface $gateways,
         ListBuilder $headerBuilder,
         Extractor $rangeExtractor,
@@ -56,8 +55,8 @@ final class Index implements Controller
             ));
         }
 
-        $this->format = $format;
-        $this->serializer = $serializer;
+        $this->encode = $encode;
+        $this->normalize = $normalize;
         $this->extractRange = $rangeExtractor;
         $this->buildSpecification = $specificationBuilder;
         $this->gateways = $gateways;
@@ -113,17 +112,9 @@ final class Index implements Controller
                     $range
                 )
             ),
-            new StringStream(
-                $this->serializer->serialize(
-                    $identities,
-                    $this->format->acceptable($request)->name(),
-                    [
-                        'request' => $request,
-                        'definition' => $definition,
-                        'specification' => $specification,
-                        'range' => $range,
-                    ]
-                )
+            ($this->encode)(
+                $request,
+                ($this->normalize)($identities)
             )
         );
     }

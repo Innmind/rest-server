@@ -12,6 +12,8 @@ use Innmind\Rest\Server\{
     HttpResource\HttpResource,
     HttpResource\Property,
     ResourceAccessor,
+    Serializer\Encoder,
+    Serializer\Normalizer\HttpResource as ResourceNormalizer,
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -37,8 +39,8 @@ class GetTest extends AbstractTestCase
         parent::setUp();
 
         $this->get = new Get(
-            $this->format,
-            $this->serializer,
+            new Encoder\Json,
+            new ResourceNormalizer,
             (new Map('string', Gateway::class))->put(
                 'foo',
                 $this->gateway = $this->createMock(Gateway::class)
@@ -61,8 +63,8 @@ class GetTest extends AbstractTestCase
         $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
 
         new Get(
-            $this->format,
-            $this->serializer,
+            new Encoder\Json,
+            new ResourceNormalizer,
             new Map('int', Gateway::class),
             $this->createMock(GetBuilder::class)
         );
@@ -74,8 +76,8 @@ class GetTest extends AbstractTestCase
         $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
 
         new Get(
-            $this->format,
-            $this->serializer,
+            new Encoder\Json,
+            new ResourceNormalizer,
             new Map('string', 'callable'),
             $this->createMock(GetBuilder::class)
         );

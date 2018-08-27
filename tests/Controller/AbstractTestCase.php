@@ -8,12 +8,6 @@ use Innmind\Rest\Server\{
     Formats,
     Format\Format as FormatFormat,
     Format\MediaType,
-    Serializer\Normalizer\DefinitionNormalizer,
-    Serializer\Normalizer\IdentitiesNormalizer,
-    Serializer\Normalizer\IdentityNormalizer,
-    Serializer\Normalizer\HttpResourceNormalizer,
-    Serializer\Encoder\JsonEncoder,
-    Serializer\Encoder\FormEncoder,
     Definition,
     Definition\Loader\YamlLoader,
     Router,
@@ -23,16 +17,11 @@ use Innmind\Immutable\{
     Map,
     Set,
 };
-use Symfony\Component\Serializer\{
-    Serializer,
-    Encoder\JsonEncoder as SfJsonEncoder,
-};
 use PHPUnit\Framework\TestCase;
 
 class AbstractTestCase extends TestCase
 {
     protected $format;
-    protected $serializer;
     protected $definition;
     protected $router;
     protected $directories;
@@ -60,19 +49,6 @@ class AbstractTestCase extends TestCase
                     )
                 )
             )
-        );
-        $this->serializer = new Serializer(
-            [
-                new DefinitionNormalizer,
-                new IdentitiesNormalizer,
-                new IdentityNormalizer,
-                new HttpResourceNormalizer,
-            ],
-            [
-                new JsonEncoder,
-                new FormEncoder,
-                new SfJsonEncoder,
-            ]
         );
         $this->definition = new Definition\HttpResource(
             'foo',

@@ -9,9 +9,12 @@ use Innmind\Rest\Server\{
     Definition\HttpResource,
     Definition\Access,
     Gateway,
-    Format,
     Response\HeaderBuilder\CreateBuilder,
     HttpResource\HttpResource as Resource,
+    Serializer\RequestDecoder,
+    Serializer\Encoder,
+    Serializer\Normalizer\Identity as IdentityNormalizer,
+    Serializer\Denormalizer\HttpResource as ResourceDenormalizer,
     Exception\LogicException,
 };
 use Innmind\Http\{
@@ -21,20 +24,22 @@ use Innmind\Http\{
     Message\ReasonPhrase\ReasonPhrase,
     Headers\Headers,
 };
-use Innmind\Filesystem\Stream\StringStream;
 use Innmind\Immutable\MapInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 final class Create implements Controller
 {
+    private $decode;
+    private $encode;
     private $gateways;
-    private $serializer;
-    private $format;
+    private $normalize;
+    private $denormalize;
     private $buildHeader;
 
     public function __construct(
-        Format $format,
-        SerializerInterface $serializer,
+        RequestDecoder $decode,
+        Encoder $encode,
+        IdentityNormalizer $normalize,
+        ResourceDenormalizer $denormalize,
         MapInterface $gateways,
         CreateBuilder $headerBuilder
     ) {
@@ -43,14 +48,16 @@ final class Create implements Controller
             (string) $gateways->valueType() !== Gateway::class
         ) {
             throw new \TypeError(sprintf(
-                'Argument 3 must be of type MapInterface<string, %s>',
+                'Argument 4 must be of type MapInterface<string, %s>',
                 Gateway::class
             ));
         }
 
+        $this->decode = $decode;
+        $this->encode = $encode;
         $this->gateways = $gateways;
-        $this->serializer = $serializer;
-        $this->format = $format;
+        $this->normalize = $normalize;
+        $this->denormalize = $denormalize;
         $this->buildHeader = $headerBuilder;
     }
 
@@ -67,16 +74,13 @@ final class Create implements Controller
             ->gateways
             ->get((string) $definition->gateway())
             ->resourceCreator();
+
         $identity = $create(
             $definition,
-            $resource = $this->serializer->deserialize(
-                $request,
-                Resource::class,
-                'request_'.$this->format->contentType($request)->name(),
-                [
-                    'definition' => $definition,
-                    'mask' => new Access(Access::CREATE),
-                ]
+            $resource = ($this->denormalize)(
+                ($this->decode)($request),
+                $definition,
+                new Access(Access::CREATE)
             )
         );
 
@@ -87,15 +91,9 @@ final class Create implements Controller
             Headers::of(
                 ...($this->buildHeader)($identity, $request, $definition, $resource)
             ),
-            new StringStream(
-                $this->serializer->serialize(
-                    $identity,
-                    $this->format->acceptable($request)->name(),
-                    [
-                        'request' => $request,
-                        'definition' => $definition,
-                    ]
-                )
+            ($this->encode)(
+                $request,
+                ($this->normalize)($identity)
             )
         );
     }
