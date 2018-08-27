@@ -22,6 +22,13 @@ final class HttpResource
         $mask = new Access(Access::READ);
         $data = $resource
             ->properties()
+            ->filter(static function(string $name, Property $property) use ($definition, $mask): bool {
+                return $definition
+                    ->properties()
+                    ->get($name)
+                    ->access()
+                    ->matches($mask);
+            })
             ->reduce(
                 [],
                 function(
@@ -33,16 +40,10 @@ final class HttpResource
                     $definition,
                     $mask
                 ): array {
-                    $propertyDefinition = $definition
-                        ->properties()
-                        ->get($name);
-
-                    if (!$propertyDefinition->access()->matches($mask)) {
-                        return $data;
-                    }
-
                     try {
-                        $data[$name] = $propertyDefinition
+                        $data[$name] = $definition
+                            ->properties()
+                            ->get($name)
                             ->type()
                             ->normalize($property->value());
                     } catch (NormalizationException $e) {
