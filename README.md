@@ -19,27 +19,32 @@ composer require innmind/rest-server
 ## Usage
 
 ```php
-$container = (new ContainerBuilder)(
-    new Path('container.yml'),
-    (new Map('string', 'mixed'))
-        ->put('gateways', new Map('string', Gateway::class))
-        ->put('files', Set::of('string', '/path/to/resources/mapping.yml'))
+use function Innmind\Rest\Server\bootstrap;
+use Innmind\Rest\Server\Gateway;
+use Innmind\Immutable\{
+    Map,
+    Set,
+};
+
+$services = bootstrap(
+    new Map('string', Gateway::class),
+    Set::of('string', '/path/to/resources/mapping.yml')
 );
 
-$container->get('routes'); // provides all the routes available for the deinfitions you provided
+$services['routes']; // provides all the routes available for the deinfitions you provided
 
 // action controllers
-$container->get('create');
-$container->get('index');
-$container->get('get');
-$container->get('remove');
-$container->get('update');
-$container->get('link');
-$container->get('unlink');
+$services['controller']['create'];
+$services['controller']['index'];
+$services['controller']['get'];
+$services['controller']['remove'];
+$services['controller']['update'];
+$services['controller']['link'];
+$services['controller']['unlink'];
 // controller to output the resource definition
-$container->get('options');
+$services['controller']['options'];
 // controller to expose links to all the resources definitions
-$container->get('capabilities');
+$services['controller']['capabilities'];
 ```
 
 The gateways are the bridges between this component and your domain. The definition handling which resource is handled by which gateway is done in the resources mapping where a resource can only be managed by one gateway. Take a look at [`fixtures/mapping.yml`](fixtures/mapping.yml) to understand how to define your resources.
