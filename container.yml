@@ -4,7 +4,7 @@ arguments:
     acceptFormats: Innmind\Rest\Server\Formats ?? $format.accept
     contentTypeFormats: Innmind\Rest\Server\Formats ?? $format.contentType
     prefix: '?Innmind\Rest\Server\Routing\Prefix'
-    rangeExtractor: Innmind\Rest\Server\RangeExtractor ?? $rangeExtractor.delegate
+    rangeExtractor: Innmind\Rest\Server\RangeExtractor\Extractor ?? $rangeExtractor.delegate
     specificationBuilder: Innmind\Rest\Server\SpecificationBuilder\Builder ?? $specification.builder
     requestVerifier: Innmind\Rest\Server\Request\Verifier\Verifier ?? $request.verifier.delegate
     requestDecoder: Innmind\Rest\Server\Serializer\RequestDecoder ?? $serializer.requestDecoder.delegate
