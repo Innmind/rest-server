@@ -30,7 +30,8 @@
     "autoload": {
         "psr-4": {
             "Innmind\\Rest\\Server\\": "src/"
-        }
+        },
+        "files": ["src/bootstrap.php"]
     },
     "autoload-dev": {
         "psr-4": {
