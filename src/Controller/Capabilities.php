@@ -28,7 +28,7 @@ final class Capabilities
     public function __construct(Routes $routes, Router $router)
     {
         $this->routes = Sequence::of(...$routes)->filter(static function(Route $route): bool {
-            return $route->action() === Action::list();
+            return $route->action() === Action::options();
         });
         $this->router = $router;
     }

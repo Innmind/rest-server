@@ -107,7 +107,7 @@ class GetContentTypeBuilderTest extends TestCase
         $this->assertSame(Header::class, (string) $headers->type());
         $this->assertSame(1, $headers->size());
         $this->assertSame(
-            'Content-Type : text/html',
+            'Content-Type: text/html',
             (string) $headers->current()
         );
     }

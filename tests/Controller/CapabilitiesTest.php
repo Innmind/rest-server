@@ -33,7 +33,7 @@ class CapabilitiesTest extends TestCase
         $this->assertSame('OK', (string) $response->reasonPhrase());
         $this->assertSame(1, $response->headers()->count());
         $this->assertSame(
-            'Link : </top_dir/image/>; rel="top_dir.image", </top_dir/sub_dir/res/>; rel="top_dir.sub_dir.res"',
+            'Link: </top_dir/image/>; rel="top_dir.image", </top_dir/sub_dir/res/>; rel="top_dir.sub_dir.res"',
             (string) $response->headers()->get('Link')
         );
         $this->assertSame('', (string) $response->body());

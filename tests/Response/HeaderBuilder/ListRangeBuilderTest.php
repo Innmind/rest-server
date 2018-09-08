@@ -82,7 +82,7 @@ class ListRangeBuilderTest extends TestCase
         $this->assertSame(Header::class, (string) $headers->type());
         $this->assertSame(1, $headers->size());
         $this->assertSame(
-            'Accept-Ranges : resources',
+            'Accept-Ranges: resources',
             (string) $headers->current()
         );
     }
@@ -112,12 +112,12 @@ class ListRangeBuilderTest extends TestCase
         $this->assertSame(Header::class, (string) $headers->type());
         $this->assertSame(2, $headers->size());
         $this->assertSame(
-            'Accept-Ranges : resources',
+            'Accept-Ranges: resources',
             (string) $headers->current()
         );
         $headers->next();
         $this->assertSame(
-            'Content-Range : resources 10-11/11',
+            'Content-Range: resources 10-11/11',
             (string) $headers->current()
         );
     }
@@ -159,12 +159,12 @@ class ListRangeBuilderTest extends TestCase
         $this->assertSame(Header::class, (string) $headers->type());
         $this->assertSame(2, $headers->size());
         $this->assertSame(
-            'Accept-Ranges : resources',
+            'Accept-Ranges: resources',
             (string) $headers->current()
         );
         $headers->next();
         $this->assertSame(
-            'Content-Range : resources 0-10/20',
+            'Content-Range: resources 0-10/20',
             (string) $headers->current()
         );
     }
