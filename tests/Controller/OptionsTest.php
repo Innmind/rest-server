@@ -57,7 +57,7 @@ class OptionsTest extends AbstractTestCase
         $this->assertSame(200, $response->statusCode()->value());
         $this->assertSame('OK', (string) $response->reasonPhrase());
         $this->assertSame(
-            'Content-Type : application/json',
+            'Content-Type: application/json',
             (string) $response->headers()->get('content-type')
         );
         $this->assertSame(

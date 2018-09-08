@@ -69,7 +69,7 @@ class CreateLocationBuilderTest extends TestCase
         $this->assertSame(Header::class, (string) $headers->type());
         $this->assertSame(1, $headers->size());
         $this->assertSame(
-            'Location : /top_dir/image/42',
+            'Location: /top_dir/image/42',
             (string) $headers->current()
         );
     }

@@ -67,7 +67,7 @@ class ListLinksBuilderTest extends TestCase
         $this->assertSame(Header::class, (string) $headers->type());
         $this->assertSame(1, $headers->size());
         $this->assertSame(
-            'Link : </top_dir/image/24>; rel="resource", </top_dir/image/42>; rel="resource"',
+            'Link: </top_dir/image/24>; rel="resource", </top_dir/image/42>; rel="resource"',
             (string) $headers->current()
         );
     }
