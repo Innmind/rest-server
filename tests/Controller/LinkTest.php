@@ -97,6 +97,20 @@ class LinkTest extends AbstractTestCase
                 )
             ));
         $identity = $this->createMock(Identity::class);
+        $from = new Reference(
+            $this->definition,
+            $identity
+        );
+        $tos = (new Map(Reference::class, MapInterface::class))
+            ->put(
+                new Reference(
+                    $this->directories->get('top_dir')->definition('image'),
+                    new Identity\Identity('42')
+                ),
+                (new Map('string', Parameter::class))
+                    ->put('rel', new Parameter\Parameter('rel', 'resource'))
+            );
+
         $this
             ->gateway
             ->expects($this->once())
@@ -106,25 +120,26 @@ class LinkTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with(
-                $from = new Reference(
-                    $this->definition,
-                    $identity
-                ),
-                $tos = (new Map(Reference::class, MapInterface::class))
-                    ->put(
-                        new Reference(
-                            $this->directories->get('top_dir')->definition('image'),
-                            new Identity\Identity('42')
-                        ),
-                        (new Map('string', Parameter::class))
-                            ->put('rel', new Parameter\Parameter('rel', 'resource'))
-                    )
+                $from,
+                $this->callback(static function($value) use ($tos): bool {
+                    return $value->key()->definition() === $tos->key()->definition() &&
+                        $value->key()->identity()->value() === $tos->key()->identity()->value() &&
+                        $value->current()->get('rel')->value() === $tos->current()->get('rel')->value();
+                })
             );
         $this
             ->headerBuilder
             ->expects($this->once())
             ->method('__invoke')
-            ->with($request, $from, $tos)
+            ->with(
+                $request,
+                $from,
+                $this->callback(static function($value) use ($tos): bool {
+                    return $value->key()->definition() === $tos->key()->definition() &&
+                        $value->key()->identity()->value() === $tos->key()->identity()->value() &&
+                        $value->current()->get('rel')->value() === $tos->current()->get('rel')->value();
+                })
+            )
             ->willReturn(new Set(Header::class));
 
         $response = ($this->link)($request, $this->definition, $identity);
