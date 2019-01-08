@@ -93,8 +93,8 @@ class DirectoryTest extends TestCase
                     new Directory(
                         'bar',
                         new Map('string', Directory::class),
-                        (new Map('string', HttpResource::class))
-                            ->put(
+                        Map::of('string', HttpResource::class)
+                            (
                                 'res',
                                 $child = new HttpResource(
                                     'res',
@@ -132,9 +132,9 @@ class DirectoryTest extends TestCase
         $this->assertSame(HttpResource::class, (string) $defs->valueType());
         $this->assertTrue(
             $defs->equals(
-                (new Map('string', HttpResource::class))
-                    ->put('foo.res', $resource)
-                    ->put('foo.bar.res', $child)
+                Map::of('string', HttpResource::class)
+                    ('foo.res', $resource)
+                    ('foo.bar.res', $child)
             )
         );
         $this->assertSame($defs, $directory->flatten());

@@ -32,8 +32,8 @@ class FormTest extends TestCase
                 new Parameter('foo', 42),
                 new Parameter(
                     'bar',
-                    (new Map('string', 'mixed'))
-                        ->put('baz', new Parameter('baz', '24'))
+                    Map::of('string', 'mixed')
+                        ('baz', new Parameter('baz', '24'))
                 )
             ));
         $data = (new Form)($request);

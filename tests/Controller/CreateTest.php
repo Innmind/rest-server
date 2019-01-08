@@ -48,10 +48,8 @@ class CreateTest extends AbstractTestCase
             new Encoder\Json,
             new IdentityNormalizer,
             new ResourceDenormalizer,
-            (new Map('string', Gateway::class))->put(
-                'foo',
-                $this->gateway = $this->createMock(Gateway::class)
-            ),
+            Map::of('string', Gateway::class)
+                ('foo', $this->gateway = $this->createMock(Gateway::class)),
             $this->headerBuilder = $this->createMock(CreateBuilder::class)
         );
     }

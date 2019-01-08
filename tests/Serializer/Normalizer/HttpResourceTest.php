@@ -29,24 +29,24 @@ class HttpResourceTest extends TestCase
         $def = new ResourceDefinition(
             'foobar',
             new Identity('foo'),
-            (new Map('string', PropertyDefinition::class))
-                ->put(
+            Map::of('string', PropertyDefinition::class)
+                (
                     'bar',
                     new PropertyDefinition(
                         'bar',
                         new StringType,
                         new Access(Access::READ),
-                        (new Set('string')),
+                        new Set('string'),
                         false
                     )
                 )
-                ->put(
+                (
                     'baz',
                     new PropertyDefinition(
                         'baz',
                         new StringType,
                         new Access(Access::CREATE),
-                        (new Set('string')),
+                        new Set('string'),
                         false
                     )
                 ),
@@ -58,9 +58,9 @@ class HttpResourceTest extends TestCase
         );
         $resource = new Resource(
             $def,
-            (new Map('string', Property::class))
-                ->put('bar', new Property('bar', 'baz'))
-                ->put('baz', new Property('baz', 'bar'))
+            Map::of('string', Property::class)
+                ('bar', new Property('bar', 'baz'))
+                ('baz', new Property('baz', 'bar'))
         );
 
         $data = (new HttpResource)($resource);
@@ -73,14 +73,14 @@ class HttpResourceTest extends TestCase
         $def = new ResourceDefinition(
             'foobar',
             new Identity('foo'),
-            (new Map('string', PropertyDefinition::class))
-                ->put(
+            Map::of('string', PropertyDefinition::class)
+                (
                     'bar',
                     new PropertyDefinition(
                         'bar',
                         new StringType,
                         new Access(Access::READ),
-                        (new Set('string'))->add('baz'),
+                        Set::of('string', 'baz'),
                         false
                     )
                 ),
@@ -92,8 +92,8 @@ class HttpResourceTest extends TestCase
         );
         $resource = new Resource(
             $def,
-            (new Map('string', Property::class))
-                ->put('bar', new Property('bar', new \stdClass))
+            Map::of('string', Property::class)
+                ('bar', new Property('bar', new \stdClass))
         );
 
         try {

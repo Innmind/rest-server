@@ -62,8 +62,8 @@ class RoutesTest extends TestCase
             'foo',
             new Definition\Identity('uuid'),
             new Map('string', Definition\Property::class),
-            (new Map('scalar', 'variable'))
-                ->put('actions', ['list', 'get']),
+            Map::of('scalar', 'variable')
+                ('actions', ['list', 'get']),
             new Map('scalar', 'variable'),
             new Definition\Gateway('foo'),
             false,

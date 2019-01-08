@@ -101,14 +101,14 @@ class UnlinkTest extends AbstractTestCase
             $this->definition,
             $identity
         );
-        $tos  = (new Map(Reference::class, MapInterface::class))
-            ->put(
+        $tos = Map::of(Reference::class, MapInterface::class)
+            (
                 new Reference(
                     $this->directories->get('top_dir')->definition('image'),
                     new Identity\Identity('42')
                 ),
-                (new Map('string', Parameter::class))
-                    ->put('rel', new Parameter\Parameter('rel', 'resource'))
+                Map::of('string', Parameter::class)
+                    ('rel', new Parameter\Parameter('rel', 'resource'))
             );
 
         $this

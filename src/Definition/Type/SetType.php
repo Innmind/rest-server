@@ -48,7 +48,7 @@ final class SetType implements Type
      */
     public function denormalize($data)
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw new DenormalizationException(sprintf(
                 'The value must be an array of %s',
                 $this->innerKey
@@ -92,6 +92,6 @@ final class SetType implements Type
 
     public function __toString(): string
     {
-        return sprintf('set<%s>', $this->inner);
+        return \sprintf('set<%s>', $this->inner);
     }
 }

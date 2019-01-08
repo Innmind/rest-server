@@ -22,7 +22,6 @@ use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
     Message\StatusCode\StatusCode,
-    Message\ReasonPhrase\ReasonPhrase,
     Headers\Headers,
     Exception\Http\RangeNotSatisfiable,
 };
@@ -98,10 +97,10 @@ final class Index implements Controller
         }
 
         return new Response\Response(
-            $code = new StatusCode(StatusCode::codes()->get(
+            $code = StatusCode::of(
                 $range instanceof Range ? 'PARTIAL_CONTENT' : 'OK'
-            )),
-            new ReasonPhrase(ReasonPhrase::defaults()->get($code->value())),
+            ),
+            $code->associatedreasonPhrase(),
             $request->protocolVersion(),
             Headers::of(
                 ...($this->buildHeader)(

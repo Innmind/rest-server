@@ -24,7 +24,7 @@ final class DefaultTranslator implements SpecificationTranslator
     {
         $data = $this->extract($specification);
 
-        return new Query(http_build_query($data));
+        return new Query(\http_build_query($data));
     }
 
     private function extract(SpecificationInterface $specification): array
@@ -40,7 +40,7 @@ final class DefaultTranslator implements SpecificationTranslator
                     throw new SpecificationNotUsableAsQuery;
                 }
 
-                $data = array_merge(
+                $data = \array_merge(
                     $data,
                     $this->extract($specification->left()),
                     $this->extract($specification->right())

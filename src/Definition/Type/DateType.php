@@ -67,7 +67,7 @@ final class DateType implements Type
      */
     public function normalize($data)
     {
-        if (is_string($data)) {
+        if (\is_string($data)) {
             try {
                 $data = $this->denormalize($data);
             } catch (DenormalizationException $e) {

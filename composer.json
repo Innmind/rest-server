@@ -20,7 +20,7 @@
         "symfony/config": "~3.0|~4.0",
         "innmind/specification": "^1.0",
         "innmind/filesystem": "~3.0",
-        "innmind/http": "~3.0",
+        "innmind/http": "~3.8",
         "willdurand/negotiation": "^2.0",
         "symfony/yaml": "~3.0|~4.0",
         "innmind/url-template": "^1.0",

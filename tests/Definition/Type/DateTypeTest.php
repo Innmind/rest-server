@@ -27,8 +27,8 @@ class DateTypeTest extends TestCase
         $this->assertSame(
             'date<Y-m-d>',
             (string) DateType::fromConfig(
-                (new Map('scalar', 'variable'))
-                    ->put('format', 'Y-m-d'),
+                Map::of('scalar', 'variable')
+                    ('format', 'Y-m-d'),
                 new Types
             )
         );
@@ -44,8 +44,8 @@ class DateTypeTest extends TestCase
     public function testDenormalize()
     {
         $t = DateType::fromConfig(
-            (new Map('scalar', 'variable'))
-                ->put('format', 'Y-m-d'),
+            Map::of('scalar', 'variable')
+                ('format', 'Y-m-d'),
             new Types
         );
         $this->assertInstanceOf(
@@ -70,8 +70,8 @@ class DateTypeTest extends TestCase
     public function testNormalize()
     {
         $type = DateType::fromConfig(
-            (new Map('scalar', 'variable'))
-                ->put('format', 'Y-m-d H:i:s'),
+            Map::of('scalar', 'variable')
+                ('format', 'Y-m-d H:i:s'),
             new Types
         );
         $this->assertSame(

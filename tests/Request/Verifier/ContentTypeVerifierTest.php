@@ -33,19 +33,15 @@ class ContentTypeVerifierTest extends TestCase
     public function testInterface()
     {
         $verifier = new ContentTypeVerifier(
-            new Formats(
-                (new Map('string', Format::class))
-                    ->put(
-                        'json',
-                        new Format(
-                            'json',
-                            Set::of(
-                                MediaType::class,
-                                new MediaType('application/json', 0)
-                            ),
-                            0
-                        )
-                    )
+            Formats::of(
+                new Format(
+                    'json',
+                    Set::of(
+                        MediaType::class,
+                        new MediaType('application/json', 0)
+                    ),
+                    0
+                )
             )
         );
 
@@ -58,19 +54,15 @@ class ContentTypeVerifierTest extends TestCase
     public function testThrowWhenHeaderNotAccepted()
     {
         $verify = new ContentTypeVerifier(
-            new Formats(
-                (new Map('string', Format::class))
-                    ->put(
-                        'json',
-                        new Format(
-                            'json',
-                            Set::of(
-                                MediaType::class,
-                                new MediaType('application/json', 0)
-                            ),
-                            0
-                        )
-                    )
+            Formats::of(
+                new Format(
+                    'json',
+                    Set::of(
+                        MediaType::class,
+                        new MediaType('application/json', 0)
+                    ),
+                    0
+                )
             )
         );
         $headers = $this->createMock(Headers::class);
@@ -116,19 +108,15 @@ class ContentTypeVerifierTest extends TestCase
     public function testDoesntThrowWhenNotPostOrPutMethod()
     {
         $verify = new ContentTypeVerifier(
-            new Formats(
-                (new Map('string', Format::class))
-                    ->put(
-                        'json',
-                        new Format(
-                            'json',
-                            Set::of(
-                                MediaType::class,
-                                new MediaType('application/json', 0)
-                            ),
-                            0
-                        )
-                    )
+            Formats::of(
+                new Format(
+                    'json',
+                    Set::of(
+                        MediaType::class,
+                        new MediaType('application/json', 0)
+                    ),
+                    0
+                )
             )
         );
         $headers = $this->createMock(Headers::class);
@@ -174,19 +162,15 @@ class ContentTypeVerifierTest extends TestCase
     public function testDoesntThrowWhenAcceptContentType()
     {
         $verify = new ContentTypeVerifier(
-            new Formats(
-                (new Map('string', Format::class))
-                    ->put(
-                        'json',
-                        new Format(
-                            'json',
-                            Set::of(
-                                MediaType::class,
-                                new MediaType('application/json', 0)
-                            ),
-                            0
-                        )
-                    )
+            Formats::of(
+                new Format(
+                    'json',
+                    Set::of(
+                        MediaType::class,
+                        new MediaType('application/json', 0)
+                    ),
+                    0
+                )
             )
         );
         $headers = $this->createMock(Headers::class);
@@ -234,19 +218,15 @@ class ContentTypeVerifierTest extends TestCase
     public function testDoesntThrowWhenNoContentType()
     {
         $verify = new ContentTypeVerifier(
-            new Formats(
-                (new Map('string', Format::class))
-                    ->put(
-                        'json',
-                        new Format(
-                            'json',
-                            Set::of(
-                                MediaType::class,
-                                new MediaType('application/json', 0)
-                            ),
-                            0
-                        )
-                    )
+            Formats::of(
+                new Format(
+                    'json',
+                    Set::of(
+                        MediaType::class,
+                        new MediaType('application/json', 0)
+                    ),
+                    0
+                )
             )
         );
         $headers = $this->createMock(Headers::class);

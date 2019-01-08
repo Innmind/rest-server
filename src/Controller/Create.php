@@ -21,7 +21,6 @@ use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
     Message\StatusCode\StatusCode,
-    Message\ReasonPhrase\ReasonPhrase,
     Headers\Headers,
 };
 use Innmind\Immutable\MapInterface;
@@ -85,8 +84,8 @@ final class Create implements Controller
         );
 
         return new Response\Response(
-            $code = new StatusCode(StatusCode::codes()->get('CREATED')),
-            new ReasonPhrase(ReasonPhrase::defaults()->get($code->value())),
+            $code = StatusCode::of('CREATED'),
+            $code->associatedreasonPhrase(),
             $request->protocolVersion(),
             Headers::of(
                 ...($this->buildHeader)($identity, $request, $definition, $resource)

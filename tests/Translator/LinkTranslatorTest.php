@@ -42,8 +42,8 @@ class LinkTranslatorTest extends TestCase
                 new LinkValue(
                     Url::fromString('/top_dir/sub_dir/res/bar'),
                     'relationship',
-                    (new Map('string', LinkParameterInterface::class))
-                        ->put('foo', new LinkParameter('foo', 'baz'))
+                    Map::of('string', LinkParameterInterface::class)
+                        ('foo', new LinkParameter('foo', 'baz'))
                 )
             )
         );

@@ -64,7 +64,7 @@ final class Routes implements \Iterator
                         return true;
                     }
 
-                    return in_array(
+                    return \in_array(
                         (string) $action,
                         $definition->options()->get('actions'),
                         true

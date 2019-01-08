@@ -41,10 +41,8 @@ class LinkTest extends AbstractTestCase
         parent::setUp();
 
         $this->link = new Link(
-            (new Map('string', Gateway::class))->put(
-                'foo',
-                $this->gateway = $this->createMock(Gateway::class)
-            ),
+            Map::of('string', Gateway::class)
+                ('foo', $this->gateway = $this->createMock(Gateway::class)),
             $this->headerBuilder = $this->createMock(LinkBuilder::class),
             new LinkTranslator($this->router)
         );
@@ -107,8 +105,8 @@ class LinkTest extends AbstractTestCase
                     $this->directories->get('top_dir')->definition('image'),
                     new Identity\Identity('42')
                 ),
-                (new Map('string', Parameter::class))
-                    ->put('rel', new Parameter\Parameter('rel', 'resource'))
+                Map::of('string', Parameter::class)
+                    ('rel', new Parameter\Parameter('rel', 'resource'))
             );
 
         $this

@@ -40,7 +40,7 @@ final class ContentTypeVerifier implements Verifier
     ): void {
         if (
             !$request->headers()->has('Content-Type') ||
-            !in_array(
+            !\in_array(
                 (string) $request->method(),
                 [Method::POST, Method::PUT],
                 true

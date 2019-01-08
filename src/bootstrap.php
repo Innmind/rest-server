@@ -77,14 +77,14 @@ function bootstrap(
     );
     $requestDecoder = $requestDecoder ?? new RequestDecoder\Delegate(
         $format,
-        (new Map('string', RequestDecoder::class))
-            ->put('json', new RequestDecoder\Json)
-            ->put('form', new RequestDecoder\Form)
+        Map::of('string', RequestDecoder::class)
+            ('json', new RequestDecoder\Json)
+            ('form', new RequestDecoder\Form)
     );
     $encoder = $encoder ?? new Encoder\Delegate(
         $format,
-        (new Map('string', Encoder::class))
-            ->put('json', new Encoder\Json)
+        Map::of('string', Encoder::class)
+            ('json', new Encoder\Json)
     );
 
     $directories = (new YamlLoader(new Types))(...$files);

@@ -20,9 +20,11 @@ class IdentitiesTest extends TestCase
         $this->assertSame(
             ['identities' => [42, '24']],
             $normalize(
-                (new Set(IdentityInterface::class))
-                    ->add(new Identity(42))
-                    ->add(new Identity('24'))
+                Set::of(
+                    IdentityInterface::class,
+                    new Identity(42),
+                    new Identity('24')
+                )
             )
         );
     }

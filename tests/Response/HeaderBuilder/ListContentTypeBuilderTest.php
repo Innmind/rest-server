@@ -40,28 +40,21 @@ class ListContentTypeBuilderTest extends TestCase
     public function setUp()
     {
         $this->build = new ListContentTypeBuilder(
-            new Formats(
-                (new Map('string', Format::class))
-                    ->put(
-                        'json',
-                        new Format(
-                            'json',
-                            Set::of(MediaType::class, new MediaType('application/json', 42)),
-                            42
-                        )
-                    )
-                    ->put(
-                        'html',
-                        new Format(
-                            'html',
-                            Set::of(
-                                MediaType::class,
-                                new MediaType('text/html', 40),
-                                new MediaType('text/xhtml', 0)
-                            ),
-                            0
-                        )
-                    )
+            Formats::of(
+                new Format(
+                    'json',
+                    Set::of(MediaType::class, new MediaType('application/json', 42)),
+                    42
+                ),
+                new Format(
+                    'html',
+                    Set::of(
+                        MediaType::class,
+                        new MediaType('text/html', 40),
+                        new MediaType('text/xhtml', 0)
+                    ),
+                    0
+                )
             )
         );
     }

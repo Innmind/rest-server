@@ -12,16 +12,7 @@ use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
     Message\Method\Method,
     ProtocolVersion\ProtocolVersion,
-    Message\Environment\Environment,
-    Message\Cookies\Cookies,
-    Message\Query\Query,
-    Message\Query\Parameter as QueryParameterInterface,
-    Message\Form\Form,
-    Message\Form\Parameter as FormParameterInterface,
-    Message\Files\Files,
-    File,
     Headers\Headers,
-    Header,
     Header\Accept,
     Header\AcceptValue,
     Header\Range as RangeHeader,
@@ -46,23 +37,13 @@ class HeaderExtractorTest extends TestCase
         $extract = new HeaderExtractor;
         $request = new ServerRequest(
             Url::fromString('/'),
-            new Method('GET'),
+            Method::get(),
             $protocol = new ProtocolVersion(1, 1),
-            new Headers(
-                (new Map('string', Header::class))
-                    ->put(
-                        'Range',
-                        new RangeHeader(
-                            new RangeValue('resources', 0, 42)
-                        )
-                    )
-            ),
-            new StringStream(''),
-            new Environment(new Map('string', 'scalar')),
-            new Cookies(new Map('string', 'scalar')),
-            new Query(new Map('string', QueryParameterInterface::class)),
-            new Form(new Map('scalar', FormParameterInterface::class)),
-            new Files(new Map('string', File::class))
+            Headers::of(
+                new RangeHeader(
+                    new RangeValue('resources', 0, 42)
+                )
+            )
         );
 
         $range = $extract($request);
@@ -80,17 +61,8 @@ class HeaderExtractorTest extends TestCase
         $extract = new HeaderExtractor;
         $request = new ServerRequest(
             Url::fromString('/'),
-            new Method('GET'),
-            $protocol = new ProtocolVersion(1, 1),
-            new Headers(
-                new Map('string', Header::class)
-            ),
-            new StringStream(''),
-            new Environment(new Map('string', 'scalar')),
-            new Cookies(new Map('string', 'scalar')),
-            new Query(new Map('string', QueryParameterInterface::class)),
-            new Form(new Map('scalar', FormParameterInterface::class)),
-            new Files(new Map('string', File::class))
+            Method::get(),
+            $protocol = new ProtocolVersion(1, 1)
         );
 
         $extract($request);

@@ -28,8 +28,8 @@ class HttpResourceTest extends TestCase
             $definition = new Definition(
                 'foobar',
                 new Identity('foo'),
-                (new Map('string', PropertyDefinition::class))
-                    ->put(
+                Map::of('string', PropertyDefinition::class)
+                    (
                         'foo',
                         new PropertyDefinition(
                             'foo',
@@ -45,8 +45,8 @@ class HttpResourceTest extends TestCase
                 true,
                 new Map('string', 'string')
             ),
-            $properties = (new Map('string', Property::class))
-                ->put('foo', $property = new Property('foo', 42))
+            $properties = Map::of('string', Property::class)
+                ('foo', $property = new Property('foo', 42))
         );
 
         $this->assertInstanceOf(HttpResourceInterface::class, $resource);
@@ -66,15 +66,15 @@ class HttpResourceTest extends TestCase
             new Definition(
                 'foobar',
                 new Identity('foo'),
-                (new Map('string', PropertyDefinition::class)),
+                new Map('string', PropertyDefinition::class),
                 new Map('scalar', 'variable'),
                 new Map('scalar', 'variable'),
                 new Gateway('bar'),
                 true,
                 new Map('string', 'string')
             ),
-            (new Map('string', Property::class))
-                ->put('foo', new Property('foo', 42))
+            Map::of('string', Property::class)
+                ('foo', new Property('foo', 42))
         );
     }
 }

@@ -13,7 +13,6 @@ use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
     Message\StatusCode\StatusCode,
-    Message\ReasonPhrase\ReasonPhrase
 };
 
 final class CatchFilterNotApplicable implements Controller
@@ -34,8 +33,8 @@ final class CatchFilterNotApplicable implements Controller
             return ($this->controller)($request, $definition, $identity);
         } catch (FilterNotApplicable $e) {
             return new Response\Response(
-                new StatusCode($code = StatusCode::codes()->get('BAD_REQUEST')),
-                new ReasonPhrase(ReasonPhrase::defaults()->get($code)),
+                $code = StatusCode::of('BAD_REQUEST'),
+                $code->associatedreasonPhrase(),
                 $request->protocolVersion(),
                 null
                 //todo return the filter that is not applicable ie {"messages": ["'_name_' filter not applicable"]}

@@ -79,7 +79,7 @@ class RangeVerifierTest extends TestCase
             }));
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
-            new Method('GET'),
+            Method::get(),
             $this->createMock(ProtocolVersion::class),
             $headers
         );
@@ -110,7 +110,7 @@ class RangeVerifierTest extends TestCase
             }));
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
-            new Method('GET'),
+            Method::get(),
             $this->createMock(ProtocolVersion::class),
             $headers
         );
@@ -137,7 +137,7 @@ class RangeVerifierTest extends TestCase
             ->willReturn(false);
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
-            new Method('GET'),
+            Method::get(),
             $this->createMock(ProtocolVersion::class),
             $headers
         );

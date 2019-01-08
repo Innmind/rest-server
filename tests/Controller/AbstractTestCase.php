@@ -29,32 +29,26 @@ class AbstractTestCase extends TestCase
     public function setUp()
     {
         $this->format = new Format(
-            new Formats(
-                (new Map('string', FormatFormat::class))->put(
+            Formats::of(
+                new FormatFormat(
                     'json',
-                    new FormatFormat(
-                        'json',
-                        Set::of(MediaType::class, new MediaType('application/json', 0)),
-                        0
-                    )
+                    Set::of(MediaType::class, new MediaType('application/json', 0)),
+                    0
                 )
             ),
-            new Formats(
-                (new Map('string', FormatFormat::class))->put(
+            Formats::of(
+                new FormatFormat(
                     'json',
-                    new FormatFormat(
-                        'json',
-                        Set::of(MediaType::class, new MediaType('application/json', 0)),
-                        0
-                    )
+                    Set::of(MediaType::class, new MediaType('application/json', 0)),
+                    0
                 )
             )
         );
         $this->definition = new Definition\HttpResource(
             'foo',
             new Definition\Identity('uuid'),
-            (new Map('string', Definition\Property::class))
-                ->put(
+            Map::of('string', Definition\Property::class)
+                (
                     'uuid',
                     new Definition\Property(
                         'uuid',
@@ -64,7 +58,7 @@ class AbstractTestCase extends TestCase
                         false
                     )
                 )
-                ->put(
+                (
                     'url',
                     new Definition\Property(
                         'url',

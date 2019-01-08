@@ -12,7 +12,6 @@ use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
     Message\StatusCode\StatusCode,
-    Message\ReasonPhrase\ReasonPhrase,
     Exception
 };
 
@@ -40,8 +39,8 @@ final class CatchHttpException implements Controller
             }
 
             return new Response\Response(
-                new StatusCode($code),
-                new ReasonPhrase(ReasonPhrase::defaults()->get($code)),
+                $code = new StatusCode($code),
+                $code->associatedreasonPhrase(),
                 $request->protocolVersion()
             );
         }

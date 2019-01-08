@@ -17,12 +17,7 @@ use Innmind\Http\{
     Message\Query\Query,
     Message\Query\Parameter as QueryParameterInterface,
     Message\Query\Parameter\Parameter,
-    Message\Form\Form,
-    Message\Form\Parameter as FormParameterInterface,
-    Message\Files\Files,
-    File,
     Headers\Headers,
-    Header,
 };
 use Innmind\Url\Url;
 use Innmind\Filesystem\Stream\StringStream;
@@ -43,21 +38,16 @@ class QueryExtractorTest extends TestCase
         $extract = new QueryExtractor;
         $request = new ServerRequest(
             Url::fromString('/'),
-            new Method('GET'),
+            Method::get(),
             $protocol = new ProtocolVersion(1, 1),
-            new Headers(new Map('string', Header::class)),
+            Headers::of(),
             new StringStream(''),
             new Environment(new Map('string', 'scalar')),
             new Cookies(new Map('string', 'scalar')),
             new Query(
-                (new Map('string', QueryParameterInterface::class))
-                    ->put(
-                        'range',
-                        new Parameter('range', [0, 42])
-                    )
-            ),
-            new Form(new Map('scalar', FormParameterInterface::class)),
-            new Files(new Map('string', File::class))
+                Map::of('string', QueryParameterInterface::class)
+                    ('range', new Parameter('range', [0, 42]))
+            )
         );
 
         $range = $extract($request);
@@ -75,21 +65,16 @@ class QueryExtractorTest extends TestCase
         $extract = new QueryExtractor;
         $request = new ServerRequest(
             Url::fromString('/'),
-            new Method('GET'),
+            Method::get(),
             $protocol = new ProtocolVersion(1, 1),
-            new Headers(new Map('string', Header::class)),
+            Headers::of(),
             new StringStream(''),
             new Environment(new Map('string', 'scalar')),
             new Cookies(new Map('string', 'scalar')),
             new Query(
-                (new Map('string', QueryParameterInterface::class))
-                    ->put(
-                        'range',
-                        new Parameter('range', ['resources', 0, 42])
-                    )
-            ),
-            new Form(new Map('scalar', FormParameterInterface::class)),
-            new Files(new Map('string', File::class))
+                Map::of('string', QueryParameterInterface::class)
+                    ('range', new Parameter('range', ['resources', 0, 42]))
+            )
         );
 
         $extract($request);

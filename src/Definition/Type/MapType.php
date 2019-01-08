@@ -60,7 +60,7 @@ final class MapType implements Type
      */
     public function denormalize($data)
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw new DenormalizationException(sprintf(
                 'The value must be an array of %s mapped to %s',
                 $this->innerKey,
@@ -108,7 +108,7 @@ final class MapType implements Type
 
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             'map<%s, %s>',
             $this->key,
             $this->inner

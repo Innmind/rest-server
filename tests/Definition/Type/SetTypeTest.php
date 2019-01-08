@@ -27,25 +27,25 @@ class SetTypeTest extends TestCase
         $this->assertInstanceOf(
             SetType::class,
             SetType::fromConfig(
-                (new Map('scalar', 'variable'))
-                    ->put('inner', 'string'),
+                Map::of('scalar', 'variable')
+                    ('inner', 'string'),
                 new Types
             )
         );
         $this->assertSame(
             'set<string>',
             (string) SetType::fromConfig(
-                (new Map('scalar', 'variable'))
-                    ->put('inner', 'string'),
+                Map::of('scalar', 'variable')
+                    ('inner', 'string'),
                 new Types
             )
         );
         $this->assertSame(
             'set<date<c>>',
             (string) SetType::fromConfig(
-                (new Map('scalar', 'variable'))
-                    ->put('format', 'c')
-                    ->put('inner', 'date'),
+                Map::of('scalar', 'variable')
+                    ('format', 'c')
+                    ('inner', 'date'),
                 new Types
             )
         );
@@ -54,8 +54,8 @@ class SetTypeTest extends TestCase
     public function testDenormalize()
     {
         $type = SetType::fromConfig(
-            (new Map('scalar', 'variable'))
-                ->put('inner', 'string'),
+            Map::of('scalar', 'variable')
+                ('inner', 'string'),
             new Types
         );
         $this->assertInstanceOf(SetInterface::class, $type->denormalize(['foo']));
@@ -63,8 +63,8 @@ class SetTypeTest extends TestCase
         $this->assertSame(
             ['foo'],
             SetType::fromConfig(
-                (new Map('scalar', 'variable'))
-                    ->put('inner', 'string'),
+                Map::of('scalar', 'variable')
+                    ('inner', 'string'),
                 new Types
             )
                 ->denormalize([new class {
@@ -84,8 +84,8 @@ class SetTypeTest extends TestCase
     public function testThrowWhenNotDenormalizingAnArray()
     {
         (SetType::fromConfig(
-            (new Map('scalar', 'variable'))
-                ->put('inner', 'string'),
+            Map::of('scalar', 'variable')
+                ('inner', 'string'),
             new Types
         ))
             ->denormalize(new \stdClass);
@@ -96,8 +96,8 @@ class SetTypeTest extends TestCase
         $this->assertSame(
             ['foo'],
             (SetType::fromConfig(
-                (new Map('scalar', 'variable'))
-                    ->put('inner', 'string'),
+                Map::of('scalar', 'variable')
+                    ('inner', 'string'),
                 new Types
             ))
                 ->normalize(
@@ -118,8 +118,8 @@ class SetTypeTest extends TestCase
     public function testThrowWhenNotNormalizingAnArray()
     {
         (SetType::fromConfig(
-            (new Map('scalar', 'variable'))
-                ->put('inner', 'string'),
+            Map::of('scalar', 'variable')
+                ('inner', 'string'),
             new Types
         ))
             ->normalize(new \stdClass);

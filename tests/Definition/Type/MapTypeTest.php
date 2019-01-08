@@ -26,28 +26,28 @@ class MapTypeTest extends TestCase
         $this->assertInstanceOf(
             MapType::class,
             MapType::fromConfig(
-                (new Map('scalar', 'variable'))
-                    ->put('inner', 'string')
-                    ->put('key', 'int'),
+                Map::of('scalar', 'variable')
+                    ('inner', 'string')
+                    ('key', 'int'),
                 new Types
             )
         );
         $this->assertSame(
             'map<int, string>',
             (string) MapType::fromConfig(
-                (new Map('scalar', 'variable'))
-                    ->put('inner', 'string')
-                    ->put('key', 'int'),
+                Map::of('scalar', 'variable')
+                    ('inner', 'string')
+                    ('key', 'int'),
                 new Types
             )
         );
         $this->assertSame(
             'map<int, date<c>>',
             (string) MapType::fromConfig(
-                (new Map('scalar', 'variable'))
-                    ->put('inner', 'date')
-                    ->put('format', 'c')
-                    ->put('key', 'int'),
+                Map::of('scalar', 'variable')
+                    ('inner', 'date')
+                    ('format', 'c')
+                    ('key', 'int'),
                 new Types
             )
         );
@@ -56,9 +56,9 @@ class MapTypeTest extends TestCase
     public function testDenormalize()
     {
         $type = MapType::fromConfig(
-            (new Map('scalar', 'variable'))
-                ->put('inner', 'string')
-                ->put('key', 'int'),
+            Map::of('scalar', 'variable')
+                ('inner', 'string')
+                ('key', 'int'),
             new Types
         );
         $this->assertInstanceOf(MapInterface::class, $type->denormalize(['foo']));
@@ -66,9 +66,9 @@ class MapTypeTest extends TestCase
         $this->assertSame(
             'foo',
             MapType::fromConfig(
-                (new Map('scalar', 'variable'))
-                    ->put('inner', 'string')
-                    ->put('key', 'int'),
+                Map::of('scalar', 'variable')
+                    ('inner', 'string')
+                    ('key', 'int'),
                 new Types
             )
                 ->denormalize(['1' => new class {
@@ -88,9 +88,9 @@ class MapTypeTest extends TestCase
     public function testThrowWhenNotDenormalizingAnArray()
     {
         (MapType::fromConfig(
-            (new Map('scalar', 'variable'))
-                ->put('inner', 'string')
-                ->put('key', 'int'),
+            Map::of('scalar', 'variable')
+                ('inner', 'string')
+                ('key', 'int'),
             new Types
         ))
             ->denormalize(new \stdClass);
@@ -101,14 +101,14 @@ class MapTypeTest extends TestCase
         $this->assertSame(
             [1 => 'foo'],
             (MapType::fromConfig(
-                (new Map('scalar', 'variable'))
-                    ->put('inner', 'string')
-                    ->put('key', 'int'),
+                Map::of('scalar', 'variable')
+                    ('inner', 'string')
+                    ('key', 'int'),
                 new Types
             ))
                 ->normalize(
-                    (new Map('string', 'object'))
-                        ->put('1', new class {
+                    Map::of('string', 'object')
+                        ('1', new class {
                             public function __toString()
                             {
                                 return 'foo';
@@ -125,9 +125,9 @@ class MapTypeTest extends TestCase
     public function testThrowWhenNotNormalizingAnArray()
     {
         (MapType::fromConfig(
-            (new Map('scalar', 'variable'))
-                ->put('inner', 'string')
-                ->put('key', 'int'),
+            Map::of('scalar', 'variable')
+                ('inner', 'string')
+                ('key', 'int'),
             new Types
         ))
             ->normalize(new \stdClass);

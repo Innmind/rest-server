@@ -20,8 +20,8 @@ class FormatsTest extends TestCase
     public function testInterface()
     {
         $formats = new Formats(
-            $all = (new Map('string', Format::class))
-                ->put(
+            $all = Map::of('string', Format::class)
+                (
                     'json',
                     $format = new Format(
                         'json',
@@ -77,31 +77,24 @@ class FormatsTest extends TestCase
 
     public function testMediaTypes()
     {
-        $formats = new Formats(
-            (new Map('string', Format::class))
-                ->put(
-                    'json',
-                    new Format(
-                        'json',
-                        Set::of(
-                            MediaType::class,
-                            $json = new MediaType('application/json', 42)
-                        ),
-                        42
-                    )
-                )
-                ->put(
-                    'html',
-                    new Format(
-                        'html',
-                        Set::of(
-                            MediaType::class,
-                            $html = new MediaType('text/html', 40),
-                            $xhtml = new MediaType('text/xhtml', 0)
-                        ),
-                        0
-                    )
-                )
+        $formats = Formats::of(
+            new Format(
+                'json',
+                Set::of(
+                    MediaType::class,
+                    $json = new MediaType('application/json', 42)
+                ),
+                42
+            ),
+            new Format(
+                'html',
+                Set::of(
+                    MediaType::class,
+                    $html = new MediaType('text/html', 40),
+                    $xhtml = new MediaType('text/xhtml', 0)
+                ),
+                0
+            )
         );
 
         $types = $formats->mediaTypes();
@@ -115,28 +108,21 @@ class FormatsTest extends TestCase
 
     public function testFromMediaType()
     {
-        $formats = new Formats(
-            (new Map('string', Format::class))
-                ->put(
-                    'json',
-                    $json = new Format(
-                        'json',
-                        Set::of(MediaType::class, new MediaType('application/json', 42)),
-                        42
-                    )
-                )
-                ->put(
-                    'html',
-                    $html = new Format(
-                        'html',
-                        Set::of(
-                            MediaType::class,
-                            new MediaType('text/html', 40),
-                            new MediaType('text/xhtml', 0)
-                        ),
-                        0
-                    )
-                )
+        $formats = Formats::of(
+            $json = new Format(
+                'json',
+                Set::of(MediaType::class, new MediaType('application/json', 42)),
+                42
+            ),
+            $html = new Format(
+                'html',
+                Set::of(
+                    MediaType::class,
+                    new MediaType('text/html', 40),
+                    new MediaType('text/xhtml', 0)
+                ),
+                0
+            )
         );
 
         $this->assertSame($json, $formats->fromMediaType('application/json'));

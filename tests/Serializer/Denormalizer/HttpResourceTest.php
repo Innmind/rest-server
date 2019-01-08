@@ -29,8 +29,8 @@ class HttpResourceTest extends TestCase
         $definition = new ResourceDefinition(
             'foobar',
             new Identity('foo'),
-            (new Map('string', Property::class))
-                ->put(
+            Map::of('string', Property::class)
+                (
                     'bar',
                     new Property(
                         'bar',
@@ -68,8 +68,8 @@ class HttpResourceTest extends TestCase
         $definition = new ResourceDefinition(
             'foobar',
             new Identity('foo'),
-            (new Map('string', Property::class))
-                ->put(
+            Map::of('string', Property::class)
+                (
                     'bar',
                     new Property(
                         'bar',
@@ -79,7 +79,7 @@ class HttpResourceTest extends TestCase
                         false
                     )
                 )
-                ->put(
+                (
                     'baz',
                     new Property(
                         'baz',
@@ -89,7 +89,7 @@ class HttpResourceTest extends TestCase
                         false
                     )
                 )
-                ->put(
+                (
                     'foo',
                     new Property(
                         'foo',
@@ -99,7 +99,7 @@ class HttpResourceTest extends TestCase
                         false
                     )
                 )
-                ->put(
+                (
                     'foobar',
                     new Property(
                         'foobar',

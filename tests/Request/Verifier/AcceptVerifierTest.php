@@ -33,19 +33,15 @@ class AcceptVerifierTest extends TestCase
     public function testInterface()
     {
         $verifier = new AcceptVerifier(
-            new Formats(
-                (new Map('string', Format::class))
-                    ->put(
-                        'json',
-                        new Format(
-                            'json',
-                            Set::of(
-                                MediaType::class,
-                                new MediaType('application/json', 0)
-                            ),
-                            0
-                        )
-                    )
+            Formats::of(
+                new Format(
+                    'json',
+                    Set::of(
+                        MediaType::class,
+                        new MediaType('application/json', 0)
+                    ),
+                    0
+                )
             )
         );
 
@@ -58,19 +54,15 @@ class AcceptVerifierTest extends TestCase
     public function testThrowWhenHeaderNotAccepted()
     {
         $verify = new AcceptVerifier(
-            new Formats(
-                (new Map('string', Format::class))
-                    ->put(
-                        'json',
-                        new Format(
-                            'json',
-                            Set::of(
-                                MediaType::class,
-                                new MediaType('application/json', 0)
-                            ),
-                            0
-                        )
-                    )
+            Formats::of(
+                new Format(
+                    'json',
+                    Set::of(
+                        MediaType::class,
+                        new MediaType('application/json', 0)
+                    ),
+                    0
+                )
             )
         );
         $headers = $this->createMock(Headers::class);
@@ -109,19 +101,15 @@ class AcceptVerifierTest extends TestCase
     public function testDoesntThrowWhenAcceptMediaType()
     {
         $verify = new AcceptVerifier(
-            new Formats(
-                (new Map('string', Format::class))
-                    ->put(
-                        'json',
-                        new Format(
-                            'json',
-                            Set::of(
-                                MediaType::class,
-                                new MediaType('application/json', 0)
-                            ),
-                            0
-                        )
-                    )
+            Formats::of(
+                new Format(
+                    'json',
+                    Set::of(
+                        MediaType::class,
+                        new MediaType('application/json', 0)
+                    ),
+                    0
+                )
             )
         );
         $headers = $this->createMock(Headers::class);

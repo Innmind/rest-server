@@ -53,8 +53,8 @@ class BuilderTest extends TestCase
         $definition = new HttpResource(
             'foo',
             new Identity('uuid'),
-            (new Map('string', Property::class))
-                ->put(
+            Map::of('string', Property::class)
+                (
                     'foo',
                     new Property(
                         'foo',
@@ -64,7 +64,7 @@ class BuilderTest extends TestCase
                         true
                     )
                 )
-                ->put(
+                (
                     'bar',
                     new Property(
                         'bar',

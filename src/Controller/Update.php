@@ -19,7 +19,6 @@ use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
     Message\StatusCode\StatusCode,
-    Message\ReasonPhrase\ReasonPhrase,
     Headers\Headers,
 };
 use Innmind\Immutable\MapInterface;
@@ -77,8 +76,8 @@ final class Update implements Controller
         );
 
         return new Response\Response(
-            $code = new StatusCode(StatusCode::codes()->get('NO_CONTENT')),
-            new ReasonPhrase(ReasonPhrase::defaults()->get($code->value())),
+            $code = StatusCode::of('NO_CONTENT'),
+            $code->associatedreasonPhrase(),
             $request->protocolVersion(),
             Headers::of(
                 ...($this->buildHeader)($request, $definition, $identity, $resource)

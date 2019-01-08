@@ -32,10 +32,8 @@ class RemoveTest extends AbstractTestCase
         parent::setUp();
 
         $this->remove = new Remove(
-            (new Map('string', Gateway::class))->put(
-                'foo',
-                $this->gateway = $this->createMock(Gateway::class)
-            ),
+            Map::of('string', Gateway::class)
+                ('foo', $this->gateway = $this->createMock(Gateway::class)),
             $this->headerBuilder = $this->createMock(RemoveBuilder::class)
         );
     }
