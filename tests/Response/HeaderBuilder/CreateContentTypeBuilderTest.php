@@ -28,7 +28,6 @@ use Innmind\Http\{
 };
 use Innmind\Url\UrlInterface;
 use Innmind\Immutable\{
-    Map,
     SetInterface,
     Set,
 };
@@ -81,12 +80,9 @@ class CreateContentTypeBuilderTest extends TestCase
             ),
             HttpResource::rangeable(
                 'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('command'),
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             ),
             $this->createMock(HttpResourceInterface::class)
         );

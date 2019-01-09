@@ -12,7 +12,7 @@ use Innmind\Rest\Server\{
     Definition\Property,
 };
 use Innmind\Http\Message\ServerRequest;
-use Innmind\Immutable\Map;
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class DelegationVerifierTest extends TestCase
@@ -47,12 +47,9 @@ class DelegationVerifierTest extends TestCase
                 $this->createMock(ServerRequest::class),
                 HttpResource::rangeable(
                     'foo',
-                    new Identity('uuid'),
-                    new Map('string', Property::class),
-                    new Map('scalar', 'variable'),
-                    new Map('scalar', 'variable'),
                     new Gateway('command'),
-                    new Map('string', 'string')
+                    new Identity('uuid'),
+                    new Set(Property::class)
                 )
             )
         );
@@ -77,12 +74,9 @@ class DelegationVerifierTest extends TestCase
             $this->createMock(ServerRequest::class),
             HttpResource::rangeable(
                 'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('command'),
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             )
         );
     }

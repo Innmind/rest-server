@@ -13,10 +13,7 @@ use Innmind\Rest\Server\{
     Router,
     Routing\Routes,
 };
-use Innmind\Immutable\{
-    Map,
-    Set,
-};
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class AbstractTestCase extends TestCase
@@ -46,28 +43,21 @@ class AbstractTestCase extends TestCase
         );
         $this->definition = new Definition\HttpResource(
             'foo',
-            new Definition\Identity('uuid'),
-            Map::of('string', Definition\Property::class)
-                (
-                    'uuid',
-                    Definition\Property::required(
-                        'uuid',
-                        new Definition\Type\StringType,
-                        new Definition\Access('READ')
-                    )
-                )
-                (
-                    'url',
-                    Definition\Property::required(
-                        'url',
-                        new Definition\Type\StringType,
-                        new Definition\Access('READ', 'CREATE', 'UPDATE')
-                    )
-                ),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Definition\Gateway('foo'),
-            new Map('string', 'string')
+            new Definition\Identity('uuid'),
+            Set::of(
+                Definition\Property::class,
+                Definition\Property::required(
+                    'uuid',
+                    new Definition\Type\StringType,
+                    new Definition\Access('READ')
+                ),
+                Definition\Property::required(
+                    'url',
+                    new Definition\Type\StringType,
+                    new Definition\Access('READ', 'CREATE', 'UPDATE')
+                )
+            )
         );
         $this->router = new Router(
             Routes::from(

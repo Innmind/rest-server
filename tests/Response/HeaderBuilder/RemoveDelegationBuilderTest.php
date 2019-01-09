@@ -17,7 +17,6 @@ use Innmind\Http\{
     Header,
 };
 use Innmind\Immutable\{
-    Map,
     SetInterface,
     Set,
 };
@@ -34,12 +33,9 @@ class RemoveDelegationBuilderTest extends TestCase
             $this->createMock(ServerRequest::class),
             Httpresource::rangeable(
                 'foobar',
-                new Identity('foo'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                new Map('string', 'string')
+                new Identity('foo'),
+                new Set(Property::class)
             ),
             $this->createMock(IdentityInterface::class)
         );
@@ -68,12 +64,9 @@ class RemoveDelegationBuilderTest extends TestCase
             $this->createMock(ServerRequest::class),
             Httpresource::rangeable(
                 'foobar',
-                new Identity('foo'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                new Map('string', 'string')
+                new Identity('foo'),
+                new Set(Property::class)
             ),
             $this->createMock(IdentityInterface::class)
         );

@@ -26,10 +26,7 @@ use Innmind\Http\{
 };
 use Innmind\Url\UrlInterface;
 use Innmind\Stream\Readable;
-use Innmind\Immutable\{
-    Map,
-    Set,
-};
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class BuilderTest extends TestCase
@@ -52,28 +49,21 @@ class BuilderTest extends TestCase
         );
         $definition = HttpResource::rangeable(
             'foo',
-            new Identity('uuid'),
-            Map::of('string', Property::class)
-                (
-                    'foo',
-                    Property::optional(
-                        'foo',
-                        new StringType,
-                        new Access(Access::READ)
-                    )
-                )
-                (
-                    'bar',
-                    Property::optional(
-                        'bar',
-                        new StringType,
-                        new Access(Access::READ)
-                    )
-                ),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Gateway('command'),
-            new Map('string', 'string')
+            new Identity('uuid'),
+            Set::of(
+                Property::class,
+                Property::optional(
+                    'foo',
+                    new StringType,
+                    new Access(Access::READ)
+                ),
+                Property::optional(
+                    'bar',
+                    new StringType,
+                    new Access(Access::READ)
+                )
+            )
         );
         $build = new Builder;
 
@@ -104,12 +94,9 @@ class BuilderTest extends TestCase
         );
         $definition = HttpResource::rangeable(
             'foo',
-            new Identity('uuid'),
-            new Map('string', Property::class),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Gateway('command'),
-            new Map('string', 'string')
+            new Identity('uuid'),
+            new Set(Property::class)
         );
         $build = new Builder;
 
@@ -133,12 +120,9 @@ class BuilderTest extends TestCase
         );
         $definition = HttpResource::rangeable(
             'foo',
-            new Identity('uuid'),
-            new Map('string', Property::class),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Gateway('command'),
-            new Map('string', 'string')
+            new Identity('uuid'),
+            new Set(Property::class)
         );
         $build = new Builder;
 

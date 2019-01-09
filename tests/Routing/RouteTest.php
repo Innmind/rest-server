@@ -12,7 +12,7 @@ use Innmind\Rest\Server\{
 };
 use Innmind\UrlTemplate\Template;
 use Innmind\Url\Path;
-use Innmind\Immutable\Map;
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class RouteTest extends TestCase
@@ -23,12 +23,9 @@ class RouteTest extends TestCase
     {
         $this->definition = new Definition\HttpResource(
             'foo',
-            new Definition\Identity('uuid'),
-            new Map('string', Definition\Property::class),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Definition\Gateway('foo'),
-            new Map('string', 'string')
+            new Definition\Identity('uuid'),
+            new Set(Definition\Property::class)
         );
     }
 

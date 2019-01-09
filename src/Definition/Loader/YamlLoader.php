@@ -92,17 +92,17 @@ final class YamlLoader implements Loader
 
     private function buildDefinition(string $name, array $config): HttpResource
     {
-        $properties = new Map('string', Property::class);
+        $properties = new Set(Property::class);
 
         foreach ($config['properties'] as $key => $value) {
-            $properties = $properties->put(
-                $key,
+            $properties = $properties->add(
                 $this->buildProperty($key, $value)
             );
         }
 
         $arguments = [
             $name,
+            new Gateway($config['gateway']),
             new Identity($config['identity']),
             $properties,
             Map::of(
@@ -117,7 +117,6 @@ final class YamlLoader implements Loader
                 array_keys($config['metas'] ?? []),
                 array_values($config['metas'] ?? [])
             ),
-            new Gateway($config['gateway']),
             Map::of(
                 'string',
                 'string',

@@ -37,12 +37,9 @@ class UnlinkDelegationBuilderTest extends TestCase
             new Reference(
                 Httpresource::rangeable(
                     'foobar',
-                    new IdentityDefinition('foo'),
-                    new Map('string', Property::class),
-                    new Map('scalar', 'variable'),
-                    new Map('scalar', 'variable'),
                     new Gateway('bar'),
-                    new Map('string', 'string')
+                    new IdentityDefinition('foo'),
+                    new Set(Property::class)
                 ),
                 new Identity('foo')
             ),
@@ -65,12 +62,9 @@ class UnlinkDelegationBuilderTest extends TestCase
             new Reference(
                 Httpresource::rangeable(
                     'foobar',
-                    new IdentityDefinition('foo'),
-                    new Map('string', Property::class),
-                    new Map('scalar', 'variable'),
-                    new Map('scalar', 'variable'),
                     new Gateway('bar'),
-                    new Map('string', 'string')
+                    new IdentityDefinition('foo'),
+                    new Set(Property::class)
                 ),
                 new Identity('foo')
             ),
@@ -100,12 +94,9 @@ class UnlinkDelegationBuilderTest extends TestCase
             new Reference(
                 Httpresource::rangeable(
                     'foobar',
-                    new IdentityDefinition('foo'),
-                    new Map('string', Property::class),
-                    new Map('scalar', 'variable'),
-                    new Map('scalar', 'variable'),
                     new Gateway('bar'),
-                    new Map('string', 'string')
+                    new IdentityDefinition('foo'),
+                    new Set(Property::class)
                 ),
                 new Identity('foo')
             ),

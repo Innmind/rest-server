@@ -22,10 +22,7 @@ use Innmind\Http\{
     ProtocolVersion,
 };
 use Innmind\Url\UrlInterface;
-use Innmind\Immutable\{
-    Map,
-    Set,
-};
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class ContentTypeVerifierTest extends TestCase
@@ -94,12 +91,9 @@ class ContentTypeVerifierTest extends TestCase
             $request,
             HttpResource::rangeable(
                 'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('command'),
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             )
         );
     }
@@ -147,12 +141,9 @@ class ContentTypeVerifierTest extends TestCase
             $request,
             HttpResource::rangeable(
                 'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('command'),
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             )
         );
     }
@@ -201,12 +192,9 @@ class ContentTypeVerifierTest extends TestCase
                 $request,
                 HttpResource::rangeable(
                     'foo',
-                    new Identity('uuid'),
-                    new Map('string', Property::class),
-                    new Map('scalar', 'variable'),
-                    new Map('scalar', 'variable'),
                     new Gateway('command'),
-                    new Map('string', 'string')
+                    new Identity('uuid'),
+                    new Set(Property::class)
                 )
             )
         );
@@ -242,12 +230,9 @@ class ContentTypeVerifierTest extends TestCase
                 $request,
                 HttpResource::rangeable(
                     'foo',
-                    new Identity('uuid'),
-                    new Map('string', Property::class),
-                    new Map('scalar', 'variable'),
-                    new Map('scalar', 'variable'),
                     new Gateway('command'),
-                    new Map('string', 'string')
+                    new Identity('uuid'),
+                    new Set(Property::class)
                 )
             )
         );

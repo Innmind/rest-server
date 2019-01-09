@@ -3,7 +3,11 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Definition;
 
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\{
+    MapInterface,
+    Map,
+    SetInterface,
+};
 
 final class HttpResource
 {
@@ -18,19 +22,20 @@ final class HttpResource
 
     public function __construct(
         string $name,
-        Identity $identity,
-        MapInterface $properties,
-        MapInterface $options,
-        MapInterface $metas,
         Gateway $gateway,
-        MapInterface $allowedLinks
+        Identity $identity,
+        SetInterface $properties,
+        MapInterface $options = null,
+        MapInterface $metas = null,
+        MapInterface $allowedLinks = null
     ) {
-        if (
-            (string) $properties->keyType() !== 'string' ||
-            (string) $properties->valueType() !== Property::class
-        ) {
+        $options = $options ?? Map::of('scalar', 'variable');
+        $metas = $metas ?? Map::of('scalar', 'variable');
+        $allowedLinks = $allowedLinks ?? Map::of('string', 'string');
+
+        if ((string) $properties->type() !== Property::class) {
             throw new \TypeError(sprintf(
-                'Argument 3 must be of type MapInterface<string, %s>',
+                'Argument 4 must be of type SetInterface<%s>',
                 Property::class
             ));
         }
@@ -39,14 +44,14 @@ final class HttpResource
             (string) $options->keyType() !== 'scalar' ||
             (string) $options->valueType() !== 'variable'
         ) {
-            throw new \TypeError('Argument 4 must be of type MapInterface<scalar, variable>');
+            throw new \TypeError('Argument 5 must be of type MapInterface<scalar, variable>');
         }
 
         if (
             (string) $metas->keyType() !== 'scalar' ||
             (string) $metas->valueType() !== 'variable'
         ) {
-            throw new \TypeError('Argument 5 must be of type MapInterface<scalar, variable>');
+            throw new \TypeError('Argument 6 must be of type MapInterface<scalar, variable>');
         }
 
         if (
@@ -58,7 +63,12 @@ final class HttpResource
 
         $this->name = new Name($name);
         $this->identity = $identity;
-        $this->properties = $properties;
+        $this->properties = $properties->reduce(
+            Map::of('string', Property::class),
+            static function(MapInterface $properties, Property $property): MapInterface {
+                return $properties->put((string) $property->name(), $property);
+            }
+        );
         $this->options = $options;
         $this->metas = $metas;
         $this->gateway = $gateway;
@@ -67,14 +77,14 @@ final class HttpResource
 
     public static function rangeable(
         string $name,
-        Identity $identity,
-        MapInterface $properties,
-        MapInterface $options,
-        MapInterface $metas,
         Gateway $gateway,
-        MapInterface $allowedLinks
+        Identity $identity,
+        SetInterface $properties,
+        MapInterface $options = null,
+        MapInterface $metas = null,
+        MapInterface $allowedLinks = null
     ): self {
-        $self = new self($name, $identity, $properties, $options, $metas, $gateway, $allowedLinks);
+        $self = new self($name, $gateway, $identity, $properties, $options, $metas, $allowedLinks);
         $self->rangeable = true;
 
         return $self;

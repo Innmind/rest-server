@@ -15,10 +15,7 @@ use Innmind\Rest\Server\{
     Exception\DenormalizationException,
     Exception\HttpResourceDenormalizationException,
 };
-use Innmind\Immutable\{
-    Map,
-    Set,
-};
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class HttpResourceTest extends TestCase
@@ -28,21 +25,17 @@ class HttpResourceTest extends TestCase
         $denormalize = new HttpResource;
         $definition = ResourceDefinition::rangeable(
             'foobar',
-            new Identity('foo'),
-            Map::of('string', Property::class)
-                (
-                    'bar',
-                    Property::required(
-                        'bar',
-                        new StringType,
-                        new Access(Access::READ, Access::CREATE),
-                        'baz'
-                    )
-                ),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Gateway('bar'),
-            new Map('string', 'string')
+            new Identity('foo'),
+            Set::of(
+                Property::class,
+                Property::required(
+                    'bar',
+                    new StringType,
+                    new Access(Access::READ, Access::CREATE),
+                    'baz'
+                )
+            )
         );
 
         $resource = $denormalize(
@@ -65,44 +58,31 @@ class HttpResourceTest extends TestCase
         $denormalize = new HttpResource;
         $definition = ResourceDefinition::rangeable(
             'foobar',
-            new Identity('foo'),
-            Map::of('string', Property::class)
-                (
-                    'bar',
-                    Property::required(
-                        'bar',
-                        new StringType,
-                        new Access(Access::READ, Access::CREATE)
-                    )
-                )
-                (
-                    'baz',
-                    Property::required(
-                        'baz',
-                        new StringType,
-                        new Access(Access::READ, Access::CREATE)
-                    )
-                )
-                (
-                    'foo',
-                    Property::required(
-                        'foo',
-                        new StringType,
-                        new Access(Access::READ)
-                    )
-                )
-                (
-                    'foobar',
-                    Property::required(
-                        'foobar',
-                        new StringType,
-                        new Access(Access::READ)
-                    )
-                ),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Gateway('bar'),
-            new Map('string', 'string')
+            new Identity('foo'),
+            Set::of(
+                Property::class,
+                Property::required(
+                    'bar',
+                    new StringType,
+                    new Access(Access::READ, Access::CREATE)
+                ),
+                Property::required(
+                    'baz',
+                    new StringType,
+                    new Access(Access::READ, Access::CREATE)
+                ),
+                Property::required(
+                    'foo',
+                    new StringType,
+                    new Access(Access::READ)
+                ),
+                Property::required(
+                    'foobar',
+                    new StringType,
+                    new Access(Access::READ)
+                )
+            )
         );
 
         try {

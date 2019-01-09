@@ -34,12 +34,9 @@ class DirectoryTest extends TestCase
             ),
             $resource = HttpResource::rangeable(
                 'res',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('foo'),
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             )
         );
 
@@ -92,24 +89,18 @@ class DirectoryTest extends TestCase
                             'res',
                             $child = HttpResource::rangeable(
                                 'res',
-                                new Identity('uuid'),
-                                new Map('string', Property::class),
-                                new Map('scalar', 'variable'),
-                                new Map('scalar', 'variable'),
                                 new Gateway('foo'),
-                                new Map('string', 'string')
+                                new Identity('uuid'),
+                                new Set(Property::class)
                             )
                         )
                 )
             ),
             $resource = HttpResource::rangeable(
                 'res',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('foo'),
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             )
         );
 

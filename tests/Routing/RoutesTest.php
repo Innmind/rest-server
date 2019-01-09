@@ -15,7 +15,10 @@ use Innmind\Rest\Server\{
     Exception\RouteNotFound,
 };
 use Innmind\Url\Path;
-use Innmind\Immutable\Map;
+use Innmind\Immutable\{
+    Map,
+    Set,
+};
 use PHPUnit\Framework\TestCase;
 
 class RoutesTest extends TestCase
@@ -60,13 +63,11 @@ class RoutesTest extends TestCase
     {
         $definition = new Definition\HttpResource(
             'foo',
-            new Definition\Identity('uuid'),
-            new Map('string', Definition\Property::class),
-            Map::of('scalar', 'variable')
-                ('actions', ['list', 'get']),
-            new Map('scalar', 'variable'),
             new Definition\Gateway('foo'),
-            new Map('string', 'string')
+            new Definition\Identity('uuid'),
+            new Set(Definition\Property::class),
+            Map::of('scalar', 'variable')
+                ('actions', ['list', 'get'])
         );
 
         $routes = Routes::of(

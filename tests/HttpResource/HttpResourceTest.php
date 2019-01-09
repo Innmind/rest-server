@@ -14,10 +14,7 @@ use Innmind\Rest\Server\{
     Definition\Type\StringType,
     Definition\Access,
 };
-use Innmind\Immutable\{
-    Map,
-    Set,
-};
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class HttpResourceTest extends TestCase
@@ -27,20 +24,16 @@ class HttpResourceTest extends TestCase
         $resource = HttpResource::of(
             $definition = Definition::rangeable(
                 'foobar',
-                new Identity('foo'),
-                Map::of('string', PropertyDefinition::class)
-                    (
-                        'foo',
-                        PropertyDefinition::optional(
-                            'foo',
-                            new StringType,
-                            new Access(Access::READ)
-                        )
-                    ),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                new Map('string', 'string')
+                new Identity('foo'),
+                Set::of(
+                    PropertyDefinition::class,
+                    PropertyDefinition::optional(
+                        'foo',
+                        new StringType,
+                        new Access(Access::READ)
+                    )
+                )
             ),
             $property = new Property('foo', 42)
         );
@@ -57,18 +50,14 @@ class HttpResourceTest extends TestCase
      */
     public function testThrowWhenBuildingWithUndefinedProperty()
     {
-        new HttpResource(
+        HttpResource::of(
             Definition::rangeable(
                 'foobar',
-                new Identity('foo'),
-                new Map('string', PropertyDefinition::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                new Map('string', 'string')
+                new Identity('foo'),
+                new Set(PropertyDefinition::class)
             ),
-            Map::of('string', Property::class)
-                ('foo', new Property('foo', 42))
+            new Property('foo', 42)
         );
     }
 }

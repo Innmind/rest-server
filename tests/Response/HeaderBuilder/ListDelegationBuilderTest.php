@@ -18,7 +18,6 @@ use Innmind\Http\{
 };
 use Innmind\Immutable\{
     Set,
-    Map,
     SetInterface,
 };
 use PHPUnit\Framework\TestCase;
@@ -35,12 +34,9 @@ class ListDelegationBuilderTest extends TestCase
             $this->createMock(ServerRequest::class),
             Httpresource::rangeable(
                 'foobar',
-                new Identity('foo'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                new Map('string', 'string')
+                new Identity('foo'),
+                new Set(Property::class)
             )
         );
         $this->assertInstanceOf(SetInterface::class, $headers);
@@ -60,12 +56,9 @@ class ListDelegationBuilderTest extends TestCase
             $this->createMock(ServerRequest::class),
             Httpresource::rangeable(
                 'foobar',
-                new Identity('foo'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                new Map('string', 'string')
+                new Identity('foo'),
+                new Set(Property::class)
             )
         );
     }
@@ -92,12 +85,9 @@ class ListDelegationBuilderTest extends TestCase
             $this->createMock(ServerRequest::class),
             Httpresource::rangeable(
                 'foobar',
-                new Identity('foo'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                new Map('string', 'string')
+                new Identity('foo'),
+                new Set(Property::class)
             )
         );
 

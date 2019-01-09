@@ -85,12 +85,9 @@ class GetContentTypeBuilderTest extends TestCase
             ),
             HttpResource::rangeable(
                 'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('command'),
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             ),
             $this->createMock(IdentityInterface::class)
         );

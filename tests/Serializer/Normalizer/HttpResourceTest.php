@@ -16,10 +16,7 @@ use Innmind\Rest\Server\{
     Exception\NormalizationException,
     Exception\HttpResourceNormalizationException,
 };
-use Innmind\Immutable\{
-    Map,
-    Set,
-};
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class HttpResourceTest extends TestCase
@@ -28,28 +25,21 @@ class HttpResourceTest extends TestCase
     {
         $def = ResourceDefinition::rangeable(
             'foobar',
-            new Identity('foo'),
-            Map::of('string', PropertyDefinition::class)
-                (
-                    'bar',
-                    PropertyDefinition::required(
-                        'bar',
-                        new StringType,
-                        new Access(Access::READ)
-                    )
-                )
-                (
-                    'baz',
-                    PropertyDefinition::required(
-                        'baz',
-                        new StringType,
-                        new Access(Access::CREATE)
-                    )
-                ),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Gateway('bar'),
-            new Map('string', 'string')
+            new Identity('foo'),
+            Set::of(
+                PropertyDefinition::class,
+                PropertyDefinition::required(
+                    'bar',
+                    new StringType,
+                    new Access(Access::READ)
+                ),
+                PropertyDefinition::required(
+                    'baz',
+                    new StringType,
+                    new Access(Access::CREATE)
+                )
+            )
         );
         $resource = Resource::of(
             $def,
@@ -66,21 +56,17 @@ class HttpResourceTest extends TestCase
     {
         $def = ResourceDefinition::rangeable(
             'foobar',
-            new Identity('foo'),
-            Map::of('string', PropertyDefinition::class)
-                (
-                    'bar',
-                    PropertyDefinition::required(
-                        'bar',
-                        new StringType,
-                        new Access(Access::READ),
-                        'baz'
-                    )
-                ),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Gateway('bar'),
-            new Map('string', 'string')
+            new Identity('foo'),
+            Set::of(
+                PropertyDefinition::class,
+                PropertyDefinition::required(
+                    'bar',
+                    new StringType,
+                    new Access(Access::READ),
+                    'baz'
+                )
+            )
         );
         $resource = Resource::of(
             $def,

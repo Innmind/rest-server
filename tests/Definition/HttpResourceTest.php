@@ -10,7 +10,11 @@ use Innmind\Rest\Server\Definition\{
     Property,
     Name,
 };
-use Innmind\Immutable\Map;
+use Innmind\Immutable\{
+    MapInterface,
+    Map,
+    Set,
+};
 use PHPUnit\Framework\TestCase;
 
 class HttpResourceTest extends TestCase
@@ -19,11 +23,11 @@ class HttpResourceTest extends TestCase
     {
         $resource = HttpResource::rangeable(
             'foobar',
+            $gateway = new Gateway('bar'),
             $identity = new Identity('foo'),
-            $properties = (new Map('string', Property::class)),
+            new Set(Property::class),
             $options = new Map('scalar', 'variable'),
             $metas = new Map('scalar', 'variable'),
-            $gateway = new Gateway('bar'),
             $links = new Map('string', 'string')
         );
 
@@ -31,7 +35,9 @@ class HttpResourceTest extends TestCase
         $this->assertSame('foobar', (string) $resource->name());
         $this->assertSame('foobar', (string) $resource);
         $this->assertSame($identity, $resource->identity());
-        $this->assertSame($properties, $resource->properties());
+        $this->assertInstanceOf(MapInterface::class, $resource->properties());
+        $this->assertSame('string', (string) $resource->properties()->keyType());
+        $this->assertSame(Property::class, (string) $resource->properties()->valueType());
         $this->assertSame($options, $resource->options());
         $this->assertSame($metas, $resource->metas());
         $this->assertSame($gateway, $resource->gateway());
@@ -41,17 +47,17 @@ class HttpResourceTest extends TestCase
 
     /**
      * @expectedException TypeError
-     * @expectedExceptionMessage Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Definition\Property>
+     * @expectedExceptionMessage Argument 4 must be of type SetInterface<Innmind\Rest\Server\Definition\Property>
      */
-    public function testThrowForInvalidPropertyMap()
+    public function testThrowForInvalidPropertySet()
     {
         new HttpResource(
             'foobar',
-            new Identity('foo'),
-            new Map('string', 'string'),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Gateway('bar'),
+            new Identity('foo'),
+            new Set('string'),
+            new Map('scalar', 'variable'),
+            new Map('scalar', 'variable'),
             new Map('string', 'string')
         );
     }
@@ -64,29 +70,12 @@ class HttpResourceTest extends TestCase
     {
         new HttpResource(
             'foobar',
-            new Identity('foo'),
-            new Map('string', Property::class),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Gateway('bar'),
+            new Identity('foo'),
+            new Set(Property::class),
+            new Map('scalar', 'variable'),
+            new Map('scalar', 'variable'),
             new Map('int', 'int')
-        );
-    }
-
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 4 must be of type MapInterface<scalar, variable>
-     */
-    public function testThrowForInvalidOptionMap()
-    {
-        new HttpResource(
-            'foobar',
-            new Identity('foo'),
-            new Map('string', Property::class),
-            new Map('string', 'string'),
-            new Map('scalar', 'variable'),
-            new Gateway('bar'),
-            new Map('string', 'string')
         );
     }
 
@@ -94,15 +83,32 @@ class HttpResourceTest extends TestCase
      * @expectedException TypeError
      * @expectedExceptionMessage Argument 5 must be of type MapInterface<scalar, variable>
      */
+    public function testThrowForInvalidOptionMap()
+    {
+        new HttpResource(
+            'foobar',
+            new Gateway('bar'),
+            new Identity('foo'),
+            new Set(Property::class),
+            new Map('string', 'string'),
+            new Map('scalar', 'variable'),
+            new Map('string', 'string')
+        );
+    }
+
+    /**
+     * @expectedException TypeError
+     * @expectedExceptionMessage Argument 6 must be of type MapInterface<scalar, variable>
+     */
     public function testThrowForInvalidMetaMap()
     {
         new HttpResource(
             'foobar',
+            new Gateway('bar'),
             new Identity('foo'),
-            new Map('string', Property::class),
+            new Set(Property::class),
             new Map('scalar', 'variable'),
             new Map('string', 'string'),
-            new Gateway('bar'),
             new Map('string', 'string')
         );
     }

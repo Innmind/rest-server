@@ -14,7 +14,7 @@ use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
 };
-use Innmind\Immutable\Map;
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class CatchActionNotImplementedTest extends TestCase
@@ -25,12 +25,9 @@ class CatchActionNotImplementedTest extends TestCase
     {
         $this->definition = new Definition\HttpResource(
             'foo',
-            new Definition\Identity('foo'),
-            new Map('string', Definition\Property::class),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Definition\Gateway('foo'),
-            new Map('string', 'string')
+            new Definition\Identity('foo'),
+            new Set(Definition\Property::class)
         );
     }
 

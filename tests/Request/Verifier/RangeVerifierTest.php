@@ -21,7 +21,7 @@ use Innmind\Http\{
     ProtocolVersion,
 };
 use Innmind\Url\UrlInterface;
-use Innmind\Immutable\Map;
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class RangeVerifierTest extends TestCase
@@ -54,12 +54,9 @@ class RangeVerifierTest extends TestCase
             $request,
             HttpResource::rangeable(
                 'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('command'),
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             )
         );
     }
@@ -87,12 +84,9 @@ class RangeVerifierTest extends TestCase
             $request,
             new HttpResource(
                 'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('command'),
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             )
         );
     }
@@ -118,12 +112,9 @@ class RangeVerifierTest extends TestCase
                 $request,
                 HttpResource::rangeable(
                     'foo',
-                    new Identity('uuid'),
-                    new Map('string', Property::class),
-                    new Map('scalar', 'variable'),
-                    new Map('scalar', 'variable'),
                     new Gateway('command'),
-                    new Map('string', 'string')
+                    new Identity('uuid'),
+                    new Set(Property::class)
                 )
             )
         );
@@ -144,12 +135,9 @@ class RangeVerifierTest extends TestCase
                 $request,
                 new HttpResource(
                     'foo',
-                    new Identity('uuid'),
-                    new Map('string', Property::class),
-                    new Map('scalar', 'variable'),
-                    new Map('scalar', 'variable'),
                     new Gateway('command'),
-                    new Map('string', 'string')
+                    new Identity('uuid'),
+                    new Set(Property::class)
                 )
             )
         );
