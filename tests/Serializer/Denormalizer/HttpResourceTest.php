@@ -32,12 +32,11 @@ class HttpResourceTest extends TestCase
             Map::of('string', Property::class)
                 (
                     'bar',
-                    new Property(
+                    Property::required(
                         'bar',
                         new StringType,
                         new Access(Access::READ, Access::CREATE),
-                        (new Set('string'))->add('baz'),
-                        false
+                        'baz'
                     )
                 ),
             new Map('scalar', 'variable'),
@@ -71,42 +70,34 @@ class HttpResourceTest extends TestCase
             Map::of('string', Property::class)
                 (
                     'bar',
-                    new Property(
+                    Property::required(
                         'bar',
                         new StringType,
-                        new Access(Access::READ, Access::CREATE),
-                        new Set('string'),
-                        false
+                        new Access(Access::READ, Access::CREATE)
                     )
                 )
                 (
                     'baz',
-                    new Property(
+                    Property::required(
                         'baz',
                         new StringType,
-                        new Access(Access::READ, Access::CREATE),
-                        new Set('string'),
-                        false
+                        new Access(Access::READ, Access::CREATE)
                     )
                 )
                 (
                     'foo',
-                    new Property(
+                    Property::required(
                         'foo',
                         new StringType,
-                        new Access(Access::READ),
-                        new Set('string'),
-                        false
+                        new Access(Access::READ)
                     )
                 )
                 (
                     'foobar',
-                    new Property(
+                    Property::required(
                         'foobar',
                         new StringType,
-                        new Access(Access::READ),
-                        new Set('string'),
-                        false
+                        new Access(Access::READ)
                     )
                 ),
             new Map('scalar', 'variable'),

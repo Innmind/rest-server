@@ -32,22 +32,18 @@ class HttpResourceTest extends TestCase
             Map::of('string', PropertyDefinition::class)
                 (
                     'bar',
-                    new PropertyDefinition(
+                    PropertyDefinition::required(
                         'bar',
                         new StringType,
-                        new Access(Access::READ),
-                        new Set('string'),
-                        false
+                        new Access(Access::READ)
                     )
                 )
                 (
                     'baz',
-                    new PropertyDefinition(
+                    PropertyDefinition::required(
                         'baz',
                         new StringType,
-                        new Access(Access::CREATE),
-                        new Set('string'),
-                        false
+                        new Access(Access::CREATE)
                     )
                 ),
             new Map('scalar', 'variable'),
@@ -76,12 +72,11 @@ class HttpResourceTest extends TestCase
             Map::of('string', PropertyDefinition::class)
                 (
                     'bar',
-                    new PropertyDefinition(
+                    PropertyDefinition::required(
                         'bar',
                         new StringType,
                         new Access(Access::READ),
-                        Set::of('string', 'baz'),
-                        false
+                        'baz'
                     )
                 ),
             new Map('scalar', 'variable'),

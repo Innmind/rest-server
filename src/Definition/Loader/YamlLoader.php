@@ -130,7 +130,9 @@ final class YamlLoader implements Loader
 
     private function buildProperty(string $name, array $config): Property
     {
-        return new Property(
+        $type = ($config['optional'] ?? false) ? 'optional' : 'required';
+
+        return Property::$type(
             $name,
             $this->types->build(
                 $config['type'],
@@ -142,8 +144,7 @@ final class YamlLoader implements Loader
                 )
             ),
             new Access(...($config['access'] ?? [Access::READ])),
-            Set::of('string', ...($config['variants'] ?? [])),
-            $config['optional'] ?? false
+            ...($config['variants'] ?? [])
         );
     }
 }

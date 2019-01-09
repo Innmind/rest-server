@@ -50,22 +50,18 @@ class AbstractTestCase extends TestCase
             Map::of('string', Definition\Property::class)
                 (
                     'uuid',
-                    new Definition\Property(
+                    Definition\Property::required(
                         'uuid',
                         new Definition\Type\StringType,
-                        new Definition\Access('READ'),
-                        Set::of('string'),
-                        false
+                        new Definition\Access('READ')
                     )
                 )
                 (
                     'url',
-                    new Definition\Property(
+                    Definition\Property::required(
                         'url',
                         new Definition\Type\StringType,
-                        new Definition\Access('READ', 'CREATE', 'UPDATE'),
-                        Set::of('string'),
-                        false
+                        new Definition\Access('READ', 'CREATE', 'UPDATE')
                     )
                 ),
             new Map('scalar', 'variable'),

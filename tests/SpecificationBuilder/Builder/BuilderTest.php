@@ -56,22 +56,18 @@ class BuilderTest extends TestCase
             Map::of('string', Property::class)
                 (
                     'foo',
-                    new Property(
+                    Property::optional(
                         'foo',
                         new StringType,
-                        new Access(Access::READ),
-                        new Set('string'),
-                        true
+                        new Access(Access::READ)
                     )
                 )
                 (
                     'bar',
-                    new Property(
+                    Property::optional(
                         'bar',
                         new StringType,
-                        new Access(Access::READ),
-                        new Set('string'),
-                        true
+                        new Access(Access::READ)
                     )
                 ),
             new Map('scalar', 'variable'),
