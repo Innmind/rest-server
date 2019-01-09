@@ -35,14 +35,13 @@ class LinkDelegationBuilderTest extends TestCase
         $headers = $build(
             $this->createMock(ServerRequest::class),
             new Reference(
-                new Httpresource(
+                Httpresource::rangeable(
                     'foobar',
                     new IdentityDefinition('foo'),
                     new Map('string', Property::class),
                     new Map('scalar', 'variable'),
                     new Map('scalar', 'variable'),
                     new Gateway('bar'),
-                    true,
                     new Map('string', 'string')
                 ),
                 new Identity('foo')
@@ -64,14 +63,13 @@ class LinkDelegationBuilderTest extends TestCase
         $build(
             $this->createMock(ServerRequest::class),
             new Reference(
-                new Httpresource(
+                Httpresource::rangeable(
                     'foobar',
                     new IdentityDefinition('foo'),
                     new Map('string', Property::class),
                     new Map('scalar', 'variable'),
                     new Map('scalar', 'variable'),
                     new Gateway('bar'),
-                    true,
                     new Map('string', 'string')
                 ),
                 new Identity('foo')
@@ -100,14 +98,13 @@ class LinkDelegationBuilderTest extends TestCase
         $headers = $build(
             $this->createMock(ServerRequest::class),
             new Reference(
-                new Httpresource(
+                Httpresource::rangeable(
                     'foobar',
                     new IdentityDefinition('foo'),
                     new Map('string', Property::class),
                     new Map('scalar', 'variable'),
                     new Map('scalar', 'variable'),
                     new Gateway('bar'),
-                    true,
                     new Map('string', 'string')
                 ),
                 new Identity('foo')

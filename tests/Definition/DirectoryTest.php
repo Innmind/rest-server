@@ -35,14 +35,13 @@ class DirectoryTest extends TestCase
             $definitions = (new Map('string', HttpResource::class))
                 ->put(
                     'res',
-                    $resource = new HttpResource(
+                    $resource = HttpResource::rangeable(
                         'res',
                         new Identity('uuid'),
                         new Map('string', Property::class),
                         new Map('scalar', 'variable'),
                         new Map('scalar', 'variable'),
                         new Gateway('foo'),
-                        true,
                         new Map('string', 'string')
                     )
                 )
@@ -96,14 +95,13 @@ class DirectoryTest extends TestCase
                         Map::of('string', HttpResource::class)
                             (
                                 'res',
-                                $child = new HttpResource(
+                                $child = HttpResource::rangeable(
                                     'res',
                                     new Identity('uuid'),
                                     new Map('string', Property::class),
                                     new Map('scalar', 'variable'),
                                     new Map('scalar', 'variable'),
                                     new Gateway('foo'),
-                                    true,
                                     new Map('string', 'string')
                                 )
                             )
@@ -112,14 +110,13 @@ class DirectoryTest extends TestCase
             (new Map('string', HttpResource::class))
                 ->put(
                     'res',
-                    $resource = new HttpResource(
+                    $resource = HttpResource::rangeable(
                         'res',
                         new Identity('uuid'),
                         new Map('string', Property::class),
                         new Map('scalar', 'variable'),
                         new Map('scalar', 'variable'),
                         new Gateway('foo'),
-                        true,
                         new Map('string', 'string')
                     )
                 )

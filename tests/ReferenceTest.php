@@ -19,14 +19,13 @@ class ReferenceTest extends TestCase
     public function testInterface()
     {
         $reference = new Reference(
-            $definition = new HttpResource(
+            $definition = HttpResource::rangeable(
                 'foobar',
                 new Identity('foo'),
                 new Map('string', Property::class),
                 new Map('scalar', 'variable'),
                 new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                true,
                 new Map('string', 'string')
             ),
             $identity = $this->createMock(IdentityInterface::class)

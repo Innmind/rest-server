@@ -85,14 +85,13 @@ class AcceptVerifierTest extends TestCase
 
         $verify(
             $request,
-            new HttpResource(
+            HttpResource::rangeable(
                 'foo',
                 new Identity('uuid'),
                 new Map('string', Property::class),
                 new Map('scalar', 'variable'),
                 new Map('scalar', 'variable'),
                 new Gateway('command'),
-                true,
                 new Map('string', 'string')
             )
         );
@@ -133,14 +132,13 @@ class AcceptVerifierTest extends TestCase
         $this->assertNull(
             $verify(
                 $request,
-                new HttpResource(
+                HttpResource::rangeable(
                     'foo',
                     new Identity('uuid'),
                     new Map('string', Property::class),
                     new Map('scalar', 'variable'),
                     new Map('scalar', 'variable'),
                     new Gateway('command'),
-                    true,
                     new Map('string', 'string')
                 )
             )

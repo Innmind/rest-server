@@ -34,14 +34,13 @@ class GetDelegationBuilderTest extends TestCase
         $headers = $build(
             $this->createMock(HttpResourceInterface::class),
             $this->createMock(ServerRequest::class),
-            new Httpresource(
+            Httpresource::rangeable(
                 'foobar',
                 new Identity('foo'),
                 new Map('string', Property::class),
                 new Map('scalar', 'variable'),
                 new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                true,
                 new Map('string', 'string')
             ),
             $this->createMock(IdentityInterface::class)
@@ -70,14 +69,13 @@ class GetDelegationBuilderTest extends TestCase
         $headers = $build(
             $this->createMock(HttpResourceInterface::class),
             $this->createMock(ServerRequest::class),
-            new Httpresource(
+            Httpresource::rangeable(
                 'foobar',
                 new Identity('foo'),
                 new Map('string', Property::class),
                 new Map('scalar', 'variable'),
                 new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                true,
                 new Map('string', 'string')
             ),
             $this->createMock(IdentityInterface::class)

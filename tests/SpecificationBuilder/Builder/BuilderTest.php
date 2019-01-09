@@ -50,7 +50,7 @@ class BuilderTest extends TestCase
                 new Parameter('range', [0, 42])
             )
         );
-        $definition = new HttpResource(
+        $definition = HttpResource::rangeable(
             'foo',
             new Identity('uuid'),
             Map::of('string', Property::class)
@@ -73,7 +73,6 @@ class BuilderTest extends TestCase
             new Map('scalar', 'variable'),
             new Map('scalar', 'variable'),
             new Gateway('command'),
-            true,
             new Map('string', 'string')
         );
         $build = new Builder;
@@ -103,14 +102,13 @@ class BuilderTest extends TestCase
             $this->createMock(Cookies::class),
             Query::of(new Parameter('foo', 'bar'))
         );
-        $definition = new HttpResource(
+        $definition = HttpResource::rangeable(
             'foo',
             new Identity('uuid'),
             new Map('string', Property::class),
             new Map('scalar', 'variable'),
             new Map('scalar', 'variable'),
             new Gateway('command'),
-            true,
             new Map('string', 'string')
         );
         $build = new Builder;
@@ -133,14 +131,13 @@ class BuilderTest extends TestCase
             $this->createMock(Cookies::class),
             new Query
         );
-        $definition = new HttpResource(
+        $definition = HttpResource::rangeable(
             'foo',
             new Identity('uuid'),
             new Map('string', Property::class),
             new Map('scalar', 'variable'),
             new Map('scalar', 'variable'),
             new Gateway('command'),
-            true,
             new Map('string', 'string')
         );
         $build = new Builder;

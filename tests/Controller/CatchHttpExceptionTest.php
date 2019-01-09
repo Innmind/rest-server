@@ -30,7 +30,6 @@ class CatchHttpExceptionTest extends TestCase
             new Map('scalar', 'variable'),
             new Map('scalar', 'variable'),
             new Definition\Gateway('foo'),
-            false,
             new Map('string', 'string')
         );
     }

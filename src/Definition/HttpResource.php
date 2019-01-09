@@ -13,7 +13,7 @@ final class HttpResource
     private $options;
     private $metas;
     private $gateway;
-    private $rangeable;
+    private $rangeable = false;
     private $allowedLinks;
 
     public function __construct(
@@ -23,7 +23,6 @@ final class HttpResource
         MapInterface $options,
         MapInterface $metas,
         Gateway $gateway,
-        bool $rangeable,
         MapInterface $allowedLinks
     ) {
         if (
@@ -63,8 +62,22 @@ final class HttpResource
         $this->options = $options;
         $this->metas = $metas;
         $this->gateway = $gateway;
-        $this->rangeable = $rangeable;
         $this->allowedLinks = $allowedLinks;
+    }
+
+    public static function rangeable(
+        string $name,
+        Identity $identity,
+        MapInterface $properties,
+        MapInterface $options,
+        MapInterface $metas,
+        Gateway $gateway,
+        MapInterface $allowedLinks
+    ): self {
+        $self = new self($name, $identity, $properties, $options, $metas, $gateway, $allowedLinks);
+        $self->rangeable = true;
+
+        return $self;
     }
 
     public function name(): Name

@@ -33,14 +33,13 @@ class ListDelegationBuilderTest extends TestCase
         $headers = $build(
             new Set(IdentityInterface::class),
             $this->createMock(ServerRequest::class),
-            new Httpresource(
+            Httpresource::rangeable(
                 'foobar',
                 new Identity('foo'),
                 new Map('string', Property::class),
                 new Map('scalar', 'variable'),
                 new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                true,
                 new Map('string', 'string')
             )
         );
@@ -59,14 +58,13 @@ class ListDelegationBuilderTest extends TestCase
         $build(
             new Set('object'),
             $this->createMock(ServerRequest::class),
-            new Httpresource(
+            Httpresource::rangeable(
                 'foobar',
                 new Identity('foo'),
                 new Map('string', Property::class),
                 new Map('scalar', 'variable'),
                 new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                true,
                 new Map('string', 'string')
             )
         );
@@ -92,14 +90,13 @@ class ListDelegationBuilderTest extends TestCase
         $headers = $build(
             new Set(IdentityInterface::class),
             $this->createMock(ServerRequest::class),
-            new Httpresource(
+            Httpresource::rangeable(
                 'foobar',
                 new Identity('foo'),
                 new Map('string', Property::class),
                 new Map('scalar', 'variable'),
                 new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                true,
                 new Map('string', 'string')
             )
         );

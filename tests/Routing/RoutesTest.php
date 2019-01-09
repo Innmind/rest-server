@@ -66,7 +66,6 @@ class RoutesTest extends TestCase
                 ('actions', ['list', 'get']),
             new Map('scalar', 'variable'),
             new Definition\Gateway('foo'),
-            false,
             new Map('string', 'string')
         );
 

@@ -49,7 +49,6 @@ class ListRangeBuilderTest extends TestCase
                 new Map('scalar', 'variable'),
                 new Map('scalar', 'variable'),
                 new Gateway('command'),
-                false,
                 new Map('string', 'string')
             )
         );
@@ -66,14 +65,13 @@ class ListRangeBuilderTest extends TestCase
         $headers = $build(
             new Set(IdentityInterface::class),
             $this->createMock(ServerRequest::class),
-            new HttpResource(
+            HttpResource::rangeable(
                 'foo',
                 new Identity('uuid'),
                 new Map('string', Property::class),
                 new Map('scalar', 'variable'),
                 new Map('scalar', 'variable'),
                 new Gateway('command'),
-                true,
                 new Map('string', 'string')
             )
         );
@@ -94,14 +92,13 @@ class ListRangeBuilderTest extends TestCase
         $headers = $build(
             Set::of(IdentityInterface::class, new Id(42)),
             $this->createMock(ServerRequest::class),
-            new HttpResource(
+            HttpResource::rangeable(
                 'foo',
                 new Identity('uuid'),
                 new Map('string', Property::class),
                 new Map('scalar', 'variable'),
                 new Map('scalar', 'variable'),
                 new Gateway('command'),
-                true,
                 new Map('string', 'string')
             ),
             null,
@@ -141,14 +138,13 @@ class ListRangeBuilderTest extends TestCase
                 new Id(51)
             ),
             $this->createMock(ServerRequest::class),
-            new HttpResource(
+            HttpResource::rangeable(
                 'foo',
                 new Identity('uuid'),
                 new Map('string', Property::class),
                 new Map('scalar', 'variable'),
                 new Map('scalar', 'variable'),
                 new Gateway('command'),
-                true,
                 new Map('string', 'string')
             ),
             null,

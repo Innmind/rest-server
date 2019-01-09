@@ -33,14 +33,13 @@ class UpdateDelegationBuilderTest extends TestCase
         $this->assertInstanceOf(UpdateBuilder::class, $build);
         $headers = $build(
             $this->createMock(ServerRequest::class),
-            new Httpresource(
+            Httpresource::rangeable(
                 'foobar',
                 new Identity('foo'),
                 new Map('string', Property::class),
                 new Map('scalar', 'variable'),
                 new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                true,
                 new Map('string', 'string')
             ),
             $this->createMock(IdentityInterface::class),
@@ -69,14 +68,13 @@ class UpdateDelegationBuilderTest extends TestCase
 
         $headers = $build(
             $this->createMock(ServerRequest::class),
-            new Httpresource(
+            Httpresource::rangeable(
                 'foobar',
                 new Identity('foo'),
                 new Map('string', Property::class),
                 new Map('scalar', 'variable'),
                 new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                true,
                 new Map('string', 'string')
             ),
             $this->createMock(IdentityInterface::class),

@@ -26,7 +26,7 @@ class HttpResourceTest extends TestCase
 {
     public function testNormalize()
     {
-        $def = new ResourceDefinition(
+        $def = ResourceDefinition::rangeable(
             'foobar',
             new Identity('foo'),
             Map::of('string', PropertyDefinition::class)
@@ -49,7 +49,6 @@ class HttpResourceTest extends TestCase
             new Map('scalar', 'variable'),
             new Map('scalar', 'variable'),
             new Gateway('bar'),
-            true,
             new Map('string', 'string')
         );
         $resource = new Resource(
@@ -66,7 +65,7 @@ class HttpResourceTest extends TestCase
 
     public function testThrowWhenNormalizationFail()
     {
-        $def = new ResourceDefinition(
+        $def = ResourceDefinition::rangeable(
             'foobar',
             new Identity('foo'),
             Map::of('string', PropertyDefinition::class)
@@ -82,7 +81,6 @@ class HttpResourceTest extends TestCase
             new Map('scalar', 'variable'),
             new Map('scalar', 'variable'),
             new Gateway('bar'),
-            true,
             new Map('string', 'string')
         );
         $resource = new Resource(

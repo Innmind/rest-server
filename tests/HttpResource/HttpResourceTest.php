@@ -25,7 +25,7 @@ class HttpResourceTest extends TestCase
     public function testInterface()
     {
         $resource = new HttpResource(
-            $definition = new Definition(
+            $definition = Definition::rangeable(
                 'foobar',
                 new Identity('foo'),
                 Map::of('string', PropertyDefinition::class)
@@ -40,7 +40,6 @@ class HttpResourceTest extends TestCase
                 new Map('scalar', 'variable'),
                 new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                true,
                 new Map('string', 'string')
             ),
             $properties = Map::of('string', Property::class)
@@ -61,14 +60,13 @@ class HttpResourceTest extends TestCase
     public function testThrowWhenBuildingWithUndefinedProperty()
     {
         new HttpResource(
-            new Definition(
+            Definition::rangeable(
                 'foobar',
                 new Identity('foo'),
                 new Map('string', PropertyDefinition::class),
                 new Map('scalar', 'variable'),
                 new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                true,
                 new Map('string', 'string')
             ),
             Map::of('string', Property::class)

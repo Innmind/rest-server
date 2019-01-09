@@ -101,7 +101,7 @@ final class YamlLoader implements Loader
             );
         }
 
-        return new HttpResource(
+        $arguments = [
             $name,
             new Identity($config['identity']),
             $properties,
@@ -118,14 +118,19 @@ final class YamlLoader implements Loader
                 array_values($config['metas'] ?? [])
             ),
             new Gateway($config['gateway']),
-            $config['rangeable'],
             Map::of(
                 'string',
                 'string',
                 array_keys($config['linkable_to'] ?? []),
                 array_values($config['linkable_to'] ?? [])
-            )
-        );
+            ),
+        ];
+
+        if ($config['rangeable']) {
+            return HttpResource::rangeable(...$arguments);
+        }
+
+        return new HttpResource(...$arguments);
     }
 
     private function buildProperty(string $name, array $config): Property

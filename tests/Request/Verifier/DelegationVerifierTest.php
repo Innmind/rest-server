@@ -45,14 +45,13 @@ class DelegationVerifierTest extends TestCase
         $this->assertNull(
             $verify(
                 $this->createMock(ServerRequest::class),
-                new HttpResource(
+                HttpResource::rangeable(
                     'foo',
                     new Identity('uuid'),
                     new Map('string', Property::class),
                     new Map('scalar', 'variable'),
                     new Map('scalar', 'variable'),
                     new Gateway('command'),
-                    true,
                     new Map('string', 'string')
                 )
             )
@@ -76,14 +75,13 @@ class DelegationVerifierTest extends TestCase
 
         $verify(
             $this->createMock(ServerRequest::class),
-            new HttpResource(
+            HttpResource::rangeable(
                 'foo',
                 new Identity('uuid'),
                 new Map('string', Property::class),
                 new Map('scalar', 'variable'),
                 new Map('scalar', 'variable'),
                 new Gateway('command'),
-                true,
                 new Map('string', 'string')
             )
         );

@@ -17,14 +17,13 @@ class HttpResourceTest extends TestCase
 {
     public function testInterface()
     {
-        $resource = new HttpResource(
+        $resource = HttpResource::rangeable(
             'foobar',
             $identity = new Identity('foo'),
             $properties = (new Map('string', Property::class)),
             $options = new Map('scalar', 'variable'),
             $metas = new Map('scalar', 'variable'),
             $gateway = new Gateway('bar'),
-            true,
             $links = new Map('string', 'string')
         );
 
@@ -53,7 +52,6 @@ class HttpResourceTest extends TestCase
             new Map('scalar', 'variable'),
             new Map('scalar', 'variable'),
             new Gateway('bar'),
-            false,
             new Map('string', 'string')
         );
     }
@@ -71,7 +69,6 @@ class HttpResourceTest extends TestCase
             new Map('scalar', 'variable'),
             new Map('scalar', 'variable'),
             new Gateway('bar'),
-            false,
             new Map('int', 'int')
         );
     }
@@ -89,7 +86,6 @@ class HttpResourceTest extends TestCase
             new Map('string', 'string'),
             new Map('scalar', 'variable'),
             new Gateway('bar'),
-            false,
             new Map('string', 'string')
         );
     }
@@ -107,7 +103,6 @@ class HttpResourceTest extends TestCase
             new Map('scalar', 'variable'),
             new Map('string', 'string'),
             new Gateway('bar'),
-            false,
             new Map('string', 'string')
         );
     }

@@ -26,7 +26,7 @@ class HttpResourceTest extends TestCase
     public function testDenormalize()
     {
         $denormalize = new HttpResource;
-        $definition = new ResourceDefinition(
+        $definition = ResourceDefinition::rangeable(
             'foobar',
             new Identity('foo'),
             Map::of('string', Property::class)
@@ -42,7 +42,6 @@ class HttpResourceTest extends TestCase
             new Map('scalar', 'variable'),
             new Map('scalar', 'variable'),
             new Gateway('bar'),
-            true,
             new Map('string', 'string')
         );
 
@@ -64,7 +63,7 @@ class HttpResourceTest extends TestCase
     public function testThrowWhenDenormalizationFail()
     {
         $denormalize = new HttpResource;
-        $definition = new ResourceDefinition(
+        $definition = ResourceDefinition::rangeable(
             'foobar',
             new Identity('foo'),
             Map::of('string', Property::class)
@@ -103,7 +102,6 @@ class HttpResourceTest extends TestCase
             new Map('scalar', 'variable'),
             new Map('scalar', 'variable'),
             new Gateway('bar'),
-            true,
             new Map('string', 'string')
         );
 

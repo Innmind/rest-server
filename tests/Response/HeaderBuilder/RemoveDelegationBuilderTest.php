@@ -32,14 +32,13 @@ class RemoveDelegationBuilderTest extends TestCase
         $this->assertInstanceOf(RemoveBuilder::class, $build);
         $headers = $build(
             $this->createMock(ServerRequest::class),
-            new Httpresource(
+            Httpresource::rangeable(
                 'foobar',
                 new Identity('foo'),
                 new Map('string', Property::class),
                 new Map('scalar', 'variable'),
                 new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                true,
                 new Map('string', 'string')
             ),
             $this->createMock(IdentityInterface::class)
@@ -67,14 +66,13 @@ class RemoveDelegationBuilderTest extends TestCase
 
         $headers = $build(
             $this->createMock(ServerRequest::class),
-            new Httpresource(
+            Httpresource::rangeable(
                 'foobar',
                 new Identity('foo'),
                 new Map('string', Property::class),
                 new Map('scalar', 'variable'),
                 new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                true,
                 new Map('string', 'string')
             ),
             $this->createMock(IdentityInterface::class)
