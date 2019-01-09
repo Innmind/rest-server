@@ -24,7 +24,7 @@ class HttpResourceTest extends TestCase
 {
     public function testInterface()
     {
-        $resource = new HttpResource(
+        $resource = HttpResource::of(
             $definition = Definition::rangeable(
                 'foobar',
                 new Identity('foo'),
@@ -42,8 +42,7 @@ class HttpResourceTest extends TestCase
                 new Gateway('bar'),
                 new Map('string', 'string')
             ),
-            $properties = Map::of('string', Property::class)
-                ('foo', $property = new Property('foo', 42))
+            $property = new Property('foo', 42)
         );
 
         $this->assertInstanceOf(HttpResourceInterface::class, $resource);
@@ -51,7 +50,6 @@ class HttpResourceTest extends TestCase
         $this->assertTrue($resource->has('foo'));
         $this->assertFalse($resource->has('bar'));
         $this->assertSame($property, $resource->property('foo'));
-        $this->assertSame($properties, $resource->properties());
     }
 
     /**

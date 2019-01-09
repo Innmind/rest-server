@@ -8,7 +8,10 @@ use Innmind\Rest\Server\{
     Definition\HttpResource as ResourceDefinition,
     Exception\DomainException
 };
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\{
+    MapInterface,
+    Map,
+};
 
 final class HttpResource implements HttpResourceInterface
 {
@@ -39,6 +42,19 @@ final class HttpResource implements HttpResourceInterface
                     throw new DomainException;
                 }
             });
+    }
+
+    public static function of(
+        ResourceDefinition $definition,
+        Property ...$properties
+    ): self {
+        $map = Map::of('string', Property::class);
+
+        foreach ($properties as $property) {
+            $map = $map->put($property->name(), $property);
+        }
+
+        return new self($definition, $map);
     }
 
     /**

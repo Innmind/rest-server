@@ -102,11 +102,10 @@ class GetTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($this->definition, $identity)
-            ->willReturn($resource = new HttpResource(
+            ->willReturn($resource = HttpResource::of(
                 $this->definition,
-                Map::of('string', Property::class)
-                    ('uuid', new Property('uuid', 'foo'))
-                    ('url', new Property('url', 'example.com'))
+                new Property('uuid', 'foo'),
+                new Property('url', 'example.com')
             ));
         $this
             ->headerBuilder

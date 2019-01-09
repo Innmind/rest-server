@@ -51,11 +51,10 @@ class HttpResourceTest extends TestCase
             new Gateway('bar'),
             new Map('string', 'string')
         );
-        $resource = new Resource(
+        $resource = Resource::of(
             $def,
-            Map::of('string', Property::class)
-                ('bar', new Property('bar', 'baz'))
-                ('baz', new Property('baz', 'bar'))
+            new Property('bar', 'baz'),
+            new Property('baz', 'bar')
         );
 
         $data = (new HttpResource)($resource);
@@ -83,10 +82,9 @@ class HttpResourceTest extends TestCase
             new Gateway('bar'),
             new Map('string', 'string')
         );
-        $resource = new Resource(
+        $resource = Resource::of(
             $def,
-            Map::of('string', Property::class)
-                ('bar', new Property('bar', new \stdClass))
+            new Property('bar', new \stdClass)
         );
 
         try {
