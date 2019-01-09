@@ -5,8 +5,8 @@ namespace Innmind\Rest\Server\Specification;
 
 use Innmind\Rest\Server\HttpResource;
 use Innmind\Specification\{
-    SpecificationInterface,
-    CompositeInterface,
+    Specification,
+    Composite as CompositeInterface,
     Operator,
 };
 
@@ -19,18 +19,18 @@ final class OrFilter implements CompositeInterface
     private $operator;
 
     public function __construct(
-        SpecificationInterface $left,
-        SpecificationInterface $right
+        Specification $left,
+        Specification $right
     ) {
         $this->left = $left;
         $this->right = $right;
-        $this->operator = new Operator(Operator::OR);
+        $this->operator = Operator::or();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function left(): SpecificationInterface
+    public function left(): Specification
     {
         return $this->left;
     }
@@ -38,7 +38,7 @@ final class OrFilter implements CompositeInterface
     /**
      * {@inheritdoc}
      */
-    public function right(): SpecificationInterface
+    public function right(): Specification
     {
         return $this->right;
     }

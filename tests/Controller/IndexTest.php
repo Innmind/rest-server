@@ -32,7 +32,7 @@ use Innmind\Immutable\{
     Map,
     Set,
 };
-use Innmind\Specification\SpecificationInterface;
+use Innmind\Specification\Specification;
 
 class IndexTest extends AbstractTestCase
 {
@@ -114,7 +114,7 @@ class IndexTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($request, $this->definition)
-            ->willReturn($spec = $this->createMock(SpecificationInterface::class));
+            ->willReturn($spec = $this->createMock(Specification::class));
         $this
             ->gateway
             ->expects($this->once())
@@ -169,7 +169,7 @@ class IndexTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($request, $this->definition)
-            ->willReturn($spec = $this->createMock(SpecificationInterface::class));
+            ->willReturn($spec = $this->createMock(Specification::class));
         $this
             ->gateway
             ->expects($this->once())
@@ -224,7 +224,7 @@ class IndexTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($request, $this->definition)
-            ->willReturn($spec = $this->createMock(SpecificationInterface::class));
+            ->willReturn($spec = $this->createMock(Specification::class));
         $this
             ->gateway
             ->expects($this->once())

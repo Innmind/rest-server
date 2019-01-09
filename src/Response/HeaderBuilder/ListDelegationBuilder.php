@@ -12,7 +12,7 @@ use Innmind\Http\{
     Message\ServerRequest,
     Header,
 };
-use Innmind\Specification\SpecificationInterface;
+use Innmind\Specification\Specification;
 use Innmind\Immutable\{
     SetInterface,
     Set,
@@ -34,7 +34,7 @@ final class ListDelegationBuilder implements ListBuilder
         SetInterface $identities,
         ServerRequest $request,
         HttpResource $definition,
-        SpecificationInterface $specification = null,
+        Specification $specification = null,
         Range $range = null
     ): SetInterface {
         if ((string) $identities->type() !== Identity::class) {

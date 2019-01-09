@@ -9,7 +9,7 @@ use Innmind\Rest\Server\{
     Formats,
 };
 use Innmind\Http\Message\ServerRequest;
-use Innmind\Specification\SpecificationInterface;
+use Innmind\Specification\Specification;
 use Innmind\Immutable\SetInterface;
 
 final class ListContentTypeBuilder implements ListBuilder
@@ -30,7 +30,7 @@ final class ListContentTypeBuilder implements ListBuilder
         SetInterface $identities,
         ServerRequest $request,
         HttpResource $definition,
-        SpecificationInterface $specification = null,
+        Specification $specification = null,
         Range $range = null
     ): SetInterface {
         return $this->buildHeaderFrom($this->formats, $request);

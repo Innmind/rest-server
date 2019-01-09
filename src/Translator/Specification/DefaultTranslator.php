@@ -8,9 +8,9 @@ use Innmind\Rest\Server\{
     Exception\SpecificationNotUsableAsQuery,
 };
 use Innmind\Specification\{
-    SpecificationInterface,
-    ComparatorInterface,
-    CompositeInterface,
+    Specification,
+    Comparator,
+    Composite,
     Operator,
 };
 use Innmind\Url\{
@@ -20,23 +20,23 @@ use Innmind\Url\{
 
 final class DefaultTranslator implements SpecificationTranslator
 {
-    public function __invoke(SpecificationInterface $specification): QueryInterface
+    public function __invoke(Specification $specification): QueryInterface
     {
         $data = $this->extract($specification);
 
         return new Query(\http_build_query($data));
     }
 
-    private function extract(SpecificationInterface $specification): array
+    private function extract(Specification $specification): array
     {
         $data = [];
 
         switch (true) {
-            case $specification instanceof ComparatorInterface:
+            case $specification instanceof Comparator:
                 $data[$specification->property()] = $specification->value();
                 break;
-            case $specification instanceof CompositeInterface:
-                if ((string) $specification->operator() === Operator::OR) {
+            case $specification instanceof Composite:
+                if ($specification->operator()->equals(Operator::or())) {
                     throw new SpecificationNotUsableAsQuery;
                 }
 

@@ -9,7 +9,7 @@ use Innmind\Rest\Server\{
     HttpResource,
     HttpResource\Property,
 };
-use Innmind\Specification\CompositeInterface;
+use Innmind\Specification\Composite;
 use PHPUnit\Framework\TestCase;
 
 class OrFilterTest extends TestCase
@@ -21,7 +21,7 @@ class OrFilterTest extends TestCase
             $right = new Filter('bar', 'baz')
         );
 
-        $this->assertInstanceOf(CompositeInterface::class, $and);
+        $this->assertInstanceOf(Composite::class, $and);
         $this->assertSame($left, $and->left());
         $this->assertSame($right, $and->right());
         $this->assertSame('OR', (string) $and->operator());

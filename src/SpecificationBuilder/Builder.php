@@ -8,7 +8,7 @@ use Innmind\Rest\Server\{
     Definition\HttpResource,
 };
 use Innmind\Http\Message\ServerRequest;
-use Innmind\Specification\SpecificationInterface;
+use Innmind\Specification\Specification;
 
 interface Builder
 {
@@ -21,10 +21,10 @@ interface Builder
      * @throws NoFilterFound
      * @throws FilterNotApplicable
      *
-     * @return SpecificationInterface
+     * @return Specification
      */
     public function __invoke(
         ServerRequest $request,
         HttpResource $definition
-    ): SpecificationInterface;
+    ): Specification;
 }
