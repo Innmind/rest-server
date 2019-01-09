@@ -44,10 +44,6 @@ final class Types
 
     /**
      * Register the given type
-     *
-     * @param string $type FQCN
-     *
-     * @return self
      */
     private function register(string $type): void
     {
@@ -78,16 +74,14 @@ final class Types
      */
     public function all(): MapInterface
     {
+        //todo remove
         return $this->types;
     }
 
     /**
      * Build a new type instance of the wished type
      *
-     * @param string $type
      * @param MapInterface<scalar, variable> $config
-     *
-     * @return Type
      */
     public function build(string $type, MapInterface $config): Type
     {

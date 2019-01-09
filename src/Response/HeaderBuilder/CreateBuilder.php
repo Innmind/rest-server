@@ -14,11 +14,6 @@ use Innmind\Immutable\SetInterface;
 interface CreateBuilder
 {
     /**
-     * @param Identity $identity
-     * @param ServerRequest $request
-     * @param HttpResource $definition
-     * @param HttpResourceInterface $resource
-     *
      * @return SetInterface<Header>
      */
     public function __invoke(

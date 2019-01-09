@@ -16,10 +16,6 @@ interface HttpResource
 
     /**
      * Check if the wished property is set
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function has(string $name): bool;
 

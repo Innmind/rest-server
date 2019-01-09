@@ -15,13 +15,8 @@ interface Builder
     /**
      * Transform request filters into a specification
      *
-     * @param ServerRequest $request
-     * @param HttpResource $definition
-     *
      * @throws NoFilterFound
      * @throws FilterNotApplicable
-     *
-     * @return Specification
      */
     public function __invoke(
         ServerRequest $request,

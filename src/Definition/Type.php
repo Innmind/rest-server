@@ -14,9 +14,6 @@ interface Type
      * Build the type out of the given config
      *
      * @param MapInterface<scalar, variable> $config
-     * @param Types $types
-     *
-     * @return self
      */
     public static function fromConfig(MapInterface $config, Types $types): self;
 

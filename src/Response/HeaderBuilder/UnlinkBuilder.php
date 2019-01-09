@@ -13,8 +13,6 @@ use Innmind\Immutable\{
 interface UnlinkBuilder
 {
     /**
-     * @param ServerRequest $request
-     * @param Reference $from
      * @param MapInterface<Reference, MapInterface<string, ParameterInterface>> $tos
      *
      * @return SetInterface<Header>

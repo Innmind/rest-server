@@ -15,10 +15,6 @@ interface ListBuilder
 {
     /**
      * @param SetInterface<IdentityInterface> $identities
-     * @param ServerRequest $request
-     * @param HttpResource $definition
-     * @param Specification $specification
-     * @param Range $range
      *
      * @return SetInterface<Header>
      */

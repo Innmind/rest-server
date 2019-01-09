@@ -18,9 +18,6 @@ use Innmind\Immutable\{
 trait ContentTypeBuilder
 {
     /**
-     * @param Formats $formats
-     * @param ServerRequest $request
-     *
      * @return SetInterface<Header>
      */
     private function buildHeaderFrom(

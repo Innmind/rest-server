@@ -13,10 +13,6 @@ use Innmind\Immutable\SetInterface;
 interface RemoveBuilder
 {
     /**
-     * @param ServerRequest $request
-     * @param HttpResource $definition
-     * @param Identity $identity
-     *
      * @return SetInterface<Header>
      */
     public function __invoke(
