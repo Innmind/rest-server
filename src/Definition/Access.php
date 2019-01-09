@@ -16,9 +16,9 @@ final class Access
 
     private $mask;
 
-    public function __construct(string ...$mask)
+    public function __construct(string $first, string ...$mask)
     {
-        $this->mask = Set::of('string', ...$mask);
+        $this->mask = Set::of('string', $first, ...$mask);
     }
 
     public function isReadable(): bool
