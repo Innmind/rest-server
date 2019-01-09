@@ -12,8 +12,9 @@ use Innmind\Rest\Server\Definition\{
     Name,
 };
 use Innmind\Immutable\{
-    Map,
     MapInterface,
+    Map,
+    Set,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -21,39 +22,34 @@ class DirectoryTest extends TestCase
 {
     public function testInterface()
     {
-        $directory = new Directory(
+        $directory = Directory::of(
             'foo',
-            $children = (new Map('string', Directory::class))
-                ->put(
+            Set::of(
+                Directory::class,
+                $directory2 = new Directory(
                     'bar',
-                    $directory2 = new Directory(
-                        'bar',
-                        new Map('string', Directory::class),
-                        new Map('string', HttpResource::class)
-                    )
-                ),
-            $definitions = (new Map('string', HttpResource::class))
-                ->put(
-                    'res',
-                    $resource = HttpResource::rangeable(
-                        'res',
-                        new Identity('uuid'),
-                        new Map('string', Property::class),
-                        new Map('scalar', 'variable'),
-                        new Map('scalar', 'variable'),
-                        new Gateway('foo'),
-                        new Map('string', 'string')
-                    )
+                    new Map('string', Directory::class),
+                    new Map('string', HttpResource::class)
                 )
+            ),
+            $resource = HttpResource::rangeable(
+                'res',
+                new Identity('uuid'),
+                new Map('string', Property::class),
+                new Map('scalar', 'variable'),
+                new Map('scalar', 'variable'),
+                new Gateway('foo'),
+                new Map('string', 'string')
+            )
         );
 
         $this->assertInstanceOf(Name::class, $directory->name());
         $this->assertSame('foo', (string) $directory->name());
         $this->assertSame('foo', (string) $directory);
         $this->assertSame($directory2, $directory->child('bar'));
-        $this->assertSame($children, $directory->children());
+        $this->assertCount(1, $directory->children());
         $this->assertSame($resource, $directory->definition('res'));
-        $this->assertSame($definitions, $directory->definitions());
+        $this->assertCount(1, $directory->definitions());
     }
 
     /**
@@ -84,42 +80,37 @@ class DirectoryTest extends TestCase
 
     public function testFlatten()
     {
-        $directory = new Directory(
+        $directory = Directory::of(
             'foo',
-            (new Map('string', Directory::class))
-                ->put(
+            Set::of(
+                Directory::class,
+                new Directory(
                     'bar',
-                    new Directory(
-                        'bar',
-                        new Map('string', Directory::class),
-                        Map::of('string', HttpResource::class)
-                            (
+                    new Map('string', Directory::class),
+                    Map::of('string', HttpResource::class)
+                        (
+                            'res',
+                            $child = HttpResource::rangeable(
                                 'res',
-                                $child = HttpResource::rangeable(
-                                    'res',
-                                    new Identity('uuid'),
-                                    new Map('string', Property::class),
-                                    new Map('scalar', 'variable'),
-                                    new Map('scalar', 'variable'),
-                                    new Gateway('foo'),
-                                    new Map('string', 'string')
-                                )
+                                new Identity('uuid'),
+                                new Map('string', Property::class),
+                                new Map('scalar', 'variable'),
+                                new Map('scalar', 'variable'),
+                                new Gateway('foo'),
+                                new Map('string', 'string')
                             )
-                    )
-                ),
-            (new Map('string', HttpResource::class))
-                ->put(
-                    'res',
-                    $resource = HttpResource::rangeable(
-                        'res',
-                        new Identity('uuid'),
-                        new Map('string', Property::class),
-                        new Map('scalar', 'variable'),
-                        new Map('scalar', 'variable'),
-                        new Gateway('foo'),
-                        new Map('string', 'string')
-                    )
+                        )
                 )
+            ),
+            $resource = HttpResource::rangeable(
+                'res',
+                new Identity('uuid'),
+                new Map('string', Property::class),
+                new Map('scalar', 'variable'),
+                new Map('scalar', 'variable'),
+                new Gateway('foo'),
+                new Map('string', 'string')
+            )
         );
 
         $defs = $directory->flatten();
