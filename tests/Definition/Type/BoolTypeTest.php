@@ -6,9 +6,7 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 use Innmind\Rest\Server\Definition\{
     Type\BoolType,
     Type,
-    Types,
 };
-use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
 class BoolTypeTest extends TestCase
@@ -16,21 +14,7 @@ class BoolTypeTest extends TestCase
     public function testInterface()
     {
         $this->assertInstanceOf(Type::class, new BoolType);
-        $this->assertSame(
-            ['bool', 'boolean'],
-            BoolType::identifiers()->toPrimitive()
-        );
-        $this->assertInstanceOf(
-            BoolType::class,
-            BoolType::fromConfig(new Map('scalar', 'variable'), new Types)
-        );
-        $this->assertSame(
-            'bool',
-            (string) BoolType::fromConfig(
-                new Map('scalar', 'variable'),
-                new Types
-            )
-        );
+        $this->assertSame('bool', (string) new BoolType);
     }
 
     public function testDenormalize()

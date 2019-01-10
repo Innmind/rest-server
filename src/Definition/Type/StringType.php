@@ -5,28 +5,12 @@ namespace Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\{
     Definition\Type,
-    Definition\Types,
     Exception\DenormalizationException,
     Exception\NormalizationException,
-};
-use Innmind\Immutable\{
-    MapInterface,
-    SetInterface,
-    Set,
 };
 
 final class StringType implements Type
 {
-    private static $identifiers;
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function fromConfig(MapInterface $config, Types $types): Type
-    {
-        return new self;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -49,14 +33,6 @@ final class StringType implements Type
         } catch (\Throwable $e) {
             throw new NormalizationException('The value must be a string');
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function identifiers(): SetInterface
-    {
-        return self::$identifiers ?? self::$identifiers = Set::of('string', 'string');
     }
 
     public function __toString(): string

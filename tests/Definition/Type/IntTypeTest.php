@@ -6,9 +6,7 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 use Innmind\Rest\Server\Definition\{
     Type\IntType,
     Type,
-    Types,
 };
-use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
 class IntTypeTest extends TestCase
@@ -16,21 +14,7 @@ class IntTypeTest extends TestCase
     public function testInterface()
     {
         $this->assertInstanceOf(Type::class, new IntType);
-        $this->assertSame(
-            ['int', 'integer'],
-            IntType::identifiers()->toPrimitive()
-        );
-        $this->assertInstanceOf(
-            IntType::class,
-            IntType::fromConfig(new Map('scalar', 'variable'), new Types)
-        );
-        $this->assertSame(
-            'int',
-            (string) IntType::fromConfig(
-                new Map('scalar', 'variable'),
-                new Types
-            )
-        );
+        $this->assertSame('int', (string) new IntType);
     }
 
     public function testDenormalize()

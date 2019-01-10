@@ -6,13 +6,12 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 use Innmind\Rest\Server\Definition\{
     Type\SetType,
     Type\StringType,
+    Type\DateType,
     Type,
-    Types,
 };
 use Innmind\Immutable\{
     SetInterface,
     Set,
-    Map,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -25,52 +24,35 @@ class SetTypeTest extends TestCase
             new StringType
         ));
         $this->assertSame(
-            ['set'],
-            SetType::identifiers()->toPrimitive()
-        );
-        $this->assertInstanceOf(
-            SetType::class,
-            SetType::fromConfig(
-                Map::of('scalar', 'variable')
-                    ('inner', 'string'),
-                new Types
-            )
-        );
-        $this->assertSame(
             'set<string>',
-            (string) SetType::fromConfig(
-                Map::of('scalar', 'variable')
-                    ('inner', 'string'),
-                new Types
+            (string) new SetType(
+                'string',
+                new StringType
             )
         );
         $this->assertSame(
             'set<date<c>>',
-            (string) SetType::fromConfig(
-                Map::of('scalar', 'variable')
-                    ('format', 'c')
-                    ('inner', 'date'),
-                new Types
+            (string) new SetType(
+                \DateTimeImmutable::class,
+                new DateType('c')
             )
         );
     }
 
     public function testDenormalize()
     {
-        $type = SetType::fromConfig(
-            Map::of('scalar', 'variable')
-                ('inner', 'string'),
-            new Types
+        $type = new SetType(
+            'string',
+            new StringType
         );
         $this->assertInstanceOf(SetInterface::class, $type->denormalize(['foo']));
         $this->assertSame(['foo'], $type->denormalize(['foo'])->toPrimitive());
         $this->assertSame(
             ['foo'],
-            SetType::fromConfig(
-                Map::of('scalar', 'variable')
-                    ('inner', 'string'),
-                new Types
-            )
+            (new SetType(
+                'string',
+                new StringType
+            ))
                 ->denormalize([new class {
                     public function __toString()
                     {
@@ -87,10 +69,9 @@ class SetTypeTest extends TestCase
      */
     public function testThrowWhenNotDenormalizingAnArray()
     {
-        (SetType::fromConfig(
-            Map::of('scalar', 'variable')
-                ('inner', 'string'),
-            new Types
+        (new SetType(
+            'string',
+            new StringType
         ))
             ->denormalize(new \stdClass);
     }
@@ -99,10 +80,9 @@ class SetTypeTest extends TestCase
     {
         $this->assertSame(
             ['foo'],
-            (SetType::fromConfig(
-                Map::of('scalar', 'variable')
-                    ('inner', 'string'),
-                new Types
+            (new SetType(
+                'string',
+                new StringType
             ))
                 ->normalize(
                     Set::of('object', new class {
@@ -121,20 +101,10 @@ class SetTypeTest extends TestCase
      */
     public function testThrowWhenNotNormalizingAnArray()
     {
-        (SetType::fromConfig(
-            Map::of('scalar', 'variable')
-                ('inner', 'string'),
-            new Types
+        (new SetType(
+            'string',
+            new StringType
         ))
             ->normalize(new \stdClass);
-    }
-
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 1 must be of type MapInterface<scalar, variable>
-     */
-    public function testThrowWhenInvalidConfigMap()
-    {
-        SetType::fromConfig(new Map('string', 'string'), new Types);
     }
 }

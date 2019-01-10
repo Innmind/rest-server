@@ -5,13 +5,10 @@ namespace Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\{
     Definition\Type,
-    Definition\Types,
     Exception\DenormalizationException,
     Exception\NormalizationException,
 };
 use Innmind\Immutable\{
-    SetInterface,
-    Set,
     Map,
     MapInterface,
 };
@@ -34,38 +31,6 @@ final class MapType implements Type
         $this->innerValue = $value;
         $this->key = $keyType;
         $this->inner = $valueType;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function fromConfig(MapInterface $config, Types $types): Type
-    {
-        if (
-            (string) $config->keyType() !== 'scalar' ||
-            (string) $config->valueType() !== 'variable'
-        ) {
-            throw new \TypeError('Argument 1 must be of type MapInterface<scalar, variable>');
-        }
-
-        $type = new self(
-            $config->get('key'),
-            $config->get('inner'),
-            $types->build(
-                $config->get('key'),
-                $config
-                    ->remove('inner')
-                    ->remove('key')
-            ),
-            $types->build(
-                $config->get('inner'),
-                $config
-                    ->remove('inner')
-                    ->remove('key')
-            )
-        );
-
-        return $type;
     }
 
     /**
@@ -109,14 +74,6 @@ final class MapType implements Type
         }
 
         return $normalized;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function identifiers(): SetInterface
-    {
-        return self::$identifiers ?? self::$identifiers = Set::of('string', 'map');
     }
 
     public function __toString(): string

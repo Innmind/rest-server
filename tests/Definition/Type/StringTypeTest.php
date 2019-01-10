@@ -6,7 +6,6 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 use Innmind\Rest\Server\Definition\{
     Type\StringType,
     Type,
-    Types,
 };
 use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
@@ -17,19 +16,8 @@ class StringTypeTest extends TestCase
     {
         $this->assertInstanceOf(Type::class, new StringType);
         $this->assertSame(
-            ['string'],
-            StringType::identifiers()->toPrimitive()
-        );
-        $this->assertInstanceOf(
-            StringType::class,
-            StringType::fromConfig(new Map('scalar', 'variable'), new Types)
-        );
-        $this->assertSame(
             'string',
-            (string) StringType::fromConfig(
-                new Map('scalar', 'variable'),
-                new Types
-            )
+            (string) new StringType
         );
     }
 

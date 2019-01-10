@@ -6,8 +6,9 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 use Innmind\Rest\Server\Definition\{
     Type\MapType,
     Type\StringType,
+    Type\IntType,
+    Type\DateType,
     Type,
-    Types,
 };
 use Innmind\Immutable\{
     MapInterface,
@@ -26,57 +27,43 @@ class MapTypeTest extends TestCase
             new StringType
         ));
         $this->assertSame(
-            ['map'],
-            MapType::identifiers()->toPrimitive()
-        );
-        $this->assertInstanceOf(
-            MapType::class,
-            MapType::fromConfig(
-                Map::of('scalar', 'variable')
-                    ('inner', 'string')
-                    ('key', 'int'),
-                new Types
-            )
-        );
-        $this->assertSame(
             'map<int, string>',
-            (string) MapType::fromConfig(
-                Map::of('scalar', 'variable')
-                    ('inner', 'string')
-                    ('key', 'int'),
-                new Types
+            (string) new MapType(
+                'int',
+                'string',
+                new IntType,
+                new StringType
             )
         );
         $this->assertSame(
             'map<int, date<c>>',
-            (string) MapType::fromConfig(
-                Map::of('scalar', 'variable')
-                    ('inner', 'date')
-                    ('format', 'c')
-                    ('key', 'int'),
-                new Types
+            (string) new MapType(
+                'int',
+                \DateTimeImmutable::class,
+                new IntType,
+                new DateType('c')
             )
         );
     }
 
     public function testDenormalize()
     {
-        $type = MapType::fromConfig(
-            Map::of('scalar', 'variable')
-                ('inner', 'string')
-                ('key', 'int'),
-            new Types
+        $type = new MapType(
+            'int',
+            'string',
+            new IntType,
+            new StringType
         );
         $this->assertInstanceOf(MapInterface::class, $type->denormalize(['foo']));
         $this->assertSame('foo', $type->denormalize(['1' => 'foo'])->get(1));
         $this->assertSame(
             'foo',
-            MapType::fromConfig(
-                Map::of('scalar', 'variable')
-                    ('inner', 'string')
-                    ('key', 'int'),
-                new Types
-            )
+            (new MapType(
+                'int',
+                'string',
+                new IntType,
+                new StringType
+            ))
                 ->denormalize(['1' => new class {
                     public function __toString()
                     {
@@ -93,11 +80,11 @@ class MapTypeTest extends TestCase
      */
     public function testThrowWhenNotDenormalizingAnArray()
     {
-        (MapType::fromConfig(
-            Map::of('scalar', 'variable')
-                ('inner', 'string')
-                ('key', 'int'),
-            new Types
+        (new MapType(
+            'int',
+            'string',
+            new IntType,
+            new StringType
         ))
             ->denormalize(new \stdClass);
     }
@@ -106,11 +93,11 @@ class MapTypeTest extends TestCase
     {
         $this->assertSame(
             [1 => 'foo'],
-            (MapType::fromConfig(
-                Map::of('scalar', 'variable')
-                    ('inner', 'string')
-                    ('key', 'int'),
-                new Types
+            (new MapType(
+                'int',
+                'string',
+                new IntType,
+                new StringType
             ))
                 ->normalize(
                     Map::of('string', 'object')
@@ -130,21 +117,12 @@ class MapTypeTest extends TestCase
      */
     public function testThrowWhenNotNormalizingAnArray()
     {
-        (MapType::fromConfig(
-            Map::of('scalar', 'variable')
-                ('inner', 'string')
-                ('key', 'int'),
-            new Types
+        (new MapType(
+            'int',
+            'string',
+            new IntType,
+            new StringType
         ))
             ->normalize(new \stdClass);
-    }
-
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 1 must be of type MapInterface<scalar, variable>
-     */
-    public function testThrowWhenInvalidConfigMap()
-    {
-        MapType::fromConfig(new Map('string', 'string'), new Types);
     }
 }
