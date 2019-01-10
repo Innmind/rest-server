@@ -21,6 +21,12 @@ final class SetType implements Type
     private $inner;
     private $innerKey;
 
+    public function __construct(string $value, Type $type)
+    {
+        $this->innerKey = $value;
+        $this->inner = $type;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -33,11 +39,12 @@ final class SetType implements Type
             throw new \TypeError('Argument 1 must be of type MapInterface<scalar, variable>');
         }
 
-        $type = new self;
-        $type->innerKey = $config->get('inner');
-        $type->inner = $types->build(
+        $type = new self(
             $config->get('inner'),
-            $config->remove('inner')
+            $types->build(
+                $config->get('inner'),
+                $config->remove('inner')
+            )
         );
 
         return $type;

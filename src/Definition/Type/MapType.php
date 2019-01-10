@@ -24,6 +24,18 @@ final class MapType implements Type
     private $innerKey;
     private $innerValue;
 
+    public function __construct(
+        string $key,
+        string $value,
+        Type $keyType,
+        Type $valueType
+    ) {
+        $this->innerKey = $key;
+        $this->innerValue = $value;
+        $this->key = $keyType;
+        $this->inner = $valueType;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -36,20 +48,21 @@ final class MapType implements Type
             throw new \TypeError('Argument 1 must be of type MapInterface<scalar, variable>');
         }
 
-        $type = new self;
-        $type->innerKey = $config->get('key');
-        $type->innerValue = $config->get('inner');
-        $type->inner = $types->build(
-            $config->get('inner'),
-            $config
-                ->remove('inner')
-                ->remove('key')
-        );
-        $type->key = $types->build(
+        $type = new self(
             $config->get('key'),
-            $config
-                ->remove('inner')
-                ->remove('key')
+            $config->get('inner'),
+            $types->build(
+                $config->get('key'),
+                $config
+                    ->remove('inner')
+                    ->remove('key')
+            ),
+            $types->build(
+                $config->get('inner'),
+                $config
+                    ->remove('inner')
+                    ->remove('key')
+            )
         );
 
         return $type;

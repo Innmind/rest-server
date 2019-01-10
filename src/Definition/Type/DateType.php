@@ -18,7 +18,12 @@ use Innmind\Immutable\{
 final class DateType implements Type
 {
     private static $identifiers;
-    private $format = \DateTime::ISO8601;
+    private $format;
+
+    public function __construct(string $format = \DateTime::ISO8601)
+    {
+        $this->format = $format;
+    }
 
     /**
      * {@inheritdoc}

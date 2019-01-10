@@ -5,6 +5,7 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\Definition\{
     Type\MapType,
+    Type\StringType,
     Type,
     Types,
 };
@@ -18,7 +19,12 @@ class MapTypeTest extends TestCase
 {
     public function testInterface()
     {
-        $this->assertInstanceOf(Type::class, new MapType);
+        $this->assertInstanceOf(Type::class, new MapType(
+            'string',
+            'string',
+            new StringType,
+            new StringType
+        ));
         $this->assertSame(
             ['map'],
             MapType::identifiers()->toPrimitive()

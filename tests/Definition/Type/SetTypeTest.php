@@ -5,6 +5,7 @@ namespace Tests\Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\Definition\{
     Type\SetType,
+    Type\StringType,
     Type,
     Types,
 };
@@ -19,7 +20,10 @@ class SetTypeTest extends TestCase
 {
     public function testInterface()
     {
-        $this->assertInstanceOf(Type::class, new SetType);
+        $this->assertInstanceOf(Type::class, new SetType(
+            'string',
+            new StringType
+        ));
         $this->assertSame(
             ['set'],
             SetType::identifiers()->toPrimitive()
