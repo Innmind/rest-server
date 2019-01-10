@@ -56,19 +56,7 @@ final class Routes implements \Iterator
         return new self(
             ...Action::all()
                 ->filter(static function(Action $action) use ($definition): bool {
-                    if (!$definition->options()->contains('actions')) {
-                        return true;
-                    }
-
-                    if ($action === Action::options()) {
-                        return true;
-                    }
-
-                    return \in_array(
-                        (string) $action,
-                        $definition->options()->get('actions'),
-                        true
-                    );
+                    return $definition->allow($action);
                 })
                 ->reduce(
                     new Sequence,

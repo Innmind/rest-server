@@ -14,10 +14,7 @@ use Innmind\Rest\Server\{
     Exception\RouteNotFound,
 };
 use Innmind\Url\Path;
-use Innmind\Immutable\{
-    Map,
-    Set,
-};
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class RoutesTest extends TestCase
@@ -65,8 +62,7 @@ class RoutesTest extends TestCase
             new Definition\Gateway('foo'),
             new Definition\Identity('uuid'),
             new Set(Definition\Property::class),
-            Map::of('scalar', 'variable')
-                ('actions', ['list', 'get'])
+            Set::of(Action::class, Action::list(), Action::get())
         );
 
         $routes = Routes::of(

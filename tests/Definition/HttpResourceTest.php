@@ -3,12 +3,13 @@ declare(strict_types = 1);
 
 namespace Tests\Innmind\Rest\Server\Definition;
 
-use Innmind\Rest\Server\Definition\{
-    HttpResource,
-    Identity,
-    Gateway,
-    Property,
-    Name,
+use Innmind\Rest\Server\{
+    Definition\HttpResource,
+    Definition\Identity,
+    Definition\Gateway,
+    Definition\Property,
+    Definition\Name,
+    Action,
 };
 use Innmind\Immutable\{
     MapInterface,
@@ -26,7 +27,7 @@ class HttpResourceTest extends TestCase
             $gateway = new Gateway('bar'),
             $identity = new Identity('foo'),
             new Set(Property::class),
-            $options = new Map('scalar', 'variable'),
+            Set::of(Action::class, Action::get()),
             $metas = new Map('scalar', 'variable'),
             $links = new Map('string', 'string')
         );
@@ -38,7 +39,9 @@ class HttpResourceTest extends TestCase
         $this->assertInstanceOf(MapInterface::class, $resource->properties());
         $this->assertSame('string', (string) $resource->properties()->keyType());
         $this->assertSame(Property::class, (string) $resource->properties()->valueType());
-        $this->assertSame($options, $resource->options());
+        $this->assertTrue($resource->allow(Action::options()));
+        $this->assertTrue($resource->allow(Action::get()));
+        $this->assertFalse($resource->allow(Action::create()));
         $this->assertSame($metas, $resource->metas());
         $this->assertSame($gateway, $resource->gateway());
         $this->assertTrue($resource->isRangeable());
@@ -56,7 +59,7 @@ class HttpResourceTest extends TestCase
             new Gateway('bar'),
             new Identity('foo'),
             new Set('string'),
-            new Map('scalar', 'variable'),
+            new Set(Action::class),
             new Map('scalar', 'variable'),
             new Map('string', 'string')
         );
@@ -73,7 +76,7 @@ class HttpResourceTest extends TestCase
             new Gateway('bar'),
             new Identity('foo'),
             new Set(Property::class),
-            new Map('scalar', 'variable'),
+            new Set(Action::class),
             new Map('scalar', 'variable'),
             new Map('int', 'int')
         );
@@ -81,7 +84,7 @@ class HttpResourceTest extends TestCase
 
     /**
      * @expectedException TypeError
-     * @expectedExceptionMessage Argument 5 must be of type MapInterface<scalar, variable>
+     * @expectedExceptionMessage Argument 5 must be of type SetInterface<Innmind\Rest\Server\Action>
      */
     public function testThrowForInvalidOptionMap()
     {
@@ -90,7 +93,7 @@ class HttpResourceTest extends TestCase
             new Gateway('bar'),
             new Identity('foo'),
             new Set(Property::class),
-            new Map('string', 'string'),
+            new Set('string'),
             new Map('scalar', 'variable'),
             new Map('string', 'string')
         );
@@ -107,7 +110,7 @@ class HttpResourceTest extends TestCase
             new Gateway('bar'),
             new Identity('foo'),
             new Set(Property::class),
-            new Map('scalar', 'variable'),
+            new Set(Action::class),
             new Map('string', 'string'),
             new Map('string', 'string')
         );

@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Definition;
 
+use Innmind\Rest\Server\Action;
 use Innmind\Immutable\{
     MapInterface,
     Map,
@@ -25,11 +26,11 @@ final class HttpResource
         Gateway $gateway,
         Identity $identity,
         SetInterface $properties,
-        MapInterface $options = null,
+        SetInterface $actions = null,
         MapInterface $metas = null,
         MapInterface $allowedLinks = null
     ) {
-        $options = $options ?? Map::of('scalar', 'variable');
+        $actions = $actions ?? Action::all();
         $metas = $metas ?? Map::of('scalar', 'variable');
         $allowedLinks = $allowedLinks ?? Map::of('string', 'string');
 
@@ -40,11 +41,11 @@ final class HttpResource
             ));
         }
 
-        if (
-            (string) $options->keyType() !== 'scalar' ||
-            (string) $options->valueType() !== 'variable'
-        ) {
-            throw new \TypeError('Argument 5 must be of type MapInterface<scalar, variable>');
+        if ((string) $actions->type() !== Action::class) {
+            throw new \TypeError(\sprintf(
+                'Argument 5 must be of type SetInterface<%s>',
+                Action::class
+            ));
         }
 
         if (
@@ -69,7 +70,7 @@ final class HttpResource
                 return $properties->put((string) $property->name(), $property);
             }
         );
-        $this->options = $options;
+        $this->actions = $actions->add(Action::options());
         $this->metas = $metas;
         $this->gateway = $gateway;
         $this->allowedLinks = $allowedLinks;
@@ -80,11 +81,11 @@ final class HttpResource
         Gateway $gateway,
         Identity $identity,
         SetInterface $properties,
-        MapInterface $options = null,
+        SetInterface $actions = null,
         MapInterface $metas = null,
         MapInterface $allowedLinks = null
     ): self {
-        $self = new self($name, $gateway, $identity, $properties, $options, $metas, $allowedLinks);
+        $self = new self($name, $gateway, $identity, $properties, $actions, $metas, $allowedLinks);
         $self->rangeable = true;
 
         return $self;
@@ -108,12 +109,9 @@ final class HttpResource
         return $this->properties;
     }
 
-    /**
-     * @return MapInterface<scalar, variable>
-     */
-    public function options(): MapInterface
+    public function allow(Action $action): bool
     {
-        return $this->options;
+        return $this->actions->contains($action);
     }
 
     /**
