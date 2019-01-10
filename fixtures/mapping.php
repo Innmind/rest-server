@@ -41,7 +41,7 @@ return Directory::of(
             )
         )
     ),
-    new HttpResource(
+    HttpResource::rangeable(
         'image',
         new Gateway('command'),
         new Identity('uuid'),

@@ -8,7 +8,6 @@ use Innmind\Rest\Server\{
     Routing\Route,
     Routing\Name,
     Routing\Match,
-    Definition\Loader\YamlLoader,
     Definition,
     Action,
     Identity\Identity,
@@ -30,11 +29,11 @@ class RoutesTest extends TestCase
 
     public function testOf()
     {
-        $directories = (new YamlLoader)('fixtures/mapping.yml');
+        $directory = require 'fixtures/mapping.php';
 
         $routes = Routes::of(
             new Name('top_dir.image'),
-            $directories->get('top_dir')->definition('image')
+            $directory->definition('image')
         );
 
         $this->assertInstanceOf(Routes::class, $routes);
