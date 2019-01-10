@@ -37,9 +37,13 @@
     },
     "require-dev": {
         "phpunit/phpunit": "~7.0",
-        "giorgiosironi/eris": "^0.10.0"
+        "giorgiosironi/eris": "^0.10.0",
+        "innmind/time-continuum": "^1.3"
     },
     "scripts": {
         "test": "vendor/bin/phpunit --colors=always"
+    },
+    "suggest": {
+        "innmind/time-continuum": "In order to use point in time type"
     }
 }
