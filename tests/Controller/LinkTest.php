@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Tests\Innmind\Rest\Server\Controller;
 
 use Innmind\Rest\Server\{
-    Controller\Link,
+    Controller\Link as LinkController,
     Controller,
     Identity,
     Gateway,
@@ -12,6 +12,7 @@ use Innmind\Rest\Server\{
     ResourceLinker,
     Reference,
     Translator\LinkTranslator,
+    Link,
     Link\Parameter,
 };
 use Innmind\Http\{
@@ -40,7 +41,7 @@ class LinkTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->link = new Link(
+        $this->link = new LinkController(
             Map::of('string', Gateway::class)
                 ('foo', $this->gateway = $this->createMock(Gateway::class)),
             $this->headerBuilder = $this->createMock(LinkBuilder::class),
@@ -61,7 +62,7 @@ class LinkTest extends AbstractTestCase
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage('Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
 
-        new Link(
+        new LinkController(
             new Map('int', Gateway::class),
             $this->createMock(LinkBuilder::class),
             new LinkTranslator($this->router)
@@ -73,7 +74,7 @@ class LinkTest extends AbstractTestCase
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage('Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
 
-        new Link(
+        new LinkController(
             new Map('string', 'callable'),
             $this->createMock(LinkBuilder::class),
             new LinkTranslator($this->router)
@@ -99,15 +100,13 @@ class LinkTest extends AbstractTestCase
             $this->definition,
             $identity
         );
-        $tos = (new Map(Reference::class, MapInterface::class))
-            ->put(
-                new Reference(
-                    $this->directory->definition('image'),
-                    new Identity\Identity('42')
-                ),
-                Map::of('string', Parameter::class)
-                    ('rel', new Parameter\Parameter('rel', 'resource'))
-            );
+        $link = new Link(
+            new Reference(
+                $this->directory->definition('image'),
+                new Identity\Identity('42')
+            ),
+            new Parameter\Parameter('rel', 'resource')
+        );
 
         $this
             ->gateway
@@ -119,10 +118,10 @@ class LinkTest extends AbstractTestCase
             ->method('__invoke')
             ->with(
                 $from,
-                $this->callback(static function($value) use ($tos): bool {
-                    return $value->key()->definition() === $tos->key()->definition() &&
-                        $value->key()->identity()->value() === $tos->key()->identity()->value() &&
-                        $value->current()->get('rel')->value() === $tos->current()->get('rel')->value();
+                $this->callback(static function($value) use ($link): bool {
+                    return $value->reference()->definition() === $link->reference()->definition() &&
+                        $value->reference()->identity()->value() === $link->reference()->identity()->value() &&
+                        $value->get('rel')->value() === $link->get('rel')->value();
                 })
             );
         $this
@@ -132,10 +131,10 @@ class LinkTest extends AbstractTestCase
             ->with(
                 $request,
                 $from,
-                $this->callback(static function($value) use ($tos): bool {
-                    return $value->key()->definition() === $tos->key()->definition() &&
-                        $value->key()->identity()->value() === $tos->key()->identity()->value() &&
-                        $value->current()->get('rel')->value() === $tos->current()->get('rel')->value();
+                $this->callback(static function($value) use ($link): bool {
+                    return $value->reference()->definition() === $link->reference()->definition() &&
+                        $value->reference()->identity()->value() === $link->reference()->identity()->value() &&
+                        $value->get('rel')->value() === $link->get('rel')->value();
                 })
             )
             ->willReturn(new Set(Header::class));

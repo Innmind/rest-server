@@ -12,6 +12,7 @@ use Innmind\Rest\Server\{
     ResourceUnlinker,
     Reference,
     Translator\LinkTranslator,
+    Link,
     Link\Parameter,
 };
 use Innmind\Http\{
@@ -101,15 +102,13 @@ class UnlinkTest extends AbstractTestCase
             $this->definition,
             $identity
         );
-        $tos = Map::of(Reference::class, MapInterface::class)
-            (
-                new Reference(
-                    $this->directory->definition('image'),
-                    new Identity\Identity('42')
-                ),
-                Map::of('string', Parameter::class)
-                    ('rel', new Parameter\Parameter('rel', 'resource'))
-            );
+        $link = new Link(
+            new Reference(
+                $this->directory->definition('image'),
+                new Identity\Identity('42')
+            ),
+            new Parameter\Parameter('rel', 'resource')
+        );
 
         $this
             ->gateway
@@ -121,10 +120,10 @@ class UnlinkTest extends AbstractTestCase
             ->method('__invoke')
             ->with(
                 $from,
-                $this->callback(static function($value) use ($tos): bool {
-                    return $value->key()->definition() === $tos->key()->definition() &&
-                        $value->key()->identity()->value() === $tos->key()->identity()->value() &&
-                        $value->current()->get('rel')->value() === $tos->current()->get('rel')->value();
+                $this->callback(static function($value) use ($link): bool {
+                    return $value->reference()->definition() === $link->reference()->definition() &&
+                        $value->reference()->identity()->value() === $link->reference()->identity()->value() &&
+                        $value->get('rel')->value() === $link->get('rel')->value();
                 })
             );
         $this
@@ -134,10 +133,10 @@ class UnlinkTest extends AbstractTestCase
             ->with(
                 $request,
                 $from,
-                $this->callback(static function($value) use ($tos): bool {
-                    return $value->key()->definition() === $tos->key()->definition() &&
-                        $value->key()->identity()->value() === $tos->key()->identity()->value() &&
-                        $value->current()->get('rel')->value() === $tos->current()->get('rel')->value();
+                $this->callback(static function($value) use ($link): bool {
+                    return $value->reference()->definition() === $link->reference()->definition() &&
+                        $value->reference()->identity()->value() === $link->reference()->identity()->value() &&
+                        $value->get('rel')->value() === $link->get('rel')->value();
                 })
             )
             ->willReturn(new Set(Header::class));

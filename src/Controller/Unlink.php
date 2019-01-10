@@ -60,7 +60,7 @@ final class Unlink implements Controller
         }
 
         try {
-            $tos = ($this->translate)($request->headers()->get('Link'));
+            $links = ($this->translate)($request->headers()->get('Link'));
         } catch (RouteNotFound $e) {
             throw new BadRequest('', 0, $e);
         }
@@ -71,7 +71,7 @@ final class Unlink implements Controller
             ->resourceUnlinker();
         $unlink(
             $from = new Reference($from, $identity),
-            $tos
+            ...$links
         );
 
         return new Response\Response(
@@ -79,7 +79,7 @@ final class Unlink implements Controller
             $code->associatedreasonPhrase(),
             $request->protocolVersion(),
             Headers::of(
-                ...($this->buildHeader)($request, $from, $tos)
+                ...($this->buildHeader)($request, $from, ...$links)
             )
         );
     }

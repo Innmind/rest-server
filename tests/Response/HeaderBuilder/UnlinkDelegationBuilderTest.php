@@ -18,8 +18,6 @@ use Innmind\Http\{
     Header,
 };
 use Innmind\Immutable\{
-    Map,
-    MapInterface,
     SetInterface,
     Set,
 };
@@ -42,34 +40,10 @@ class UnlinkDelegationBuilderTest extends TestCase
                     new Set(Property::class)
                 ),
                 new Identity('foo')
-            ),
-            new Map(Reference::class, MapInterface::class)
+            )
         );
         $this->assertInstanceOf(SetInterface::class, $headers);
         $this->assertSame(Header::class, (string) $headers->type());
-    }
-
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 3 must be of type MapInterface<Innmind\Rest\Server\Reference, Innmind\Immutable\MapInterface>
-     */
-    public function testThrowWhenInvalidTos()
-    {
-        $build = new UnlinkDelegationBuilder;
-
-        $build(
-            $this->createMock(ServerRequest::class),
-            new Reference(
-                Httpresource::rangeable(
-                    'foobar',
-                    new Gateway('bar'),
-                    new IdentityDefinition('foo'),
-                    new Set(Property::class)
-                ),
-                new Identity('foo')
-            ),
-            new Map('string', 'string')
-        );
     }
 
     public function testBuild()
@@ -99,8 +73,7 @@ class UnlinkDelegationBuilderTest extends TestCase
                     new Set(Property::class)
                 ),
                 new Identity('foo')
-            ),
-            new Map(Reference::class, MapInterface::class)
+            )
         );
 
         $this->assertSame(

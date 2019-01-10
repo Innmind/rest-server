@@ -6,13 +6,14 @@ namespace Tests\Innmind\Rest\Server\Translator;
 use Innmind\Rest\Server\{
     Translator\LinkTranslator,
     Definition\Loader\YamlLoader,
+    Link,
     Link\Parameter,
     Reference,
     Router,
     Routing\Routes,
 };
 use Innmind\Http\Header\{
-    Link,
+    Link as LinkHeader,
     LinkValue,
     Parameter as LinkParameterInterface,
     Parameter\Parameter as LinkParameter,
@@ -20,8 +21,8 @@ use Innmind\Http\Header\{
 };
 use Innmind\Url\Url;
 use Innmind\Immutable\{
+    SetInterface,
     Map,
-    MapInterface
 };
 use PHPUnit\Framework\TestCase;
 
@@ -37,8 +38,8 @@ class LinkTranslatorTest extends TestCase
             )
         );
 
-        $references = $translate(
-            new Link(
+        $links = $translate(
+            new LinkHeader(
                 new LinkValue(
                     Url::fromString('/top_dir/sub_dir/res/bar'),
                     'relationship',
@@ -48,30 +49,21 @@ class LinkTranslatorTest extends TestCase
             )
         );
 
-        $this->assertInstanceOf(MapInterface::class, $references);
-        $this->assertSame(Reference::class, (string) $references->keyType());
-        $this->assertSame(MapInterface::class, (string) $references->valueType());
-        $this->assertCount(1, $references);
+        $this->assertInstanceOf(SetInterface::class, $links);
+        $this->assertSame(Link::class, (string) $links->type());
+        $this->assertCount(1, $links);
+        $link = $links->current();
         $this->assertSame(
             $directory->child('sub_dir')->definition('res'),
-            $references->keys()->current()->definition()
+            $link->reference()->definition()
         );
         $this->assertSame(
             'bar',
-            (string) $references->keys()->current()->identity()
+            (string) $link->reference()->identity()
         );
-        $parameters = $references->values()->first();
-        $this->assertSame('string', (string) $parameters->keyType());
-        $this->assertSame(
-            Parameter::class,
-            (string) $parameters->valueType()
-        );
-        $this->assertCount(2, $parameters);
-        $this->assertSame(
-            ['foo', 'rel'],
-            $parameters->keys()->toPrimitive()
-        );
-        $this->assertSame('baz', $parameters->get('foo')->value());
-        $this->assertSame('relationship', $parameters->get('rel')->value());
+        $this->assertTrue($link->has('foo'));
+        $this->assertTrue($link->has('rel'));
+        $this->assertSame('baz', $link->get('foo')->value());
+        $this->assertSame('relationship', $link->get('rel')->value());
     }
 }
