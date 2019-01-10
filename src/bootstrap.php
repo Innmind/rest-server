@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server;
 
 use Innmind\Rest\Server\{
+    Definition\Directory,
     Routing\Prefix,
     RangeExtractor\Extractor,
     RangeExtractor\DelegationExtractor,
@@ -20,8 +21,6 @@ use Innmind\Rest\Server\{
     Serializer\Normalizer,
     Serializer\Denormalizer,
     Definition\Locator,
-    Definition\Loader\YamlLoader,
-    Definition\Types,
     Routing\Routes,
     Response\HeaderBuilder,
     Controller\CatchHttpException,
@@ -48,11 +47,10 @@ use Innmind\Immutable\{
 
 /**
  * @param MapInterface<string, Gateway> $gateways
- * @param SetInterface<string> $files
  */
 function bootstrap(
     MapInterface $gateways,
-    SetInterface $files,
+    Directory $directory,
     Formats $acceptFormats = null,
     Formats $contentTypeFormats = null,
     Prefix $prefix = null,
@@ -87,7 +85,8 @@ function bootstrap(
             ('json', new Encoder\Json)
     );
 
-    $directories = (new YamlLoader(new Types))(...$files);
+    $directories = Map::of('string', Directory::class)
+        ((string) $directory->name(), $directory);
 
     $routes = Routes::from($directories);
     $router = new Router($routes, $prefix);

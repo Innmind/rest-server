@@ -10,10 +10,7 @@ use Innmind\Rest\Server\{
     Routing\Routes,
     Definition\Locator,
 };
-use Innmind\Immutable\{
-    Map,
-    Set,
-};
+use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
 class BootstrapTest extends TestCase
@@ -22,7 +19,7 @@ class BootstrapTest extends TestCase
     {
         $services = bootstrap(
             new Map('string', Gateway::class),
-            Set::of('string', 'fixtures/mapping.yml')
+            require 'fixtures/mapping.php'
         );
 
         $this->assertInstanceOf(Routes::class, $services['routes']);
