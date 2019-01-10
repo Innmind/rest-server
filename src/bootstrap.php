@@ -84,10 +84,7 @@ function bootstrap(
             ('json', new Encoder\Json)
     );
 
-    $directories = Map::of('string', Directory::class)
-        ((string) $directory->name(), $directory);
-
-    $routes = Routes::from($directories);
+    $routes = Routes::from($directory);
     $router = new Router($routes, $prefix);
 
     $catchHttpException = static function(Controller $controller): Controller {

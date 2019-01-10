@@ -84,15 +84,10 @@ final class Routes implements \Iterator
     /**
      * @param MapInterface<string, Directory> $directories
      */
-    public static function from(MapInterface $directories): self
+    public static function from(Directory $directory): self
     {
-        return $directories
-            ->reduce(
-                new Map('string', HttpResource::class),
-                static function(MapInterface $definitions, string $name, Directory $directory): MapInterface {
-                    return $definitions->merge($directory->flatten());
-                }
-            )
+        return $directory
+            ->flatten()
             ->reduce(
                 new self,
                 static function(Routes $routes, string $name, HttpResource $definition): Routes {

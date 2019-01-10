@@ -9,7 +9,6 @@ use Innmind\Rest\Server\{
     Identity,
     Identity\Identity as Id,
     Definition\Property,
-    Definition\Loader\YamlLoader,
     Router,
     Routing\Routes,
 };
@@ -30,14 +29,14 @@ use PHPUnit\Framework\TestCase;
 class ListLinksBuilderTest extends TestCase
 {
     private $build;
-    private $directories;
+    private $directory;
 
     public function setUp()
     {
         $this->build = new ListLinksBuilder(
             new Router(
                 Routes::from(
-                    $this->directories = (new YamlLoader)('fixtures/mapping.yml')
+                    $this->directory = require 'fixtures/mapping.php'
                 )
             )
         );
@@ -60,7 +59,7 @@ class ListLinksBuilderTest extends TestCase
                 $this->createMock(Method::class),
                 $this->createMock(ProtocolVersion::class)
             ),
-            $this->directories->get('top_dir')->definition('image')
+            $this->directory->definition('image')
         );
 
         $this->assertInstanceOf(SetInterface::class, $headers);
@@ -81,7 +80,7 @@ class ListLinksBuilderTest extends TestCase
                 $this->createMock(Method::class),
                 $this->createMock(ProtocolVersion::class)
             ),
-            $this->directories->get('top_dir')->definition('image')
+            $this->directory->definition('image')
         );
 
         $this->assertInstanceOf(SetInterface::class, $headers);

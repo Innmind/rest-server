@@ -102,7 +102,7 @@ class LinkTest extends AbstractTestCase
         $tos = (new Map(Reference::class, MapInterface::class))
             ->put(
                 new Reference(
-                    $this->directories->get('top_dir')->definition('image'),
+                    $this->directory->definition('image'),
                     new Identity\Identity('42')
                 ),
                 Map::of('string', Parameter::class)

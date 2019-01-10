@@ -32,7 +32,7 @@ class LinkTranslatorTest extends TestCase
         $translate = new LinkTranslator(
             new Router(
                 Routes::from(
-                    $directories = (new YamlLoader)('fixtures/mapping.yml')
+                    $directory = require 'fixtures/mapping.php'
                 )
             )
         );
@@ -53,7 +53,7 @@ class LinkTranslatorTest extends TestCase
         $this->assertSame(MapInterface::class, (string) $references->valueType());
         $this->assertCount(1, $references);
         $this->assertSame(
-            $directories->get('top_dir')->child('sub_dir')->definition('res'),
+            $directory->child('sub_dir')->definition('res'),
             $references->keys()->current()->definition()
         );
         $this->assertSame(

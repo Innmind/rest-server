@@ -88,9 +88,7 @@ class RoutesTest extends TestCase
 
     public function testFrom()
     {
-        $directories = (new YamlLoader)('fixtures/mapping.yml');
-
-        $routes = Routes::from($directories);
+        $routes = Routes::from(require 'fixtures/mapping.php');
 
         $this->assertInstanceOf(Routes::class, $routes);
         $this->assertCount(16, iterator_to_array($routes));
@@ -150,19 +148,19 @@ class RoutesTest extends TestCase
 
     public function testMatch()
     {
-        $directories = (new YamlLoader)('fixtures/mapping.yml');
+        $directory = require 'fixtures/mapping.php';
 
-        $routes = Routes::from($directories);
+        $routes = Routes::from($directory);
 
         $this->assertSame(
-            $directories->get('top_dir')->definition('image'),
+            $directory->definition('image'),
             $routes->match(new Path('/top_dir/image/'))->definition()
         );
         $this->assertNull(
             $routes->match(new Path('/top_dir/image/'))->identity()
         );
         $this->assertSame(
-            $directories->get('top_dir')->definition('image'),
+            $directory->definition('image'),
             $routes->match(new Path('/top_dir/image/some-uuid-or-other-identity'))->definition()
         );
         $this->assertEquals(
@@ -181,10 +179,10 @@ class RoutesTest extends TestCase
 
     public function testGet()
     {
-        $directories = (new YamlLoader)('fixtures/mapping.yml');
+        $directory = require 'fixtures/mapping.php';
 
-        $routes = Routes::from($directories);
-        $definition = $directories->get('top_dir')->definition('image');
+        $routes = Routes::from($directory);
+        $definition = $directory->definition('image');
 
         $route = $routes->get(Action::list(), $definition);
 
@@ -192,7 +190,7 @@ class RoutesTest extends TestCase
         $this->assertSame(Action::list(), $route->action());
         $this->assertSame($definition, $route->definition());
 
-        $definition = $directories->get('top_dir')->child('sub_dir')->definition('res');
+        $definition = $directory->child('sub_dir')->definition('res');
 
         $route = $routes->get(Action::get(), $definition);
 

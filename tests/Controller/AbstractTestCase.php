@@ -9,7 +9,6 @@ use Innmind\Rest\Server\{
     Format\Format as FormatFormat,
     Format\MediaType,
     Definition,
-    Definition\Loader\YamlLoader,
     Router,
     Routing\Routes,
 };
@@ -21,7 +20,7 @@ class AbstractTestCase extends TestCase
     protected $format;
     protected $definition;
     protected $router;
-    protected $directories;
+    protected $directory;
 
     public function setUp()
     {
@@ -61,7 +60,7 @@ class AbstractTestCase extends TestCase
         );
         $this->router = new Router(
             Routes::from(
-                $this->directories = (new YamlLoader)('fixtures/mapping.yml')
+                $this->directory = require 'fixtures/mapping.php'
             )
         );
     }

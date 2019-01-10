@@ -7,7 +7,6 @@ use Innmind\Rest\Server\{
     Router,
     Routing\Routes,
     Routing\Prefix,
-    Definition\Loader\YamlLoader,
     Identity\Identity,
     Action,
     Exception\RouteNotFound,
@@ -21,14 +20,14 @@ use PHPUnit\Framework\TestCase;
 class RouterTest extends TestCase
 {
     private $router;
-    private $directories;
+    private $directory;
 
     public function setUp()
     {
-        $this->directories = (new YamlLoader)('fixtures/mapping.yml');
+        $this->directory = require 'fixtures/mapping.php';
 
         $this->router = new Router(
-            Routes::from($this->directories),
+            Routes::from($this->directory),
             new Prefix('/foo')
         );
     }
@@ -36,11 +35,11 @@ class RouterTest extends TestCase
     public function testMatch()
     {
         $this->assertSame(
-            $this->directories->get('top_dir')->definition('image'),
+            $this->directory->definition('image'),
             $this->router->match(new Path('/foo/top_dir/image/'))->definition()
         );
         $this->assertSame(
-            $this->directories->get('top_dir')->definition('image'),
+            $this->directory->definition('image'),
             $this->router->match(new Path('/foo/top_dir/image/42'))->definition()
         );
         $this->assertEquals(
@@ -61,7 +60,7 @@ class RouterTest extends TestCase
     {
         $path = $this->router->generate(
             Action::list(),
-            $this->directories->get('top_dir')->definition('image')
+            $this->directory->definition('image')
         );
 
         $this->assertInstanceOf(UrlInterface::class, $path);
@@ -69,7 +68,7 @@ class RouterTest extends TestCase
 
         $path = $this->router->generate(
             Action::get(),
-            $this->directories->get('top_dir')->definition('image'),
+            $this->directory->definition('image'),
             new Identity(42)
         );
 
@@ -78,11 +77,11 @@ class RouterTest extends TestCase
 
     public function testGenerateWithoutPrefix()
     {
-        $router = new Router(Routes::from($this->directories));
+        $router = new Router(Routes::from($this->directory));
 
         $path = $router->generate(
             Action::get(),
-            $this->directories->get('top_dir')->definition('image'),
+            $this->directory->definition('image'),
             new Identity(42)
         );
 
