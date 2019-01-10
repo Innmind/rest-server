@@ -42,7 +42,6 @@ use Innmind\Rest\Server\{
 use Innmind\Immutable\{
     MapInterface,
     Map,
-    SetInterface,
 };
 
 /**
@@ -222,6 +221,6 @@ function bootstrap(
             ),
             'capabilities' => new Capabilities($routes, $router),
         ],
-        'locator' => new Locator($directories),
+        'locator' => new Locator($directory),
     ];
 }
