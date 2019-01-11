@@ -9,6 +9,7 @@ use Innmind\Rest\Server\{
     Translator\LinkTranslator,
     Gateway,
     Definition\HttpResource,
+    Definition\Locator,
     Identity,
     Reference,
     Exception\RouteNotFound,
@@ -27,11 +28,13 @@ final class Unlink implements Controller
     private $gateways;
     private $buildHeader;
     private $translate;
+    private $locator;
 
     public function __construct(
         MapInterface $gateways,
         UnlinkBuilder $headerBuilder,
-        LinkTranslator $translator
+        LinkTranslator $translator,
+        Locator $locator
     ) {
         if (
             (string) $gateways->keyType() !== 'string' ||
@@ -46,6 +49,7 @@ final class Unlink implements Controller
         $this->gateways = $gateways;
         $this->buildHeader = $headerBuilder;
         $this->translate = $translator;
+        $this->locator = $locator;
     }
 
     public function __invoke(
@@ -63,6 +67,10 @@ final class Unlink implements Controller
             $links = ($this->translate)($request->headers()->get('Link'));
         } catch (RouteNotFound $e) {
             throw new BadRequest('', 0, $e);
+        }
+
+        if (!$from->accept($this->locator, ...$links)) {
+            throw new BadRequest;
         }
 
         $unlink = $this

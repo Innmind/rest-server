@@ -74,6 +74,13 @@ class HttpResourceTest extends TestCase
                     $directory->definition('image'),
                     $this->createMock(IdentityInterface::class)
                 ),
+                'alternate'
+            ),
+            new Link(
+                new Reference(
+                    $directory->definition('image'),
+                    $this->createMock(IdentityInterface::class)
+                ),
                 'canonical'
             )
         ));

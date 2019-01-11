@@ -14,6 +14,7 @@ use Innmind\Rest\Server\{
     Translator\LinkTranslator,
     Link,
     Link\Parameter,
+    Definition\Locator,
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -45,7 +46,8 @@ class LinkTest extends AbstractTestCase
             Map::of('string', Gateway::class)
                 ('foo', $this->gateway = $this->createMock(Gateway::class)),
             $this->headerBuilder = $this->createMock(LinkBuilder::class),
-            new LinkTranslator($this->router)
+            new LinkTranslator($this->router),
+            new Locator($this->directory)
         );
     }
 
@@ -65,7 +67,8 @@ class LinkTest extends AbstractTestCase
         new LinkController(
             new Map('int', Gateway::class),
             $this->createMock(LinkBuilder::class),
-            new LinkTranslator($this->router)
+            new LinkTranslator($this->router),
+            new Locator($this->directory)
         );
     }
 
@@ -77,7 +80,8 @@ class LinkTest extends AbstractTestCase
         new LinkController(
             new Map('string', 'callable'),
             $this->createMock(LinkBuilder::class),
-            new LinkTranslator($this->router)
+            new LinkTranslator($this->router),
+            new Locator($this->directory)
         );
     }
 
@@ -147,6 +151,49 @@ class LinkTest extends AbstractTestCase
         $this->assertSame('', (string) $response->body());
     }
 
+    public function testThrowWhenLinkNotAccepted()
+    {
+        $request = $this->createMock(ServerRequest::class);
+        $request
+            ->expects($this->any())
+            ->method('headers')
+            ->willReturn(Headers::of(
+                new LinkHeader(
+                    new LinkValue(
+                        Url::fromString('/top_dir/image/42'),
+                        'resource'
+                    )
+                )
+            ));
+        $identity = $this->createMock(Identity::class);
+        $definition = $this->directory->definition('image');
+        $from = new Reference(
+            $definition,
+            $identity
+        );
+        $link = new Link(
+            new Reference(
+                $this->directory->definition('image'),
+                new Identity\Identity('42')
+            ),
+            'resource'
+        );
+
+        $this
+            ->gateway
+            ->expects($this->never())
+            ->method('resourceLinker');
+        $this
+            ->headerBuilder
+            ->expects($this->never())
+            ->method('__invoke');
+
+        $this->expectException(BadRequest::class);
+
+        // throws because of the relationship is not "alternate"
+        ($this->link)($request, $definition, $identity);
+    }
+
     public function testThrowWhenNoLinkHeader()
     {
         $request = $this->createMock(ServerRequest::class);
@@ -169,7 +216,7 @@ class LinkTest extends AbstractTestCase
         ($this->link)($request, $this->definition, $identity);
     }
 
-    public function testThrowWhenLinkinkToUnknownResource()
+    public function testThrowWhenLinkingToUnknownResource()
     {
         $request = $this->createMock(ServerRequest::class);
         $request

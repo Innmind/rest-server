@@ -144,7 +144,23 @@ final class HttpResource
         return $this->allowedLinks;
     }
 
-    public function accept(Locator $locator, Link $link): bool
+    public function accept(Locator $locator, Link ...$links): bool
+    {
+        foreach ($links as $link) {
+            if (!$this->acceptLink($locator, $link)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->name;
+    }
+
+    private function acceptLink(Locator $locator, Link $link): bool
     {
         return $this->allowedLinks->reduce(
             true,
@@ -152,10 +168,5 @@ final class HttpResource
                 return $accept && $allowed->accept($locator, $link);
             }
         );
-    }
-
-    public function __toString(): string
-    {
-        return (string) $this->name;
     }
 }

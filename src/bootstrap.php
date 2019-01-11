@@ -101,6 +101,7 @@ function bootstrap(
     };
 
     $linkTranslator = new LinkTranslator($router);
+    $locator = new Locator($directory);
 
     return [
         'routes' => $routes,
@@ -200,7 +201,8 @@ function bootstrap(
                         new Link(
                             $gateways,
                             new HeaderBuilder\LinkDelegationBuilder,
-                            $linkTranslator
+                            $linkTranslator,
+                            $locator
                         )
                     )
                 )
@@ -211,13 +213,14 @@ function bootstrap(
                         new Unlink(
                             $gateways,
                             new HeaderBuilder\UnlinkDelegationBuilder,
-                            $linkTranslator
+                            $linkTranslator,
+                            $locator
                         )
                     )
                 )
             ),
             'capabilities' => new Capabilities($routes, $router),
         ],
-        'locator' => new Locator($directory),
+        'locator' => $locator,
     ];
 }
