@@ -15,7 +15,6 @@ use Innmind\Immutable\{
 
 final class MapType implements Type
 {
-    private static $identifiers;
     private $key;
     private $inner;
     private $innerKey;
