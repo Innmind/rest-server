@@ -87,12 +87,11 @@ class HttpResourceTest extends TestCase
         ));
     }
 
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 4 must be of type SetInterface<Innmind\Rest\Server\Definition\Property>
-     */
     public function testThrowForInvalidPropertySet()
     {
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 4 must be of type SetInterface<Innmind\Rest\Server\Definition\Property>');
+
         new HttpResource(
             'foobar',
             new Gateway('bar'),
@@ -101,12 +100,11 @@ class HttpResourceTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 6 must be of type SetInterface<Innmind\Rest\Server\Definition\AllowedLink>
-     */
     public function testThrowForInvalidLinkSet()
     {
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 6 must be of type SetInterface<Innmind\Rest\Server\Definition\AllowedLink>');
+
         new HttpResource(
             'foobar',
             new Gateway('bar'),
@@ -117,12 +115,11 @@ class HttpResourceTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 5 must be of type SetInterface<Innmind\Rest\Server\Action>
-     */
     public function testThrowForInvalidOptionMap()
     {
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 5 must be of type SetInterface<Innmind\Rest\Server\Action>');
+
         new HttpResource(
             'foobar',
             new Gateway('bar'),
@@ -132,12 +129,11 @@ class HttpResourceTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 7 must be of type MapInterface<scalar, variable>
-     */
     public function testThrowForInvalidMetaMap()
     {
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 7 must be of type MapInterface<scalar, variable>');
+
         new HttpResource(
             'foobar',
             new Gateway('bar'),

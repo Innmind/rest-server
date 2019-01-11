@@ -7,6 +7,7 @@ use Innmind\Rest\Server\{
     Translator\Specification\DefaultTranslator,
     Translator\SpecificationTranslator,
     Specification\Filter,
+    Exception\SpecificationNotUsableAsQuery,
 };
 use Innmind\Url\QueryInterface;
 use PHPUnit\Framework\TestCase;
@@ -37,9 +38,6 @@ class DefaultTranslatorTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\SpecificationNotUsableAsQuery
-     */
     public function testThrowWhenOrConditionFound()
     {
         $translate = new DefaultTranslator;
@@ -47,17 +45,18 @@ class DefaultTranslatorTest extends TestCase
         $spec = (new Filter('range', [0, 42]))
             ->or(new Filter('foo', 'bar'));
 
+        $this->expectException(SpecificationNotUsableAsQuery::class);
+
         $translate($spec);
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\SpecificationNotUsableAsQuery
-     */
     public function testThrowWhenNotConditionFound()
     {
         $translate = new DefaultTranslator;
 
         $spec = (new Filter('range', [0, 42]))->not();
+
+        $this->expectException(SpecificationNotUsableAsQuery::class);
 
         $translate($spec);
     }

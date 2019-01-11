@@ -3,9 +3,11 @@ declare(strict_types = 1);
 
 namespace Tests\Innmind\Rest\Server\Definition\Type;
 
-use Innmind\Rest\Server\Definition\{
-    Type\PointInTimeType,
-    Type,
+use Innmind\Rest\Server\{
+    Definition\Type\PointInTimeType,
+    Definition\Type,
+    Exception\NormalizationException,
+    Exception\DenormalizationException,
 };
 use Innmind\TimeContinuum\{
     TimeContinuum\Earth,
@@ -64,12 +66,11 @@ class PointInTimeTypeTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\DenormalizationException
-     * @expectedExceptionMessage The value must be a point in time
-     */
     public function testThrowWhenNotDenormalizingADate()
     {
+        $this->expectException(DenormalizationException::class);
+        $this->expectExceptionMessage('The value must be a point in time');
+
         (new PointInTimeType($this->clock))->denormalize(new \stdClass);
     }
 
@@ -87,12 +88,11 @@ class PointInTimeTypeTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\NormalizationException
-     * @expectedExceptionMessage The value must be a point in time
-     */
     public function testThrowWhenNotNormalizingADate()
     {
+        $this->expectException(NormalizationException::class);
+        $this->expectExceptionMessage('The value must be a point in time');
+
         (new PointInTimeType($this->clock))->normalize('foo');
     }
 }

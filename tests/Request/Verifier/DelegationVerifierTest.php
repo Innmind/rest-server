@@ -56,9 +56,6 @@ class DelegationVerifierTest extends TestCase
         $this->assertSame(2, $count);
     }
 
-    /**
-     * @expectedException Exception
-     */
     public function testThrowWhenSubVerifierThrows()
     {
         $verify = new DelegationVerifier(
@@ -69,6 +66,8 @@ class DelegationVerifierTest extends TestCase
             ->will($this->returnCallback(function() use (&$count) {
                 throw new \Exception;
             }));
+
+        $this->expectException(\Exception::class);
 
         $verify(
             $this->createMock(ServerRequest::class),

@@ -20,6 +20,7 @@ use Innmind\Http\{
     Headers,
     Header,
     ProtocolVersion,
+    Exception\Http\UnsupportedMediaType,
 };
 use Innmind\Url\UrlInterface;
 use Innmind\Immutable\Set;
@@ -45,9 +46,6 @@ class ContentTypeVerifierTest extends TestCase
         $this->assertInstanceOf(Verifier::class, $verifier);
     }
 
-    /**
-     * @expectedException Innmind\Http\Exception\Http\UnsupportedMediaType
-     */
     public function testThrowWhenHeaderNotAccepted()
     {
         $verify = new ContentTypeVerifier(
@@ -86,6 +84,8 @@ class ContentTypeVerifierTest extends TestCase
             ->expects($this->once())
             ->method('__toString')
             ->willReturn(Method::POST);
+
+        $this->expectException(UnsupportedMediaType::class);
 
         $verify(
             $request,

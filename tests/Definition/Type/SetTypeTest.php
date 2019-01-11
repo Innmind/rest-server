@@ -3,11 +3,13 @@ declare(strict_types = 1);
 
 namespace Tests\Innmind\Rest\Server\Definition\Type;
 
-use Innmind\Rest\Server\Definition\{
-    Type\SetType,
-    Type\StringType,
-    Type\DateType,
-    Type,
+use Innmind\Rest\Server\{
+    Definition\Type\SetType,
+    Definition\Type\StringType,
+    Definition\Type\DateType,
+    Definition\Type,
+    Exception\NormalizationException,
+    Exception\DenormalizationException,
 };
 use Innmind\Immutable\{
     SetInterface,
@@ -63,12 +65,11 @@ class SetTypeTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\DenormalizationException
-     * @expectedExceptionMessage The value must be an array of string
-     */
     public function testThrowWhenNotDenormalizingAnArray()
     {
+        $this->expectException(DenormalizationException::class);
+        $this->expectExceptionMessage('The value must be an array of string');
+
         (new SetType(
             'string',
             new StringType
@@ -95,12 +96,11 @@ class SetTypeTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\NormalizationException
-     * @expectedExceptionMessage The value must be a set
-     */
     public function testThrowWhenNotNormalizingAnArray()
     {
+        $this->expectException(NormalizationException::class);
+        $this->expectExceptionMessage('The value must be a set');
+
         (new SetType(
             'string',
             new StringType

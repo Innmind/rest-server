@@ -19,6 +19,7 @@ use Innmind\Http\{
     Message\Method\Method,
     Headers,
     ProtocolVersion,
+    Exception\Http\PreconditionFailed,
 };
 use Innmind\Url\UrlInterface;
 use Innmind\Immutable\Set;
@@ -31,9 +32,6 @@ class RangeVerifierTest extends TestCase
         $this->assertInstanceOf(Verifier::class, new RangeVerifier);
     }
 
-    /**
-     * @expectedException Innmind\Http\Exception\Http\PreconditionFailed
-     */
     public function testThrowWhenUsingRangeOnNonGETRequest()
     {
         $verify = new RangeVerifier;
@@ -50,6 +48,8 @@ class RangeVerifierTest extends TestCase
             $headers
         );
 
+        $this->expectException(PreconditionFailed::class);
+
         $verify(
             $request,
             HttpResource::rangeable(
@@ -61,9 +61,6 @@ class RangeVerifierTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException Innmind\Http\Exception\Http\PreconditionFailed
-     */
     public function testThrowWhenUsingRangeOnNonRageableResource()
     {
         $verify = new RangeVerifier;
@@ -79,6 +76,8 @@ class RangeVerifierTest extends TestCase
             $this->createMock(ProtocolVersion::class),
             $headers
         );
+
+        $this->expectException(PreconditionFailed::class);
 
         $verify(
             $request,

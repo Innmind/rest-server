@@ -7,6 +7,8 @@ use Innmind\Rest\Server\{
     Formats,
     Format\Format,
     Format\MediaType,
+    Exception\DomainException,
+    Exception\InvalidArgumentException,
 };
 use Innmind\Immutable\{
     Map,
@@ -49,29 +51,26 @@ class FormatsTest extends TestCase
         $this->assertSame($format, $formats->get('json'));
     }
 
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Format\Format>
-     */
     public function testThrowWhenInvalidMapKey()
     {
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Format\Format>');
+
         new Formats(new Map('int', Format::class));
     }
 
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Format\Format>
-     */
     public function testThrowWhenInvalidMapValue()
     {
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Format\Format>');
+
         new Formats(new Map('string', 'string'));
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\DomainException
-     */
     public function testThrowWhenEmptyMap()
     {
+        $this->expectException(DomainException::class);
+
         new Formats(new Map('string', Format::class));
     }
 
@@ -130,9 +129,6 @@ class FormatsTest extends TestCase
         $this->assertSame($html, $formats->fromMediaType('text/xhtml'));
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
-     */
     public function testThrowWhenNoFormatForWishedMediaType()
     {
         $formats = new Formats(
@@ -150,6 +146,8 @@ class FormatsTest extends TestCase
                     )
                 )
         );
+
+        $this->expectException(InvalidArgumentException::class);
 
         $formats->fromMediaType('application/json');
     }

@@ -7,6 +7,7 @@ use Innmind\Rest\Server\{
     RangeExtractor\QueryExtractor,
     RangeExtractor\Extractor,
     Request\Range,
+    Exception\RangeNotFound,
 };
 use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
@@ -57,9 +58,6 @@ class QueryExtractorTest extends TestCase
         $this->assertSame(42, $range->lastPosition());
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\RangeNotFound
-     */
     public function testThrowWhenRangeIsNotExactlyAsExpected()
     {
         $extract = new QueryExtractor;
@@ -76,6 +74,8 @@ class QueryExtractorTest extends TestCase
                     ('range', new Parameter('range', ['resources', 0, 42]))
             )
         );
+
+        $this->expectException(RangeNotFound::class);
 
         $extract($request);
     }

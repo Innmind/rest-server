@@ -3,9 +3,11 @@ declare(strict_types = 1);
 
 namespace Tests\Innmind\Rest\Server\Definition\Type;
 
-use Innmind\Rest\Server\Definition\{
-    Type\FloatType,
-    Type,
+use Innmind\Rest\Server\{
+    Definition\Type\FloatType,
+    Definition\Type,
+    Exception\NormalizationException,
+    Exception\DenormalizationException,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -25,12 +27,11 @@ class FloatTypeTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\DenormalizationException
-     * @expectedExceptionMessage The value must be a float
-     */
     public function testThrowWhenNotDenormalizingAFloat()
     {
+        $this->expectException(DenormalizationException::class);
+        $this->expectExceptionMessage('The value must be a float');
+
         (new FloatType)->denormalize(new \stdClass);
     }
 
@@ -42,12 +43,11 @@ class FloatTypeTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\NormalizationException
-     * @expectedExceptionMessage The value must be a float
-     */
     public function testThrowWhenNotNormalizingAFloat()
     {
+        $this->expectException(NormalizationException::class);
+        $this->expectExceptionMessage('The value must be a float');
+
         (new FloatType)->normalize(new \stdClass);
     }
 }

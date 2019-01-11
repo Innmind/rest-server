@@ -7,6 +7,7 @@ use Innmind\Rest\Server\{
     RangeExtractor\HeaderExtractor,
     RangeExtractor\Extractor,
     Request\Range,
+    Exception\RangeNotFound,
 };
 use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
@@ -53,9 +54,6 @@ class HeaderExtractorTest extends TestCase
         $this->assertSame(42, $range->lastPosition());
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\RangeNotFound
-     */
     public function testThrowWhenRangeHeaderNotFound()
     {
         $extract = new HeaderExtractor;
@@ -64,6 +62,8 @@ class HeaderExtractorTest extends TestCase
             Method::get(),
             $protocol = new ProtocolVersion(1, 1)
         );
+
+        $this->expectException(RangeNotFound::class);
 
         $extract($request);
     }

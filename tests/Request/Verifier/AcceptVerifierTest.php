@@ -20,6 +20,7 @@ use Innmind\Http\{
     Headers,
     Header,
     ProtocolVersion,
+    Exception\Http\NotAcceptable,
 };
 use Innmind\Url\UrlInterface;
 use Innmind\Immutable\Set;
@@ -45,9 +46,6 @@ class AcceptVerifierTest extends TestCase
         $this->assertInstanceOf(Verifier::class, $verifier);
     }
 
-    /**
-     * @expectedException Innmind\Http\Exception\Http\NotAcceptable
-     */
     public function testThrowWhenHeaderNotAccepted()
     {
         $verify = new AcceptVerifier(
@@ -79,6 +77,8 @@ class AcceptVerifierTest extends TestCase
             $this->createMock(ProtocolVersion::class),
             $headers
         );
+
+        $this->expectException(NotAcceptable::class);
 
         $verify(
             $request,

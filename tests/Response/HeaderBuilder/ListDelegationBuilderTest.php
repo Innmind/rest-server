@@ -43,13 +43,12 @@ class ListDelegationBuilderTest extends TestCase
         $this->assertSame(Header::class, (string) $headers->type());
     }
 
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 1 must be of type SetInterface<Innmind\Rest\Server\Identity>
-     */
     public function testThrowWhenInvalidIdentities()
     {
         $build = new ListDelegationBuilder;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 1 must be of type SetInterface<Innmind\Rest\Server\Identity>');
 
         $build(
             new Set('object'),

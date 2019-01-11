@@ -49,12 +49,11 @@ class DirectoryTest extends TestCase
         $this->assertCount(1, $directory->definitions());
     }
 
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 2 must be of type MapInterface<string, Innmind\Rest\Server\Definition\Directory>
-     */
     public function testThrowWhenGivingInvalidChildren()
     {
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 2 must be of type MapInterface<string, Innmind\Rest\Server\Definition\Directory>');
+
         new Directory(
             '',
             new Map('string', 'string'),
@@ -62,12 +61,11 @@ class DirectoryTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Definition\HttpResource>
-     */
     public function testThrowWhenGivingInvalidDefinitions()
     {
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Definition\HttpResource>');
+
         new Directory(
             '',
             new Map('string', Directory::class),

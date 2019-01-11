@@ -3,9 +3,10 @@ declare(strict_types = 1);
 
 namespace Tests\Innmind\Rest\Server\Definition;
 
-use Innmind\Rest\Server\Definition\{
-    Locator,
-    HttpResource,
+use Innmind\Rest\Server\{
+    Definition\Locator,
+    Definition\HttpResource,
+    Exception\DefinitionNotFound,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -23,11 +24,10 @@ class LocatorTest extends TestCase
         $this->assertSame('res', (string) $resource->name());
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\DefinitionNotFound
-     */
     public function testThrowWhenResourceNotFound()
     {
+        $this->expectException(DefinitionNotFound::class);
+
         $locate = new Locator(
             require 'fixtures/mapping.php'
         );

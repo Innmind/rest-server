@@ -41,11 +41,10 @@ class DelegationExtractorTest extends TestCase
         $this->assertSame($expected, $range);
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\RangeNotFound
-     */
     public function testThrowWhenRangeNotFound()
     {
+        $this->expectException(RangeNotFound::class);
+
         (new DelegationExtractor)(
             $this->createMock(ServerRequest::class)
         );

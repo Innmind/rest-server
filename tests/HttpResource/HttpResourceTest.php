@@ -13,6 +13,7 @@ use Innmind\Rest\Server\{
     Definition\Gateway,
     Definition\Type\StringType,
     Definition\Access,
+    Exception\DomainException,
 };
 use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
@@ -45,11 +46,10 @@ class HttpResourceTest extends TestCase
         $this->assertSame($property, $resource->property('foo'));
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\DomainException
-     */
     public function testThrowWhenBuildingWithUndefinedProperty()
     {
+        $this->expectException(DomainException::class);
+
         HttpResource::of(
             Definition::rangeable(
                 'foobar',

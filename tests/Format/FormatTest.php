@@ -3,9 +3,10 @@ declare(strict_types = 1);
 
 namespace Tests\Innmind\Rest\Server\Format;
 
-use Innmind\Rest\Server\Format\{
-    Format,
-    MediaType,
+use Innmind\Rest\Server\{
+    Format\Format,
+    Format\MediaType,
+    Exception\DomainException,
 };
 use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
@@ -43,20 +44,18 @@ class FormatTest extends TestCase
         $this->assertSame('application/json', $media->mime());
     }
 
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 2 must be of type SetInterface<Innmind\Rest\Server\Format\MediaType>
-     */
     public function testThrowWhenInvalidMediaType()
     {
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 2 must be of type SetInterface<Innmind\Rest\Server\Format\MediaType>');
+
         new Format('foo', new Set('string'), 42);
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\DomainException
-     */
     public function testThrowWhenNoMediaType()
     {
+        $this->expectException(DomainException::class);
+
         new Format('foo', new Set(MediaType::class), 42);
     }
 }

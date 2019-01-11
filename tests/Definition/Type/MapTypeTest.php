@@ -3,12 +3,14 @@ declare(strict_types = 1);
 
 namespace Tests\Innmind\Rest\Server\Definition\Type;
 
-use Innmind\Rest\Server\Definition\{
-    Type\MapType,
-    Type\StringType,
-    Type\IntType,
-    Type\DateType,
-    Type,
+use Innmind\Rest\Server\{
+    Definition\Type\MapType,
+    Definition\Type\StringType,
+    Definition\Type\IntType,
+    Definition\Type\DateType,
+    Definition\Type,
+    Exception\NormalizationException,
+    Exception\DenormalizationException,
 };
 use Innmind\Immutable\{
     MapInterface,
@@ -74,12 +76,11 @@ class MapTypeTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\DenormalizationException
-     * @expectedExceptionMessage The value must be an array of int mapped to string
-     */
     public function testThrowWhenNotDenormalizingAnArray()
     {
+        $this->expectException(DenormalizationException::class);
+        $this->expectExceptionMessage('The value must be an array of int mapped to string');
+
         (new MapType(
             'int',
             'string',
@@ -111,12 +112,11 @@ class MapTypeTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\NormalizationException
-     * @expectedExceptionMessage The value must be a map
-     */
     public function testThrowWhenNotNormalizingAnArray()
     {
+        $this->expectException(NormalizationException::class);
+        $this->expectExceptionMessage('The value must be a map');
+
         (new MapType(
             'int',
             'string',
