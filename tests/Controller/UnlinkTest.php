@@ -43,7 +43,7 @@ class UnlinkTest extends AbstractTestCase
         parent::setUp();
 
         $this->unlink = new Unlink(
-            (new Map('string', Gateway::class))->put(
+            Map::of('string', Gateway::class)(
                 'foo',
                 $this->gateway = $this->createMock(Gateway::class)
             ),
