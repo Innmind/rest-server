@@ -107,7 +107,7 @@ class UnlinkTest extends AbstractTestCase
                 $this->directory->definition('image'),
                 new Identity\Identity('42')
             ),
-            new Parameter\Parameter('rel', 'resource')
+            'resource'
         );
 
         $this
@@ -123,7 +123,7 @@ class UnlinkTest extends AbstractTestCase
                 $this->callback(static function($value) use ($link): bool {
                     return $value->reference()->definition() === $link->reference()->definition() &&
                         $value->reference()->identity()->value() === $link->reference()->identity()->value() &&
-                        $value->get('rel')->value() === $link->get('rel')->value();
+                        $value->relationship() === $link->relationship();
                 })
             );
         $this
@@ -136,7 +136,7 @@ class UnlinkTest extends AbstractTestCase
                 $this->callback(static function($value) use ($link): bool {
                     return $value->reference()->definition() === $link->reference()->definition() &&
                         $value->reference()->identity()->value() === $link->reference()->identity()->value() &&
-                        $value->get('rel')->value() === $link->get('rel')->value();
+                        $value->relationship() === $link->relationship();
                 })
             )
             ->willReturn(new Set(Header::class));

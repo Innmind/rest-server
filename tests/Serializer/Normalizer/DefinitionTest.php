@@ -45,7 +45,11 @@ class DefinitionTest extends TestCase
                 'metas' => [],
                 'rangeable' => true,
                 'linkable_to' => [
-                    'alternate' => 'top_dir.image',
+                    [
+                        'relationship' => 'alternate',
+                        'resource_path' => 'top_dir.image',
+                        'parameters' => [],
+                    ],
                 ],
             ],
             $data

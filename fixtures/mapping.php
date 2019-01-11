@@ -7,12 +7,10 @@ use Innmind\Rest\Server\Definition\{
     Identity,
     Property,
     Access,
+    AllowedLink,
     Type\StringType,
 };
-use Innmind\Immutable\{
-    Map,
-    Set,
-};
+use Innmind\Immutable\Set;
 
 return Directory::of(
     'top_dir',
@@ -60,7 +58,9 @@ return Directory::of(
         ),
         null,
         null,
-        Map::of('string', 'string')
-            ('alternate', 'top_dir.image')
+        Set::of(
+            AllowedLink::class,
+            new AllowedLink('alternate', 'top_dir.image')
+        )
     )
 );

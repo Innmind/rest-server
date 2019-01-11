@@ -3,11 +3,15 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Definition;
 
-use Innmind\Rest\Server\Action;
+use Innmind\Rest\Server\{
+    Action,
+    Link,
+};
 use Innmind\Immutable\{
     MapInterface,
     Map,
     SetInterface,
+    Set,
 };
 
 final class HttpResource
@@ -28,11 +32,11 @@ final class HttpResource
         SetInterface $properties,
         SetInterface $actions = null,
         MapInterface $metas = null,
-        MapInterface $allowedLinks = null
+        SetInterface $allowedLinks = null
     ) {
         $actions = $actions ?? Action::all();
         $metas = $metas ?? Map::of('scalar', 'variable');
-        $allowedLinks = $allowedLinks ?? Map::of('string', 'string');
+        $allowedLinks = $allowedLinks ?? Set::of(AllowedLink::class);
 
         if ((string) $properties->type() !== Property::class) {
             throw new \TypeError(sprintf(
@@ -55,11 +59,11 @@ final class HttpResource
             throw new \TypeError('Argument 6 must be of type MapInterface<scalar, variable>');
         }
 
-        if (
-            (string) $allowedLinks->keyType() !== 'string' ||
-            (string) $allowedLinks->valueType() !== 'string'
-        ) {
-            throw new \TypeError('Argument 8 must be of type MapInterface<string, string>');
+        if ((string) $allowedLinks->type() !== AllowedLink::class) {
+            throw new \TypeError(\sprintf(
+                'Argument 8 must be of type SetInterface<%s>',
+                AllowedLink::class
+            ));
         }
 
         $this->name = new Name($name);
@@ -83,7 +87,7 @@ final class HttpResource
         SetInterface $properties,
         SetInterface $actions = null,
         MapInterface $metas = null,
-        MapInterface $allowedLinks = null
+        SetInterface $allowedLinks = null
     ): self {
         $self = new self($name, $gateway, $identity, $properties, $actions, $metas, $allowedLinks);
         $self->rangeable = true;
@@ -133,11 +137,21 @@ final class HttpResource
     }
 
     /**
-     * @return MapInterface<string, string> Relationship type as key and definition path as value
+     * @return SetInterface<AllowedLink>
      */
-    public function allowedLinks(): MapInterface
+    public function allowedLinks(): SetInterface
     {
         return $this->allowedLinks;
+    }
+
+    public function accept(Locator $locator, Link $link): bool
+    {
+        return $this->allowedLinks->reduce(
+            true,
+            static function(bool $accept, AllowedLink $allowed) use ($locator, $link): bool {
+                return $accept && $allowed->accept($locator, $link);
+            }
+        );
     }
 
     public function __toString(): string

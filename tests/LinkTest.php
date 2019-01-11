@@ -22,10 +22,12 @@ class LinkTest extends TestCase
                 $directory->definition('image'),
                 $this->createMock(Identity::class)
             ),
+            'rel',
             $parameter = new Parameter('foo', 'bar')
         );
 
         $this->assertSame($reference, $link->reference());
+        $this->assertSame('rel', $link->relationship());
         $this->assertTrue($link->has('foo'));
         $this->assertSame($parameter, $link->get('foo'));
         $this->assertFalse($link->has('bar'));

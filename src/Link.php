@@ -13,11 +13,16 @@ use Innmind\Immutable\{
 final class Link
 {
     private $reference;
+    private $relationship;
     private $parameters;
 
-    public function __construct(Reference $reference, Parameter ...$parameters)
-    {
+    public function __construct(
+        Reference $reference,
+        string $relationship,
+        Parameter ...$parameters
+    ) {
         $this->reference = $reference;
+        $this->relationship = $relationship;
         $this->parameters = Sequence::of(...$parameters)->reduce(
             Map::of('string', Parameter::class),
             static function(MapInterface $parameters, Parameter $parameter): MapInterface {
@@ -32,6 +37,11 @@ final class Link
     public function reference(): Reference
     {
         return $this->reference;
+    }
+
+    public function relationship(): string
+    {
+        return $this->relationship;
     }
 
     public function has(string $parameter): bool

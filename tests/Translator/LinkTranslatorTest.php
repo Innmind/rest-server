@@ -42,7 +42,7 @@ class LinkTranslatorTest extends TestCase
             new LinkHeader(
                 new LinkValue(
                     Url::fromString('/top_dir/sub_dir/res/bar'),
-                    'relationship',
+                    'relationship_name',
                     Map::of('string', LinkParameterInterface::class)
                         ('foo', new LinkParameter('foo', 'baz'))
                 )
@@ -62,8 +62,7 @@ class LinkTranslatorTest extends TestCase
             (string) $link->reference()->identity()
         );
         $this->assertTrue($link->has('foo'));
-        $this->assertTrue($link->has('rel'));
         $this->assertSame('baz', $link->get('foo')->value());
-        $this->assertSame('relationship', $link->get('rel')->value());
+        $this->assertSame('relationship_name', $link->relationship());
     }
 }

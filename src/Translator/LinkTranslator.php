@@ -51,9 +51,8 @@ final class LinkTranslator
                 $match->definition(),
                 $match->identity()
             ),
-            ...$this
-                ->translateParameters($link->parameters())
-                ->add(new Parameter\Parameter('rel', $link->relationship()))
+            $link->relationship(),
+            ...$this->translateParameters($link->parameters())
         );
     }
 

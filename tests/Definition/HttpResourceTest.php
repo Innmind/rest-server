@@ -9,7 +9,11 @@ use Innmind\Rest\Server\{
     Definition\Gateway,
     Definition\Property,
     Definition\Name,
+    Definition\Locator,
     Action,
+    Link,
+    Reference,
+    Identity as IdentityInterface,
 };
 use Innmind\Immutable\{
     MapInterface,
@@ -28,8 +32,7 @@ class HttpResourceTest extends TestCase
             $identity = new Identity('foo'),
             new Set(Property::class),
             Set::of(Action::class, Action::get()),
-            $metas = new Map('scalar', 'variable'),
-            $links = new Map('string', 'string')
+            $metas = new Map('scalar', 'variable')
         );
 
         $this->assertInstanceOf(Name::class, $resource->name());
@@ -45,7 +48,35 @@ class HttpResourceTest extends TestCase
         $this->assertSame($metas, $resource->metas());
         $this->assertSame($gateway, $resource->gateway());
         $this->assertTrue($resource->isRangeable());
-        $this->assertSame($links, $resource->allowedLinks());
+    }
+
+    public function testAccept()
+    {
+        $directory = require 'fixtures/mapping.php';
+        $locator = new Locator($directory);
+
+        $resource = $directory->definition('image');
+
+        $this->assertTrue($resource->accept(
+            $locator,
+            new Link(
+                new Reference(
+                    $directory->definition('image'),
+                    $this->createMock(IdentityInterface::class)
+                ),
+                'alternate'
+            )
+        ));
+        $this->assertFalse($resource->accept(
+            $locator,
+            new Link(
+                new Reference(
+                    $directory->definition('image'),
+                    $this->createMock(IdentityInterface::class)
+                ),
+                'canonical'
+            )
+        ));
     }
 
     /**
@@ -60,16 +91,15 @@ class HttpResourceTest extends TestCase
             new Identity('foo'),
             new Set('string'),
             new Set(Action::class),
-            new Map('scalar', 'variable'),
-            new Map('string', 'string')
+            new Map('scalar', 'variable')
         );
     }
 
     /**
      * @expectedException TypeError
-     * @expectedExceptionMessage Argument 8 must be of type MapInterface<string, string>
+     * @expectedExceptionMessage Argument 8 must be of type SetInterface<Innmind\Rest\Server\Definition\AllowedLink>
      */
-    public function testThrowForInvalidLinkMap()
+    public function testThrowForInvalidLinkSet()
     {
         new HttpResource(
             'foobar',
@@ -78,7 +108,7 @@ class HttpResourceTest extends TestCase
             new Set(Property::class),
             new Set(Action::class),
             new Map('scalar', 'variable'),
-            new Map('int', 'int')
+            new Set('string')
         );
     }
 
@@ -94,8 +124,7 @@ class HttpResourceTest extends TestCase
             new Identity('foo'),
             new Set(Property::class),
             new Set('string'),
-            new Map('scalar', 'variable'),
-            new Map('string', 'string')
+            new Map('scalar', 'variable')
         );
     }
 
@@ -111,7 +140,6 @@ class HttpResourceTest extends TestCase
             new Identity('foo'),
             new Set(Property::class),
             new Set(Action::class),
-            new Map('string', 'string'),
             new Map('string', 'string')
         );
     }
