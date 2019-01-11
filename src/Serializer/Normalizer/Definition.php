@@ -53,6 +53,8 @@ final class Definition
                                 [],
                                 static function(array $carry, Parameter $parameter): array {
                                     $carry[] = $parameter->name();
+
+                                    return $carry;
                                 }
                             ),
                         ];
