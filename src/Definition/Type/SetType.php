@@ -15,7 +15,6 @@ use Innmind\Immutable\{
 
 final class SetType implements Type
 {
-    private static $identifiers;
     private $inner;
     private $type;
 
