@@ -32,6 +32,7 @@ class HttpResourceTest extends TestCase
             $identity = new Identity('foo'),
             new Set(Property::class),
             Set::of(Action::class, Action::get()),
+            null,
             $metas = new Map('scalar', 'variable')
         );
 
@@ -96,15 +97,13 @@ class HttpResourceTest extends TestCase
             'foobar',
             new Gateway('bar'),
             new Identity('foo'),
-            new Set('string'),
-            new Set(Action::class),
-            new Map('scalar', 'variable')
+            new Set('string')
         );
     }
 
     /**
      * @expectedException TypeError
-     * @expectedExceptionMessage Argument 8 must be of type SetInterface<Innmind\Rest\Server\Definition\AllowedLink>
+     * @expectedExceptionMessage Argument 6 must be of type SetInterface<Innmind\Rest\Server\Definition\AllowedLink>
      */
     public function testThrowForInvalidLinkSet()
     {
@@ -114,7 +113,6 @@ class HttpResourceTest extends TestCase
             new Identity('foo'),
             new Set(Property::class),
             new Set(Action::class),
-            new Map('scalar', 'variable'),
             new Set('string')
         );
     }
@@ -130,14 +128,13 @@ class HttpResourceTest extends TestCase
             new Gateway('bar'),
             new Identity('foo'),
             new Set(Property::class),
-            new Set('string'),
-            new Map('scalar', 'variable')
+            new Set('string')
         );
     }
 
     /**
      * @expectedException TypeError
-     * @expectedExceptionMessage Argument 6 must be of type MapInterface<scalar, variable>
+     * @expectedExceptionMessage Argument 7 must be of type MapInterface<scalar, variable>
      */
     public function testThrowForInvalidMetaMap()
     {
@@ -147,6 +144,7 @@ class HttpResourceTest extends TestCase
             new Identity('foo'),
             new Set(Property::class),
             new Set(Action::class),
+            null,
             new Map('string', 'string')
         );
     }

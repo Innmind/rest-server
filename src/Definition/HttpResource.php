@@ -31,8 +31,8 @@ final class HttpResource
         Identity $identity,
         SetInterface $properties,
         SetInterface $actions = null,
-        MapInterface $metas = null,
-        SetInterface $allowedLinks = null
+        SetInterface $allowedLinks = null,
+        MapInterface $metas = null
     ) {
         $actions = $actions ?? Action::all();
         $metas = $metas ?? Map::of('scalar', 'variable');
@@ -52,18 +52,18 @@ final class HttpResource
             ));
         }
 
+        if ((string) $allowedLinks->type() !== AllowedLink::class) {
+            throw new \TypeError(\sprintf(
+                'Argument 6 must be of type SetInterface<%s>',
+                AllowedLink::class
+            ));
+        }
+
         if (
             (string) $metas->keyType() !== 'scalar' ||
             (string) $metas->valueType() !== 'variable'
         ) {
-            throw new \TypeError('Argument 6 must be of type MapInterface<scalar, variable>');
-        }
-
-        if ((string) $allowedLinks->type() !== AllowedLink::class) {
-            throw new \TypeError(\sprintf(
-                'Argument 8 must be of type SetInterface<%s>',
-                AllowedLink::class
-            ));
+            throw new \TypeError('Argument 7 must be of type MapInterface<scalar, variable>');
         }
 
         $this->name = new Name($name);
@@ -86,10 +86,10 @@ final class HttpResource
         Identity $identity,
         SetInterface $properties,
         SetInterface $actions = null,
-        MapInterface $metas = null,
-        SetInterface $allowedLinks = null
+        SetInterface $allowedLinks = null,
+        MapInterface $metas = null
     ): self {
-        $self = new self($name, $gateway, $identity, $properties, $actions, $metas, $allowedLinks);
+        $self = new self($name, $gateway, $identity, $properties, $actions, $allowedLinks, $metas);
         $self->rangeable = true;
 
         return $self;

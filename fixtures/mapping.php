@@ -57,7 +57,6 @@ return Directory::of(
             )
         ),
         null,
-        null,
         Set::of(
             AllowedLink::class,
             new AllowedLink('alternate', 'top_dir.image')
