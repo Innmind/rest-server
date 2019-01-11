@@ -21,14 +21,11 @@ composer require innmind/rest-server
 ```php
 use function Innmind\Rest\Server\bootstrap;
 use Innmind\Rest\Server\Gateway;
-use Innmind\Immutable\{
-    Map,
-    Set,
-};
+use Innmind\Immutable\Map;
 
 $services = bootstrap(
     new Map('string', Gateway::class),
-    Set::of('string', '/path/to/resources/mapping.yml')
+    require '/path/to/resources/mapping.php'
 );
 
 $services['routes']; // provides all the routes available for the deinfitions you provided
@@ -47,10 +44,4 @@ $services['controller']['options'];
 $services['controller']['capabilities'];
 ```
 
-The gateways are the bridges between this component and your domain. The definition handling which resource is handled by which gateway is done in the resources mapping where a resource can only be managed by one gateway. Take a look at [`fixtures/mapping.yml`](fixtures/mapping.yml) to understand how to define your resources.
-
-## Structure
-
-Container definition:
-
-![](graph.png)
+The gateways are the bridges between this component and your domain. The definition handling which resource is handled by which gateway is done in the resources mapping where a resource can only be managed by one gateway. Take a look at [`fixtures/mapping.php`](fixtures/mapping.php) to understand how to define your resources.
