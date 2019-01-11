@@ -17,11 +17,11 @@ final class SetType implements Type
 {
     private static $identifiers;
     private $inner;
-    private $innerKey;
+    private $type;
 
     public function __construct(string $value, Type $type)
     {
-        $this->innerKey = $value;
+        $this->type = $value;
         $this->inner = $type;
     }
 
@@ -33,11 +33,11 @@ final class SetType implements Type
         if (!\is_array($data)) {
             throw new DenormalizationException(sprintf(
                 'The value must be an array of %s',
-                $this->innerKey
+                $this->type
             ));
         }
 
-        $set = new Set($this->innerKey);
+        $set = new Set($this->type);
 
         foreach ($data as $value) {
             $set = $set->add($this->inner->denormalize($value));

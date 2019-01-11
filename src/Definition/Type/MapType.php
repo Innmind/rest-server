@@ -15,10 +15,10 @@ use Innmind\Immutable\{
 
 final class MapType implements Type
 {
+    private $keyType;
+    private $valueType;
     private $key;
-    private $inner;
-    private $innerKey;
-    private $innerValue;
+    private $value;
 
     public function __construct(
         string $key,
@@ -26,10 +26,10 @@ final class MapType implements Type
         Type $keyType,
         Type $valueType
     ) {
-        $this->innerKey = $key;
-        $this->innerValue = $value;
-        $this->key = $keyType;
-        $this->inner = $valueType;
+        $this->key = $key;
+        $this->value = $value;
+        $this->keyType = $keyType;
+        $this->valueType = $valueType;
     }
 
     /**
@@ -40,17 +40,17 @@ final class MapType implements Type
         if (!\is_array($data)) {
             throw new DenormalizationException(sprintf(
                 'The value must be an array of %s mapped to %s',
-                $this->innerKey,
-                $this->innerValue
+                $this->key,
+                $this->value
             ));
         }
 
-        $map = new Map($this->innerKey, $this->innerValue);
+        $map = new Map($this->key, $this->value);
 
         foreach ($data as $key => $value) {
             $map = $map->put(
-                $this->key->denormalize($key),
-                $this->inner->denormalize($value)
+                $this->keyType->denormalize($key),
+                $this->valueType->denormalize($value)
             );
         }
 
@@ -69,7 +69,7 @@ final class MapType implements Type
         $normalized = [];
 
         foreach ($data as $key => $value) {
-            $normalized[$this->key->normalize($key)] = $this->inner->normalize($value);
+            $normalized[$this->keyType->normalize($key)] = $this->valueType->normalize($value);
         }
 
         return $normalized;
@@ -79,8 +79,8 @@ final class MapType implements Type
     {
         return \sprintf(
             'map<%s, %s>',
-            $this->key,
-            $this->inner
+            $this->keyType,
+            $this->valueType
         );
     }
 }
