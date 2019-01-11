@@ -19,7 +19,7 @@ final class HttpResource
     private $name;
     private $identity;
     private $properties;
-    private $options;
+    private $actions;
     private $metas;
     private $gateway;
     private $rangeable = false;
