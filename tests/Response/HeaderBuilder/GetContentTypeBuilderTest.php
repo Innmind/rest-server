@@ -41,28 +41,21 @@ class GetContentTypeBuilderTest extends TestCase
     public function setUp()
     {
         $this->build = new GetContentTypeBuilder(
-            new Formats(
-                (new Map('string', Format::class))
-                    ->put(
-                        'json',
-                        new Format(
-                            'json',
-                            Set::of(MediaType::class, new MediaType('application/json', 42)),
-                            42
-                        )
-                    )
-                    ->put(
-                        'html',
-                        new Format(
-                            'html',
-                            Set::of(
-                                MediaType::class,
-                                new MediaType('text/html', 40),
-                                new MediaType('text/xhtml', 0)
-                            ),
-                            0
-                        )
-                    )
+            Formats::of(
+                new Format(
+                    'json',
+                    Set::of(MediaType::class, new MediaType('application/json', 42)),
+                    42
+                ),
+                new Format(
+                    'html',
+                    Set::of(
+                        MediaType::class,
+                        new MediaType('text/html', 40),
+                        new MediaType('text/xhtml', 0)
+                    ),
+                    0
+                )
             )
         );
     }
@@ -90,15 +83,11 @@ class GetContentTypeBuilderTest extends TestCase
                     )
                 )
             ),
-            new HttpResource(
+            HttpResource::rangeable(
                 'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('command'),
-                true,
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             ),
             $this->createMock(IdentityInterface::class)
         );

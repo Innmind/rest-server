@@ -11,7 +11,7 @@ use Innmind\Rest\Server\{
     Definition\Property,
     Definition\Gateway,
 };
-use Innmind\Immutable\Map;
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class ReferenceTest extends TestCase
@@ -19,15 +19,11 @@ class ReferenceTest extends TestCase
     public function testInterface()
     {
         $reference = new Reference(
-            $definition = new HttpResource(
+            $definition = HttpResource::rangeable(
                 'foobar',
-                new Identity('foo'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                true,
-                new Map('string', 'string')
+                new Identity('foo'),
+                new Set(Property::class)
             ),
             $identity = $this->createMock(IdentityInterface::class)
         );

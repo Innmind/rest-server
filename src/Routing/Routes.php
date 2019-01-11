@@ -56,19 +56,7 @@ final class Routes implements \Iterator
         return new self(
             ...Action::all()
                 ->filter(static function(Action $action) use ($definition): bool {
-                    if (!$definition->options()->contains('actions')) {
-                        return true;
-                    }
-
-                    if ($action === Action::options()) {
-                        return true;
-                    }
-
-                    return in_array(
-                        (string) $action,
-                        $definition->options()->get('actions'),
-                        true
-                    );
+                    return $definition->allow($action);
                 })
                 ->reduce(
                     new Sequence,
@@ -84,15 +72,10 @@ final class Routes implements \Iterator
     /**
      * @param MapInterface<string, Directory> $directories
      */
-    public static function from(MapInterface $directories): self
+    public static function from(Directory $directory): self
     {
-        return $directories
-            ->reduce(
-                new Map('string', HttpResource::class),
-                static function(MapInterface $definitions, string $name, Directory $directory): MapInterface {
-                    return $definitions->merge($directory->flatten());
-                }
-            )
+        return $directory
+            ->flatten()
             ->reduce(
                 new self,
                 static function(Routes $routes, string $name, HttpResource $definition): Routes {

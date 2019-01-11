@@ -20,12 +20,10 @@ use Innmind\Http\{
     Headers,
     Header,
     ProtocolVersion,
+    Exception\Http\UnsupportedMediaType,
 };
 use Innmind\Url\UrlInterface;
-use Innmind\Immutable\{
-    Map,
-    Set,
-};
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class ContentTypeVerifierTest extends TestCase
@@ -33,44 +31,33 @@ class ContentTypeVerifierTest extends TestCase
     public function testInterface()
     {
         $verifier = new ContentTypeVerifier(
-            new Formats(
-                (new Map('string', Format::class))
-                    ->put(
-                        'json',
-                        new Format(
-                            'json',
-                            Set::of(
-                                MediaType::class,
-                                new MediaType('application/json', 0)
-                            ),
-                            0
-                        )
-                    )
+            Formats::of(
+                new Format(
+                    'json',
+                    Set::of(
+                        MediaType::class,
+                        new MediaType('application/json', 0)
+                    ),
+                    0
+                )
             )
         );
 
         $this->assertInstanceOf(Verifier::class, $verifier);
     }
 
-    /**
-     * @expectedException Innmind\Http\Exception\Http\UnsupportedMediaType
-     */
     public function testThrowWhenHeaderNotAccepted()
     {
         $verify = new ContentTypeVerifier(
-            new Formats(
-                (new Map('string', Format::class))
-                    ->put(
-                        'json',
-                        new Format(
-                            'json',
-                            Set::of(
-                                MediaType::class,
-                                new MediaType('application/json', 0)
-                            ),
-                            0
-                        )
-                    )
+            Formats::of(
+                new Format(
+                    'json',
+                    Set::of(
+                        MediaType::class,
+                        new MediaType('application/json', 0)
+                    ),
+                    0
+                )
             )
         );
         $headers = $this->createMock(Headers::class);
@@ -98,17 +85,15 @@ class ContentTypeVerifierTest extends TestCase
             ->method('__toString')
             ->willReturn(Method::POST);
 
+        $this->expectException(UnsupportedMediaType::class);
+
         $verify(
             $request,
-            new HttpResource(
+            HttpResource::rangeable(
                 'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('command'),
-                true,
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             )
         );
     }
@@ -116,19 +101,15 @@ class ContentTypeVerifierTest extends TestCase
     public function testDoesntThrowWhenNotPostOrPutMethod()
     {
         $verify = new ContentTypeVerifier(
-            new Formats(
-                (new Map('string', Format::class))
-                    ->put(
-                        'json',
-                        new Format(
-                            'json',
-                            Set::of(
-                                MediaType::class,
-                                new MediaType('application/json', 0)
-                            ),
-                            0
-                        )
-                    )
+            Formats::of(
+                new Format(
+                    'json',
+                    Set::of(
+                        MediaType::class,
+                        new MediaType('application/json', 0)
+                    ),
+                    0
+                )
             )
         );
         $headers = $this->createMock(Headers::class);
@@ -158,15 +139,11 @@ class ContentTypeVerifierTest extends TestCase
 
         $verify(
             $request,
-            new HttpResource(
+            HttpResource::rangeable(
                 'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('command'),
-                true,
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             )
         );
     }
@@ -174,19 +151,15 @@ class ContentTypeVerifierTest extends TestCase
     public function testDoesntThrowWhenAcceptContentType()
     {
         $verify = new ContentTypeVerifier(
-            new Formats(
-                (new Map('string', Format::class))
-                    ->put(
-                        'json',
-                        new Format(
-                            'json',
-                            Set::of(
-                                MediaType::class,
-                                new MediaType('application/json', 0)
-                            ),
-                            0
-                        )
-                    )
+            Formats::of(
+                new Format(
+                    'json',
+                    Set::of(
+                        MediaType::class,
+                        new MediaType('application/json', 0)
+                    ),
+                    0
+                )
             )
         );
         $headers = $this->createMock(Headers::class);
@@ -217,15 +190,11 @@ class ContentTypeVerifierTest extends TestCase
         $this->assertNull(
             $verify(
                 $request,
-                new HttpResource(
+                HttpResource::rangeable(
                     'foo',
-                    new Identity('uuid'),
-                    new Map('string', Property::class),
-                    new Map('scalar', 'variable'),
-                    new Map('scalar', 'variable'),
                     new Gateway('command'),
-                    true,
-                    new Map('string', 'string')
+                    new Identity('uuid'),
+                    new Set(Property::class)
                 )
             )
         );
@@ -234,19 +203,15 @@ class ContentTypeVerifierTest extends TestCase
     public function testDoesntThrowWhenNoContentType()
     {
         $verify = new ContentTypeVerifier(
-            new Formats(
-                (new Map('string', Format::class))
-                    ->put(
-                        'json',
-                        new Format(
-                            'json',
-                            Set::of(
-                                MediaType::class,
-                                new MediaType('application/json', 0)
-                            ),
-                            0
-                        )
-                    )
+            Formats::of(
+                new Format(
+                    'json',
+                    Set::of(
+                        MediaType::class,
+                        new MediaType('application/json', 0)
+                    ),
+                    0
+                )
             )
         );
         $headers = $this->createMock(Headers::class);
@@ -263,15 +228,11 @@ class ContentTypeVerifierTest extends TestCase
         $this->assertNull(
             $verify(
                 $request,
-                new HttpResource(
+                HttpResource::rangeable(
                     'foo',
-                    new Identity('uuid'),
-                    new Map('string', Property::class),
-                    new Map('scalar', 'variable'),
-                    new Map('scalar', 'variable'),
                     new Gateway('command'),
-                    true,
-                    new Map('string', 'string')
+                    new Identity('uuid'),
+                    new Set(Property::class)
                 )
             )
         );

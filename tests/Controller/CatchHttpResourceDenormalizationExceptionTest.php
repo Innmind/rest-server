@@ -15,7 +15,10 @@ use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
 };
-use Innmind\Immutable\Map;
+use Innmind\Immutable\{
+    Map,
+    Set,
+};
 use PHPUnit\Framework\TestCase;
 
 class CatchHttpResourceDenormalizationExceptionTest extends TestCase
@@ -26,13 +29,9 @@ class CatchHttpResourceDenormalizationExceptionTest extends TestCase
     {
         $this->definition = new Definition\HttpResource(
             'foo',
-            new Definition\Identity('foo'),
-            new Map('string', Definition\Property::class),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Definition\Gateway('foo'),
-            false,
-            new Map('string', 'string')
+            new Definition\Identity('foo'),
+            new Set(Definition\Property::class)
         );
     }
 

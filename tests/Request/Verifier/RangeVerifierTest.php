@@ -19,9 +19,10 @@ use Innmind\Http\{
     Message\Method\Method,
     Headers,
     ProtocolVersion,
+    Exception\Http\PreconditionFailed,
 };
 use Innmind\Url\UrlInterface;
-use Innmind\Immutable\Map;
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class RangeVerifierTest extends TestCase
@@ -31,9 +32,6 @@ class RangeVerifierTest extends TestCase
         $this->assertInstanceOf(Verifier::class, new RangeVerifier);
     }
 
-    /**
-     * @expectedException Innmind\Http\Exception\Http\PreconditionFailed
-     */
     public function testThrowWhenUsingRangeOnNonGETRequest()
     {
         $verify = new RangeVerifier;
@@ -50,24 +48,19 @@ class RangeVerifierTest extends TestCase
             $headers
         );
 
+        $this->expectException(PreconditionFailed::class);
+
         $verify(
             $request,
-            new HttpResource(
+            HttpResource::rangeable(
                 'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('command'),
-                true,
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             )
         );
     }
 
-    /**
-     * @expectedException Innmind\Http\Exception\Http\PreconditionFailed
-     */
     public function testThrowWhenUsingRangeOnNonRageableResource()
     {
         $verify = new RangeVerifier;
@@ -79,22 +72,20 @@ class RangeVerifierTest extends TestCase
             }));
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
-            new Method('GET'),
+            Method::get(),
             $this->createMock(ProtocolVersion::class),
             $headers
         );
+
+        $this->expectException(PreconditionFailed::class);
 
         $verify(
             $request,
             new HttpResource(
                 'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('command'),
-                false,
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             )
         );
     }
@@ -110,7 +101,7 @@ class RangeVerifierTest extends TestCase
             }));
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
-            new Method('GET'),
+            Method::get(),
             $this->createMock(ProtocolVersion::class),
             $headers
         );
@@ -118,15 +109,11 @@ class RangeVerifierTest extends TestCase
         $this->assertNull(
             $verify(
                 $request,
-                new HttpResource(
+                HttpResource::rangeable(
                     'foo',
-                    new Identity('uuid'),
-                    new Map('string', Property::class),
-                    new Map('scalar', 'variable'),
-                    new Map('scalar', 'variable'),
                     new Gateway('command'),
-                    true,
-                    new Map('string', 'string')
+                    new Identity('uuid'),
+                    new Set(Property::class)
                 )
             )
         );
@@ -137,7 +124,7 @@ class RangeVerifierTest extends TestCase
             ->willReturn(false);
         $request = new ServerRequest(
             $this->createMock(UrlInterface::class),
-            new Method('GET'),
+            Method::get(),
             $this->createMock(ProtocolVersion::class),
             $headers
         );
@@ -147,13 +134,9 @@ class RangeVerifierTest extends TestCase
                 $request,
                 new HttpResource(
                     'foo',
-                    new Identity('uuid'),
-                    new Map('string', Property::class),
-                    new Map('scalar', 'variable'),
-                    new Map('scalar', 'variable'),
                     new Gateway('command'),
-                    false,
-                    new Map('string', 'string')
+                    new Identity('uuid'),
+                    new Set(Property::class)
                 )
             )
         );

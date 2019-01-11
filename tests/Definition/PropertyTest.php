@@ -15,12 +15,11 @@ class PropertyTest extends TestCase
 {
     public function testInterface()
     {
-        $property = new Property(
+        $property = Property::optional(
             'foo',
             $type = new StringType,
             new Access(Access::READ),
-            Set::of('string', 'bar'),
-            true
+            'bar'
         );
 
         $this->assertSame('foo', (string) $property);
@@ -31,20 +30,5 @@ class PropertyTest extends TestCase
         $this->assertFalse($property->access()->isUpdatable());
         $this->assertSame(['bar'], $property->variants()->toPrimitive());
         $this->assertTrue($property->isOptional());
-    }
-
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 4 must be of type SetInterface<string>
-     */
-    public function testThrowWhenGivingInvalidVariants()
-    {
-        new Property(
-            'foo',
-            new StringType,
-            new Access(),
-            new Set('int'),
-            true
-        );
     }
 }

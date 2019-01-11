@@ -13,7 +13,6 @@ use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
     Message\StatusCode\StatusCode,
-    Message\ReasonPhrase\ReasonPhrase,
     Headers\Headers,
     Header\Link,
     Header\LinkValue,
@@ -36,8 +35,8 @@ final class Capabilities
     public function __invoke(ServerRequest $request): Response
     {
         return new Response\Response(
-            new StatusCode($code = StatusCode::codes()->get('OK')),
-            new ReasonPhrase(ReasonPhrase::defaults()->get($code)),
+            $code = StatusCode::of('OK'),
+            $code->associatedreasonPhrase(),
             $request->protocolVersion(),
             Headers::of(
                 new Link(

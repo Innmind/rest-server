@@ -4,17 +4,17 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\Specification;
 
 use Innmind\Specification\{
-    SpecificationInterface,
-    CompositeInterface,
-    NotInterface,
+    Specification,
+    Composite as CompositeInterface,
+    Not,
 };
 
-trait COmposite
+trait Composite
 {
     /**
      * {@inheritdoc}
      */
-    public function and(SpecificationInterface $specification): CompositeInterface
+    public function and(Specification $specification): CompositeInterface
     {
         return new AndFilter($this, $specification);
     }
@@ -22,7 +22,7 @@ trait COmposite
     /**
      * {@inheritdoc}
      */
-    public function or(SpecificationInterface $specification): CompositeInterface
+    public function or(Specification $specification): CompositeInterface
     {
         return new OrFilter($this, $specification);
     }
@@ -30,7 +30,7 @@ trait COmposite
     /**
      * {@inheritdoc}
      */
-    public function not(): NotInterface
+    public function not(): Not
     {
         return new NotFilter($this);
     }

@@ -3,15 +3,17 @@ declare(strict_types = 1);
 
 namespace Tests\Innmind\Rest\Server\Definition\Type;
 
-use Innmind\Rest\Server\Definition\{
-    Type\SetType,
-    Type,
-    Types,
+use Innmind\Rest\Server\{
+    Definition\Type\SetType,
+    Definition\Type\StringType,
+    Definition\Type\DateType,
+    Definition\Type,
+    Exception\NormalizationException,
+    Exception\DenormalizationException,
 };
 use Innmind\Immutable\{
     SetInterface,
     Set,
-    Map,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -19,54 +21,40 @@ class SetTypeTest extends TestCase
 {
     public function testInterface()
     {
-        $this->assertInstanceOf(Type::class, new SetType);
-        $this->assertSame(
-            ['set'],
-            SetType::identifiers()->toPrimitive()
-        );
-        $this->assertInstanceOf(
-            SetType::class,
-            SetType::fromConfig(
-                (new Map('scalar', 'variable'))
-                    ->put('inner', 'string'),
-                new Types
-            )
-        );
+        $this->assertInstanceOf(Type::class, new SetType(
+            'string',
+            new StringType
+        ));
         $this->assertSame(
             'set<string>',
-            (string) SetType::fromConfig(
-                (new Map('scalar', 'variable'))
-                    ->put('inner', 'string'),
-                new Types
+            (string) new SetType(
+                'string',
+                new StringType
             )
         );
         $this->assertSame(
             'set<date<c>>',
-            (string) SetType::fromConfig(
-                (new Map('scalar', 'variable'))
-                    ->put('format', 'c')
-                    ->put('inner', 'date'),
-                new Types
+            (string) new SetType(
+                \DateTimeImmutable::class,
+                new DateType('c')
             )
         );
     }
 
     public function testDenormalize()
     {
-        $type = SetType::fromConfig(
-            (new Map('scalar', 'variable'))
-                ->put('inner', 'string'),
-            new Types
+        $type = new SetType(
+            'string',
+            new StringType
         );
         $this->assertInstanceOf(SetInterface::class, $type->denormalize(['foo']));
         $this->assertSame(['foo'], $type->denormalize(['foo'])->toPrimitive());
         $this->assertSame(
             ['foo'],
-            SetType::fromConfig(
-                (new Map('scalar', 'variable'))
-                    ->put('inner', 'string'),
-                new Types
-            )
+            (new SetType(
+                'string',
+                new StringType
+            ))
                 ->denormalize([new class {
                     public function __toString()
                     {
@@ -77,16 +65,14 @@ class SetTypeTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\DenormalizationException
-     * @expectedExceptionMessage The value must be an array of string
-     */
     public function testThrowWhenNotDenormalizingAnArray()
     {
-        (SetType::fromConfig(
-            (new Map('scalar', 'variable'))
-                ->put('inner', 'string'),
-            new Types
+        $this->expectException(DenormalizationException::class);
+        $this->expectExceptionMessage('The value must be an array of string');
+
+        (new SetType(
+            'string',
+            new StringType
         ))
             ->denormalize(new \stdClass);
     }
@@ -95,10 +81,9 @@ class SetTypeTest extends TestCase
     {
         $this->assertSame(
             ['foo'],
-            (SetType::fromConfig(
-                (new Map('scalar', 'variable'))
-                    ->put('inner', 'string'),
-                new Types
+            (new SetType(
+                'string',
+                new StringType
             ))
                 ->normalize(
                     Set::of('object', new class {
@@ -111,26 +96,15 @@ class SetTypeTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\NormalizationException
-     * @expectedExceptionMessage The value must be a set
-     */
     public function testThrowWhenNotNormalizingAnArray()
     {
-        (SetType::fromConfig(
-            (new Map('scalar', 'variable'))
-                ->put('inner', 'string'),
-            new Types
+        $this->expectException(NormalizationException::class);
+        $this->expectExceptionMessage('The value must be a set');
+
+        (new SetType(
+            'string',
+            new StringType
         ))
             ->normalize(new \stdClass);
-    }
-
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 1 must be of type MapInterface<scalar, variable>
-     */
-    public function testThrowWhenInvalidConfigMap()
-    {
-        SetType::fromConfig(new Map('string', 'string'), new Types);
     }
 }

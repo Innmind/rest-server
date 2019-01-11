@@ -13,7 +13,6 @@ use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
     Message\StatusCode\StatusCode,
-    Message\ReasonPhrase\ReasonPhrase
 };
 
 final class CatchActionNotImplemented implements Controller
@@ -34,8 +33,8 @@ final class CatchActionNotImplemented implements Controller
             return ($this->controller)($request, $definition, $identity);
         } catch (ActionNotImplemented $e) {
             return new Response\Response(
-                new StatusCode($code = StatusCode::codes()->get('METHOD_NOT_ALLOWED')),
-                new ReasonPhrase(ReasonPhrase::defaults()->get($code)),
+                $code = StatusCode::of('METHOD_NOT_ALLOWED'),
+                $code->associatedreasonPhrase(),
                 $request->protocolVersion()
             );
         }

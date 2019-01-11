@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server;
 
 use Innmind\Rest\Server\{
+    Definition\Directory,
     Routing\Prefix,
     RangeExtractor\Extractor,
     RangeExtractor\DelegationExtractor,
@@ -20,8 +21,6 @@ use Innmind\Rest\Server\{
     Serializer\Normalizer,
     Serializer\Denormalizer,
     Definition\Locator,
-    Definition\Loader\YamlLoader,
-    Definition\Types,
     Routing\Routes,
     Response\HeaderBuilder,
     Controller\CatchHttpException,
@@ -43,16 +42,14 @@ use Innmind\Rest\Server\{
 use Innmind\Immutable\{
     MapInterface,
     Map,
-    SetInterface,
 };
 
 /**
  * @param MapInterface<string, Gateway> $gateways
- * @param SetInterface<string> $files
  */
 function bootstrap(
     MapInterface $gateways,
-    SetInterface $files,
+    Directory $directory,
     Formats $acceptFormats = null,
     Formats $contentTypeFormats = null,
     Prefix $prefix = null,
@@ -77,19 +74,17 @@ function bootstrap(
     );
     $requestDecoder = $requestDecoder ?? new RequestDecoder\Delegate(
         $format,
-        (new Map('string', RequestDecoder::class))
-            ->put('json', new RequestDecoder\Json)
-            ->put('form', new RequestDecoder\Form)
+        Map::of('string', RequestDecoder::class)
+            ('json', new RequestDecoder\Json)
+            ('form', new RequestDecoder\Form)
     );
     $encoder = $encoder ?? new Encoder\Delegate(
         $format,
-        (new Map('string', Encoder::class))
-            ->put('json', new Encoder\Json)
+        Map::of('string', Encoder::class)
+            ('json', new Encoder\Json)
     );
 
-    $directories = (new YamlLoader(new Types))(...$files);
-
-    $routes = Routes::from($directories);
+    $routes = Routes::from($directory);
     $router = new Router($routes, $prefix);
 
     $catchHttpException = static function(Controller $controller): Controller {
@@ -106,6 +101,7 @@ function bootstrap(
     };
 
     $linkTranslator = new LinkTranslator($router);
+    $locator = new Locator($directory);
 
     return [
         'routes' => $routes,
@@ -205,7 +201,8 @@ function bootstrap(
                         new Link(
                             $gateways,
                             new HeaderBuilder\LinkDelegationBuilder,
-                            $linkTranslator
+                            $linkTranslator,
+                            $locator
                         )
                     )
                 )
@@ -216,13 +213,14 @@ function bootstrap(
                         new Unlink(
                             $gateways,
                             new HeaderBuilder\UnlinkDelegationBuilder,
-                            $linkTranslator
+                            $linkTranslator,
+                            $locator
                         )
                     )
                 )
             ),
             'capabilities' => new Capabilities($routes, $router),
         ],
-        'locator' => new Locator($directories),
+        'locator' => $locator,
     ];
 }

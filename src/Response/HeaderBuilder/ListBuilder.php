@@ -8,17 +8,13 @@ use Innmind\Rest\Server\{
     Request\Range,
 };
 use Innmind\Http\Message\ServerRequest;
-use Innmind\Specification\SpecificationInterface;
+use Innmind\Specification\Specification;
 use Innmind\Immutable\SetInterface;
 
 interface ListBuilder
 {
     /**
      * @param SetInterface<IdentityInterface> $identities
-     * @param ServerRequest $request
-     * @param HttpResource $definition
-     * @param SpecificationInterface $specification
-     * @param Range $range
      *
      * @return SetInterface<Header>
      */
@@ -26,7 +22,7 @@ interface ListBuilder
         SetInterface $identities,
         ServerRequest $request,
         HttpResource $definition,
-        SpecificationInterface $specification = null,
+        Specification $specification = null,
         Range $range = null
     ): SetInterface;
 }

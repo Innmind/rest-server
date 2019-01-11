@@ -7,6 +7,8 @@ use Innmind\Rest\Server\{
     Formats,
     Format\Format,
     Format\MediaType,
+    Exception\DomainException,
+    Exception\InvalidArgumentException,
 };
 use Innmind\Immutable\{
     Map,
@@ -20,8 +22,8 @@ class FormatsTest extends TestCase
     public function testInterface()
     {
         $formats = new Formats(
-            $all = (new Map('string', Format::class))
-                ->put(
+            $all = Map::of('string', Format::class)
+                (
                     'json',
                     $format = new Format(
                         'json',
@@ -49,59 +51,49 @@ class FormatsTest extends TestCase
         $this->assertSame($format, $formats->get('json'));
     }
 
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Format\Format>
-     */
     public function testThrowWhenInvalidMapKey()
     {
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Format\Format>');
+
         new Formats(new Map('int', Format::class));
     }
 
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Format\Format>
-     */
     public function testThrowWhenInvalidMapValue()
     {
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Format\Format>');
+
         new Formats(new Map('string', 'string'));
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\DomainException
-     */
     public function testThrowWhenEmptyMap()
     {
+        $this->expectException(DomainException::class);
+
         new Formats(new Map('string', Format::class));
     }
 
     public function testMediaTypes()
     {
-        $formats = new Formats(
-            (new Map('string', Format::class))
-                ->put(
-                    'json',
-                    new Format(
-                        'json',
-                        Set::of(
-                            MediaType::class,
-                            $json = new MediaType('application/json', 42)
-                        ),
-                        42
-                    )
-                )
-                ->put(
-                    'html',
-                    new Format(
-                        'html',
-                        Set::of(
-                            MediaType::class,
-                            $html = new MediaType('text/html', 40),
-                            $xhtml = new MediaType('text/xhtml', 0)
-                        ),
-                        0
-                    )
-                )
+        $formats = Formats::of(
+            new Format(
+                'json',
+                Set::of(
+                    MediaType::class,
+                    $json = new MediaType('application/json', 42)
+                ),
+                42
+            ),
+            new Format(
+                'html',
+                Set::of(
+                    MediaType::class,
+                    $html = new MediaType('text/html', 40),
+                    $xhtml = new MediaType('text/xhtml', 0)
+                ),
+                0
+            )
         );
 
         $types = $formats->mediaTypes();
@@ -115,28 +107,21 @@ class FormatsTest extends TestCase
 
     public function testFromMediaType()
     {
-        $formats = new Formats(
-            (new Map('string', Format::class))
-                ->put(
-                    'json',
-                    $json = new Format(
-                        'json',
-                        Set::of(MediaType::class, new MediaType('application/json', 42)),
-                        42
-                    )
-                )
-                ->put(
-                    'html',
-                    $html = new Format(
-                        'html',
-                        Set::of(
-                            MediaType::class,
-                            new MediaType('text/html', 40),
-                            new MediaType('text/xhtml', 0)
-                        ),
-                        0
-                    )
-                )
+        $formats = Formats::of(
+            $json = new Format(
+                'json',
+                Set::of(MediaType::class, new MediaType('application/json', 42)),
+                42
+            ),
+            $html = new Format(
+                'html',
+                Set::of(
+                    MediaType::class,
+                    new MediaType('text/html', 40),
+                    new MediaType('text/xhtml', 0)
+                ),
+                0
+            )
         );
 
         $this->assertSame($json, $formats->fromMediaType('application/json'));
@@ -144,54 +129,42 @@ class FormatsTest extends TestCase
         $this->assertSame($html, $formats->fromMediaType('text/xhtml'));
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\InvalidArgumentException
-     */
     public function testThrowWhenNoFormatForWishedMediaType()
     {
-        $formats = new Formats(
-            (new Map('string', Format::class))
-                ->put(
-                    'html',
-                    new Format(
-                        'html',
-                        Set::of(
-                            MediaType::class,
-                            new MediaType('text/html', 40),
-                            new MediaType('text/xhtml', 0)
-                        ),
-                        0
-                    )
-                )
+        $formats = Formats::of(
+            new Format(
+                'html',
+                Set::of(
+                    MediaType::class,
+                    new MediaType('text/html', 40),
+                    new MediaType('text/xhtml', 0)
+                ),
+                0
+            )
         );
+
+        $this->expectException(InvalidArgumentException::class);
 
         $formats->fromMediaType('application/json');
     }
 
     public function testMatching()
     {
-        $formats = new Formats(
-            (new Map('string', Format::class))
-                ->put(
-                    'json',
-                    new Format(
-                        'json',
-                        Set::of(MediaType::class, new MediaType('application/json', 42)),
-                        42
-                    )
-                )
-                ->put(
-                    'html',
-                    $html = new Format(
-                        'html',
-                        Set::of(
-                            MediaType::class,
-                            new MediaType('text/html', 40),
-                            new MediaType('text/xhtml', 0)
-                        ),
-                        0
-                    )
-                )
+        $formats = Formats::of(
+            new Format(
+                'json',
+                Set::of(MediaType::class, new MediaType('application/json', 42)),
+                42
+            ),
+            $html = new Format(
+                'html',
+                Set::of(
+                    MediaType::class,
+                    new MediaType('text/html', 40),
+                    new MediaType('text/xhtml', 0)
+                ),
+                0
+            )
         );
 
         $format = $formats->matching('text/html, application/json;q=0.5, *;q=0.1');
@@ -201,28 +174,21 @@ class FormatsTest extends TestCase
 
     public function testMatchingWhenAcceptingEverything()
     {
-        $formats = new Formats(
-            (new Map('string', Format::class))
-                ->put(
-                    'json',
-                    $json = new Format(
-                        'json',
-                        Set::of(MediaType::class, new MediaType('application/json', 42)),
-                        42
-                    )
-                )
-                ->put(
-                    'html',
-                    new Format(
-                        'html',
-                        Set::of(
-                            MediaType::class,
-                            new MediaType('text/html', 40),
-                            new MediaType('text/xhtml', 0)
-                        ),
-                        0
-                    )
-                )
+        $formats = Formats::of(
+            $json = new Format(
+                'json',
+                Set::of(MediaType::class, new MediaType('application/json', 42)),
+                42
+            ),
+            new Format(
+                'html',
+                Set::of(
+                    MediaType::class,
+                    new MediaType('text/html', 40),
+                    new MediaType('text/xhtml', 0)
+                ),
+                0
+            )
         );
 
         $format = $formats->matching('*');

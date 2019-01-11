@@ -3,29 +3,19 @@ declare(strict_types = 1);
 
 namespace Tests\Innmind\Rest\Server\Definition;
 
-use Innmind\Rest\Server\Definition\{
-    Locator,
-    HttpResource,
-    Loader\YamlLoader,
+use Innmind\Rest\Server\{
+    Definition\Locator,
+    Definition\HttpResource,
+    Exception\DefinitionNotFound,
 };
-use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
 class LocatorTest extends TestCase
 {
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Definition\Directory>
-     */
-    public function testThrowWhenInvalidDirectoryMap()
-    {
-        new Locator(new Map('int', 'int'));
-    }
-
     public function testLocate()
     {
         $locate = new Locator(
-            (new YamlLoader)('fixtures/mapping.yml')
+            require 'fixtures/mapping.php'
         );
 
         $resource = $locate('top_dir.sub_dir.res');
@@ -34,13 +24,12 @@ class LocatorTest extends TestCase
         $this->assertSame('res', (string) $resource->name());
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\DefinitionNotFound
-     */
     public function testThrowWhenResourceNotFound()
     {
+        $this->expectException(DefinitionNotFound::class);
+
         $locate = new Locator(
-            (new YamlLoader)('fixtures/mapping.yml')
+            require 'fixtures/mapping.php'
         );
 
         $locate('unknown');

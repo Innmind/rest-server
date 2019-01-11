@@ -5,6 +5,8 @@ namespace Innmind\Rest\Server\Definition;
 
 use Innmind\Immutable\{
     MapInterface,
+    Map,
+    SetInterface,
     Pair,
 };
 
@@ -43,6 +45,29 @@ final class Directory
         $this->name = new Name($name);
         $this->children = $children;
         $this->definitions = $definitions;
+    }
+
+    public static function of(
+        string $name,
+        SetInterface $children,
+        HttpResource ...$definitions
+    ): self {
+        $map = Map::of('string', HttpResource::class);
+
+        foreach ($definitions as $definition) {
+            $map = $map->put((string) $definition->name(), $definition);
+        }
+
+        return new self(
+            $name,
+            $children->reduce(
+                Map::of('string', self::class),
+                static function(MapInterface $children, self $child): MapInterface {
+                    return $children->put((string) $child->name(), $child);
+                }
+            ),
+            $map
+        );
     }
 
     public function name(): Name

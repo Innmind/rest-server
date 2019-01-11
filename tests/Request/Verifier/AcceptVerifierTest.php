@@ -20,12 +20,10 @@ use Innmind\Http\{
     Headers,
     Header,
     ProtocolVersion,
+    Exception\Http\NotAcceptable,
 };
 use Innmind\Url\UrlInterface;
-use Innmind\Immutable\{
-    Map,
-    Set,
-};
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class AcceptVerifierTest extends TestCase
@@ -33,44 +31,33 @@ class AcceptVerifierTest extends TestCase
     public function testInterface()
     {
         $verifier = new AcceptVerifier(
-            new Formats(
-                (new Map('string', Format::class))
-                    ->put(
-                        'json',
-                        new Format(
-                            'json',
-                            Set::of(
-                                MediaType::class,
-                                new MediaType('application/json', 0)
-                            ),
-                            0
-                        )
-                    )
+            Formats::of(
+                new Format(
+                    'json',
+                    Set::of(
+                        MediaType::class,
+                        new MediaType('application/json', 0)
+                    ),
+                    0
+                )
             )
         );
 
         $this->assertInstanceOf(Verifier::class, $verifier);
     }
 
-    /**
-     * @expectedException Innmind\Http\Exception\Http\NotAcceptable
-     */
     public function testThrowWhenHeaderNotAccepted()
     {
         $verify = new AcceptVerifier(
-            new Formats(
-                (new Map('string', Format::class))
-                    ->put(
-                        'json',
-                        new Format(
-                            'json',
-                            Set::of(
-                                MediaType::class,
-                                new MediaType('application/json', 0)
-                            ),
-                            0
-                        )
-                    )
+            Formats::of(
+                new Format(
+                    'json',
+                    Set::of(
+                        MediaType::class,
+                        new MediaType('application/json', 0)
+                    ),
+                    0
+                )
             )
         );
         $headers = $this->createMock(Headers::class);
@@ -91,17 +78,15 @@ class AcceptVerifierTest extends TestCase
             $headers
         );
 
+        $this->expectException(NotAcceptable::class);
+
         $verify(
             $request,
-            new HttpResource(
+            HttpResource::rangeable(
                 'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('command'),
-                true,
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             )
         );
     }
@@ -109,19 +94,15 @@ class AcceptVerifierTest extends TestCase
     public function testDoesntThrowWhenAcceptMediaType()
     {
         $verify = new AcceptVerifier(
-            new Formats(
-                (new Map('string', Format::class))
-                    ->put(
-                        'json',
-                        new Format(
-                            'json',
-                            Set::of(
-                                MediaType::class,
-                                new MediaType('application/json', 0)
-                            ),
-                            0
-                        )
-                    )
+            Formats::of(
+                new Format(
+                    'json',
+                    Set::of(
+                        MediaType::class,
+                        new MediaType('application/json', 0)
+                    ),
+                    0
+                )
             )
         );
         $headers = $this->createMock(Headers::class);
@@ -145,15 +126,11 @@ class AcceptVerifierTest extends TestCase
         $this->assertNull(
             $verify(
                 $request,
-                new HttpResource(
+                HttpResource::rangeable(
                     'foo',
-                    new Identity('uuid'),
-                    new Map('string', Property::class),
-                    new Map('scalar', 'variable'),
-                    new Map('scalar', 'variable'),
                     new Gateway('command'),
-                    true,
-                    new Map('string', 'string')
+                    new Identity('uuid'),
+                    new Set(Property::class)
                 )
             )
         );

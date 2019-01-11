@@ -18,8 +18,6 @@ use Innmind\Http\{
     Header,
 };
 use Innmind\Immutable\{
-    Map,
-    MapInterface,
     SetInterface,
     Set,
 };
@@ -35,49 +33,17 @@ class UnlinkDelegationBuilderTest extends TestCase
         $headers = $build(
             $this->createMock(ServerRequest::class),
             new Reference(
-                new Httpresource(
+                Httpresource::rangeable(
                     'foobar',
-                    new IdentityDefinition('foo'),
-                    new Map('string', Property::class),
-                    new Map('scalar', 'variable'),
-                    new Map('scalar', 'variable'),
                     new Gateway('bar'),
-                    true,
-                    new Map('string', 'string')
+                    new IdentityDefinition('foo'),
+                    new Set(Property::class)
                 ),
                 new Identity('foo')
-            ),
-            new Map(Reference::class, MapInterface::class)
+            )
         );
         $this->assertInstanceOf(SetInterface::class, $headers);
         $this->assertSame(Header::class, (string) $headers->type());
-    }
-
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 3 must be of type MapInterface<Innmind\Rest\Server\Reference, Innmind\Immutable\MapInterface>
-     */
-    public function testThrowWhenInvalidTos()
-    {
-        $build = new UnlinkDelegationBuilder;
-
-        $build(
-            $this->createMock(ServerRequest::class),
-            new Reference(
-                new Httpresource(
-                    'foobar',
-                    new IdentityDefinition('foo'),
-                    new Map('string', Property::class),
-                    new Map('scalar', 'variable'),
-                    new Map('scalar', 'variable'),
-                    new Gateway('bar'),
-                    true,
-                    new Map('string', 'string')
-                ),
-                new Identity('foo')
-            ),
-            new Map('string', 'string')
-        );
     }
 
     public function testBuild()
@@ -100,19 +66,14 @@ class UnlinkDelegationBuilderTest extends TestCase
         $headers = $build(
             $this->createMock(ServerRequest::class),
             new Reference(
-                new Httpresource(
+                Httpresource::rangeable(
                     'foobar',
-                    new IdentityDefinition('foo'),
-                    new Map('string', Property::class),
-                    new Map('scalar', 'variable'),
-                    new Map('scalar', 'variable'),
                     new Gateway('bar'),
-                    true,
-                    new Map('string', 'string')
+                    new IdentityDefinition('foo'),
+                    new Set(Property::class)
                 ),
                 new Identity('foo')
-            ),
-            new Map(Reference::class, MapInterface::class)
+            )
         );
 
         $this->assertSame(

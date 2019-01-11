@@ -18,7 +18,6 @@ use Innmind\Http\{
 };
 use Innmind\Immutable\{
     Set,
-    Map,
     SetInterface,
 };
 use PHPUnit\Framework\TestCase;
@@ -33,41 +32,32 @@ class ListDelegationBuilderTest extends TestCase
         $headers = $build(
             new Set(IdentityInterface::class),
             $this->createMock(ServerRequest::class),
-            new Httpresource(
+            Httpresource::rangeable(
                 'foobar',
-                new Identity('foo'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                true,
-                new Map('string', 'string')
+                new Identity('foo'),
+                new Set(Property::class)
             )
         );
         $this->assertInstanceOf(SetInterface::class, $headers);
         $this->assertSame(Header::class, (string) $headers->type());
     }
 
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 1 must be of type SetInterface<Innmind\Rest\Server\Identity>
-     */
     public function testThrowWhenInvalidIdentities()
     {
         $build = new ListDelegationBuilder;
 
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 1 must be of type SetInterface<Innmind\Rest\Server\Identity>');
+
         $build(
             new Set('object'),
             $this->createMock(ServerRequest::class),
-            new Httpresource(
+            Httpresource::rangeable(
                 'foobar',
-                new Identity('foo'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                true,
-                new Map('string', 'string')
+                new Identity('foo'),
+                new Set(Property::class)
             )
         );
     }
@@ -92,15 +82,11 @@ class ListDelegationBuilderTest extends TestCase
         $headers = $build(
             new Set(IdentityInterface::class),
             $this->createMock(ServerRequest::class),
-            new Httpresource(
+            Httpresource::rangeable(
                 'foobar',
-                new Identity('foo'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                true,
-                new Map('string', 'string')
+                new Identity('foo'),
+                new Set(Property::class)
             )
         );
 

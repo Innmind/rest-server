@@ -5,17 +5,17 @@ namespace Innmind\Rest\Server\Specification;
 
 use Innmind\Rest\Server\HttpResource;
 use Innmind\Specification\{
-    NotInterface,
-    SpecificationInterface,
+    Not,
+    Specification,
 };
 
-final class NotFilter implements NotInterface
+final class NotFilter implements Not
 {
     use Composite;
 
     private $specification;
 
-    public function __construct(SpecificationInterface $specification)
+    public function __construct(Specification $specification)
     {
         $this->specification = $specification;
     }
@@ -23,7 +23,7 @@ final class NotFilter implements NotInterface
     /**
      * {@inheritdoc}
      */
-    public function specification(): SpecificationInterface
+    public function specification(): Specification
     {
         return $this->specification;
     }

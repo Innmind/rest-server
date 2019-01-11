@@ -18,8 +18,8 @@ final class QueryExtractor implements Extractor
     {
         if (
             !$request->query()->has('range') ||
-            !is_array($request->query()->get('range')->value()) ||
-            count($request->query()->get('range')->value()) !== 2
+            !\is_array($request->query()->get('range')->value()) ||
+            \count($request->query()->get('range')->value()) !== 2
         ) {
             throw new RangeNotFound;
         }

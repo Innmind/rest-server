@@ -16,51 +16,35 @@ use Innmind\Rest\Server\{
     Exception\NormalizationException,
     Exception\HttpResourceNormalizationException,
 };
-use Innmind\Immutable\{
-    Map,
-    Set,
-};
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class HttpResourceTest extends TestCase
 {
     public function testNormalize()
     {
-        $def = new ResourceDefinition(
+        $def = ResourceDefinition::rangeable(
             'foobar',
-            new Identity('foo'),
-            (new Map('string', PropertyDefinition::class))
-                ->put(
-                    'bar',
-                    new PropertyDefinition(
-                        'bar',
-                        new StringType,
-                        new Access(Access::READ),
-                        (new Set('string')),
-                        false
-                    )
-                )
-                ->put(
-                    'baz',
-                    new PropertyDefinition(
-                        'baz',
-                        new StringType,
-                        new Access(Access::CREATE),
-                        (new Set('string')),
-                        false
-                    )
-                ),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Gateway('bar'),
-            true,
-            new Map('string', 'string')
+            new Identity('foo'),
+            Set::of(
+                PropertyDefinition::class,
+                PropertyDefinition::required(
+                    'bar',
+                    new StringType,
+                    new Access(Access::READ)
+                ),
+                PropertyDefinition::required(
+                    'baz',
+                    new StringType,
+                    new Access(Access::CREATE)
+                )
+            )
         );
-        $resource = new Resource(
+        $resource = Resource::of(
             $def,
-            (new Map('string', Property::class))
-                ->put('bar', new Property('bar', 'baz'))
-                ->put('baz', new Property('baz', 'bar'))
+            new Property('bar', 'baz'),
+            new Property('baz', 'bar')
         );
 
         $data = (new HttpResource)($resource);
@@ -70,30 +54,23 @@ class HttpResourceTest extends TestCase
 
     public function testThrowWhenNormalizationFail()
     {
-        $def = new ResourceDefinition(
+        $def = ResourceDefinition::rangeable(
             'foobar',
-            new Identity('foo'),
-            (new Map('string', PropertyDefinition::class))
-                ->put(
-                    'bar',
-                    new PropertyDefinition(
-                        'bar',
-                        new StringType,
-                        new Access(Access::READ),
-                        (new Set('string'))->add('baz'),
-                        false
-                    )
-                ),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Gateway('bar'),
-            true,
-            new Map('string', 'string')
+            new Identity('foo'),
+            Set::of(
+                PropertyDefinition::class,
+                PropertyDefinition::required(
+                    'bar',
+                    new StringType,
+                    new Access(Access::READ),
+                    'baz'
+                )
+            )
         );
-        $resource = new Resource(
+        $resource = Resource::of(
             $def,
-            (new Map('string', Property::class))
-                ->put('bar', new Property('bar', new \stdClass))
+            new Property('bar', new \stdClass)
         );
 
         try {

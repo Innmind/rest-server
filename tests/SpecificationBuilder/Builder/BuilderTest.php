@@ -13,6 +13,8 @@ use Innmind\Rest\Server\{
     Definition\Access,
     Definition\Gateway,
     Specification\AndFilter,
+    Exception\FilterNotApplicable,
+    Exception\NoFilterFound,
 };
 use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
@@ -26,10 +28,7 @@ use Innmind\Http\{
 };
 use Innmind\Url\UrlInterface;
 use Innmind\Stream\Readable;
-use Innmind\Immutable\{
-    Map,
-    Set,
-};
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class BuilderTest extends TestCase
@@ -50,35 +49,23 @@ class BuilderTest extends TestCase
                 new Parameter('range', [0, 42])
             )
         );
-        $definition = new HttpResource(
+        $definition = HttpResource::rangeable(
             'foo',
-            new Identity('uuid'),
-            (new Map('string', Property::class))
-                ->put(
-                    'foo',
-                    new Property(
-                        'foo',
-                        new StringType,
-                        new Access(Access::READ),
-                        new Set('string'),
-                        true
-                    )
-                )
-                ->put(
-                    'bar',
-                    new Property(
-                        'bar',
-                        new StringType,
-                        new Access(Access::READ),
-                        new Set('string'),
-                        true
-                    )
-                ),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Gateway('command'),
-            true,
-            new Map('string', 'string')
+            new Identity('uuid'),
+            Set::of(
+                Property::class,
+                Property::optional(
+                    'foo',
+                    new StringType,
+                    new Access(Access::READ)
+                ),
+                Property::optional(
+                    'bar',
+                    new StringType,
+                    new Access(Access::READ)
+                )
+            )
         );
         $build = new Builder;
 
@@ -91,10 +78,6 @@ class BuilderTest extends TestCase
         $this->assertSame('baz', $spec->right()->value());
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\FilterNotApplicable
-     * @expectedExceptionMessage foo
-     */
     public function testThrowWhenNoPropertyForTheFilter()
     {
         $request = new ServerRequest(
@@ -107,24 +90,20 @@ class BuilderTest extends TestCase
             $this->createMock(Cookies::class),
             Query::of(new Parameter('foo', 'bar'))
         );
-        $definition = new HttpResource(
+        $definition = HttpResource::rangeable(
             'foo',
-            new Identity('uuid'),
-            new Map('string', Property::class),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Gateway('command'),
-            true,
-            new Map('string', 'string')
+            new Identity('uuid'),
+            new Set(Property::class)
         );
         $build = new Builder;
+
+        $this->expectException(FilterNotApplicable::class);
+        $this->expectExceptionMessage('foo');
 
         $spec = $build($request, $definition);
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\NoFilterFound
-     */
     public function testThrowWhenNoFilterFound()
     {
         $request = new ServerRequest(
@@ -137,17 +116,15 @@ class BuilderTest extends TestCase
             $this->createMock(Cookies::class),
             new Query
         );
-        $definition = new HttpResource(
+        $definition = HttpResource::rangeable(
             'foo',
-            new Identity('uuid'),
-            new Map('string', Property::class),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Gateway('command'),
-            true,
-            new Map('string', 'string')
+            new Identity('uuid'),
+            new Set(Property::class)
         );
         $build = new Builder;
+
+        $this->expectException(NoFilterFound::class);
 
         $spec = $build($request, $definition);
     }

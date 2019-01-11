@@ -9,6 +9,7 @@ use Innmind\Rest\Server\{
     Translator\LinkTranslator,
     Gateway,
     Definition\HttpResource,
+    Definition\Locator,
     Identity,
     Reference,
     Exception\RouteNotFound,
@@ -17,7 +18,6 @@ use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
     Message\StatusCode\StatusCode,
-    Message\ReasonPhrase\ReasonPhrase,
     Headers\Headers,
     Exception\Http\BadRequest,
 };
@@ -28,11 +28,13 @@ final class Link implements Controller
     private $gateways;
     private $buildHeader;
     private $translate;
+    private $locator;
 
     public function __construct(
         MapInterface $gateways,
         LinkBuilder $headerBuilder,
-        LinkTranslator $translator
+        LinkTranslator $translator,
+        Locator $locator
     ) {
         if (
             (string) $gateways->keyType() !== 'string' ||
@@ -47,6 +49,7 @@ final class Link implements Controller
         $this->gateways = $gateways;
         $this->buildHeader = $headerBuilder;
         $this->translate = $translator;
+        $this->locator = $locator;
     }
 
     public function __invoke(
@@ -61,9 +64,13 @@ final class Link implements Controller
         }
 
         try {
-            $tos = ($this->translate)($request->headers()->get('Link'));
+            $links = ($this->translate)($request->headers()->get('Link'));
         } catch (RouteNotFound $e) {
             throw new BadRequest('', 0, $e);
+        }
+
+        if (!$from->accept($this->locator, ...$links)) {
+            throw new BadRequest;
         }
 
         $link = $this
@@ -72,15 +79,15 @@ final class Link implements Controller
             ->resourceLinker();
         $link(
             $from = new Reference($from, $identity),
-            $tos
+            ...$links
         );
 
         return new Response\Response(
-            $code = new StatusCode(StatusCode::codes()->get('NO_CONTENT')),
-            new ReasonPhrase(ReasonPhrase::defaults()->get($code->value())),
+            $code = StatusCode::of('NO_CONTENT'),
+            $code->associatedreasonPhrase(),
             $request->protocolVersion(),
             Headers::of(
-                ...($this->buildHeader)($request, $from, $tos)
+                ...($this->buildHeader)($request, $from, ...$links)
             )
         );
     }

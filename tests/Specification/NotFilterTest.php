@@ -9,7 +9,7 @@ use Innmind\Rest\Server\{
     HttpResource,
     HttpResource\Property,
 };
-use Innmind\Specification\NotInterface;
+use Innmind\Specification\Not;
 use PHPUnit\Framework\TestCase;
 
 class NotFilterTest extends TestCase
@@ -24,7 +24,7 @@ class NotFilterTest extends TestCase
             ->method('property')
             ->willReturn(new Property('foo', 'bar'));
 
-        $this->assertInstanceOf(NotInterface::class, $not);
+        $this->assertInstanceOf(Not::class, $not);
         $this->assertFalse($not->isSatisfiedBy($resource));
         $this->assertSame($spec, $not->specification());
     }

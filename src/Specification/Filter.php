@@ -4,9 +4,12 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\Specification;
 
 use Innmind\Rest\Server\HttpResource;
-use Innmind\Specification\ComparatorInterface;
+use Innmind\Specification\{
+    Comparator,
+    Sign,
+};
 
-final class Filter implements ComparatorInterface
+final class Filter implements Comparator
 {
     use Composite;
 
@@ -30,9 +33,9 @@ final class Filter implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function sign(): string
+    public function sign(): Sign
     {
-        return '==';
+        return Sign::equality();
     }
 
     /**

@@ -20,7 +20,6 @@ use Innmind\Http\{
 };
 use Innmind\Immutable\{
     Set,
-    Map,
     SetInterface,
 };
 use PHPUnit\Framework\TestCase;
@@ -44,13 +43,9 @@ class ListRangeBuilderTest extends TestCase
             $this->createMock(ServerRequest::class),
             new HttpResource(
                 'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('command'),
-                false,
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             )
         );
 
@@ -66,15 +61,11 @@ class ListRangeBuilderTest extends TestCase
         $headers = $build(
             new Set(IdentityInterface::class),
             $this->createMock(ServerRequest::class),
-            new HttpResource(
+            HttpResource::rangeable(
                 'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('command'),
-                true,
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             )
         );
 
@@ -94,15 +85,11 @@ class ListRangeBuilderTest extends TestCase
         $headers = $build(
             Set::of(IdentityInterface::class, new Id(42)),
             $this->createMock(ServerRequest::class),
-            new HttpResource(
+            HttpResource::rangeable(
                 'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('command'),
-                true,
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             ),
             null,
             new Range(10, 20)
@@ -141,15 +128,11 @@ class ListRangeBuilderTest extends TestCase
                 new Id(51)
             ),
             $this->createMock(ServerRequest::class),
-            new HttpResource(
+            HttpResource::rangeable(
                 'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('command'),
-                true,
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             ),
             null,
             new Range(0, 10)

@@ -15,10 +15,7 @@ use Innmind\Rest\Server\{
     Exception\DenormalizationException,
     Exception\HttpResourceDenormalizationException,
 };
-use Innmind\Immutable\{
-    Map,
-    Set,
-};
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class HttpResourceTest extends TestCase
@@ -26,25 +23,19 @@ class HttpResourceTest extends TestCase
     public function testDenormalize()
     {
         $denormalize = new HttpResource;
-        $definition = new ResourceDefinition(
+        $definition = ResourceDefinition::rangeable(
             'foobar',
-            new Identity('foo'),
-            (new Map('string', Property::class))
-                ->put(
-                    'bar',
-                    new Property(
-                        'bar',
-                        new StringType,
-                        new Access(Access::READ, Access::CREATE),
-                        (new Set('string'))->add('baz'),
-                        false
-                    )
-                ),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Gateway('bar'),
-            true,
-            new Map('string', 'string')
+            new Identity('foo'),
+            Set::of(
+                Property::class,
+                Property::required(
+                    'bar',
+                    new StringType,
+                    new Access(Access::READ, Access::CREATE),
+                    'baz'
+                )
+            )
         );
 
         $resource = $denormalize(
@@ -65,55 +56,33 @@ class HttpResourceTest extends TestCase
     public function testThrowWhenDenormalizationFail()
     {
         $denormalize = new HttpResource;
-        $definition = new ResourceDefinition(
+        $definition = ResourceDefinition::rangeable(
             'foobar',
-            new Identity('foo'),
-            (new Map('string', Property::class))
-                ->put(
-                    'bar',
-                    new Property(
-                        'bar',
-                        new StringType,
-                        new Access(Access::READ, Access::CREATE),
-                        new Set('string'),
-                        false
-                    )
-                )
-                ->put(
-                    'baz',
-                    new Property(
-                        'baz',
-                        new StringType,
-                        new Access(Access::READ, Access::CREATE),
-                        new Set('string'),
-                        false
-                    )
-                )
-                ->put(
-                    'foo',
-                    new Property(
-                        'foo',
-                        new StringType,
-                        new Access(Access::READ),
-                        new Set('string'),
-                        false
-                    )
-                )
-                ->put(
-                    'foobar',
-                    new Property(
-                        'foobar',
-                        new StringType,
-                        new Access(Access::READ),
-                        new Set('string'),
-                        false
-                    )
-                ),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Gateway('bar'),
-            true,
-            new Map('string', 'string')
+            new Identity('foo'),
+            Set::of(
+                Property::class,
+                Property::required(
+                    'bar',
+                    new StringType,
+                    new Access(Access::READ, Access::CREATE)
+                ),
+                Property::required(
+                    'baz',
+                    new StringType,
+                    new Access(Access::READ, Access::CREATE)
+                ),
+                Property::required(
+                    'foo',
+                    new StringType,
+                    new Access(Access::READ)
+                ),
+                Property::required(
+                    'foobar',
+                    new StringType,
+                    new Access(Access::READ)
+                )
+            )
         );
 
         try {

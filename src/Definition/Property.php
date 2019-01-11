@@ -3,7 +3,10 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Definition;
 
-use Innmind\Immutable\SetInterface;
+use Innmind\Immutable\{
+    SetInterface,
+    Set,
+};
 
 final class Property
 {
@@ -13,22 +16,48 @@ final class Property
     private $variants;
     private $optional;
 
-    public function __construct(
+    private function __construct(
         string $name,
         Type $type,
         Access $access,
         SetInterface $variants,
         bool $optional
     ) {
-        if ((string) $variants->type() !== 'string') {
-            throw new \TypeError('Argument 4 must be of type SetInterface<string>');
-        }
-
         $this->name = $name;
         $this->type = $type;
         $this->access = $access;
         $this->variants = $variants;
         $this->optional = $optional;
+    }
+
+    public static function required(
+        string $name,
+        Type $type,
+        Access $access,
+        string ...$variants
+    ): self {
+        return new self(
+            $name,
+            $type,
+            $access,
+            Set::of('string', ...$variants),
+            false
+        );
+    }
+
+    public static function optional(
+        string $name,
+        Type $type,
+        Access $access,
+        string ...$variants
+    ): self {
+        return new self(
+            $name,
+            $type,
+            $access,
+            Set::of('string', ...$variants),
+            true
+        );
     }
 
     public function name(): string

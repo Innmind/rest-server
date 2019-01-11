@@ -5,54 +5,31 @@ namespace Innmind\Rest\Server\Definition\Type;
 
 use Innmind\Rest\Server\{
     Definition\Type,
-    Definition\Types,
     Exception\DenormalizationException,
     Exception\NormalizationException,
 };
 use Innmind\Immutable\{
-    SetInterface,
-    Set,
     Map,
     MapInterface,
 };
 
 final class MapType implements Type
 {
-    private static $identifiers;
+    private $keyType;
+    private $valueType;
     private $key;
-    private $inner;
-    private $innerKey;
-    private $innerValue;
+    private $value;
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function fromConfig(MapInterface $config, Types $types): Type
-    {
-        if (
-            (string) $config->keyType() !== 'scalar' ||
-            (string) $config->valueType() !== 'variable'
-        ) {
-            throw new \TypeError('Argument 1 must be of type MapInterface<scalar, variable>');
-        }
-
-        $type = new self;
-        $type->innerKey = $config->get('key');
-        $type->innerValue = $config->get('inner');
-        $type->inner = $types->build(
-            $config->get('inner'),
-            $config
-                ->remove('inner')
-                ->remove('key')
-        );
-        $type->key = $types->build(
-            $config->get('key'),
-            $config
-                ->remove('inner')
-                ->remove('key')
-        );
-
-        return $type;
+    public function __construct(
+        string $key,
+        string $value,
+        Type $keyType,
+        Type $valueType
+    ) {
+        $this->key = $key;
+        $this->value = $value;
+        $this->keyType = $keyType;
+        $this->valueType = $valueType;
     }
 
     /**
@@ -60,20 +37,20 @@ final class MapType implements Type
      */
     public function denormalize($data)
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw new DenormalizationException(sprintf(
                 'The value must be an array of %s mapped to %s',
-                $this->innerKey,
-                $this->innerValue
+                $this->key,
+                $this->value
             ));
         }
 
-        $map = new Map($this->innerKey, $this->innerValue);
+        $map = new Map($this->key, $this->value);
 
         foreach ($data as $key => $value) {
             $map = $map->put(
-                $this->key->denormalize($key),
-                $this->inner->denormalize($value)
+                $this->keyType->denormalize($key),
+                $this->valueType->denormalize($value)
             );
         }
 
@@ -92,26 +69,18 @@ final class MapType implements Type
         $normalized = [];
 
         foreach ($data as $key => $value) {
-            $normalized[$this->key->normalize($key)] = $this->inner->normalize($value);
+            $normalized[$this->keyType->normalize($key)] = $this->valueType->normalize($value);
         }
 
         return $normalized;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function identifiers(): SetInterface
-    {
-        return self::$identifiers ?? self::$identifiers = Set::of('string', 'map');
-    }
-
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             'map<%s, %s>',
-            $this->key,
-            $this->inner
+            $this->keyType,
+            $this->valueType
         );
     }
 }

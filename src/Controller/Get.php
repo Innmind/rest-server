@@ -16,7 +16,6 @@ use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
     Message\StatusCode\StatusCode,
-    Message\ReasonPhrase\ReasonPhrase,
     Headers\Headers,
 };
 use Innmind\Immutable\MapInterface;
@@ -62,8 +61,8 @@ final class Get implements Controller
         $resource = $access($definition, $identity);
 
         return new Response\Response(
-            $code = new StatusCode(StatusCode::codes()->get('OK')),
-            new ReasonPhrase(ReasonPhrase::defaults()->get($code->value())),
+            $code = StatusCode::of('OK'),
+            $code->associatedreasonPhrase(),
             $request->protocolVersion(),
             Headers::of(
                 ...($this->buildHeader)($resource, $request, $definition, $identity)

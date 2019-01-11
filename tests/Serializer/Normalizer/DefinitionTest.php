@@ -19,10 +19,10 @@ class DefinitionTest extends TestCase
     public function testNormalize()
     {
         $normalize = new Definition;
-        $directories = (new YamlLoader)('fixtures/mapping.yml');
+        $directory = require 'fixtures/mapping.php';
 
         $data = $normalize(
-            $directories->get('top_dir')->definitions()->get('image')
+            $directory->definition('image')
         );
 
         $this->assertSame(
@@ -45,7 +45,11 @@ class DefinitionTest extends TestCase
                 'metas' => [],
                 'rangeable' => true,
                 'linkable_to' => [
-                    'alternate' => 'top_dir.image',
+                    [
+                        'relationship' => 'alternate',
+                        'resource_path' => 'top_dir.image',
+                        'parameters' => [],
+                    ],
                 ],
             ],
             $data

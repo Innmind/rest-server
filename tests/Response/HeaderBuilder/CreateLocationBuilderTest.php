@@ -8,7 +8,6 @@ use Innmind\Rest\Server\{
     Response\HeaderBuilder\CreateBuilder,
     Identity\Identity,
     HttpResource,
-    Definition\Loader\YamlLoader,
     Router,
     Routing\Routes,
 };
@@ -29,14 +28,14 @@ use PHPUnit\Framework\TestCase;
 class CreateLocationBuilderTest extends TestCase
 {
     private $build;
-    private $directories;
+    private $directory;
 
     public function setUp()
     {
         $this->build = new CreateLocationBuilder(
             new Router(
                 Routes::from(
-                    $this->directories = (new YamlLoader)('fixtures/mapping.yml')
+                    $this->directory = require 'fixtures/mapping.php'
                 )
             )
         );
@@ -61,7 +60,7 @@ class CreateLocationBuilderTest extends TestCase
                     )
                 )
             ),
-            $this->directories->get('top_dir')->definition('image'),
+            $this->directory->definition('image'),
             $this->createMock(HttpResource::class)
         );
 

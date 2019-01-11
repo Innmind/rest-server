@@ -15,7 +15,7 @@ use Innmind\Http\{
     Header\ContentRange,
     Header\ContentRangeValue,
 };
-use Innmind\Specification\SpecificationInterface;
+use Innmind\Specification\Specification;
 use Innmind\Immutable\{
     SetInterface,
     Set,
@@ -30,7 +30,7 @@ final class ListRangeBuilder implements ListBuilder
         SetInterface $identities,
         ServerRequest $request,
         HttpResource $definition,
-        SpecificationInterface $specification = null,
+        Specification $specification = null,
         Range $range = null
     ): SetInterface {
         $headers = Set::of(Header::class);

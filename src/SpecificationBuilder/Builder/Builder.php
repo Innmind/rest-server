@@ -11,7 +11,7 @@ use Innmind\Rest\Server\{
     Specification\Filter,
 };
 use Innmind\Http\Message\ServerRequest;
-use Innmind\Specification\SpecificationInterface;
+use Innmind\Specification\Specification;
 
 final class Builder implements BuilderInterface
 {
@@ -21,7 +21,7 @@ final class Builder implements BuilderInterface
     public function __invoke(
         ServerRequest $request,
         HttpResource $definition
-    ): SpecificationInterface {
+    ): Specification {
         $specification = null;
 
         foreach ($request->query() as $parameter) {

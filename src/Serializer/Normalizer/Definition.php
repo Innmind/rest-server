@@ -6,6 +6,8 @@ namespace Innmind\Rest\Server\Serializer\Normalizer;
 use Innmind\Rest\Server\Definition\{
     HttpResource,
     Property,
+    AllowedLink,
+    AllowedLink\Parameter,
 };
 
 final class Definition
@@ -43,8 +45,19 @@ final class Definition
                 ->allowedLinks()
                 ->reduce(
                     [],
-                    function(array $carry, string $type, string $path): array {
-                        $carry[$type] = $path;
+                    function(array $carry, AllowedLink $allowed): array {
+                        $carry[] = [
+                            'relationship' => $allowed->relationship(),
+                            'resource_path' => $allowed->resourcePath(),
+                            'parameters' => $allowed->parameters()->reduce(
+                                [],
+                                static function(array $carry, Parameter $parameter): array {
+                                    $carry[] = $parameter->name();
+
+                                    return $carry;
+                                }
+                            ),
+                        ];
 
                         return $carry;
                     }

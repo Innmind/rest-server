@@ -12,7 +12,9 @@ use Innmind\Rest\Server\{
     ResourceUnlinker,
     Reference,
     Translator\LinkTranslator,
+    Link,
     Link\Parameter,
+    Definition\Locator,
 };
 use Innmind\Http\{
     Message\ServerRequest,
@@ -41,12 +43,13 @@ class UnlinkTest extends AbstractTestCase
         parent::setUp();
 
         $this->unlink = new Unlink(
-            (new Map('string', Gateway::class))->put(
+            Map::of('string', Gateway::class)(
                 'foo',
                 $this->gateway = $this->createMock(Gateway::class)
             ),
             $this->headerBuilder = $this->createMock(UnlinkBuilder::class),
-            new LinkTranslator($this->router)
+            new LinkTranslator($this->router),
+            new Locator($this->directory)
         );
     }
 
@@ -66,7 +69,8 @@ class UnlinkTest extends AbstractTestCase
         new Unlink(
             new Map('int', Gateway::class),
             $this->createMock(UnlinkBuilder::class),
-            new LinkTranslator($this->router)
+            new LinkTranslator($this->router),
+            new Locator($this->directory)
         );
     }
 
@@ -78,7 +82,8 @@ class UnlinkTest extends AbstractTestCase
         new Unlink(
             new Map('string', 'callable'),
             $this->createMock(UnlinkBuilder::class),
-            new LinkTranslator($this->router)
+            new LinkTranslator($this->router),
+            new Locator($this->directory)
         );
     }
 
@@ -97,6 +102,18 @@ class UnlinkTest extends AbstractTestCase
                 )
             ));
         $identity = $this->createMock(Identity::class);
+        $from = new Reference(
+            $this->definition,
+            $identity
+        );
+        $link = new Link(
+            new Reference(
+                $this->directory->definition('image'),
+                new Identity\Identity('42')
+            ),
+            'resource'
+        );
+
         $this
             ->gateway
             ->expects($this->once())
@@ -106,25 +123,26 @@ class UnlinkTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with(
-                $from = new Reference(
-                    $this->definition,
-                    $identity
-                ),
-                $tos = (new Map(Reference::class, MapInterface::class))
-                    ->put(
-                        new Reference(
-                            $this->directories->get('top_dir')->definition('image'),
-                            new Identity\Identity('42')
-                        ),
-                        (new Map('string', Parameter::class))
-                            ->put('rel', new Parameter\Parameter('rel', 'resource'))
-                    )
+                $from,
+                $this->callback(static function($value) use ($link): bool {
+                    return $value->reference()->definition() === $link->reference()->definition() &&
+                        $value->reference()->identity()->value() === $link->reference()->identity()->value() &&
+                        $value->relationship() === $link->relationship();
+                })
             );
         $this
             ->headerBuilder
             ->expects($this->once())
             ->method('__invoke')
-            ->with($request, $from, $tos)
+            ->with(
+                $request,
+                $from,
+                $this->callback(static function($value) use ($link): bool {
+                    return $value->reference()->definition() === $link->reference()->definition() &&
+                        $value->reference()->identity()->value() === $link->reference()->identity()->value() &&
+                        $value->relationship() === $link->relationship();
+                })
+            )
             ->willReturn(new Set(Header::class));
 
         $response = ($this->unlink)($request, $this->definition, $identity);
@@ -133,6 +151,49 @@ class UnlinkTest extends AbstractTestCase
         $this->assertSame(204, $response->statusCode()->value());
         $this->assertSame('No Content', (string) $response->reasonPhrase());
         $this->assertSame('', (string) $response->body());
+    }
+
+    public function testThrowWhenLinkNotAccepted()
+    {
+        $request = $this->createMock(ServerRequest::class);
+        $request
+            ->expects($this->any())
+            ->method('headers')
+            ->willReturn(Headers::of(
+                new LinkHeader(
+                    new LinkValue(
+                        Url::fromString('/top_dir/image/42'),
+                        'resource'
+                    )
+                )
+            ));
+        $identity = $this->createMock(Identity::class);
+        $definition = $this->directory->definition('image');
+        $from = new Reference(
+            $definition,
+            $identity
+        );
+        $link = new Link(
+            new Reference(
+                $this->directory->definition('image'),
+                new Identity\Identity('42')
+            ),
+            'resource'
+        );
+
+        $this
+            ->gateway
+            ->expects($this->never())
+            ->method('resourceUnlinker');
+        $this
+            ->headerBuilder
+            ->expects($this->never())
+            ->method('__invoke');
+
+        $this->expectException(BadRequest::class);
+
+        // throws because of the relationship is not "alternate"
+        ($this->unlink)($request, $definition, $identity);
     }
 
     public function testThrowWhenNoLinkHeader()

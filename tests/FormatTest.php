@@ -33,33 +33,23 @@ class FormatTest extends TestCase
 
     public function setUp()
     {
-        $accept = new Formats(
-            (new Map('string', FormatFormat::class))
-                ->put(
-                    'json',
-                    new FormatFormat(
-                        'json',
-                        Set::of(MediaType::class, new MediaType('application/json', 0)),
-                        10
-                    )
-                )
-                ->put(
-                    'html',
-                    new FormatFormat(
-                        'html',
-                        Set::of(MediaType::class, new MediaType('text/html', 0)),
-                        0
-                    )
-                )
-        );
-        $contentType = new Formats(
-            (new Map('string', FormatFormat::class))->put(
+        $accept = Formats::of(
+            new FormatFormat(
                 'json',
-                new FormatFormat(
-                    'json',
-                    Set::of(MediaType::class, new MediaType('application/json', 0)),
-                    0
-                )
+                Set::of(MediaType::class, new MediaType('application/json', 0)),
+                10
+            ),
+            new FormatFormat(
+                'html',
+                Set::of(MediaType::class, new MediaType('text/html', 0)),
+                0
+            )
+        );
+        $contentType = Formats::of(
+            new FormatFormat(
+                'json',
+                Set::of(MediaType::class, new MediaType('application/json', 0)),
+                0
             )
         );
 
@@ -71,7 +61,7 @@ class FormatTest extends TestCase
         $format = $this->format->acceptable(
             new ServerRequest(
                 Url::fromString('/'),
-                new Method('GET'),
+                Method::get(),
                 new ProtocolVersion(1, 1),
                 Headers::of(
                     new Accept(
@@ -91,7 +81,7 @@ class FormatTest extends TestCase
         $format = $this->format->acceptable(
             new ServerRequest(
                 Url::fromString('/'),
-                new Method('GET'),
+                Method::get(),
                 new ProtocolVersion(1, 1),
                 Headers::of(
                     new Accept(
@@ -111,7 +101,7 @@ class FormatTest extends TestCase
         $format = $this->format->contentType(
             new ServerRequest(
                 Url::fromString('/'),
-                new Method('GET'),
+                Method::get(),
                 new ProtocolVersion(1, 1),
                 Headers::of(
                     new ContentType(

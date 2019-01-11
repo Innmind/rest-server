@@ -13,40 +13,30 @@ use Innmind\Rest\Server\{
     Definition\Gateway,
     Definition\Type\StringType,
     Definition\Access,
+    Exception\DomainException,
 };
-use Innmind\Immutable\{
-    Map,
-    Set,
-};
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class HttpResourceTest extends TestCase
 {
     public function testInterface()
     {
-        $resource = new HttpResource(
-            $definition = new Definition(
+        $resource = HttpResource::of(
+            $definition = Definition::rangeable(
                 'foobar',
-                new Identity('foo'),
-                (new Map('string', PropertyDefinition::class))
-                    ->put(
-                        'foo',
-                        new PropertyDefinition(
-                            'foo',
-                            new StringType,
-                            new Access(Access::READ),
-                            new Set('string'),
-                            true
-                        )
-                    ),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                true,
-                new Map('string', 'string')
+                new Identity('foo'),
+                Set::of(
+                    PropertyDefinition::class,
+                    PropertyDefinition::optional(
+                        'foo',
+                        new StringType,
+                        new Access(Access::READ)
+                    )
+                )
             ),
-            $properties = (new Map('string', Property::class))
-                ->put('foo', $property = new Property('foo', 42))
+            $property = new Property('foo', 42)
         );
 
         $this->assertInstanceOf(HttpResourceInterface::class, $resource);
@@ -54,27 +44,20 @@ class HttpResourceTest extends TestCase
         $this->assertTrue($resource->has('foo'));
         $this->assertFalse($resource->has('bar'));
         $this->assertSame($property, $resource->property('foo'));
-        $this->assertSame($properties, $resource->properties());
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\DomainException
-     */
     public function testThrowWhenBuildingWithUndefinedProperty()
     {
-        new HttpResource(
-            new Definition(
+        $this->expectException(DomainException::class);
+
+        HttpResource::of(
+            Definition::rangeable(
                 'foobar',
-                new Identity('foo'),
-                (new Map('string', PropertyDefinition::class)),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('bar'),
-                true,
-                new Map('string', 'string')
+                new Identity('foo'),
+                new Set(PropertyDefinition::class)
             ),
-            (new Map('string', Property::class))
-                ->put('foo', new Property('foo', 42))
+            new Property('foo', 42)
         );
     }
 }

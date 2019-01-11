@@ -32,7 +32,7 @@ use Innmind\Immutable\{
     Map,
     Set,
 };
-use Innmind\Specification\SpecificationInterface;
+use Innmind\Specification\Specification;
 
 class IndexTest extends AbstractTestCase
 {
@@ -49,10 +49,8 @@ class IndexTest extends AbstractTestCase
         $this->index = new Index(
             new Encoder\Json,
             new Identities,
-            (new Map('string', Gateway::class))->put(
-                'foo',
-                $this->gateway = $this->createMock(Gateway::class)
-            ),
+            Map::of('string', Gateway::class)
+                ('foo', $this->gateway = $this->createMock(Gateway::class)),
             $this->headerBuilder = $this->createMock(ListBuilder::class),
             $this->rangeExtractor = $this->createMock(Extractor::class),
             $this->builder = $this->createMock(Builder::class)
@@ -116,7 +114,7 @@ class IndexTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($request, $this->definition)
-            ->willReturn($spec = $this->createMock(SpecificationInterface::class));
+            ->willReturn($spec = $this->createMock(Specification::class));
         $this
             ->gateway
             ->expects($this->once())
@@ -171,7 +169,7 @@ class IndexTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($request, $this->definition)
-            ->willReturn($spec = $this->createMock(SpecificationInterface::class));
+            ->willReturn($spec = $this->createMock(Specification::class));
         $this
             ->gateway
             ->expects($this->once())
@@ -226,7 +224,7 @@ class IndexTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($request, $this->definition)
-            ->willReturn($spec = $this->createMock(SpecificationInterface::class));
+            ->willReturn($spec = $this->createMock(Specification::class));
         $this
             ->gateway
             ->expects($this->once())

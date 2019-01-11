@@ -3,68 +3,96 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Definition;
 
-use Innmind\Immutable\MapInterface;
+use Innmind\Rest\Server\{
+    Action,
+    Link,
+};
+use Innmind\Immutable\{
+    MapInterface,
+    Map,
+    SetInterface,
+    Set,
+};
 
 final class HttpResource
 {
     private $name;
     private $identity;
     private $properties;
-    private $options;
+    private $actions;
     private $metas;
     private $gateway;
-    private $rangeable;
+    private $rangeable = false;
     private $allowedLinks;
 
     public function __construct(
         string $name,
-        Identity $identity,
-        MapInterface $properties,
-        MapInterface $options,
-        MapInterface $metas,
         Gateway $gateway,
-        bool $rangeable,
-        MapInterface $allowedLinks
+        Identity $identity,
+        SetInterface $properties,
+        SetInterface $actions = null,
+        SetInterface $allowedLinks = null,
+        MapInterface $metas = null
     ) {
-        if (
-            (string) $properties->keyType() !== 'string' ||
-            (string) $properties->valueType() !== Property::class
-        ) {
+        $actions = $actions ?? Action::all();
+        $metas = $metas ?? Map::of('scalar', 'variable');
+        $allowedLinks = $allowedLinks ?? Set::of(AllowedLink::class);
+
+        if ((string) $properties->type() !== Property::class) {
             throw new \TypeError(sprintf(
-                'Argument 3 must be of type MapInterface<string, %s>',
+                'Argument 4 must be of type SetInterface<%s>',
                 Property::class
             ));
         }
 
-        if (
-            (string) $options->keyType() !== 'scalar' ||
-            (string) $options->valueType() !== 'variable'
-        ) {
-            throw new \TypeError('Argument 4 must be of type MapInterface<scalar, variable>');
+        if ((string) $actions->type() !== Action::class) {
+            throw new \TypeError(\sprintf(
+                'Argument 5 must be of type SetInterface<%s>',
+                Action::class
+            ));
+        }
+
+        if ((string) $allowedLinks->type() !== AllowedLink::class) {
+            throw new \TypeError(\sprintf(
+                'Argument 6 must be of type SetInterface<%s>',
+                AllowedLink::class
+            ));
         }
 
         if (
             (string) $metas->keyType() !== 'scalar' ||
             (string) $metas->valueType() !== 'variable'
         ) {
-            throw new \TypeError('Argument 5 must be of type MapInterface<scalar, variable>');
-        }
-
-        if (
-            (string) $allowedLinks->keyType() !== 'string' ||
-            (string) $allowedLinks->valueType() !== 'string'
-        ) {
-            throw new \TypeError('Argument 8 must be of type MapInterface<string, string>');
+            throw new \TypeError('Argument 7 must be of type MapInterface<scalar, variable>');
         }
 
         $this->name = new Name($name);
         $this->identity = $identity;
-        $this->properties = $properties;
-        $this->options = $options;
+        $this->properties = $properties->reduce(
+            Map::of('string', Property::class),
+            static function(MapInterface $properties, Property $property): MapInterface {
+                return $properties->put((string) $property->name(), $property);
+            }
+        );
+        $this->actions = $actions->add(Action::options());
         $this->metas = $metas;
         $this->gateway = $gateway;
-        $this->rangeable = $rangeable;
         $this->allowedLinks = $allowedLinks;
+    }
+
+    public static function rangeable(
+        string $name,
+        Gateway $gateway,
+        Identity $identity,
+        SetInterface $properties,
+        SetInterface $actions = null,
+        SetInterface $allowedLinks = null,
+        MapInterface $metas = null
+    ): self {
+        $self = new self($name, $gateway, $identity, $properties, $actions, $allowedLinks, $metas);
+        $self->rangeable = true;
+
+        return $self;
     }
 
     public function name(): Name
@@ -85,12 +113,9 @@ final class HttpResource
         return $this->properties;
     }
 
-    /**
-     * @return MapInterface<scalar, variable>
-     */
-    public function options(): MapInterface
+    public function allow(Action $action): bool
     {
-        return $this->options;
+        return $this->actions->contains($action);
     }
 
     /**
@@ -112,15 +137,36 @@ final class HttpResource
     }
 
     /**
-     * @return MapInterface<string, string> Relationship type as key and definition path as value
+     * @return SetInterface<AllowedLink>
      */
-    public function allowedLinks(): MapInterface
+    public function allowedLinks(): SetInterface
     {
         return $this->allowedLinks;
+    }
+
+    public function accept(Locator $locator, Link ...$links): bool
+    {
+        foreach ($links as $link) {
+            if (!$this->acceptLink($locator, $link)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function __toString(): string
     {
         return (string) $this->name;
+    }
+
+    private function acceptLink(Locator $locator, Link $link): bool
+    {
+        return $this->allowedLinks->reduce(
+            true,
+            static function(bool $accept, AllowedLink $allowed) use ($locator, $link): bool {
+                return $accept && $allowed->accept($locator, $link);
+            }
+        );
     }
 }

@@ -99,9 +99,9 @@ class DelegateTest extends TestCase
                     $json
                 )
             ),
-            (new Map('string', Encoder::class))
-                ->put('html', $html = $this->createMock(Encoder::class))
-                ->put('json', $json = $this->createMock(Encoder::class))
+            Map::of('string', Encoder::class)
+                ('html', $html = $this->createMock(Encoder::class))
+                ('json', $json = $this->createMock(Encoder::class))
         );
         $request = $this->createMock(ServerRequest::class);
         $request

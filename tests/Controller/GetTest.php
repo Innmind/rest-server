@@ -41,10 +41,8 @@ class GetTest extends AbstractTestCase
         $this->get = new Get(
             new Encoder\Json,
             new ResourceNormalizer,
-            (new Map('string', Gateway::class))->put(
-                'foo',
-                $this->gateway = $this->createMock(Gateway::class)
-            ),
+            Map::of('string', Gateway::class)
+                ('foo', $this->gateway = $this->createMock(Gateway::class)),
             $this->headerBuilder = $this->createMock(GetBuilder::class)
         );
     }
@@ -104,11 +102,10 @@ class GetTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($this->definition, $identity)
-            ->willReturn($resource = new HttpResource(
+            ->willReturn($resource = HttpResource::of(
                 $this->definition,
-                (new Map('string', Property::class))
-                    ->put('uuid', new Property('uuid', 'foo'))
-                    ->put('url', new Property('url', 'example.com'))
+                new Property('uuid', 'foo'),
+                new Property('url', 'example.com')
             ));
         $this
             ->headerBuilder

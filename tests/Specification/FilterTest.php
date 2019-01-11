@@ -8,7 +8,10 @@ use Innmind\Rest\Server\{
     HttpResource,
     HttpResource\Property,
 };
-use Innmind\Specification\ComparatorInterface;
+use Innmind\Specification\{
+    Comparator,
+    Sign,
+};
 use PHPUnit\Framework\TestCase;
 
 class FilterTest extends TestCase
@@ -17,10 +20,10 @@ class FilterTest extends TestCase
     {
         $filter = new Filter('foo', 'bar');
 
-        $this->assertInstanceOf(ComparatorInterface::class, $filter);
+        $this->assertInstanceOf(Comparator::class, $filter);
         $this->assertSame('foo', $filter->property());
         $this->assertSame('bar', $filter->value());
-        $this->assertSame('==', $filter->sign());
+        $this->assertTrue($filter->sign()->equals(Sign::equality()));
         $resource = $this->createMock(HttpResource::class);
         $resource
             ->method('property')

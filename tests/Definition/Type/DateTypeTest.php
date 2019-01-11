@@ -3,12 +3,12 @@ declare(strict_types = 1);
 
 namespace Tests\Innmind\Rest\Server\Definition\Type;
 
-use Innmind\Rest\Server\Definition\{
-    Type\DateType,
-    Type,
-    Types,
+use Innmind\Rest\Server\{
+    Definition\Type\DateType,
+    Definition\Type,
+    Exception\NormalizationException,
+    Exception\DenormalizationException,
 };
-use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
 class DateTypeTest extends TestCase
@@ -17,37 +17,18 @@ class DateTypeTest extends TestCase
     {
         $this->assertInstanceOf(Type::class, new DateType);
         $this->assertSame(
-            ['date'],
-            DateType::identifiers()->toPrimitive()
-        );
-        $this->assertInstanceOf(
-            DateType::class,
-            DateType::fromConfig(new Map('scalar', 'variable'), new Types)
-        );
-        $this->assertSame(
             'date<Y-m-d>',
-            (string) DateType::fromConfig(
-                (new Map('scalar', 'variable'))
-                    ->put('format', 'Y-m-d'),
-                new Types
-            )
+            (string) new DateType('Y-m-d')
         );
         $this->assertSame(
             'date<Y-m-d\TH:i:sO>',
-            (string) DateType::fromConfig(
-                new Map('scalar', 'variable'),
-                new Types
-            )
+            (string) new DateType
         );
     }
 
     public function testDenormalize()
     {
-        $t = DateType::fromConfig(
-            (new Map('scalar', 'variable'))
-                ->put('format', 'Y-m-d'),
-            new Types
-        );
+        $t = new DateType('Y-m-d');
         $this->assertInstanceOf(
             \DateTimeImmutable::class,
             $t->denormalize('2016-01-01')
@@ -58,22 +39,17 @@ class DateTypeTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\DenormalizationException
-     * @expectedExceptionMessage The value must be a date
-     */
     public function testThrowWhenNotDenormalizingADate()
     {
+        $this->expectException(DenormalizationException::class);
+        $this->expectExceptionMessage('The value must be a date');
+
         (new DateType)->denormalize(new \stdClass);
     }
 
     public function testNormalize()
     {
-        $type = DateType::fromConfig(
-            (new Map('scalar', 'variable'))
-                ->put('format', 'Y-m-d H:i:s'),
-            new Types
-        );
+        $type = new DateType('Y-m-d H:i:s');
         $this->assertSame(
             '2016-01-01 00:00:00',
             $type->normalize('2016-01-01 00:00:00')
@@ -84,21 +60,11 @@ class DateTypeTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException Innmind\Rest\Server\Exception\NormalizationException
-     * @expectedExceptionMessage The value must be a date
-     */
     public function testThrowWhenNotNormalizingADate()
     {
-        (new DateType)->normalize('foo');
-    }
+        $this->expectException(NormalizationException::class);
+        $this->expectExceptionMessage('The value must be a date');
 
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 1 must be of type MapInterface<scalar, variable>
-     */
-    public function testThrowWhenInvalidConfigMap()
-    {
-        DateType::fromConfig(new Map('string', 'string'), new Types);
+        (new DateType)->normalize('foo');
     }
 }

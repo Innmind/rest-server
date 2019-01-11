@@ -12,7 +12,7 @@ use Innmind\Rest\Server\{
     Definition\Property,
 };
 use Innmind\Http\Message\ServerRequest;
-use Innmind\Immutable\Map;
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class DelegationVerifierTest extends TestCase
@@ -45,24 +45,17 @@ class DelegationVerifierTest extends TestCase
         $this->assertNull(
             $verify(
                 $this->createMock(ServerRequest::class),
-                new HttpResource(
+                HttpResource::rangeable(
                     'foo',
-                    new Identity('uuid'),
-                    new Map('string', Property::class),
-                    new Map('scalar', 'variable'),
-                    new Map('scalar', 'variable'),
                     new Gateway('command'),
-                    true,
-                    new Map('string', 'string')
+                    new Identity('uuid'),
+                    new Set(Property::class)
                 )
             )
         );
         $this->assertSame(2, $count);
     }
 
-    /**
-     * @expectedException Exception
-     */
     public function testThrowWhenSubVerifierThrows()
     {
         $verify = new DelegationVerifier(
@@ -74,17 +67,15 @@ class DelegationVerifierTest extends TestCase
                 throw new \Exception;
             }));
 
+        $this->expectException(\Exception::class);
+
         $verify(
             $this->createMock(ServerRequest::class),
-            new HttpResource(
+            HttpResource::rangeable(
                 'foo',
-                new Identity('uuid'),
-                new Map('string', Property::class),
-                new Map('scalar', 'variable'),
-                new Map('scalar', 'variable'),
                 new Gateway('command'),
-                true,
-                new Map('string', 'string')
+                new Identity('uuid'),
+                new Set(Property::class)
             )
         );
     }

@@ -8,14 +8,13 @@ use Innmind\Rest\Server\{
     Routing\Route,
     Routing\Name,
     Routing\Match,
-    Definition\Loader\YamlLoader,
     Definition,
     Action,
     Identity\Identity,
     Exception\RouteNotFound,
 };
 use Innmind\Url\Path;
-use Innmind\Immutable\Map;
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class RoutesTest extends TestCase
@@ -27,11 +26,11 @@ class RoutesTest extends TestCase
 
     public function testOf()
     {
-        $directories = (new YamlLoader)('fixtures/mapping.yml');
+        $directory = require 'fixtures/mapping.php';
 
         $routes = Routes::of(
             new Name('top_dir.image'),
-            $directories->get('top_dir')->definition('image')
+            $directory->definition('image')
         );
 
         $this->assertInstanceOf(Routes::class, $routes);
@@ -60,14 +59,10 @@ class RoutesTest extends TestCase
     {
         $definition = new Definition\HttpResource(
             'foo',
-            new Definition\Identity('uuid'),
-            new Map('string', Definition\Property::class),
-            (new Map('scalar', 'variable'))
-                ->put('actions', ['list', 'get']),
-            new Map('scalar', 'variable'),
             new Definition\Gateway('foo'),
-            false,
-            new Map('string', 'string')
+            new Definition\Identity('uuid'),
+            new Set(Definition\Property::class),
+            Set::of(Action::class, Action::list(), Action::get())
         );
 
         $routes = Routes::of(
@@ -88,9 +83,7 @@ class RoutesTest extends TestCase
 
     public function testFrom()
     {
-        $directories = (new YamlLoader)('fixtures/mapping.yml');
-
-        $routes = Routes::from($directories);
+        $routes = Routes::from(require 'fixtures/mapping.php');
 
         $this->assertInstanceOf(Routes::class, $routes);
         $this->assertCount(16, iterator_to_array($routes));
@@ -150,19 +143,19 @@ class RoutesTest extends TestCase
 
     public function testMatch()
     {
-        $directories = (new YamlLoader)('fixtures/mapping.yml');
+        $directory = require 'fixtures/mapping.php';
 
-        $routes = Routes::from($directories);
+        $routes = Routes::from($directory);
 
         $this->assertSame(
-            $directories->get('top_dir')->definition('image'),
+            $directory->definition('image'),
             $routes->match(new Path('/top_dir/image/'))->definition()
         );
         $this->assertNull(
             $routes->match(new Path('/top_dir/image/'))->identity()
         );
         $this->assertSame(
-            $directories->get('top_dir')->definition('image'),
+            $directory->definition('image'),
             $routes->match(new Path('/top_dir/image/some-uuid-or-other-identity'))->definition()
         );
         $this->assertEquals(
@@ -181,10 +174,10 @@ class RoutesTest extends TestCase
 
     public function testGet()
     {
-        $directories = (new YamlLoader)('fixtures/mapping.yml');
+        $directory = require 'fixtures/mapping.php';
 
-        $routes = Routes::from($directories);
-        $definition = $directories->get('top_dir')->definition('image');
+        $routes = Routes::from($directory);
+        $definition = $directory->definition('image');
 
         $route = $routes->get(Action::list(), $definition);
 
@@ -192,7 +185,7 @@ class RoutesTest extends TestCase
         $this->assertSame(Action::list(), $route->action());
         $this->assertSame($definition, $route->definition());
 
-        $definition = $directories->get('top_dir')->child('sub_dir')->definition('res');
+        $definition = $directory->child('sub_dir')->definition('res');
 
         $route = $routes->get(Action::get(), $definition);
 

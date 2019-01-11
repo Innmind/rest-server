@@ -16,13 +16,11 @@
     },
     "require": {
         "php": "~7.2",
-        "innmind/immutable": "~2.8",
-        "symfony/config": "~3.0|~4.0",
-        "innmind/specification": "^1.0",
+        "innmind/immutable": "~2.12",
+        "innmind/specification": "~2.0",
         "innmind/filesystem": "~3.0",
-        "innmind/http": "~3.0",
+        "innmind/http": "~3.8",
         "willdurand/negotiation": "^2.0",
-        "symfony/yaml": "~3.0|~4.0",
         "innmind/url-template": "^1.0",
         "innmind/json": "^1.0"
     },
@@ -40,9 +38,12 @@
     "require-dev": {
         "phpunit/phpunit": "~7.0",
         "giorgiosironi/eris": "^0.10.0",
-        "innmind/compose": "^1.6"
+        "innmind/time-continuum": "^1.3"
     },
     "scripts": {
         "test": "vendor/bin/phpunit --colors=always"
+    },
+    "suggest": {
+        "innmind/time-continuum": "In order to use point in time type"
     }
 }

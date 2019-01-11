@@ -9,14 +9,10 @@ use Innmind\Rest\Server\{
     Format\Format as FormatFormat,
     Format\MediaType,
     Definition,
-    Definition\Loader\YamlLoader,
     Router,
     Routing\Routes,
 };
-use Innmind\Immutable\{
-    Map,
-    Set,
-};
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class AbstractTestCase extends TestCase
@@ -24,65 +20,47 @@ class AbstractTestCase extends TestCase
     protected $format;
     protected $definition;
     protected $router;
-    protected $directories;
+    protected $directory;
 
     public function setUp()
     {
         $this->format = new Format(
-            new Formats(
-                (new Map('string', FormatFormat::class))->put(
+            Formats::of(
+                new FormatFormat(
                     'json',
-                    new FormatFormat(
-                        'json',
-                        Set::of(MediaType::class, new MediaType('application/json', 0)),
-                        0
-                    )
+                    Set::of(MediaType::class, new MediaType('application/json', 0)),
+                    0
                 )
             ),
-            new Formats(
-                (new Map('string', FormatFormat::class))->put(
+            Formats::of(
+                new FormatFormat(
                     'json',
-                    new FormatFormat(
-                        'json',
-                        Set::of(MediaType::class, new MediaType('application/json', 0)),
-                        0
-                    )
+                    Set::of(MediaType::class, new MediaType('application/json', 0)),
+                    0
                 )
             )
         );
         $this->definition = new Definition\HttpResource(
             'foo',
-            new Definition\Identity('uuid'),
-            (new Map('string', Definition\Property::class))
-                ->put(
-                    'uuid',
-                    new Definition\Property(
-                        'uuid',
-                        new Definition\Type\StringType,
-                        new Definition\Access('READ'),
-                        Set::of('string'),
-                        false
-                    )
-                )
-                ->put(
-                    'url',
-                    new Definition\Property(
-                        'url',
-                        new Definition\Type\StringType,
-                        new Definition\Access('READ', 'CREATE', 'UPDATE'),
-                        Set::of('string'),
-                        false
-                    )
-                ),
-            new Map('scalar', 'variable'),
-            new Map('scalar', 'variable'),
             new Definition\Gateway('foo'),
-            false,
-            new Map('string', 'string')
+            new Definition\Identity('uuid'),
+            Set::of(
+                Definition\Property::class,
+                Definition\Property::required(
+                    'uuid',
+                    new Definition\Type\StringType,
+                    new Definition\Access('READ')
+                ),
+                Definition\Property::required(
+                    'url',
+                    new Definition\Type\StringType,
+                    new Definition\Access('READ', 'CREATE', 'UPDATE')
+                )
+            )
         );
         $this->router = new Router(
             Routes::from(
-                $this->directories = (new YamlLoader)('fixtures/mapping.yml')
+                $this->directory = require 'fixtures/mapping.php'
             )
         );
     }

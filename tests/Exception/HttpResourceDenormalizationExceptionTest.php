@@ -9,12 +9,11 @@ use PHPUnit\Framework\TestCase;
 
 class HttpResourceDenormalizationExceptionTest extends TestCase
 {
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Exception\DenormalizationException>
-     */
     public function testThrowWhenBuildingWithInvalidMap()
     {
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Exception\DenormalizationException>');
+
         new HttpResourceDenormalizationException(new Map('string', 'string'));
     }
 }

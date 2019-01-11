@@ -12,8 +12,9 @@ use Innmind\Rest\Server\Definition\{
     Name,
 };
 use Innmind\Immutable\{
-    Map,
     MapInterface,
+    Map,
+    Set,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -21,48 +22,38 @@ class DirectoryTest extends TestCase
 {
     public function testInterface()
     {
-        $directory = new Directory(
+        $directory = Directory::of(
             'foo',
-            $children = (new Map('string', Directory::class))
-                ->put(
+            Set::of(
+                Directory::class,
+                $directory2 = new Directory(
                     'bar',
-                    $directory2 = new Directory(
-                        'bar',
-                        new Map('string', Directory::class),
-                        new Map('string', HttpResource::class)
-                    )
-                ),
-            $definitions = (new Map('string', HttpResource::class))
-                ->put(
-                    'res',
-                    $resource = new HttpResource(
-                        'res',
-                        new Identity('uuid'),
-                        new Map('string', Property::class),
-                        new Map('scalar', 'variable'),
-                        new Map('scalar', 'variable'),
-                        new Gateway('foo'),
-                        true,
-                        new Map('string', 'string')
-                    )
+                    new Map('string', Directory::class),
+                    new Map('string', HttpResource::class)
                 )
+            ),
+            $resource = HttpResource::rangeable(
+                'res',
+                new Gateway('foo'),
+                new Identity('uuid'),
+                new Set(Property::class)
+            )
         );
 
         $this->assertInstanceOf(Name::class, $directory->name());
         $this->assertSame('foo', (string) $directory->name());
         $this->assertSame('foo', (string) $directory);
         $this->assertSame($directory2, $directory->child('bar'));
-        $this->assertSame($children, $directory->children());
+        $this->assertCount(1, $directory->children());
         $this->assertSame($resource, $directory->definition('res'));
-        $this->assertSame($definitions, $directory->definitions());
+        $this->assertCount(1, $directory->definitions());
     }
 
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 2 must be of type MapInterface<string, Innmind\Rest\Server\Definition\Directory>
-     */
     public function testThrowWhenGivingInvalidChildren()
     {
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 2 must be of type MapInterface<string, Innmind\Rest\Server\Definition\Directory>');
+
         new Directory(
             '',
             new Map('string', 'string'),
@@ -70,12 +61,11 @@ class DirectoryTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException TypeError
-     * @expectedExceptionMessage Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Definition\HttpResource>
-     */
     public function testThrowWhenGivingInvalidDefinitions()
     {
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Definition\HttpResource>');
+
         new Directory(
             '',
             new Map('string', Directory::class),
@@ -85,44 +75,31 @@ class DirectoryTest extends TestCase
 
     public function testFlatten()
     {
-        $directory = new Directory(
+        $directory = Directory::of(
             'foo',
-            (new Map('string', Directory::class))
-                ->put(
+            Set::of(
+                Directory::class,
+                new Directory(
                     'bar',
-                    new Directory(
-                        'bar',
-                        new Map('string', Directory::class),
-                        (new Map('string', HttpResource::class))
-                            ->put(
+                    new Map('string', Directory::class),
+                    Map::of('string', HttpResource::class)
+                        (
+                            'res',
+                            $child = HttpResource::rangeable(
                                 'res',
-                                $child = new HttpResource(
-                                    'res',
-                                    new Identity('uuid'),
-                                    new Map('string', Property::class),
-                                    new Map('scalar', 'variable'),
-                                    new Map('scalar', 'variable'),
-                                    new Gateway('foo'),
-                                    true,
-                                    new Map('string', 'string')
-                                )
+                                new Gateway('foo'),
+                                new Identity('uuid'),
+                                new Set(Property::class)
                             )
-                    )
-                ),
-            (new Map('string', HttpResource::class))
-                ->put(
-                    'res',
-                    $resource = new HttpResource(
-                        'res',
-                        new Identity('uuid'),
-                        new Map('string', Property::class),
-                        new Map('scalar', 'variable'),
-                        new Map('scalar', 'variable'),
-                        new Gateway('foo'),
-                        true,
-                        new Map('string', 'string')
-                    )
+                        )
                 )
+            ),
+            $resource = HttpResource::rangeable(
+                'res',
+                new Gateway('foo'),
+                new Identity('uuid'),
+                new Set(Property::class)
+            )
         );
 
         $defs = $directory->flatten();
@@ -132,9 +109,9 @@ class DirectoryTest extends TestCase
         $this->assertSame(HttpResource::class, (string) $defs->valueType());
         $this->assertTrue(
             $defs->equals(
-                (new Map('string', HttpResource::class))
-                    ->put('foo.res', $resource)
-                    ->put('foo.bar.res', $child)
+                Map::of('string', HttpResource::class)
+                    ('foo.res', $resource)
+                    ('foo.bar.res', $child)
             )
         );
         $this->assertSame($defs, $directory->flatten());
