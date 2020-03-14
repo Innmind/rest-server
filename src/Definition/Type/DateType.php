@@ -11,7 +11,7 @@ use Innmind\Rest\Server\{
 
 final class DateType implements Type
 {
-    private $format;
+    private string $format;
 
     public function __construct(string $format = \DateTime::ISO8601)
     {

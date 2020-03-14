@@ -15,10 +15,10 @@ use Innmind\Immutable\{
 
 final class MapType implements Type
 {
-    private $keyType;
-    private $valueType;
-    private $key;
-    private $value;
+    private Type $keyType;
+    private Type $valueType;
+    private string $key;
+    private string $value;
 
     public function __construct(
         string $key,

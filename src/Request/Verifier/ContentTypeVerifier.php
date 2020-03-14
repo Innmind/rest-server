@@ -20,8 +20,8 @@ use Negotiation\{
 
 final class ContentTypeVerifier implements Verifier
 {
-    private $formats;
-    private $negotiator;
+    private Formats $formats;
+    private Negotiator $negotiator;
 
     public function __construct(Formats $formats)
     {

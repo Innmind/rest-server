@@ -16,7 +16,7 @@ final class ListContentTypeBuilder implements ListBuilder
 {
     use ContentTypeBuilder;
 
-    private $formats;
+    private Formats $formats;
 
     public function __construct(Formats $formats)
     {

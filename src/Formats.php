@@ -20,8 +20,8 @@ use Negotiation\Negotiator;
 
 final class Formats
 {
-    private $formats;
-    private $negotiator;
+    private MapInterface $formats;
+    private Negotiator $negotiator;
 
     public function __construct(MapInterface $formats)
     {

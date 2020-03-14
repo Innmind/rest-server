@@ -20,7 +20,7 @@ use Innmind\Immutable\{
 
 final class ListDelegationBuilder implements ListBuilder
 {
-    private $builders;
+    private array $builders;
 
     public function __construct(ListBuilder ...$builders)
     {

@@ -22,7 +22,7 @@ use Innmind\Immutable\{
 
 final class LinkTranslator
 {
-    private $router;
+    private Router $router;
 
     public function __construct(Router $router)
     {

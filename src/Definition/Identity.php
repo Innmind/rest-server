@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\Definition;
 
 final class Identity
 {
-    private $property;
+    private string $property;
 
     public function __construct(string $property)
     {

@@ -10,8 +10,8 @@ use Innmind\Rest\Server\{
 
 final class Match
 {
-    private $definition;
-    private $identity;
+    private HttpResource $definition;
+    private ?Identity $identity;
 
     public function __construct(HttpResource $definition, Identity $identity = null)
     {

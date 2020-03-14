@@ -12,7 +12,7 @@ use Innmind\Immutable\Str;
 
 final class Prefix
 {
-    private $value;
+    private Str $value;
 
     public function __construct(string $value)
     {

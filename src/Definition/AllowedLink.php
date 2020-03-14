@@ -20,9 +20,9 @@ use Innmind\Immutable\{
 
 final class AllowedLink
 {
-    private $relationship;
-    private $resourcePath;
-    private $parameters;
+    private string $relationship;
+    private string $resourcePath;
+    private Map $parameters;
 
     public function __construct(
         string $relationship,

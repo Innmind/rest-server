@@ -8,7 +8,7 @@ use Innmind\Rest\Server\Identity as IdentityInterface;
 final class Identity implements IdentityInterface
 {
     private $value;
-    private $string;
+    private string $string;
 
     public function __construct($value)
     {

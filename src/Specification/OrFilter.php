@@ -14,9 +14,9 @@ final class OrFilter implements CompositeInterface
 {
     use Composite;
 
-    private $left;
-    private $right;
-    private $operator;
+    private Specification $left;
+    private Specification $right;
+    private Operator $operator;
 
     public function __construct(
         Specification $left,

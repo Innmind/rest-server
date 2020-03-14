@@ -19,7 +19,7 @@ use Innmind\Immutable\{
 
 final class CreateDelegationBuilder implements CreateBuilder
 {
-    private $builders;
+    private array $builders;
 
     public function __construct(CreateBuilder ...$builders)
     {

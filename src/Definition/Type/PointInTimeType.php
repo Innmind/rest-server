@@ -17,8 +17,8 @@ use Innmind\TimeContinuum\{
 
 final class PointInTimeType implements Type
 {
-    private $clock;
-    private $format;
+    private TimeContinuumInterface $clock;
+    private FormatInterface $format;
 
     public function __construct(
         TimeContinuumInterface $clock,

@@ -21,8 +21,8 @@ use Innmind\Immutable\{
 
 final class Routes implements \Iterator
 {
-    private $routes;
-    private $definitions;
+    private Set $routes;
+    private Map $definitions;
 
     public function __construct(Route ...$routes)
     {

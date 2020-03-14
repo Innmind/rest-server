@@ -13,7 +13,7 @@ final class Filter implements Comparator
 {
     use Composite;
 
-    private $property;
+    private string $property;
     private $value;
 
     public function __construct(string $property, $value)

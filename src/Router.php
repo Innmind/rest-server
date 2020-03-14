@@ -19,9 +19,9 @@ use Innmind\Immutable\Map;
 
 final class Router
 {
-    private $routes;
-    private $prefix;
-    private $variables;
+    private Routes $routes;
+    private Prefix $prefix;
+    private Map $variables;
 
     public function __construct(Routes $routes, Prefix $prefix = null)
     {

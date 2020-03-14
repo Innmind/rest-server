@@ -21,8 +21,8 @@ use Innmind\Immutable\Sequence;
 
 final class Capabilities
 {
-    private $routes;
-    private $router;
+    private Sequence $routes;
+    private Router $router;
 
     public function __construct(Routes $routes, Router $router)
     {

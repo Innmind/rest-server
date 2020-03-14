@@ -16,7 +16,7 @@ final class CreateContentTypeBuilder implements CreateBuilder
 {
     use ContentTypeBuilder;
 
-    private $formats;
+    private Formats $formats;
 
     public function __construct(Formats $formats)
     {

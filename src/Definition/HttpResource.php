@@ -16,14 +16,14 @@ use Innmind\Immutable\{
 
 final class HttpResource
 {
-    private $name;
-    private $identity;
-    private $properties;
-    private $actions;
-    private $metas;
-    private $gateway;
-    private $rangeable = false;
-    private $allowedLinks;
+    private Name $name;
+    private Identity $identity;
+    private Map $properties;
+    private SetInterface $actions;
+    private Map $metas;
+    private Gateway $gateway;
+    private bool $rangeable = false;
+    private SetInterface $allowedLinks;
 
     public function __construct(
         string $name,

@@ -25,10 +25,10 @@ use Innmind\Immutable\MapInterface;
 
 final class Link implements Controller
 {
-    private $gateways;
-    private $buildHeader;
-    private $translate;
-    private $locator;
+    private MapInterface $gateways;
+    private LinkBuilder $buildHeader;
+    private LinkTranslator $translate;
+    private Locator $locator;
 
     public function __construct(
         MapInterface $gateways,

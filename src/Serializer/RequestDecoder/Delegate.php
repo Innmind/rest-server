@@ -12,8 +12,8 @@ use Innmind\Immutable\MapInterface;
 
 final class Delegate implements RequestDecoder
 {
-    private $format;
-    private $decoders;
+    private Format $format;
+    private MapInterface $decoders;
 
     public function __construct(
         Format $format,

@@ -18,7 +18,7 @@ use Innmind\Immutable\{
 
 final class UnlinkDelegationBuilder implements UnlinkBuilder
 {
-    private $builders;
+    private array $builders;
 
     public function __construct(UnlinkBuilder ...$builders)
     {

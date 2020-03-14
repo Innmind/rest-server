@@ -7,7 +7,7 @@ use Innmind\Rest\Server\Link\Parameter as ParameterInterface;
 
 final class Parameter implements ParameterInterface
 {
-    private $name;
+    private string $name;
     private $value;
 
     public function __construct(string $name, $value)

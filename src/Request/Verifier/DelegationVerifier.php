@@ -8,7 +8,7 @@ use Innmind\Http\Message\ServerRequest;
 
 final class DelegationVerifier implements Verifier
 {
-    private $verifiers;
+    private array $verifiers;
 
     public function __construct(Verifier ...$verifiers)
     {

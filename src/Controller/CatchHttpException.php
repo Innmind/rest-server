@@ -17,7 +17,7 @@ use Innmind\Http\{
 
 final class CatchHttpException implements Controller
 {
-    private $controller;
+    private Controller $controller;
 
     public function __construct(Controller $controller)
     {

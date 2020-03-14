@@ -29,12 +29,12 @@ use Innmind\Immutable\MapInterface;
 
 final class Index implements Controller
 {
-    private $encode;
-    private $normalize;
-    private $extractRange;
-    private $buildSpecification;
-    private $gateways;
-    private $buildHeader;
+    private Encoder $encode;
+    private Identities $normalize;
+    private Extractor $extractRange;
+    private Builder $buildSpecification;
+    private MapInterface $gateways;
+    private ListBuilder $buildHeader;
 
     public function __construct(
         Encoder $encode,

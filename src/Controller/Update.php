@@ -25,11 +25,11 @@ use Innmind\Immutable\MapInterface;
 
 final class Update implements Controller
 {
-    private $decode;
-    private $gateways;
-    private $denormalize;
-    private $format;
-    private $buildHeader;
+    private RequestDecoder $decode;
+    private MapInterface $gateways;
+    private ResourceDenormalizer $denormalize;
+    private Format $format;
+    private UpdateBuilder $buildHeader;
 
     public function __construct(
         RequestDecoder $decode,

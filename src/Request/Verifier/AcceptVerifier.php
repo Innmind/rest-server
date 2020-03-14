@@ -19,8 +19,8 @@ use Negotiation\{
 
 final class AcceptVerifier implements Verifier
 {
-    private $formats;
-    private $negotiator;
+    private Formats $formats;
+    private Negotiator $negotiator;
 
     public function __construct(Formats $formats)
     {

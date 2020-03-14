@@ -16,13 +16,13 @@ use Innmind\Rest\Server\{
 
 final class Gateway implements GatewayInterface
 {
-    private $listAccessor;
-    private $accessor;
-    private $creator;
-    private $updater;
-    private $remover;
-    private $linker;
-    private $unlinker;
+    private ResourceListAccessor $listAccessor;
+    private ResourceAccessor $accessor;
+    private ResourceCreator $creator;
+    private ResourceUpdater $updater;
+    private ResourceRemover $remover;
+    private ResourceLinker $linker;
+    private ResourceUnlinker $unlinker;
 
     public function __construct(
         ResourceListAccessor $listAccessor,

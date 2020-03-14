@@ -14,7 +14,7 @@ final class Access
     public const CREATE = 'CREATE';
     public const UPDATE = 'UPDATE';
 
-    private $mask;
+    private Set $mask;
 
     public function __construct(string $first, string ...$mask)
     {

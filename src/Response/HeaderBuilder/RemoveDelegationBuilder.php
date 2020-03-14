@@ -18,7 +18,7 @@ use Innmind\Immutable\{
 
 final class RemoveDelegationBuilder implements RemoveBuilder
 {
-    private $builders;
+    private array $builders;
 
     public function __construct(RemoveBuilder ...$builders)
     {

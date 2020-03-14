@@ -23,7 +23,7 @@ use Innmind\Immutable\{
 
 final class CreateLocationBuilder implements CreateBuilder
 {
-    private $router;
+    private Router $router;
 
     public function __construct(Router $router)
     {

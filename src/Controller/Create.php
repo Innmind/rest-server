@@ -27,12 +27,12 @@ use Innmind\Immutable\MapInterface;
 
 final class Create implements Controller
 {
-    private $decode;
-    private $encode;
-    private $gateways;
-    private $normalize;
-    private $denormalize;
-    private $buildHeader;
+    private RequestDecoder $decode;
+    private Encoder $encode;
+    private MapInterface $gateways;
+    private IdentityNormalizer $normalize;
+    private ResourceDenormalizer $denormalize;
+    private CreateBuilder $buildHeader;
 
     public function __construct(
         RequestDecoder $decode,

@@ -12,10 +12,10 @@ use Innmind\Immutable\{
 
 final class Directory
 {
-    private $name;
-    private $children;
-    private $definitions;
-    private $flattened;
+    private Name $name;
+    private MapInterface $children;
+    private MapInterface $definitions;
+    private ?MapInterface $flattened = null;
 
     public function __construct(
         string $name,

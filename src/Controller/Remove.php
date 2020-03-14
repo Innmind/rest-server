@@ -20,8 +20,8 @@ use Innmind\Immutable\MapInterface;
 
 final class Remove implements Controller
 {
-    private $gateways;
-    private $buildHeader;
+    private MapInterface $gateways;
+    private RemoveBuilder $buildHeader;
 
     public function __construct(
         MapInterface $gateways,

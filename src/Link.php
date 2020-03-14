@@ -12,9 +12,9 @@ use Innmind\Immutable\{
 
 final class Link
 {
-    private $reference;
-    private $relationship;
-    private $parameters;
+    private Reference $reference;
+    private string $relationship;
+    private MapInterface $parameters;
 
     public function __construct(
         Reference $reference,

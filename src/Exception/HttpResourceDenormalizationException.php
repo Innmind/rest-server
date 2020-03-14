@@ -7,7 +7,7 @@ use Innmind\Immutable\MapInterface;
 
 class HttpResourceDenormalizationException extends RuntimeException
 {
-    private $errors;
+    private MapInterface $errors;
 
     public function __construct(MapInterface $errors)
     {

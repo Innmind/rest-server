@@ -8,9 +8,10 @@ use Innmind\Immutable\SetInterface;
 
 final class Format
 {
-    private $name;
-    private $types;
-    private $priority;
+    private string $name;
+    private SetInterface $types;
+    private int $priority;
+    private MediaType $preferredType;
 
     public function __construct(string $name, SetInterface $types, int $priority)
     {

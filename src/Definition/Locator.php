@@ -8,8 +8,8 @@ use Innmind\Immutable\Map;
 
 final class Locator
 {
-    private $directory;
-    private $cache;
+    private Directory $directory;
+    private Map $cache;
 
     public function __construct(Directory $directory)
     {

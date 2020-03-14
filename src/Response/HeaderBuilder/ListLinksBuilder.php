@@ -25,7 +25,7 @@ use Innmind\Immutable\{
 
 final class ListLinksBuilder implements ListBuilder
 {
-    private $router;
+    private Router $router;
 
     public function __construct(Router $router)
     {

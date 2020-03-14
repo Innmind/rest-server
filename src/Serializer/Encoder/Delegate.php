@@ -13,8 +13,8 @@ use Innmind\Immutable\MapInterface;
 
 final class Delegate implements Encoder
 {
-    private $format;
-    private $encoders;
+    private Format $format;
+    private MapInterface $encoders;
 
     public function __construct(Format $format, MapInterface $encoders)
     {

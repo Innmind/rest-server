@@ -25,10 +25,10 @@ use Innmind\Immutable\MapInterface;
 
 final class Unlink implements Controller
 {
-    private $gateways;
-    private $buildHeader;
-    private $translate;
-    private $locator;
+    private MapInterface $gateways;
+    private UnlinkBuilder $buildHeader;
+    private LinkTranslator $translate;
+    private Locator $locator;
 
     public function __construct(
         MapInterface $gateways,

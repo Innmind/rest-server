@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\Definition;
 
 final class Gateway
 {
-    private $name;
+    private string $name;
 
     public function __construct(string $name)
     {

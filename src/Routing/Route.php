@@ -14,10 +14,10 @@ use Innmind\Immutable\Str;
 
 final class Route
 {
-    private $action;
-    private $template;
-    private $name;
-    private $definition;
+    private Action $action;
+    private Template $template;
+    private Name $name;
+    private HttpResource $definition;
 
     public function __construct(
         Action $action,

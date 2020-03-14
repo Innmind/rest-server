@@ -12,9 +12,9 @@ use Negotiation\Negotiator;
 
 final class Format
 {
-    private $accept;
-    private $contentType;
-    private $negotiator;
+    private Formats $accept;
+    private Formats $contentType;
+    private Negotiator $negotiator;
 
     public function __construct(
         Formats $accept,

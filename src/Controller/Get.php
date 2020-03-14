@@ -22,10 +22,10 @@ use Innmind\Immutable\MapInterface;
 
 final class Get implements Controller
 {
-    private $encode;
-    private $normalize;
-    private $gateways;
-    private $buildHeader;
+    private Encoder $encode;
+    private ResourceNormalizer $normalize;
+    private MapInterface $gateways;
+    private GetBuilder $buildHeader;
 
     public function __construct(
         Encoder $encode,

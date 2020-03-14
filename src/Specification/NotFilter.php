@@ -13,7 +13,7 @@ final class NotFilter implements Not
 {
     use Composite;
 
-    private $specification;
+    private Specification $specification;
 
     public function __construct(Specification $specification)
     {
