@@ -37,7 +37,7 @@ class ListContentTypeBuilderTest extends TestCase
 {
     private $build;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->build = new ListContentTypeBuilder(
             Formats::of(

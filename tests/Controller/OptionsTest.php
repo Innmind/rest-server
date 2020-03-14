@@ -23,7 +23,7 @@ class OptionsTest extends AbstractTestCase
 {
     private $options;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

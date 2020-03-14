@@ -22,7 +22,7 @@ class RouterTest extends TestCase
     private $router;
     private $directory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->directory = require 'fixtures/mapping.php';
 

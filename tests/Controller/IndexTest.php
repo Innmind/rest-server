@@ -42,7 +42,7 @@ class IndexTest extends AbstractTestCase
     private $rangeExtractor;
     private $builder;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

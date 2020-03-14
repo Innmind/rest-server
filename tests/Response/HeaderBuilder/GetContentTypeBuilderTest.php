@@ -38,7 +38,7 @@ class GetContentTypeBuilderTest extends TestCase
 {
     private $build;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->build = new GetContentTypeBuilder(
             Formats::of(

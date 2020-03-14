@@ -21,7 +21,7 @@ class CatchFilterNotApplicableTest extends TestCase
 {
     private $definition;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->definition = new Definition\HttpResource(
             'foo',

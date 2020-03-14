@@ -31,7 +31,7 @@ class ListLinksBuilderTest extends TestCase
     private $build;
     private $directory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->build = new ListLinksBuilder(
             new Router(

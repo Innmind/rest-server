@@ -22,7 +22,7 @@ class AbstractTestCase extends TestCase
     protected $router;
     protected $directory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->format = new Format(
             Formats::of(

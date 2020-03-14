@@ -39,7 +39,7 @@ class CreateTest extends AbstractTestCase
     private $gateway;
     private $headerBuilder;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

@@ -21,7 +21,7 @@ class PointInTimeTypeTest extends TestCase
     private $clock;
     private $format;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->clock = new Earth;
         $this->format = new class implements FormatInterface {
