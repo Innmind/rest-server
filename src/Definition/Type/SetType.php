@@ -8,10 +8,8 @@ use Innmind\Rest\Server\{
     Exception\DenormalizationException,
     Exception\NormalizationException,
 };
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Immutable\Set;
+use function Innmind\Immutable\unwrap;
 
 final class SetType implements Type
 {
@@ -36,7 +34,7 @@ final class SetType implements Type
             ));
         }
 
-        $set = new Set($this->type);
+        $set = Set::of($this->type);
 
         foreach ($data as $value) {
             $set = $set->add($this->inner->denormalize($value));
@@ -50,13 +48,13 @@ final class SetType implements Type
      */
     public function normalize($data)
     {
-        if (!$data instanceof SetInterface) {
+        if (!$data instanceof Set) {
             throw new NormalizationException('The value must be a set');
         }
 
         $normalized = [];
 
-        foreach ($data as $value) {
+        foreach (unwrap($data) as $value) {
             $normalized[] = $this->inner->normalize($value);
         }
 

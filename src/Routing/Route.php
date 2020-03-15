@@ -9,7 +9,7 @@ use Innmind\Rest\Server\{
     Identity\Identity,
 };
 use Innmind\UrlTemplate\Template;
-use Innmind\Url\PathInterface;
+use Innmind\Url\Path;
 use Innmind\Immutable\Str;
 
 final class Route
@@ -36,7 +36,7 @@ final class Route
         Name $name,
         HttpResource $definition
     ): self {
-        $template = Str::of((string) $name->asPath())
+        $template = Str::of($name->asPath()->toString())
             ->prepend('{+prefix}');
 
         switch ($action) {
@@ -51,21 +51,22 @@ final class Route
 
         return new self(
             $action,
-            new Template((string) $template),
+            Template::of($template->toString()),
             $name,
             $definition
         );
     }
 
-    public function matches(PathInterface $path): bool
+    public function matches(Path $path): bool
     {
-        $pattern = (string) Str::of((string) $this->template)
+        $pattern = Str::of($this->template->toString())
             ->replace('{+prefix}', '')
             ->replace('{identity}', '.+')
             ->prepend('~^')
-            ->append('$~');
+            ->append('$~')
+            ->toString();
 
-        return Str::of((string) $path)->matches($pattern);
+        return Str::of($path->toString())->matches($pattern);
     }
 
     public function action(): Action
@@ -88,20 +89,21 @@ final class Route
         return $this->definition;
     }
 
-    public function identity(PathInterface $path): ?Identity
+    public function identity(Path $path): ?Identity
     {
-        $pattern = (string) Str::of((string) $this->template)
+        $pattern = Str::of($this->template->toString())
             ->replace('{+prefix}', '')
             ->replace('{identity}', '(?<identity>.+)')
             ->prepend('~^')
-            ->append('$~');
+            ->append('$~')
+            ->toString();
 
-        $infos = Str::of((string) $path)->capture($pattern);
+        $infos = Str::of($path->toString())->capture($pattern);
 
         if (!$infos->contains('identity')) {
             return null;
         }
 
-        return new Identity((string) $infos->get('identity'));
+        return new Identity($infos->get('identity')->toString());
     }
 }

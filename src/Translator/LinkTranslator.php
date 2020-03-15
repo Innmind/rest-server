@@ -15,10 +15,10 @@ use Innmind\Http\Header\{
     Parameter as HttpParameter,
 };
 use Innmind\Immutable\{
-    MapInterface,
-    SetInterface,
+    Map,
     Set,
 };
+use function Innmind\Immutable\unwrap;
 
 final class LinkTranslator
 {
@@ -30,13 +30,13 @@ final class LinkTranslator
     }
 
     /**
-     * @return SetInterface<Link>
+     * @return Set<Link>
      */
-    public function __invoke(LinkHeader $link): SetInterface
+    public function __invoke(LinkHeader $link): Set
     {
         return $link->values()->reduce(
             Set::of(Link::class),
-            function(SetInterface $links, LinkValue $link): SetInterface {
+            function(Set $links, LinkValue $link): Set {
                 return $links->add($this->translateLinkValue($link));
             }
         );
@@ -52,18 +52,18 @@ final class LinkTranslator
                 $match->identity()
             ),
             $link->relationship(),
-            ...$this->translateParameters($link->parameters())
+            ...unwrap($this->translateParameters($link->parameters())),
         );
     }
 
     /**
-     * @return SetInterface<Parameter>
+     * @return Set<Parameter>
      */
-    private function translateParameters(MapInterface $parameters): SetInterface
+    private function translateParameters(Map $parameters): Set
     {
         return $parameters->reduce(
             Set::of(Parameter::class),
-            static function(SetInterface $parameters, string $name, HttpParameter $param): SetInterface {
+            static function(Set $parameters, string $name, HttpParameter $param): Set {
                 return $parameters->add(
                     new Parameter\Parameter($name, $param->value())
                 );

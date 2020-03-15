@@ -55,7 +55,7 @@ class HttpResourceTest extends TestCase
                 'foobar',
                 new Gateway('bar'),
                 new Identity('foo'),
-                new Set(PropertyDefinition::class)
+                Set::of(PropertyDefinition::class)
             ),
             new Property('foo', 42)
         );

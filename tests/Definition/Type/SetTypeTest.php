@@ -11,10 +11,8 @@ use Innmind\Rest\Server\{
     Exception\NormalizationException,
     Exception\DenormalizationException,
 };
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Immutable\Set;
+use function Innmind\Immutable\unwrap;
 use PHPUnit\Framework\TestCase;
 
 class SetTypeTest extends TestCase
@@ -47,21 +45,22 @@ class SetTypeTest extends TestCase
             'string',
             new StringType
         );
-        $this->assertInstanceOf(SetInterface::class, $type->denormalize(['foo']));
-        $this->assertSame(['foo'], $type->denormalize(['foo'])->toPrimitive());
+        $this->assertInstanceOf(Set::class, $type->denormalize(['foo']));
+        $this->assertSame(['foo'], unwrap($type->denormalize(['foo'])));
         $this->assertSame(
             ['foo'],
-            (new SetType(
-                'string',
-                new StringType
-            ))
-                ->denormalize([new class {
-                    public function __toString()
-                    {
-                        return 'foo';
-                    }
-                }])
-                ->toPrimitive()
+            unwrap(
+                (new SetType(
+                    'string',
+                    new StringType
+                ))
+                    ->denormalize([new class {
+                        public function __toString()
+                        {
+                            return 'foo';
+                        }
+                    }])
+            ),
         );
     }
 

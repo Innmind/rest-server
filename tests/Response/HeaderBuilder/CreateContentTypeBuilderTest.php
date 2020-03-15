@@ -20,17 +20,14 @@ use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
     Message\Method,
     ProtocolVersion,
-    Headers\Headers,
+    Headers,
     Header,
     Header\Accept,
     Header\AcceptValue,
-    Header\Parameter,
 };
-use Innmind\Url\UrlInterface;
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Url\Url;
+use Innmind\Immutable\Set;
+use function Innmind\Immutable\first;
 use PHPUnit\Framework\TestCase;
 
 class CreateContentTypeBuilderTest extends TestCase
@@ -69,9 +66,9 @@ class CreateContentTypeBuilderTest extends TestCase
         $headers = ($this->build)(
             $this->createMock(IdentityInterface::class),
             new ServerRequest(
-                $this->createMock(UrlInterface::class),
-                $this->createMock(Method::class),
-                $this->createMock(ProtocolVersion::class),
+                Url::of('http://example.com'),
+                Method::get(),
+                new ProtocolVersion(2, 0),
                 Headers::of(
                     new Accept(
                         new AcceptValue('text', 'xhtml')
@@ -82,17 +79,17 @@ class CreateContentTypeBuilderTest extends TestCase
                 'foo',
                 new Gateway('command'),
                 new Identity('uuid'),
-                new Set(Property::class)
+                Set::of(Property::class)
             ),
             $this->createMock(HttpResourceInterface::class)
         );
 
-        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertInstanceOf(Set::class, $headers);
         $this->assertSame(Header::class, (string) $headers->type());
-        $this->assertSame(1, $headers->size());
+        $this->assertCount(1, $headers);
         $this->assertSame(
             'Content-Type: text/html',
-            (string) $headers->current()
+            first($headers)->toString()
         );
     }
 }

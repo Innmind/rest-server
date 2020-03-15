@@ -14,7 +14,7 @@ final class Locator
     public function __construct(Directory $directory)
     {
         $this->directory = $directory;
-        $this->cache = new Map('string', HttpResource::class);
+        $this->cache = Map::of('string', HttpResource::class);
     }
 
     public function __invoke(string $path): HttpResource

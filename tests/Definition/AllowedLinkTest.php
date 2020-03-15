@@ -13,7 +13,8 @@ use Innmind\Rest\Server\{
     Exception\DomainException,
     Exception\DefinitionNotFound,
 };
-use Innmind\Immutable\SetInterface;
+use Innmind\Immutable\Set;
+use function Innmind\Immutable\unwrap;
 use PHPUnit\Framework\TestCase;
 
 class AllowedLinkTest extends TestCase
@@ -28,9 +29,9 @@ class AllowedLinkTest extends TestCase
 
         $this->assertSame('rel', $allowed->relationship());
         $this->assertSame('path', $allowed->resourcePath());
-        $this->assertInstanceOf(SetInterface::class, $allowed->parameters());
+        $this->assertInstanceOf(Set::class, $allowed->parameters());
         $this->assertSame(Parameter::class, (string) $allowed->parameters()->type());
-        $this->assertSame([$parameter], $allowed->parameters()->toPrimitive());
+        $this->assertSame([$parameter], unwrap($allowed->parameters()));
     }
 
     public function testThrowWhenEmptyRelationship()

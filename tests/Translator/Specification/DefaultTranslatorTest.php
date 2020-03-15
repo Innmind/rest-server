@@ -9,7 +9,7 @@ use Innmind\Rest\Server\{
     Specification\Filter,
     Exception\SpecificationNotUsableAsQuery,
 };
-use Innmind\Url\QueryInterface;
+use Innmind\Url\Query;
 use PHPUnit\Framework\TestCase;
 
 class DefaultTranslatorTest extends TestCase
@@ -31,10 +31,10 @@ class DefaultTranslatorTest extends TestCase
 
         $query = $translate($spec);
 
-        $this->assertInstanceOf(QueryInterface::class, $query);
+        $this->assertInstanceOf(Query::class, $query);
         $this->assertSame(
             'range%5B0%5D=0&range%5B1%5D=42&foo=bar',
-            (string) $query
+            $query->toString(),
         );
     }
 

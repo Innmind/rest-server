@@ -12,7 +12,6 @@ use Innmind\Rest\Server\Definition\{
     Name,
 };
 use Innmind\Immutable\{
-    MapInterface,
     Map,
     Set,
 };
@@ -28,15 +27,15 @@ class DirectoryTest extends TestCase
                 Directory::class,
                 $directory2 = new Directory(
                     'bar',
-                    new Map('string', Directory::class),
-                    new Map('string', HttpResource::class)
+                    Map::of('string', Directory::class),
+                    Map::of('string', HttpResource::class)
                 )
             ),
             $resource = HttpResource::rangeable(
                 'res',
                 new Gateway('foo'),
                 new Identity('uuid'),
-                new Set(Property::class)
+                Set::of(Property::class)
             )
         );
 
@@ -52,24 +51,24 @@ class DirectoryTest extends TestCase
     public function testThrowWhenGivingInvalidChildren()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 2 must be of type MapInterface<string, Innmind\Rest\Server\Definition\Directory>');
+        $this->expectExceptionMessage('Argument 2 must be of type Map<string, Innmind\Rest\Server\Definition\Directory>');
 
         new Directory(
             '',
-            new Map('string', 'string'),
-            new Map('string', HttpResource::class)
+            Map::of('string', 'string'),
+            Map::of('string', HttpResource::class)
         );
     }
 
     public function testThrowWhenGivingInvalidDefinitions()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Definition\HttpResource>');
+        $this->expectExceptionMessage('Argument 3 must be of type Map<string, Innmind\Rest\Server\Definition\HttpResource>');
 
         new Directory(
             '',
-            new Map('string', Directory::class),
-            new Map('string', 'string')
+            Map::of('string', Directory::class),
+            Map::of('string', 'string')
         );
     }
 
@@ -81,7 +80,7 @@ class DirectoryTest extends TestCase
                 Directory::class,
                 new Directory(
                     'bar',
-                    new Map('string', Directory::class),
+                    Map::of('string', Directory::class),
                     Map::of('string', HttpResource::class)
                         (
                             'res',
@@ -89,7 +88,7 @@ class DirectoryTest extends TestCase
                                 'res',
                                 new Gateway('foo'),
                                 new Identity('uuid'),
-                                new Set(Property::class)
+                                Set::of(Property::class)
                             )
                         )
                 )
@@ -98,13 +97,13 @@ class DirectoryTest extends TestCase
                 'res',
                 new Gateway('foo'),
                 new Identity('uuid'),
-                new Set(Property::class)
+                Set::of(Property::class)
             )
         );
 
         $defs = $directory->flatten();
 
-        $this->assertInstanceOf(MapInterface::class, $defs);
+        $this->assertInstanceOf(Map::class, $defs);
         $this->assertSame('string', (string) $defs->keyType());
         $this->assertSame(HttpResource::class, (string) $defs->valueType());
         $this->assertTrue(

@@ -17,21 +17,22 @@ use Innmind\Rest\Server\{
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
-    Message\StatusCode\StatusCode,
-    Headers\Headers,
+    Message\StatusCode,
+    Headers,
     Exception\Http\BadRequest,
 };
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\Map;
+use function Innmind\Immutable\unwrap;
 
 final class Link implements Controller
 {
-    private MapInterface $gateways;
+    private Map $gateways;
     private LinkBuilder $buildHeader;
     private LinkTranslator $translate;
     private Locator $locator;
 
     public function __construct(
-        MapInterface $gateways,
+        Map $gateways,
         LinkBuilder $headerBuilder,
         LinkTranslator $translator,
         Locator $locator
@@ -41,7 +42,7 @@ final class Link implements Controller
             (string) $gateways->valueType() !== Gateway::class
         ) {
             throw new \TypeError(sprintf(
-                'Argument 1 must be of type MapInterface<string, %s>',
+                'Argument 1 must be of type Map<string, %s>',
                 Gateway::class
             ));
         }
@@ -59,12 +60,12 @@ final class Link implements Controller
     ): Response {
         $from = $definition;
 
-        if (!$request->headers()->has('Link')) {
+        if (!$request->headers()->contains('Link')) {
             throw new BadRequest;
         }
 
         try {
-            $links = ($this->translate)($request->headers()->get('Link'));
+            $links = unwrap(($this->translate)($request->headers()->get('Link')));
         } catch (RouteNotFound $e) {
             throw new BadRequest('', 0, $e);
         }
@@ -87,7 +88,7 @@ final class Link implements Controller
             $code->associatedreasonPhrase(),
             $request->protocolVersion(),
             Headers::of(
-                ...($this->buildHeader)($request, $from, ...$links)
+                ...unwrap(($this->buildHeader)($request, $from, ...$links))
             )
         );
     }

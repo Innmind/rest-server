@@ -18,7 +18,7 @@ class BootstrapTest extends TestCase
     public function testBootstrap()
     {
         $services = bootstrap(
-            new Map('string', Gateway::class),
+            Map::of('string', Gateway::class),
             require 'fixtures/mapping.php'
         );
 

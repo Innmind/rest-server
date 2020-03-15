@@ -11,9 +11,9 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
-    Message\Method\Method,
-    ProtocolVersion\ProtocolVersion,
-    Headers\Headers,
+    Message\Method,
+    ProtocolVersion,
+    Headers,
     Header\Accept,
     Header\AcceptValue,
     Header\Range as RangeHeader,
@@ -37,7 +37,7 @@ class HeaderExtractorTest extends TestCase
     {
         $extract = new HeaderExtractor;
         $request = new ServerRequest(
-            Url::fromString('/'),
+            Url::of('/'),
             Method::get(),
             $protocol = new ProtocolVersion(1, 1),
             Headers::of(
@@ -58,7 +58,7 @@ class HeaderExtractorTest extends TestCase
     {
         $extract = new HeaderExtractor;
         $request = new ServerRequest(
-            Url::fromString('/'),
+            Url::of('/'),
             Method::get(),
             $protocol = new ProtocolVersion(1, 1)
         );

@@ -23,7 +23,7 @@ class ReferenceTest extends TestCase
                 'foobar',
                 new Gateway('bar'),
                 new Identity('foo'),
-                new Set(Property::class)
+                Set::of(Property::class)
             ),
             $identity = $this->createMock(IdentityInterface::class)
         );

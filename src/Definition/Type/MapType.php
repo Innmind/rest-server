@@ -8,10 +8,7 @@ use Innmind\Rest\Server\{
     Exception\DenormalizationException,
     Exception\NormalizationException,
 };
-use Innmind\Immutable\{
-    Map,
-    MapInterface,
-};
+use Innmind\Immutable\Map;
 
 final class MapType implements Type
 {
@@ -45,7 +42,7 @@ final class MapType implements Type
             ));
         }
 
-        $map = new Map($this->key, $this->value);
+        $map = Map::of($this->key, $this->value);
 
         foreach ($data as $key => $value) {
             $map = $map->put(
@@ -62,17 +59,20 @@ final class MapType implements Type
      */
     public function normalize($data)
     {
-        if (!$data instanceof MapInterface) {
+        if (!$data instanceof Map) {
             throw new NormalizationException('The value must be a map');
         }
 
         $normalized = [];
 
-        foreach ($data as $key => $value) {
-            $normalized[$this->keyType->normalize($key)] = $this->valueType->normalize($value);
-        }
+        return $data->reduce(
+            [],
+            function(array $normalized, $key, $value): array {
+                $normalized[$this->keyType->normalize($key)] = $this->valueType->normalize($value);
 
-        return $normalized;
+                return $normalized;
+            },
+        );
     }
 
     public function __toString(): string

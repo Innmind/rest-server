@@ -9,20 +9,20 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Http\Message\ServerRequest;
 use Innmind\Specification\Specification;
-use Innmind\Immutable\SetInterface;
+use Innmind\Immutable\Set;
 
 interface ListBuilder
 {
     /**
-     * @param SetInterface<IdentityInterface> $identities
+     * @param Set<IdentityInterface> $identities
      *
-     * @return SetInterface<Header>
+     * @return Set<Header>
      */
     public function __invoke(
-        SetInterface $identities,
+        Set $identities,
         ServerRequest $request,
         HttpResource $definition,
         Specification $specification = null,
         Range $range = null
-    ): SetInterface;
+    ): Set;
 }

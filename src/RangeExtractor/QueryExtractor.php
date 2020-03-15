@@ -17,7 +17,7 @@ final class QueryExtractor implements Extractor
     public function __invoke(ServerRequest $request): Range
     {
         if (
-            !$request->query()->has('range') ||
+            !$request->query()->contains('range') ||
             !\is_array($request->query()->get('range')->value()) ||
             \count($request->query()->get('range')->value()) !== 2
         ) {

@@ -11,10 +11,7 @@ use Innmind\Http\{
     Message\ServerRequest,
     Header,
 };
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Immutable\Set;
 
 final class RemoveDelegationBuilder implements RemoveBuilder
 {
@@ -32,7 +29,7 @@ final class RemoveDelegationBuilder implements RemoveBuilder
         ServerRequest $request,
         HttpResource $definition,
         Identity $identity
-    ): SetInterface {
+    ): Set {
         $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {

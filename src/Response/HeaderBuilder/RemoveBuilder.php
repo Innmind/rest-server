@@ -8,16 +8,16 @@ use Innmind\Rest\Server\{
     Identity,
 };
 use Innmind\Http\Message\ServerRequest;
-use Innmind\Immutable\SetInterface;
+use Innmind\Immutable\Set;
 
 interface RemoveBuilder
 {
     /**
-     * @return SetInterface<Header>
+     * @return Set<Header>
      */
     public function __invoke(
         ServerRequest $request,
         HttpResource $definition,
         Identity $identity
-    ): SetInterface;
+    ): Set;
 }

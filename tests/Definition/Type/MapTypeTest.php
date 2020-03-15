@@ -12,10 +12,7 @@ use Innmind\Rest\Server\{
     Exception\NormalizationException,
     Exception\DenormalizationException,
 };
-use Innmind\Immutable\{
-    MapInterface,
-    Map,
-};
+use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
 class MapTypeTest extends TestCase
@@ -56,7 +53,7 @@ class MapTypeTest extends TestCase
             new IntType,
             new StringType
         );
-        $this->assertInstanceOf(MapInterface::class, $type->denormalize(['foo']));
+        $this->assertInstanceOf(Map::class, $type->denormalize(['foo']));
         $this->assertSame('foo', $type->denormalize(['1' => 'foo'])->get(1));
         $this->assertSame(
             'foo',

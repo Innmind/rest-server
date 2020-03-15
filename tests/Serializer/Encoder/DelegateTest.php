@@ -12,7 +12,7 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Http\{
     Message\ServerRequest,
-    Headers\Headers,
+    Headers,
     Header\Accept,
     Header\AcceptValue,
 };
@@ -38,7 +38,7 @@ class DelegateTest extends TestCase
                     )),
                     Formats::of($json)
                 ),
-                new Map('string', Encoder::class)
+                Map::of('string', Encoder::class)
             )
         );
     }
@@ -46,7 +46,7 @@ class DelegateTest extends TestCase
     public function testThrowWhenInvalidDecodersMapKey()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 2 must be of type MapInterface<string, Innmind\Rest\Server\Serializer\Encoder>');
+        $this->expectExceptionMessage('Argument 2 must be of type Map<string, Innmind\Rest\Server\Serializer\Encoder>');
 
         new Delegate(
             new Format(
@@ -57,14 +57,14 @@ class DelegateTest extends TestCase
                 )),
                 Formats::of($json)
             ),
-            new Map('int', Encoder::class)
+            Map::of('int', Encoder::class)
         );
     }
 
     public function testThrowWhenInvalidDecodersMapValue()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 2 must be of type MapInterface<string, Innmind\Rest\Server\Serializer\Encoder>');
+        $this->expectExceptionMessage('Argument 2 must be of type Map<string, Innmind\Rest\Server\Serializer\Encoder>');
 
         new Delegate(
             new Format(
@@ -75,7 +75,7 @@ class DelegateTest extends TestCase
                 )),
                 Formats::of($json)
             ),
-            new Map('string', 'callable')
+            Map::of('string', 'callable')
         );
     }
 

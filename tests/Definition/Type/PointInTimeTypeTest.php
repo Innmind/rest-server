@@ -10,9 +10,9 @@ use Innmind\Rest\Server\{
     Exception\DenormalizationException,
 };
 use Innmind\TimeContinuum\{
-    TimeContinuum\Earth,
-    FormatInterface,
-    PointInTimeInterface,
+    Earth\Clock as Earth,
+    Format,
+    PointInTime,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -24,8 +24,8 @@ class PointInTimeTypeTest extends TestCase
     public function setUp(): void
     {
         $this->clock = new Earth;
-        $this->format = new class implements FormatInterface {
-            public function __toString(): string
+        $this->format = new class implements Format {
+            public function toString(): string
             {
                 return 'Y-m-d';
             }
@@ -52,13 +52,13 @@ class PointInTimeTypeTest extends TestCase
     {
         $t = new PointInTimeType($this->clock, $this->format);
         $this->assertInstanceOf(
-            PointInTimeInterface::class,
+            PointInTime::class,
             $t->denormalize('2016-01-01')
         );
         $this->assertSame(
             '160101',
-            $t->denormalize('2016-01-01')->format(new class implements FormatInterface {
-                public function __toString(): string
+            $t->denormalize('2016-01-01')->format(new class implements Format {
+                public function toString(): string
                 {
                     return 'ymd';
                 }
@@ -76,8 +76,8 @@ class PointInTimeTypeTest extends TestCase
 
     public function testNormalize()
     {
-        $type = new PointInTimeType($this->clock, new class implements FormatInterface {
-            public function __toString(): string
+        $type = new PointInTimeType($this->clock, new class implements Format {
+            public function toString(): string
             {
                 return 'Y-m-d H:i:s';
             }

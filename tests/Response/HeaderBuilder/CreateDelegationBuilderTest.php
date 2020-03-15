@@ -17,10 +17,8 @@ use Innmind\Http\{
     Message\ServerRequest,
     Header,
 };
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Immutable\Set;
+use function Innmind\Immutable\unwrap;
 use PHPUnit\Framework\TestCase;
 
 class CreateDelegationBuilderTest extends TestCase
@@ -37,11 +35,11 @@ class CreateDelegationBuilderTest extends TestCase
                 'foobar',
                 new Gateway('bar'),
                 new Identity('foo'),
-                new Set(Property::class)
+                Set::of(Property::class)
             ),
             $this->createMock(HttpResourceInterface::class)
         );
-        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertInstanceOf(Set::class, $headers);
         $this->assertSame(Header::class, (string) $headers->type());
     }
 
@@ -69,14 +67,14 @@ class CreateDelegationBuilderTest extends TestCase
                 'foobar',
                 new Gateway('bar'),
                 new Identity('foo'),
-                new Set(Property::class)
+                Set::of(Property::class)
             ),
             $this->createMock(HttpResourceInterface::class)
         );
 
         $this->assertSame(
             [$foo, $bar],
-            $headers->toPrimitive()
+            unwrap($headers)
         );
     }
 }

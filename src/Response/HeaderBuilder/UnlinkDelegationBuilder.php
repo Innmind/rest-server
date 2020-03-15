@@ -11,10 +11,7 @@ use Innmind\Http\{
     Message\ServerRequest,
     Header,
 };
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Immutable\Set;
 
 final class UnlinkDelegationBuilder implements UnlinkBuilder
 {
@@ -32,7 +29,7 @@ final class UnlinkDelegationBuilder implements UnlinkBuilder
         ServerRequest $request,
         Reference $from,
         Link ...$links
-    ): SetInterface {
+    ): Set {
         $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {

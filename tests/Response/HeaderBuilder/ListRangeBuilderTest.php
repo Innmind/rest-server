@@ -18,9 +18,10 @@ use Innmind\Http\{
     Message\ServerRequest,
     Header,
 };
-use Innmind\Immutable\{
-    Set,
-    SetInterface,
+use Innmind\Immutable\Set;
+use function Innmind\Immutable\{
+    first,
+    unwrap,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -39,19 +40,19 @@ class ListRangeBuilderTest extends TestCase
         $build = new ListRangeBuilder;
 
         $headers = $build(
-            new Set(IdentityInterface::class),
+            Set::of(IdentityInterface::class),
             $this->createMock(ServerRequest::class),
             new HttpResource(
                 'foo',
                 new Gateway('command'),
                 new Identity('uuid'),
-                new Set(Property::class)
+                Set::of(Property::class)
             )
         );
 
-        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertInstanceOf(Set::class, $headers);
         $this->assertSame(Header::class, (string) $headers->type());
-        $this->assertSame(0, $headers->size());
+        $this->assertCount(0, $headers);
     }
 
     public function testBuildWithoutRange()
@@ -59,22 +60,22 @@ class ListRangeBuilderTest extends TestCase
         $build = new ListRangeBuilder;
 
         $headers = $build(
-            new Set(IdentityInterface::class),
+            Set::of(IdentityInterface::class),
             $this->createMock(ServerRequest::class),
             HttpResource::rangeable(
                 'foo',
                 new Gateway('command'),
                 new Identity('uuid'),
-                new Set(Property::class)
+                Set::of(Property::class)
             )
         );
 
-        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertInstanceOf(Set::class, $headers);
         $this->assertSame(Header::class, (string) $headers->type());
-        $this->assertSame(1, $headers->size());
+        $this->assertCount(1, $headers);
         $this->assertSame(
             'Accept-Ranges: resources',
-            (string) $headers->current()
+            first($headers)->toString()
         );
     }
 
@@ -89,23 +90,24 @@ class ListRangeBuilderTest extends TestCase
                 'foo',
                 new Gateway('command'),
                 new Identity('uuid'),
-                new Set(Property::class)
+                Set::of(Property::class)
             ),
             null,
             new Range(10, 20)
         );
 
-        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertInstanceOf(Set::class, $headers);
         $this->assertSame(Header::class, (string) $headers->type());
-        $this->assertSame(2, $headers->size());
+        $this->assertCount(2, $headers);
+        $headers = unwrap($headers);
         $this->assertSame(
             'Accept-Ranges: resources',
-            (string) $headers->current()
+            \current($headers)->toString(),
         );
-        $headers->next();
+        \next($headers);
         $this->assertSame(
             'Content-Range: resources 10-11/11',
-            (string) $headers->current()
+            \current($headers)->toString(),
         );
     }
 
@@ -132,23 +134,24 @@ class ListRangeBuilderTest extends TestCase
                 'foo',
                 new Gateway('command'),
                 new Identity('uuid'),
-                new Set(Property::class)
+                Set::of(Property::class)
             ),
             null,
             new Range(0, 10)
         );
 
-        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertInstanceOf(Set::class, $headers);
         $this->assertSame(Header::class, (string) $headers->type());
-        $this->assertSame(2, $headers->size());
+        $this->assertCount(2, $headers);
+        $headers = unwrap($headers);
         $this->assertSame(
             'Accept-Ranges: resources',
-            (string) $headers->current()
+            \current($headers)->toString(),
         );
-        $headers->next();
+        \next($headers);
         $this->assertSame(
             'Content-Range: resources 0-10/20',
-            (string) $headers->current()
+            \current($headers)->toString(),
         );
     }
 }

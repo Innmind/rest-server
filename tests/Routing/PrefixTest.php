@@ -7,10 +7,7 @@ use Innmind\Rest\Server\{
     Routing\Prefix,
     Exception\LogicException,
 };
-use Innmind\Url\{
-    PathInterface,
-    Path,
-};
+use Innmind\Url\Path;
 use PHPUnit\Framework\TestCase;
 
 class PrefixTest extends TestCase
@@ -19,10 +16,10 @@ class PrefixTest extends TestCase
     {
         $prefix = new Prefix('/foo/');
 
-        $path = $prefix->outOf(new Path('/foo/bar/foo/baz/'));
+        $path = $prefix->outOf(Path::of('/foo/bar/foo/baz/'));
 
-        $this->assertInstanceOf(PathInterface::class, $path);
-        $this->assertSame('/bar/foo/baz/', (string) $path);
+        $this->assertInstanceOf(Path::class, $path);
+        $this->assertSame('/bar/foo/baz/', $path->toString());
     }
 
     public function testOutOfEmptyPrefix()
@@ -31,7 +28,7 @@ class PrefixTest extends TestCase
 
         $this->assertInstanceOf(Prefix::class, $prefix);
 
-        $path = $prefix->outOf($expected = new Path('/foo'));
+        $path = $prefix->outOf($expected = Path::of('/foo'));
 
         $this->assertSame($expected, $path);
     }
@@ -43,6 +40,6 @@ class PrefixTest extends TestCase
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('/bar/foo/baz');
 
-        $prefix->outOf(new Path('/bar/foo/baz'));
+        $prefix->outOf(Path::of('/bar/foo/baz'));
     }
 }

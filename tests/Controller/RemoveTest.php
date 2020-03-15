@@ -15,6 +15,7 @@ use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
     Header,
+    ProtocolVersion,
 };
 use Innmind\Immutable\{
     Map,
@@ -46,10 +47,10 @@ class RemoveTest extends AbstractTestCase
     public function testThrowWhenInvalidGatewayKeyType()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
+        $this->expectExceptionMessage('Argument 1 must be of type Map<string, Innmind\Rest\Server\Gateway>');
 
         new Remove(
-            new Map('int', Gateway::class),
+            Map::of('int', Gateway::class),
             $this->createMock(RemoveBuilder::class)
         );
     }
@@ -57,10 +58,10 @@ class RemoveTest extends AbstractTestCase
     public function testThrowWhenInvalidGatewayValueType()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
+        $this->expectExceptionMessage('Argument 1 must be of type Map<string, Innmind\Rest\Server\Gateway>');
 
         new Remove(
-            new Map('string', 'callable'),
+            Map::of('string', 'callable'),
             $this->createMock(RemoveBuilder::class)
         );
     }
@@ -68,6 +69,10 @@ class RemoveTest extends AbstractTestCase
     public function testInvokation()
     {
         $request = $this->createMock(ServerRequest::class);
+        $request
+            ->expects($this->any())
+            ->method('protocolVersion')
+            ->willReturn(new ProtocolVersion(2, 0));
         $identity = $this->createMock(Identity::class);
         $this
             ->gateway
@@ -83,13 +88,13 @@ class RemoveTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($request, $this->definition, $identity)
-            ->willReturn(new Set(Header::class));
+            ->willReturn(Set::of(Header::class));
 
         $response = ($this->remove)($request, $this->definition, $identity);
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(204, $response->statusCode()->value());
-        $this->assertSame('No Content', (string) $response->reasonPhrase());
-        $this->assertSame('', (string) $response->body());
+        $this->assertSame('No Content', $response->reasonPhrase()->toString());
+        $this->assertSame('', $response->body()->toString());
     }
 }

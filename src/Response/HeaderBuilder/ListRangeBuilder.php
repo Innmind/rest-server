@@ -16,10 +16,7 @@ use Innmind\Http\{
     Header\ContentRangeValue,
 };
 use Innmind\Specification\Specification;
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Immutable\Set;
 
 final class ListRangeBuilder implements ListBuilder
 {
@@ -27,12 +24,12 @@ final class ListRangeBuilder implements ListBuilder
      * {@inheritdoc}
      */
     public function __invoke(
-        SetInterface $identities,
+        Set $identities,
         ServerRequest $request,
         HttpResource $definition,
         Specification $specification = null,
         Range $range = null
-    ): SetInterface {
+    ): Set {
         $headers = Set::of(Header::class);
 
         if (!$definition->isRangeable()) {

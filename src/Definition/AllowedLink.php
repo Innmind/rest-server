@@ -11,12 +11,11 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Immutable\{
     Sequence,
-    MapInterface,
     Map,
-    SetInterface,
     Set,
     Str,
 };
+use function Innmind\Immutable\unwrap;
 
 final class AllowedLink
 {
@@ -38,9 +37,9 @@ final class AllowedLink
 
         $this->relationship = $relationship;
         $this->resourcePath = $resourcePath;
-        $this->parameters = Sequence::of(...$parameters)->reduce(
+        $this->parameters = Sequence::of(Parameter::class, ...$parameters)->reduce(
             Map::of('string', Parameter::class),
-            static function(MapInterface $parameters, Parameter $parameter): MapInterface {
+            static function(Map $parameters, Parameter $parameter): Map {
                 return $parameters->put(
                     $parameter->name(),
                     $parameter
@@ -60,11 +59,11 @@ final class AllowedLink
     }
 
     /**
-     * @return SetInterface<Parameter>
+     * @return Set<Parameter>
      */
-    public function parameters(): SetInterface
+    public function parameters(): Set
     {
-        return Set::of(Parameter::class, ...$this->parameters->values());
+        return Set::of(Parameter::class, ...unwrap($this->parameters->values()));
     }
 
     public function accept(Locator $locate, Link $link): bool

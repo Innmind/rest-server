@@ -8,16 +8,16 @@ use Innmind\Rest\Server\{
     Link,
 };
 use Innmind\Http\Message\ServerRequest;
-use Innmind\Immutable\SetInterface;
+use Innmind\Immutable\Set;
 
 interface UnlinkBuilder
 {
     /**
-     * @return SetInterface<Header>
+     * @return Set<Header>
      */
     public function __invoke(
         ServerRequest $request,
         Reference $from,
         Link ...$links
-    ): SetInterface;
+    ): Set;
 }

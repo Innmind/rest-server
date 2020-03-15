@@ -15,14 +15,15 @@ use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
     Message\Method,
     ProtocolVersion,
-    Headers\Headers,
+    Headers,
     Header,
     Header\Accept,
     Header\AcceptValue,
     Header\Parameter,
 };
 use Innmind\Url\Url;
-use Innmind\Immutable\SetInterface;
+use Innmind\Immutable\Set;
+use function Innmind\Immutable\first;
 use PHPUnit\Framework\TestCase;
 
 class CreateLocationBuilderTest extends TestCase
@@ -51,9 +52,9 @@ class CreateLocationBuilderTest extends TestCase
         $headers = ($this->build)(
             new Identity(42),
             new ServerRequest(
-                Url::fromString('/foo/bar/'),
-                $this->createMock(Method::class),
-                $this->createMock(ProtocolVersion::class),
+                Url::of('/foo/bar/'),
+                Method::get(),
+                new ProtocolVersion(2, 0),
                 Headers::of(
                     new Accept(
                         new AcceptValue('text', 'xhtml')
@@ -64,12 +65,12 @@ class CreateLocationBuilderTest extends TestCase
             $this->createMock(HttpResource::class)
         );
 
-        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertInstanceOf(Set::class, $headers);
         $this->assertSame(Header::class, (string) $headers->type());
         $this->assertSame(1, $headers->size());
         $this->assertSame(
             'Location: /top_dir/image/42',
-            (string) $headers->current()
+            first($headers)->toString()
         );
     }
 }

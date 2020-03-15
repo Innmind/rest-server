@@ -3,24 +3,21 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Definition;
 
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Immutable\Set;
 
 final class Property
 {
     private string $name;
     private Type $type;
     private Access $access;
-    private SetInterface $variants;
+    private Set $variants;
     private bool $optional;
 
     private function __construct(
         string $name,
         Type $type,
         Access $access,
-        SetInterface $variants,
+        Set $variants,
         bool $optional
     ) {
         $this->name = $name;
@@ -76,9 +73,9 @@ final class Property
     }
 
     /**
-     * @return SetInterface<string>
+     * @return Set<string>
      */
-    public function variants(): SetInterface
+    public function variants(): Set
     {
         return $this->variants;
     }

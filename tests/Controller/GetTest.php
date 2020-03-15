@@ -21,7 +21,8 @@ use Innmind\Http\{
     Header,
     Header\Accept,
     Header\AcceptValue,
-    Headers\Headers,
+    Headers,
+    ProtocolVersion,
 };
 use Innmind\Immutable\{
     Map,
@@ -58,12 +59,12 @@ class GetTest extends AbstractTestCase
     public function testThrowWhenInvalidGatewayKeyType()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
+        $this->expectExceptionMessage('Argument 3 must be of type Map<string, Innmind\Rest\Server\Gateway>');
 
         new Get(
             new Encoder\Json,
             new ResourceNormalizer,
-            new Map('int', Gateway::class),
+            Map::of('int', Gateway::class),
             $this->createMock(GetBuilder::class)
         );
     }
@@ -71,12 +72,12 @@ class GetTest extends AbstractTestCase
     public function testThrowWhenInvalidGatewayValueType()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
+        $this->expectExceptionMessage('Argument 3 must be of type Map<string, Innmind\Rest\Server\Gateway>');
 
         new Get(
             new Encoder\Json,
             new ResourceNormalizer,
-            new Map('string', 'callable'),
+            Map::of('string', 'callable'),
             $this->createMock(GetBuilder::class)
         );
     }
@@ -92,6 +93,10 @@ class GetTest extends AbstractTestCase
                     new AcceptValue('application', 'json')
                 )
             ));
+        $request
+            ->expects($this->any())
+            ->method('protocolVersion')
+            ->willReturn(new ProtocolVersion(2, 0));
         $identity = $this->createMock(Identity::class);
         $this
             ->gateway
@@ -112,16 +117,16 @@ class GetTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($resource, $request, $this->definition, $identity)
-            ->willReturn(new Set(Header::class));
+            ->willReturn(Set::of(Header::class));
 
         $response = ($this->get)($request, $this->definition, $identity);
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(200, $response->statusCode()->value());
-        $this->assertSame('OK', (string) $response->reasonPhrase());
+        $this->assertSame('OK', $response->reasonPhrase()->toString());
         $this->assertSame(
             '{"resource":{"uuid":"foo","url":"example.com"}}',
-            (string) $response->body()
+            $response->body()->toString(),
         );
     }
 }

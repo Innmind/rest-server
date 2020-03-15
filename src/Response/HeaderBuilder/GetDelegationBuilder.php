@@ -12,10 +12,7 @@ use Innmind\Http\{
     Message\ServerRequest,
     Header,
 };
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Immutable\Set;
 
 final class GetDelegationBuilder implements GetBuilder
 {
@@ -34,7 +31,7 @@ final class GetDelegationBuilder implements GetBuilder
         ServerRequest $request,
         HttpResource $definition,
         Identity $identity
-    ): SetInterface {
+    ): Set {
         $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {

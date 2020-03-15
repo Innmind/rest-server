@@ -13,18 +13,19 @@ use Innmind\Rest\Server\{
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
-    Message\StatusCode\StatusCode,
-    Headers\Headers
+    Message\StatusCode,
+    Headers
 };
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\Map;
+use function Innmind\Immutable\unwrap;
 
 final class Remove implements Controller
 {
-    private MapInterface $gateways;
+    private Map $gateways;
     private RemoveBuilder $buildHeader;
 
     public function __construct(
-        MapInterface $gateways,
+        Map $gateways,
         RemoveBuilder $headerBuilder
     ) {
         if (
@@ -32,7 +33,7 @@ final class Remove implements Controller
             (string) $gateways->valueType() !== Gateway::class
         ) {
             throw new \TypeError(sprintf(
-                'Argument 1 must be of type MapInterface<string, %s>',
+                'Argument 1 must be of type Map<string, %s>',
                 Gateway::class
             ));
         }
@@ -58,7 +59,7 @@ final class Remove implements Controller
             $code->associatedreasonPhrase(),
             $request->protocolVersion(),
             Headers::of(
-                ...($this->buildHeader)($request, $definition, $identity)
+                ...unwrap(($this->buildHeader)($request, $definition, $identity))
             )
         );
     }

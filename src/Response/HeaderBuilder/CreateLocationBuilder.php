@@ -16,10 +16,7 @@ use Innmind\Http\{
     Header\LocationValue,
     Header,
 };
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Immutable\Set;
 
 final class CreateLocationBuilder implements CreateBuilder
 {
@@ -38,7 +35,7 @@ final class CreateLocationBuilder implements CreateBuilder
         ServerRequest $request,
         HttpResource $definition,
         HttpResourceInterface $resource
-    ): SetInterface {
+    ): Set {
         return Set::of(
             Header::class,
             new Location(

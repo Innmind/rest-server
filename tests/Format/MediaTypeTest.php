@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Tests\Innmind\Rest\Server\Format;
 
 use Innmind\Rest\Server\Format\MediaType;
-use Innmind\Filesystem\Exception\InvalidMediaTypeString;
+use Innmind\MediaType\Exception\Exception;
 use PHPUnit\Framework\TestCase;
 
 class MediaTypeTest extends TestCase
@@ -23,7 +23,7 @@ class MediaTypeTest extends TestCase
 
     public function testThrowWhenInvalidMediaTypeGiven()
     {
-        $this->expectException(InvalidMediaTypeString::class);
+        $this->expectException(Exception::class);
 
         new MediaType('foo', 42);
     }

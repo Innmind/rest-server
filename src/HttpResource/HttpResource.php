@@ -8,26 +8,23 @@ use Innmind\Rest\Server\{
     Definition\HttpResource as ResourceDefinition,
     Exception\DomainException
 };
-use Innmind\Immutable\{
-    MapInterface,
-    Map,
-};
+use Innmind\Immutable\Map;
 
 final class HttpResource implements HttpResourceInterface
 {
     private ResourceDefinition $definition;
-    private MapInterface $properties;
+    private Map $properties;
 
     public function __construct(
         ResourceDefinition $definition,
-        MapInterface $properties
+        Map $properties
     ) {
         if (
             (string) $properties->keyType() !== 'string' ||
             (string) $properties->valueType() !== Property::class
         ) {
             throw new \TypeError(sprintf(
-                'Argument 2 must be of type MapInterface<string, %s>',
+                'Argument 2 must be of type Map<string, %s>',
                 Property::cass
             ));
         }
@@ -84,7 +81,7 @@ final class HttpResource implements HttpResourceInterface
     /**
      * {@inheritdoc}
      */
-    public function properties(): MapInterface
+    public function properties(): Map
     {
         return $this->properties;
     }

@@ -12,12 +12,13 @@ use Innmind\Rest\Server\{
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
-    Message\StatusCode\StatusCode,
-    Headers\Headers,
+    Message\StatusCode,
+    Headers,
     Header\Link,
     Header\LinkValue,
 };
 use Innmind\Immutable\Sequence;
+use function Innmind\Immutable\unwrap;
 
 final class Capabilities
 {
@@ -26,7 +27,7 @@ final class Capabilities
 
     public function __construct(Routes $routes, Router $router)
     {
-        $this->routes = Sequence::of(...$routes)->filter(static function(Route $route): bool {
+        $this->routes = Sequence::of(Route::class, ...$routes)->filter(static function(Route $route): bool {
             return $route->action() === Action::options();
         });
         $this->router = $router;
@@ -40,12 +41,17 @@ final class Capabilities
             $request->protocolVersion(),
             Headers::of(
                 new Link(
-                    ...$this->routes->map(function(Route $route): LinkValue {
-                        return new LinkValue(
-                            $this->router->generate($route->action(), $route->definition()),
-                            (string) $route->name()
-                        );
-                    })
+                    ...unwrap(
+                        $this->routes->mapTo(
+                            LinkValue::class,
+                            function(Route $route): LinkValue {
+                                return new LinkValue(
+                                    $this->router->generate($route->action(), $route->definition()),
+                                    (string) $route->name()
+                                );
+                            }
+                        )
+                    ),
                 )
             )
         );

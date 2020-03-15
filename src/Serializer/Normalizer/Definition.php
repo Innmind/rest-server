@@ -9,6 +9,7 @@ use Innmind\Rest\Server\Definition\{
     AllowedLink,
     AllowedLink\Parameter,
 };
+use function Innmind\Immutable\unwrap;
 
 final class Definition
 {
@@ -23,13 +24,8 @@ final class Definition
                     function(array $carry, string $name, Property $property) {
                         $carry[$name] = [
                             'type' => (string) $property->type(),
-                            'access' => $property
-                                ->access()
-                                ->mask()
-                                ->toPrimitive(),
-                            'variants' => $property
-                                ->variants()
-                                ->toPrimitive(),
+                            'access' => unwrap($property->access()->mask()),
+                            'variants' => unwrap($property->variants()),
                             'optional' => $property->isOptional(),
                         ];
 
@@ -37,8 +33,8 @@ final class Definition
                     }
                 ),
             'metas' => array_combine(
-                $resource->metas()->keys()->toPrimitive(),
-                $resource->metas()->values()->toPrimitive()
+                unwrap($resource->metas()->keys()),
+                unwrap($resource->metas()->values()),
             ),
             'rangeable' => $resource->isRangeable(),
             'linkable_to' => $resource

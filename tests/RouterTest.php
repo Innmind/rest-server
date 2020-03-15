@@ -12,7 +12,7 @@ use Innmind\Rest\Server\{
     Exception\RouteNotFound,
 };
 use Innmind\Url\{
-    UrlInterface,
+    Url,
     Path,
 };
 use PHPUnit\Framework\TestCase;
@@ -36,15 +36,15 @@ class RouterTest extends TestCase
     {
         $this->assertSame(
             $this->directory->definition('image'),
-            $this->router->match(new Path('/foo/top_dir/image/'))->definition()
+            $this->router->match(Path::of('/foo/top_dir/image/'))->definition()
         );
         $this->assertSame(
             $this->directory->definition('image'),
-            $this->router->match(new Path('/foo/top_dir/image/42'))->definition()
+            $this->router->match(Path::of('/foo/top_dir/image/42'))->definition()
         );
         $this->assertEquals(
             new Identity('42'),
-            $this->router->match(new Path('/foo/top_dir/image/42'))->identity()
+            $this->router->match(Path::of('/foo/top_dir/image/42'))->identity()
         );
     }
 
@@ -53,7 +53,7 @@ class RouterTest extends TestCase
         $this->expectException(RouteNotFound::class);
         $this->expectExceptionMessage('/top_dir/image/');
 
-        $this->router->match(new Path('/top_dir/image/'));
+        $this->router->match(Path::of('/top_dir/image/'));
     }
 
     public function testGenerate()
@@ -63,8 +63,8 @@ class RouterTest extends TestCase
             $this->directory->definition('image')
         );
 
-        $this->assertInstanceOf(UrlInterface::class, $path);
-        $this->assertSame('/foo/top_dir/image/', (string) $path);
+        $this->assertInstanceOf(Url::class, $path);
+        $this->assertSame('/foo/top_dir/image/', $path->toString());
 
         $path = $this->router->generate(
             Action::get(),
@@ -72,7 +72,7 @@ class RouterTest extends TestCase
             new Identity(42)
         );
 
-        $this->assertSame('/foo/top_dir/image/42', (string) $path);
+        $this->assertSame('/foo/top_dir/image/42', $path->toString());
     }
 
     public function testGenerateWithoutPrefix()
@@ -85,6 +85,6 @@ class RouterTest extends TestCase
             new Identity(42)
         );
 
-        $this->assertSame('/top_dir/image/42', (string) $path);
+        $this->assertSame('/top_dir/image/42', $path->toString());
     }
 }

@@ -16,7 +16,7 @@ final class HttpResource
 {
     public function __invoke(Resource $resource): array
     {
-        $errors = new Map('string', NormalizationException::class);
+        $errors = Map::of('string', NormalizationException::class);
 
         $definition = $resource->definition();
         $mask = new Access(Access::READ);

@@ -13,18 +13,15 @@ use Innmind\Specification\{
     Composite,
     Operator,
 };
-use Innmind\Url\{
-    QueryInterface,
-    Query,
-};
+use Innmind\Url\Query;
 
 final class DefaultTranslator implements SpecificationTranslator
 {
-    public function __invoke(Specification $specification): QueryInterface
+    public function __invoke(Specification $specification): Query
     {
         $data = $this->extract($specification);
 
-        return new Query(\http_build_query($data));
+        return Query::of(\http_build_query($data));
     }
 
     private function extract(Specification $specification): array

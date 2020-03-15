@@ -49,7 +49,7 @@ class DelegationVerifierTest extends TestCase
                     'foo',
                     new Gateway('command'),
                     new Identity('uuid'),
-                    new Set(Property::class)
+                    Set::of(Property::class)
                 )
             )
         );
@@ -75,7 +75,7 @@ class DelegationVerifierTest extends TestCase
                 'foo',
                 new Gateway('command'),
                 new Identity('uuid'),
-                new Set(Property::class)
+                Set::of(Property::class)
             )
         );
     }

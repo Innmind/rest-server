@@ -16,7 +16,6 @@ use Innmind\Rest\Server\{
     Identity as IdentityInterface,
 };
 use Innmind\Immutable\{
-    MapInterface,
     Map,
     Set,
 };
@@ -30,17 +29,17 @@ class HttpResourceTest extends TestCase
             'foobar',
             $gateway = new Gateway('bar'),
             $identity = new Identity('foo'),
-            new Set(Property::class),
+            Set::of(Property::class),
             Set::of(Action::class, Action::get()),
             null,
-            $metas = new Map('scalar', 'variable')
+            $metas = Map::of('scalar', 'variable')
         );
 
         $this->assertInstanceOf(Name::class, $resource->name());
         $this->assertSame('foobar', (string) $resource->name());
         $this->assertSame('foobar', (string) $resource);
         $this->assertSame($identity, $resource->identity());
-        $this->assertInstanceOf(MapInterface::class, $resource->properties());
+        $this->assertInstanceOf(Map::class, $resource->properties());
         $this->assertSame('string', (string) $resource->properties()->keyType());
         $this->assertSame(Property::class, (string) $resource->properties()->valueType());
         $this->assertTrue($resource->allow(Action::options()));
@@ -90,58 +89,58 @@ class HttpResourceTest extends TestCase
     public function testThrowForInvalidPropertySet()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 4 must be of type SetInterface<Innmind\Rest\Server\Definition\Property>');
+        $this->expectExceptionMessage('Argument 4 must be of type Set<Innmind\Rest\Server\Definition\Property>');
 
         new HttpResource(
             'foobar',
             new Gateway('bar'),
             new Identity('foo'),
-            new Set('string')
+            Set::of('string')
         );
     }
 
     public function testThrowForInvalidLinkSet()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 6 must be of type SetInterface<Innmind\Rest\Server\Definition\AllowedLink>');
+        $this->expectExceptionMessage('Argument 6 must be of type Set<Innmind\Rest\Server\Definition\AllowedLink>');
 
         new HttpResource(
             'foobar',
             new Gateway('bar'),
             new Identity('foo'),
-            new Set(Property::class),
-            new Set(Action::class),
-            new Set('string')
+            Set::of(Property::class),
+            Set::of(Action::class),
+            Set::of('string')
         );
     }
 
     public function testThrowForInvalidOptionMap()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 5 must be of type SetInterface<Innmind\Rest\Server\Action>');
+        $this->expectExceptionMessage('Argument 5 must be of type Set<Innmind\Rest\Server\Action>');
 
         new HttpResource(
             'foobar',
             new Gateway('bar'),
             new Identity('foo'),
-            new Set(Property::class),
-            new Set('string')
+            Set::of(Property::class),
+            Set::of('string')
         );
     }
 
     public function testThrowForInvalidMetaMap()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 7 must be of type MapInterface<scalar, variable>');
+        $this->expectExceptionMessage('Argument 7 must be of type Map<scalar, variable>');
 
         new HttpResource(
             'foobar',
             new Gateway('bar'),
             new Identity('foo'),
-            new Set(Property::class),
-            new Set(Action::class),
+            Set::of(Property::class),
+            Set::of(Action::class),
             null,
-            new Map('string', 'string')
+            Map::of('string', 'string')
         );
     }
 }

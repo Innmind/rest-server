@@ -14,9 +14,10 @@ use Innmind\Rest\Server\{
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
-    Headers\Headers,
+    Headers,
     Header\Accept,
     Header\AcceptValue,
+    ProtocolVersion,
 };
 
 class OptionsTest extends AbstractTestCase
@@ -50,19 +51,23 @@ class OptionsTest extends AbstractTestCase
                     new AcceptValue('application', 'json')
                 )
             ));
+        $request
+            ->expects($this->any())
+            ->method('protocolVersion')
+            ->willReturn(new ProtocolVersion(2, 0));
 
         $response = ($this->options)($request, $this->definition);
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(200, $response->statusCode()->value());
-        $this->assertSame('OK', (string) $response->reasonPhrase());
+        $this->assertSame('OK', $response->reasonPhrase()->toString());
         $this->assertSame(
             'Content-Type: application/json',
-            (string) $response->headers()->get('content-type')
+            $response->headers()->get('content-type')->toString(),
         );
         $this->assertSame(
             '{"identity":"uuid","properties":{"uuid":{"type":"string","access":["READ"],"variants":[],"optional":false},"url":{"type":"string","access":["READ","CREATE","UPDATE"],"variants":[],"optional":false}},"metas":[],"rangeable":false,"linkable_to":[]}',
-            (string) $response->body()
+            $response->body()->toString(),
         );
     }
 

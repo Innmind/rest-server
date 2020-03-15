@@ -3,10 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server;
 
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Immutable\Set;
 
 final class Action
 {
@@ -86,9 +83,9 @@ final class Action
     }
 
     /**
-     * @return SetInterface<self>
+     * @return Set<self>
      */
-    public static function all(): SetInterface
+    public static function all(): Set
     {
         return Set::of(
             self::class,

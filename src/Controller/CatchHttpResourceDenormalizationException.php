@@ -12,7 +12,7 @@ use Innmind\Rest\Server\{
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
-    Message\StatusCode\StatusCode,
+    Message\StatusCode,
 };
 
 final class CatchHttpResourceDenormalizationException implements Controller

@@ -7,7 +7,7 @@ use Innmind\Rest\Server\{
     Routing\Name,
     Exception\DomainException,
 };
-use Innmind\Url\PathInterface;
+use Innmind\Url\Path;
 use PHPUnit\Framework\TestCase;
 use Eris\{
     Generator,
@@ -52,7 +52,7 @@ class NameTest extends TestCase
 
         $path = $name->asPath();
 
-        $this->assertInstanceOf(PathInterface::class, $path);
-        $this->assertSame('/foo/bar/', (string) $path);
+        $this->assertInstanceOf(Path::class, $path);
+        $this->assertSame('/foo/bar/', $path->toString());
     }
 }

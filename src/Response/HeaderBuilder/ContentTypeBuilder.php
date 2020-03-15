@@ -7,29 +7,34 @@ use Innmind\Rest\Server\Formats;
 use Innmind\Http\{
     Message\ServerRequest,
     Header,
+    Header\Value,
     Header\ContentType,
     Header\ContentTypeValue,
 };
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Immutable\Set;
+use function Innmind\Immutable\join;
 
 trait ContentTypeBuilder
 {
     /**
-     * @return SetInterface<Header>
+     * @return Set<Header>
      */
     private function buildHeaderFrom(
         Formats $formats,
         ServerRequest $request
-    ): SetInterface {
+    ): Set {
         $format = $formats->matching(
-            (string) $request
-                ->headers()
-                ->get('Accept')
-                ->values()
-                ->join(', ')
+            join(
+                ', ',
+                $request
+                    ->headers()
+                    ->get('Accept')
+                    ->values()
+                    ->mapTo(
+                        'string',
+                        static fn(Value $value): string => $value->toString(),
+                    ),
+            )->toString(),
         );
 
         return Set::of(

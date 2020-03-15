@@ -11,17 +11,16 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
-    Message\Method\Method,
-    ProtocolVersion\ProtocolVersion,
-    Message\Environment\Environment,
-    Message\Cookies\Cookies,
-    Message\Query\Query,
-    Message\Query\Parameter as QueryParameterInterface,
-    Message\Query\Parameter\Parameter,
-    Headers\Headers,
+    Message\Method,
+    ProtocolVersion,
+    Message\Environment,
+    Message\Cookies,
+    Message\Query,
+    Message\Query\Parameter,
+    Headers,
 };
 use Innmind\Url\Url;
-use Innmind\Filesystem\Stream\StringStream;
+use Innmind\Stream\Readable\Stream;
 use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
@@ -38,17 +37,14 @@ class QueryExtractorTest extends TestCase
     {
         $extract = new QueryExtractor;
         $request = new ServerRequest(
-            Url::fromString('/'),
+            Url::of('/'),
             Method::get(),
             $protocol = new ProtocolVersion(1, 1),
             Headers::of(),
-            new StringStream(''),
-            new Environment(new Map('string', 'scalar')),
-            new Cookies(new Map('string', 'scalar')),
-            new Query(
-                Map::of('string', QueryParameterInterface::class)
-                    ('range', new Parameter('range', [0, 42]))
-            )
+            Stream::ofContent(''),
+            new Environment,
+            new Cookies,
+            new Query(new Parameter('range', [0, 42])),
         );
 
         $range = $extract($request);
@@ -62,17 +58,14 @@ class QueryExtractorTest extends TestCase
     {
         $extract = new QueryExtractor;
         $request = new ServerRequest(
-            Url::fromString('/'),
+            Url::of('/'),
             Method::get(),
             $protocol = new ProtocolVersion(1, 1),
             Headers::of(),
-            new StringStream(''),
-            new Environment(new Map('string', 'scalar')),
-            new Cookies(new Map('string', 'scalar')),
-            new Query(
-                Map::of('string', QueryParameterInterface::class)
-                    ('range', new Parameter('range', ['resources', 0, 42]))
-            )
+            Stream::ofContent(''),
+            new Environment,
+            new Cookies,
+            new Query(new Parameter('range', ['resources', 0, 42])),
         );
 
         $this->expectException(RangeNotFound::class);

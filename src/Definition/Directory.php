@@ -4,30 +4,29 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\Definition;
 
 use Innmind\Immutable\{
-    MapInterface,
     Map,
-    SetInterface,
+    Set,
     Pair,
 };
 
 final class Directory
 {
     private Name $name;
-    private MapInterface $children;
-    private MapInterface $definitions;
-    private ?MapInterface $flattened = null;
+    private Map $children;
+    private Map $definitions;
+    private ?Map $flattened = null;
 
     public function __construct(
         string $name,
-        MapInterface $children,
-        MapInterface $definitions
+        Map $children,
+        Map $definitions
     ) {
         if (
             (string) $children->keyType() !== 'string' ||
             (string) $children->valueType() !== self::class
         ) {
             throw new \TypeError(sprintf(
-                'Argument 2 must be of type MapInterface<string, %s>',
+                'Argument 2 must be of type Map<string, %s>',
                 self::class
             ));
         }
@@ -37,7 +36,7 @@ final class Directory
             (string) $definitions->valueType() !== HttpResource::class
         ) {
             throw new \TypeError(sprintf(
-                'Argument 3 must be of type MapInterface<string, %s>',
+                'Argument 3 must be of type Map<string, %s>',
                 HttpResource::class
             ));
         }
@@ -49,7 +48,7 @@ final class Directory
 
     public static function of(
         string $name,
-        SetInterface $children,
+        Set $children,
         HttpResource ...$definitions
     ): self {
         $map = Map::of('string', HttpResource::class);
@@ -62,7 +61,7 @@ final class Directory
             $name,
             $children->reduce(
                 Map::of('string', self::class),
-                static function(MapInterface $children, self $child): MapInterface {
+                static function(Map $children, self $child): Map {
                     return $children->put((string) $child->name(), $child);
                 }
             ),
@@ -81,9 +80,9 @@ final class Directory
     }
 
     /**
-     * @return MapInterface<string, Directory>
+     * @return Map<string, Directory>
      */
-    public function children(): MapInterface
+    public function children(): Map
     {
         return $this->children;
     }
@@ -94,19 +93,19 @@ final class Directory
     }
 
     /**
-     * @return MapInterface<string, HttpResource>
+     * @return Map<string, HttpResource>
      */
-    public function definitions(): MapInterface
+    public function definitions(): Map
     {
         return $this->definitions;
     }
 
     /**
-     * @return MapInterface<string, HttpResource>
+     * @return Map<string, HttpResource>
      */
-    public function flatten(): MapInterface
+    public function flatten(): Map
     {
-        if ($this->flattened instanceof MapInterface) {
+        if ($this->flattened instanceof Map) {
             return $this->flattened;
         }
 
@@ -122,7 +121,7 @@ final class Directory
             ->children
             ->reduce(
                 $definitions,
-                function(MapInterface $carry, string $name, self $child) {
+                function(Map $carry, string $name, self $child) {
                     return $carry->merge(
                         $child
                             ->flatten()

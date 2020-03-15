@@ -16,12 +16,13 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
-    Message\Method\Method,
+    Message\Method,
     Headers,
+    Header\Range,
     ProtocolVersion,
     Exception\Http\PreconditionFailed,
 };
-use Innmind\Url\UrlInterface;
+use Innmind\Url\Url;
 use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
@@ -35,16 +36,13 @@ class RangeVerifierTest extends TestCase
     public function testThrowWhenUsingRangeOnNonGETRequest()
     {
         $verify = new RangeVerifier;
-        $headers = $this->createMock(Headers::class);
-        $headers
-            ->method('has')
-            ->will($this->returnCallback(function(string $header) {
-                return $header === 'Range';
-            }));
+        $headers = Headers::of(
+            Range::of('resource', 0, 1),
+        );
         $request = new ServerRequest(
-            $this->createMock(UrlInterface::class),
-            new Method('POST'),
-            $this->createMock(ProtocolVersion::class),
+            Url::of('http://example.com'),
+            Method::post(),
+            new ProtocolVersion(2, 0),
             $headers
         );
 
@@ -56,7 +54,7 @@ class RangeVerifierTest extends TestCase
                 'foo',
                 new Gateway('command'),
                 new Identity('uuid'),
-                new Set(Property::class)
+                Set::of(Property::class)
             )
         );
     }
@@ -64,16 +62,13 @@ class RangeVerifierTest extends TestCase
     public function testThrowWhenUsingRangeOnNonRageableResource()
     {
         $verify = new RangeVerifier;
-        $headers = $this->createMock(Headers::class);
-        $headers
-            ->method('has')
-            ->will($this->returnCallback(function(string $header) {
-                return $header === 'Range';
-            }));
+        $headers = Headers::of(
+            Range::of('resource', 0, 1),
+        );
         $request = new ServerRequest(
-            $this->createMock(UrlInterface::class),
+            Url::of('http://example.com'),
             Method::get(),
-            $this->createMock(ProtocolVersion::class),
+            new ProtocolVersion(2, 0),
             $headers
         );
 
@@ -85,7 +80,7 @@ class RangeVerifierTest extends TestCase
                 'foo',
                 new Gateway('command'),
                 new Identity('uuid'),
-                new Set(Property::class)
+                Set::of(Property::class)
             )
         );
     }
@@ -93,16 +88,13 @@ class RangeVerifierTest extends TestCase
     public function testVerify()
     {
         $verify = new RangeVerifier;
-        $headers = $this->createMock(Headers::class);
-        $headers
-            ->method('has')
-            ->will($this->returnCallback(function(string $header) {
-                return $header === 'Range';
-            }));
+        $headers = Headers::of(
+            Range::of('resource', 0, 1),
+        );
         $request = new ServerRequest(
-            $this->createMock(UrlInterface::class),
+            Url::of('http://example.com'),
             Method::get(),
-            $this->createMock(ProtocolVersion::class),
+            new ProtocolVersion(2, 0),
             $headers
         );
 
@@ -113,19 +105,16 @@ class RangeVerifierTest extends TestCase
                     'foo',
                     new Gateway('command'),
                     new Identity('uuid'),
-                    new Set(Property::class)
+                    Set::of(Property::class)
                 )
             )
         );
 
-        $headers = $this->createMock(Headers::class);
-        $headers
-            ->method('has')
-            ->willReturn(false);
+        $headers = Headers::of();
         $request = new ServerRequest(
-            $this->createMock(UrlInterface::class),
+            Url::of('http://example.com'),
             Method::get(),
-            $this->createMock(ProtocolVersion::class),
+            new ProtocolVersion(2, 0),
             $headers
         );
 
@@ -136,7 +125,7 @@ class RangeVerifierTest extends TestCase
                     'foo',
                     new Gateway('command'),
                     new Identity('uuid'),
-                    new Set(Property::class)
+                    Set::of(Property::class)
                 )
             )
         );

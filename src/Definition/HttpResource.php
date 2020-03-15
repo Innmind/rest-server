@@ -8,9 +8,7 @@ use Innmind\Rest\Server\{
     Link,
 };
 use Innmind\Immutable\{
-    MapInterface,
     Map,
-    SetInterface,
     Set,
 };
 
@@ -19,20 +17,20 @@ final class HttpResource
     private Name $name;
     private Identity $identity;
     private Map $properties;
-    private SetInterface $actions;
+    private Set $actions;
     private Map $metas;
     private Gateway $gateway;
     private bool $rangeable = false;
-    private SetInterface $allowedLinks;
+    private Set $allowedLinks;
 
     public function __construct(
         string $name,
         Gateway $gateway,
         Identity $identity,
-        SetInterface $properties,
-        SetInterface $actions = null,
-        SetInterface $allowedLinks = null,
-        MapInterface $metas = null
+        Set $properties,
+        Set $actions = null,
+        Set $allowedLinks = null,
+        Map $metas = null
     ) {
         $actions = $actions ?? Action::all();
         $metas = $metas ?? Map::of('scalar', 'variable');
@@ -40,21 +38,21 @@ final class HttpResource
 
         if ((string) $properties->type() !== Property::class) {
             throw new \TypeError(sprintf(
-                'Argument 4 must be of type SetInterface<%s>',
+                'Argument 4 must be of type Set<%s>',
                 Property::class
             ));
         }
 
         if ((string) $actions->type() !== Action::class) {
             throw new \TypeError(\sprintf(
-                'Argument 5 must be of type SetInterface<%s>',
+                'Argument 5 must be of type Set<%s>',
                 Action::class
             ));
         }
 
         if ((string) $allowedLinks->type() !== AllowedLink::class) {
             throw new \TypeError(\sprintf(
-                'Argument 6 must be of type SetInterface<%s>',
+                'Argument 6 must be of type Set<%s>',
                 AllowedLink::class
             ));
         }
@@ -63,14 +61,14 @@ final class HttpResource
             (string) $metas->keyType() !== 'scalar' ||
             (string) $metas->valueType() !== 'variable'
         ) {
-            throw new \TypeError('Argument 7 must be of type MapInterface<scalar, variable>');
+            throw new \TypeError('Argument 7 must be of type Map<scalar, variable>');
         }
 
         $this->name = new Name($name);
         $this->identity = $identity;
         $this->properties = $properties->reduce(
             Map::of('string', Property::class),
-            static function(MapInterface $properties, Property $property): MapInterface {
+            static function(Map $properties, Property $property): Map {
                 return $properties->put((string) $property->name(), $property);
             }
         );
@@ -84,10 +82,10 @@ final class HttpResource
         string $name,
         Gateway $gateway,
         Identity $identity,
-        SetInterface $properties,
-        SetInterface $actions = null,
-        SetInterface $allowedLinks = null,
-        MapInterface $metas = null
+        Set $properties,
+        Set $actions = null,
+        Set $allowedLinks = null,
+        Map $metas = null
     ): self {
         $self = new self($name, $gateway, $identity, $properties, $actions, $allowedLinks, $metas);
         $self->rangeable = true;
@@ -106,9 +104,9 @@ final class HttpResource
     }
 
     /**
-     * @return MapInterface<string, Property>
+     * @return Map<string, Property>
      */
-    public function properties(): MapInterface
+    public function properties(): Map
     {
         return $this->properties;
     }
@@ -119,9 +117,9 @@ final class HttpResource
     }
 
     /**
-     * @return MapInterface<scalar, variable>
+     * @return Map<scalar, variable>
      */
-    public function metas(): MapInterface
+    public function metas(): Map
     {
         return $this->metas;
     }
@@ -137,9 +135,9 @@ final class HttpResource
     }
 
     /**
-     * @return SetInterface<AllowedLink>
+     * @return Set<AllowedLink>
      */
-    public function allowedLinks(): SetInterface
+    public function allowedLinks(): Set
     {
         return $this->allowedLinks;
     }

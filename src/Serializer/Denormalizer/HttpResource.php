@@ -13,7 +13,6 @@ use Innmind\Rest\Server\{
     Exception\HttpResourceDenormalizationException,
 };
 use Innmind\Immutable\{
-    MapInterface,
     Map,
     Set,
 };
@@ -25,22 +24,22 @@ final class HttpResource
         ResourceDefinition $definition,
         Access $mask
     ): Resource {
-        $errors = new Map('string', DenormalizationException::class);
+        $errors = Map::of('string', DenormalizationException::class);
         $data = $data['resource'];
 
         $properties = $definition
             ->properties()
             ->reduce(
-                new Map('string', Property::class),
+                Map::of('string', Property::class),
                 function(
-                    MapInterface $properties,
+                    Map $properties,
                     string $name,
                     PropertyDefinition $definition
                 ) use (
                     &$errors,
                     $data,
                     $mask
-                ): MapInterface {
+                ): Map {
                     if (
                         !$definition->access()->matches($mask) &&
                         isset($data[$name])

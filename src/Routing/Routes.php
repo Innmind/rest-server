@@ -9,25 +9,28 @@ use Innmind\Rest\Server\{
     Definition\Directory,
     Exception\RouteNotFound,
 };
-use Innmind\Url\PathInterface;
+use Innmind\Url\Path;
 use Innmind\Immutable\{
-    SetInterface,
     Set,
-    SequenceInterface,
     Sequence,
-    MapInterface,
     Map,
+};
+use function Innmind\Immutable\{
+    unwrap,
+    first,
 };
 
 final class Routes implements \Iterator
 {
     private Set $routes;
+    private array $array;
     private Map $definitions;
 
     public function __construct(Route ...$routes)
     {
         $this->routes = Set::of(Route::class, ...$routes);
-        $this->definitions = new Map(HttpResource::class, MapInterface::class);
+        $this->array = $routes;
+        $this->definitions = Map::of(HttpResource::class, Map::class);
 
         if ($this->routes->size() === 0) {
             return;
@@ -40,7 +43,7 @@ final class Routes implements \Iterator
             })
             ->reduce(
                 $this->definitions,
-                static function(MapInterface $definitions, HttpResource $definition, SetInterface $routes): MapInterface {
+                static function(Map $definitions, HttpResource $definition, Set $routes): Map {
                     return $definitions->put(
                         $definition,
                         $routes->groupBy(static function(Route $route): Action {
@@ -54,23 +57,23 @@ final class Routes implements \Iterator
     public static function of(Name $name, HttpResource $definition): self
     {
         return new self(
-            ...Action::all()
+            ...unwrap(Action::all()
                 ->filter(static function(Action $action) use ($definition): bool {
                     return $definition->allow($action);
                 })
                 ->reduce(
-                    new Sequence,
-                    static function(SequenceInterface $routes, Action $action) use ($name, $definition): SequenceInterface {
+                    Sequence::of(Route::class),
+                    static function(Sequence $routes, Action $action) use ($name, $definition): Sequence {
                         return $routes->add(
                             Route::of($action, $name, $definition)
                         );
                     }
-                )
+                ))
         );
     }
 
     /**
-     * @param MapInterface<string, Directory> $directories
+     * @param Map<string, Directory> $directories
      */
     public static function from(Directory $directory): self
     {
@@ -92,7 +95,7 @@ final class Routes implements \Iterator
         return new self(...$this, ...$routes);
     }
 
-    public function match(PathInterface $path): Match
+    public function match(Path $path): Match
     {
         $match = $this->routes->reduce(
             null,
@@ -116,40 +119,36 @@ final class Routes implements \Iterator
             return $match;
         }
 
-        throw new RouteNotFound((string) $path);
+        throw new RouteNotFound($path->toString());
     }
 
     public function get(Action $action, HttpResource $definition): Route
     {
-        return $this
-            ->definitions
-            ->get($definition)
-            ->get($action)
-            ->current();
+        return first($this->definitions->get($definition)->get($action));
     }
 
     public function current(): Route
     {
-        return $this->routes->current();
+        return \current($this->array);
     }
 
     public function key(): int
     {
-        return $this->routes->key();
+        return \key($this->array);
     }
 
     public function next(): void
     {
-        $this->routes->next();
+        \next($this->array);
     }
 
     public function rewind(): void
     {
-        $this->routes->rewind();
+        \reset($this->array);
     }
 
     public function valid(): bool
     {
-        return $this->routes->valid();
+        return \current($this->array) instanceof Route;
     }
 }

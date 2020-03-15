@@ -20,18 +20,14 @@ use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
     Message\Method,
     ProtocolVersion,
-    Headers\Headers,
+    Headers,
     Header,
     Header\Accept,
     Header\AcceptValue,
-    Header\Parameter,
 };
-use Innmind\Url\UrlInterface;
-use Innmind\Immutable\{
-    Map,
-    Set,
-    SetInterface,
-};
+use Innmind\Url\Url;
+use Innmind\Immutable\Set;
+use function Innmind\Immutable\first;
 use PHPUnit\Framework\TestCase;
 
 class GetContentTypeBuilderTest extends TestCase
@@ -70,15 +66,14 @@ class GetContentTypeBuilderTest extends TestCase
         $headers = ($this->build)(
             $this->createMock(HttpResourceInterface::class),
             new ServerRequest(
-                $this->createMock(UrlInterface::class),
-                $this->createMock(Method::class),
-                $this->createMock(ProtocolVersion::class),
+                Url::of('http://example.com'),
+                Method::get(),
+                new ProtocolVersion(2, 0),
                 Headers::of(
                     new Accept(
                         new AcceptValue(
                             'text',
                             'xhtml',
-                            new Map('string', Parameter::class)
                         )
                     )
                 )
@@ -87,17 +82,17 @@ class GetContentTypeBuilderTest extends TestCase
                 'foo',
                 new Gateway('command'),
                 new Identity('uuid'),
-                new Set(Property::class)
+                Set::of(Property::class)
             ),
             $this->createMock(IdentityInterface::class)
         );
 
-        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertInstanceOf(Set::class, $headers);
         $this->assertSame(Header::class, (string) $headers->type());
         $this->assertSame(1, $headers->size());
         $this->assertSame(
             'Content-Type: text/html',
-            (string) $headers->current()
+            first($headers)->toString()
         );
     }
 }

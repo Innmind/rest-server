@@ -19,11 +19,8 @@ use Innmind\Http\{
     Header,
 };
 use Innmind\Url\Url;
-use Innmind\Immutable\{
-    Set,
-    Map,
-    SetInterface,
-};
+use Innmind\Immutable\Set;
+use function Innmind\Immutable\first;
 use PHPUnit\Framework\TestCase;
 
 class ListLinksBuilderTest extends TestCase
@@ -55,36 +52,36 @@ class ListLinksBuilderTest extends TestCase
         $headers = ($this->build)(
             Set::of(Identity::class, new Id(24), new Id(42)),
             new ServerRequest(
-                Url::fromString('/foo/bar/'),
-                $this->createMock(Method::class),
-                $this->createMock(ProtocolVersion::class)
+                Url::of('/foo/bar/'),
+                Method::get(),
+                new ProtocolVersion(2, 0)
             ),
             $this->directory->definition('image')
         );
 
-        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertInstanceOf(Set::class, $headers);
         $this->assertSame(Header::class, (string) $headers->type());
         $this->assertSame(1, $headers->size());
         $this->assertSame(
             'Link: </top_dir/image/24>; rel="resource", </top_dir/image/42>; rel="resource"',
-            (string) $headers->current()
+            first($headers)->toString()
         );
     }
 
     public function testBuildWithoutIdentities()
     {
         $headers = ($this->build)(
-            new Set(Identity::class),
+            Set::of(Identity::class),
             new ServerRequest(
-                Url::fromString('/foo/bar/'),
-                $this->createMock(Method::class),
-                $this->createMock(ProtocolVersion::class)
+                Url::of('/foo/bar/'),
+                Method::get(),
+                new ProtocolVersion(2, 0)
             ),
             $this->directory->definition('image')
         );
 
-        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertInstanceOf(Set::class, $headers);
         $this->assertSame(Header::class, (string) $headers->type());
-        $this->assertSame(0, $headers->size());
+        $this->assertCount(0, $headers);
     }
 }

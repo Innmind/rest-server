@@ -4,10 +4,7 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\Routing;
 
 use Innmind\Rest\Server\Exception\LogicException;
-use Innmind\Url\{
-    PathInterface,
-    Path,
-};
+use Innmind\Url\Path;
 use Innmind\Immutable\Str;
 
 final class Prefix
@@ -24,26 +21,26 @@ final class Prefix
         return new self('');
     }
 
-    public function outOf(PathInterface $path): PathInterface
+    public function outOf(Path $path): Path
     {
         if ($this->value->empty()) {
             return $path;
         }
 
-        $path = Str::of((string) $path);
+        $path = Str::of($path->toString());
         $prefix = $path->substring(0, $this->value->length());
 
         if (!$prefix->equals($this->value)) {
-            throw new LogicException((string) $path);
+            throw new LogicException($path->toString());
         }
 
-        return new Path(
-            (string) $path->substring($this->value->length())
+        return Path::of(
+            $path->substring($this->value->length())->toString(),
         );
     }
 
     public function __toString(): string
     {
-        return (string) $this->value;
+        return $this->value->toString();
     }
 }

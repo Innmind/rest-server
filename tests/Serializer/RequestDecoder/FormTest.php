@@ -9,8 +9,8 @@ use Innmind\Rest\Server\Serializer\{
 };
 use Innmind\Http\{
     Message\ServerRequest,
-    Message\Form\Form as HttpForm,
-    Message\Form\Parameter\Parameter,
+    Message\Form as HttpForm,
+    Message\Form\Parameter,
 };
 use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
@@ -29,15 +29,14 @@ class FormTest extends TestCase
             ->expects($this->once())
             ->method('form')
             ->willReturn(HttpForm::of(
-                new Parameter('foo', 42),
+                new Parameter('foo', '42'),
                 new Parameter(
                     'bar',
-                    Map::of('string', 'mixed')
-                        ('baz', new Parameter('baz', '24'))
+                    ['baz' => '24'],
                 )
             ));
         $data = (new Form)($request);
 
-        $this->assertSame(['foo' => 42, 'bar' => ['baz' => '24']], $data);
+        $this->assertSame(['foo' => '42', 'bar' => ['baz' => '24']], $data);
     }
 }

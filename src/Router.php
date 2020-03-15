@@ -12,8 +12,8 @@ use Innmind\Rest\Server\{
     Exception\RouteNotFound,
 };
 use Innmind\Url\{
-    PathInterface,
-    UrlInterface,
+    Path,
+    Url,
 };
 use Innmind\Immutable\Map;
 
@@ -27,19 +27,19 @@ final class Router
     {
         $this->routes = $routes;
         $this->prefix = $prefix ?? Prefix::none();
-        $this->variables = new Map('string', 'variable');
+        $this->variables = Map::of('string', 'scalar|array');
 
         if ($prefix instanceof Prefix) {
             $this->variables = $this->variables->put('prefix', (string) $prefix);
         }
     }
 
-    public function match(PathInterface $path): Match
+    public function match(Path $path): Match
     {
         try {
             $path = $this->prefix->outOf($path);
         } catch (LogicException $e) {
-            throw new RouteNotFound((string) $path, 0, $e);
+            throw new RouteNotFound($path->toString(), 0, $e);
         }
 
         return $this->routes->match($path);
@@ -49,7 +49,7 @@ final class Router
         Action $action,
         HttpResource $definition,
         Identity $identity = null
-    ): UrlInterface {
+    ): Url {
         $route = $this->routes->get($action, $definition);
 
         return $route

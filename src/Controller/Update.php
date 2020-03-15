@@ -18,15 +18,16 @@ use Innmind\Rest\Server\{
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
-    Message\StatusCode\StatusCode,
-    Headers\Headers,
+    Message\StatusCode,
+    Headers,
 };
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\Map;
+use function Innmind\Immutable\unwrap;
 
 final class Update implements Controller
 {
     private RequestDecoder $decode;
-    private MapInterface $gateways;
+    private Map $gateways;
     private ResourceDenormalizer $denormalize;
     private Format $format;
     private UpdateBuilder $buildHeader;
@@ -35,7 +36,7 @@ final class Update implements Controller
         RequestDecoder $decode,
         Format $format,
         ResourceDenormalizer $denormalize,
-        MapInterface $gateways,
+        Map $gateways,
         UpdateBuilder $headerBuilder
     ) {
         if (
@@ -43,7 +44,7 @@ final class Update implements Controller
             (string) $gateways->valueType() !== Gateway::class
         ) {
             throw new \TypeError(sprintf(
-                'Argument 3 must be of type MapInterface<string, %s>',
+                'Argument 3 must be of type Map<string, %s>',
                 Gateway::class
             ));
         }
@@ -80,7 +81,7 @@ final class Update implements Controller
             $code->associatedreasonPhrase(),
             $request->protocolVersion(),
             Headers::of(
-                ...($this->buildHeader)($request, $definition, $identity, $resource)
+                ...unwrap(($this->buildHeader)($request, $definition, $identity, $resource))
             )
         );
     }

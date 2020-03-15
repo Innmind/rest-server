@@ -11,9 +11,9 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
-    Message\Method\Method,
-    ProtocolVersion\ProtocolVersion,
-    Headers\Headers,
+    Message\Method,
+    ProtocolVersion,
+    Headers,
     Header\Accept,
     Header\AcceptValue,
     Header\ContentType,
@@ -60,7 +60,7 @@ class FormatTest extends TestCase
     {
         $format = $this->format->acceptable(
             new ServerRequest(
-                Url::fromString('/'),
+                Url::of('/'),
                 Method::get(),
                 new ProtocolVersion(1, 1),
                 Headers::of(
@@ -80,7 +80,7 @@ class FormatTest extends TestCase
     {
         $format = $this->format->acceptable(
             new ServerRequest(
-                Url::fromString('/'),
+                Url::of('/'),
                 Method::get(),
                 new ProtocolVersion(1, 1),
                 Headers::of(
@@ -100,7 +100,7 @@ class FormatTest extends TestCase
     {
         $format = $this->format->contentType(
             new ServerRequest(
-                Url::fromString('/'),
+                Url::of('/'),
                 Method::get(),
                 new ProtocolVersion(1, 1),
                 Headers::of(

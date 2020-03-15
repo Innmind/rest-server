@@ -7,7 +7,14 @@ use Innmind\Rest\Server\{
     Format\Format as FormatFormat,
     Format\MediaType,
 };
-use Innmind\Http\Message\ServerRequest;
+use Innmind\Http\{
+    Message\ServerRequest,
+    Header\Value,
+};
+use function Innmind\Immutable\{
+    first,
+    join,
+};
 use Negotiation\Negotiator;
 
 final class Format
@@ -27,23 +34,24 @@ final class Format
 
     public function acceptable(ServerRequest $request): FormatFormat
     {
+        $values = $request
+            ->headers()
+            ->get('Accept')
+            ->values()
+            ->mapTo(
+                'string',
+                static fn(Value $value): string => $value->toString(),
+            );
+
         return $this->accept->matching(
-            (string) $request
-                ->headers()
-                ->get('Accept')
-                ->values()
-                ->join(', ')
+            join(', ', $values)->toString(),
         );
     }
 
     public function contentType(ServerRequest $request): FormatFormat
     {
         return $this->contentType->matching(
-            (string) $request
-                ->headers()
-                ->get('Content-Type')
-                ->values()
-                ->current()
+            first($request->headers()->get('Content-Type')->values())->toString(),
         );
     }
 }

@@ -39,16 +39,13 @@ use Innmind\Rest\Server\{
     Controller\Capabilities,
     Translator\LinkTranslator,
 };
-use Innmind\Immutable\{
-    MapInterface,
-    Map,
-};
+use Innmind\Immutable\Map;
 
 /**
- * @param MapInterface<string, Gateway> $gateways
+ * @param Map<string, Gateway> $gateways
  */
 function bootstrap(
-    MapInterface $gateways,
+    Map $gateways,
     Directory $directory,
     Formats $acceptFormats = null,
     Formats $contentTypeFormats = null,

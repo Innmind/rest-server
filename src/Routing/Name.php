@@ -4,10 +4,7 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\Routing;
 
 use Innmind\Rest\Server\Exception\DomainException;
-use Innmind\Url\{
-    PathInterface,
-    Path,
-};
+use Innmind\Url\Path;
 use Innmind\Immutable\Str;
 
 final class Name
@@ -23,13 +20,14 @@ final class Name
         $this->value = $value;
     }
 
-    public function asPath(): PathInterface
+    public function asPath(): Path
     {
-        return new Path(
-            (string) Str::of($this->value)
+        return Path::of(
+            Str::of($this->value)
                 ->replace('.', '/')
                 ->prepend('/')
                 ->append('/')
+                ->toString(),
         );
     }
 

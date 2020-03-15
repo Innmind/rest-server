@@ -27,7 +27,7 @@ class VerifyTest extends TestCase
             'foo',
             new Definition\Gateway('foo'),
             new Definition\Identity('foo'),
-            new Set(Definition\Property::class)
+            Set::of(Definition\Property::class)
         );
     }
 

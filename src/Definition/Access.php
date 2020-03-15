@@ -3,10 +3,8 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Definition;
 
-use Innmind\Immutable\{
-    Set,
-    SetInterface,
-};
+use Innmind\Immutable\Set;
+use function Innmind\Immutable\unwrap;
 
 final class Access
 {
@@ -37,16 +35,16 @@ final class Access
     }
 
     /**
-     * @return SetInterface<string>
+     * @return Set<string>
      */
-    public function mask(): SetInterface
+    public function mask(): Set
     {
         return $this->mask;
     }
 
     public function matches(self $mask): bool
     {
-        foreach ($mask->mask() as $access) {
+        foreach (unwrap($mask->mask()) as $access) {
             if (!$this->mask->contains($access)) {
                 return false;
             }

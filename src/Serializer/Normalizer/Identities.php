@@ -4,14 +4,14 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\Serializer\Normalizer;
 
 use Innmind\Rest\Server\Identity;
-use Innmind\Immutable\SetInterface;
+use Innmind\Immutable\Set;
 
 final class Identities
 {
     /**
-     * @param SetInterface<Identity> $identities
+     * @param Set<Identity> $identities
      */
-    public function __invoke(SetInterface $identities): array
+    public function __invoke(Set $identities): array
     {
         return $identities->reduce(
             ['identities' => []],

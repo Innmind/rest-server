@@ -9,20 +9,20 @@ use Innmind\Rest\Server\{
     Exception\NormalizationException,
 };
 use Innmind\TimeContinuum\{
-    FormatInterface,
-    Format\ISO8601,
-    TimeContinuumInterface,
-    PointInTimeInterface,
+    Format,
+    Earth\Format\ISO8601,
+    Clock,
+    PointInTime,
 };
 
 final class PointInTimeType implements Type
 {
-    private TimeContinuumInterface $clock;
-    private FormatInterface $format;
+    private Clock $clock;
+    private Format $format;
 
     public function __construct(
-        TimeContinuumInterface $clock,
-        FormatInterface $format = null
+        Clock $clock,
+        Format $format = null
     ) {
         $this->clock = $clock;
         $this->format = $format ?? new ISO8601;
@@ -45,7 +45,7 @@ final class PointInTimeType implements Type
      */
     public function normalize($data)
     {
-        if (!$data instanceof PointInTimeInterface) {
+        if (!$data instanceof PointInTime) {
             throw new NormalizationException('The value must be a point in time');
         }
 
@@ -54,6 +54,6 @@ final class PointInTimeType implements Type
 
     public function __toString(): string
     {
-        return 'date<'.$this->format.'>';
+        return 'date<'.$this->format->toString().'>';
     }
 }
