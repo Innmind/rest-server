@@ -13,6 +13,7 @@ final class Link
 {
     private Reference $reference;
     private string $relationship;
+    /** @var Map<string, Parameter> */
     private Map $parameters;
 
     public function __construct(
@@ -22,6 +23,7 @@ final class Link
     ) {
         $this->reference = $reference;
         $this->relationship = $relationship;
+        /** @var Map<string, Parameter> */
         $this->parameters = Sequence::of(Parameter::class, ...$parameters)->reduce(
             Map::of('string', Parameter::class),
             static function(Map $parameters, Parameter $parameter): Map {
