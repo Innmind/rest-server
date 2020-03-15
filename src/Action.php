@@ -74,10 +74,10 @@ final class Action
 
     public function equals(self $action): bool
     {
-        return $this->action === (string) $action;
+        return $this->action === $action->toString();
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->action;
     }

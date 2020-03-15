@@ -16,14 +16,14 @@ final class Definition
     public function __invoke(HttpResource $resource): array
     {
         return [
-            'identity' => (string) $resource->identity(),
+            'identity' => $resource->identity()->toString(),
             'properties' => $resource
                 ->properties()
                 ->reduce(
                     [],
                     function(array $carry, string $name, Property $property) {
                         $carry[$name] = [
-                            'type' => (string) $property->type(),
+                            'type' => $property->type()->toString(),
                             'access' => unwrap($property->access()->mask()),
                             'variants' => unwrap($property->variants()),
                             'optional' => $property->isOptional(),

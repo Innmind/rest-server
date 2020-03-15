@@ -47,7 +47,7 @@ final class Capabilities
                             function(Route $route): LinkValue {
                                 return new LinkValue(
                                     $this->router->generate($route->action(), $route->definition()),
-                                    (string) $route->name()
+                                    $route->name()->toString(),
                                 );
                             }
                         )

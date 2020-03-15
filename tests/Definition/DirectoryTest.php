@@ -40,8 +40,8 @@ class DirectoryTest extends TestCase
         );
 
         $this->assertInstanceOf(Name::class, $directory->name());
-        $this->assertSame('foo', (string) $directory->name());
-        $this->assertSame('foo', (string) $directory);
+        $this->assertSame('foo', $directory->name()->toString());
+        $this->assertSame('foo', $directory->toString());
         $this->assertSame($directory2, $directory->child('bar'));
         $this->assertCount(1, $directory->children());
         $this->assertSame($resource, $directory->definition('res'));

@@ -22,7 +22,7 @@ class FormatTest extends TestCase
         );
 
         $this->assertSame('json', $format->name());
-        $this->assertSame('json', (string) $format);
+        $this->assertSame('json', $format->toString());
         $this->assertSame($types, $format->mediaTypes());
         $this->assertSame(24, $format->priority());
     }

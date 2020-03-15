@@ -13,6 +13,6 @@ class IdentityTest extends TestCase
         $identity = new Identity('foo');
 
         $this->assertSame('foo', $identity->property());
-        $this->assertSame('foo', (string) $identity);
+        $this->assertSame('foo', $identity->toString());
     }
 }

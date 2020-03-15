@@ -118,7 +118,7 @@ final class Formats
                 ->reduce(
                     [],
                     function(array $carry, MediaType $type): array {
-                        $carry[] = (string) $type;
+                        $carry[] = $type->toString();
 
                         return $carry;
                     }

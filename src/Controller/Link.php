@@ -76,7 +76,7 @@ final class Link implements Controller
 
         $link = $this
             ->gateways
-            ->get((string) $from->gateway())
+            ->get($from->gateway()->toString())
             ->resourceLinker();
         $link(
             $from = new Reference($from, $identity),

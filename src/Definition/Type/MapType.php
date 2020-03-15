@@ -75,12 +75,12 @@ final class MapType implements Type
         );
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return \sprintf(
             'map<%s, %s>',
-            $this->keyType,
-            $this->valueType
+            $this->keyType->toString(),
+            $this->valueType->toString(),
         );
     }
 }

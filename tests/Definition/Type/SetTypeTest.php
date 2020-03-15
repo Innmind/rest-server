@@ -25,17 +25,17 @@ class SetTypeTest extends TestCase
         ));
         $this->assertSame(
             'set<string>',
-            (string) new SetType(
+            (new SetType(
                 'string',
                 new StringType
-            )
+            ))->toString(),
         );
         $this->assertSame(
             'set<date<c>>',
-            (string) new SetType(
+            (new SetType(
                 \DateTimeImmutable::class,
                 new DateType('c')
-            )
+            ))->toString(),
         );
     }
 

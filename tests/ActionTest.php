@@ -14,7 +14,7 @@ class ActionTest extends TestCase
     {
         $action = Action::list();
 
-        $this->assertSame('list', (string) $action);
+        $this->assertSame('list', $action->toString());
         $this->assertTrue($action->equals(Action::list()));
         $this->assertFalse($action->equals(Action::get()));
         $this->assertSame(Action::list(), Action::list());

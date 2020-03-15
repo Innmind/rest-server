@@ -27,21 +27,21 @@ class MapTypeTest extends TestCase
         ));
         $this->assertSame(
             'map<int, string>',
-            (string) new MapType(
+            (new MapType(
                 'int',
                 'string',
                 new IntType,
                 new StringType
-            )
+            ))->toString(),
         );
         $this->assertSame(
             'map<int, date<c>>',
-            (string) new MapType(
+            (new MapType(
                 'int',
                 \DateTimeImmutable::class,
                 new IntType,
                 new DateType('c')
-            )
+            ))->toString(),
         );
     }
 

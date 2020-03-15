@@ -76,7 +76,7 @@ final class Unlink implements Controller
 
         $unlink = $this
             ->gateways
-            ->get((string) $from->gateway())
+            ->get($from->gateway()->toString())
             ->resourceUnlinker();
         $unlink(
             $from = new Reference($from, $identity),

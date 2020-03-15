@@ -61,8 +61,8 @@ final class SetType implements Type
         return $normalized;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
-        return \sprintf('set<%s>', $this->inner);
+        return \sprintf('set<%s>', $this->inner->toString());
     }
 }

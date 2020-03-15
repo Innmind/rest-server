@@ -17,7 +17,7 @@ final class Identity
         return $this->property;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->property;
     }

@@ -30,7 +30,7 @@ final class Router
         $this->variables = Map::of('string', 'scalar|array');
 
         if ($prefix instanceof Prefix) {
-            $this->variables = $this->variables->put('prefix', (string) $prefix);
+            $this->variables = $this->variables->put('prefix', $prefix->toString());
         }
     }
 
@@ -55,7 +55,7 @@ final class Router
         return $route
             ->template()
             ->expand(
-                $this->variables->put('identity', (string) $identity)
+                $this->variables->put('identity', $identity ? $identity->toString() : '')
             );
     }
 }

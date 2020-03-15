@@ -45,7 +45,7 @@ final class AcceptVerifier implements Verifier
             ->reduce(
                 [],
                 function(array $carry, MediaType $type) {
-                    $carry[] = (string) $type;
+                    $carry[] = $type->toString();
 
                     return $carry;
                 }

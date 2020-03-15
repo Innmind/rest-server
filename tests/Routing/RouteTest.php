@@ -91,7 +91,7 @@ class RouteTest extends TestCase
         $identity = $route->identity(Path::of('/foo/42'));
 
         $this->assertInstanceOf(Identity::class, $identity);
-        $this->assertSame('42', (string) $identity);
+        $this->assertSame('42', $identity->toString());
     }
 
     public function testIdentityWhenNotInPath()

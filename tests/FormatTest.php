@@ -73,7 +73,7 @@ class FormatTest extends TestCase
 
         $this->assertInstanceOf(FormatFormat::class, $format);
         $this->assertSame('json', $format->name());
-        $this->assertSame('application/json', (string) $format->preferredMediaType());
+        $this->assertSame('application/json', $format->preferredMediaType()->toString());
     }
 
     public function testAcceptableWhenAcceptingEverything()
@@ -93,7 +93,7 @@ class FormatTest extends TestCase
 
         $this->assertInstanceOf(FormatFormat::class, $format);
         $this->assertSame('json', $format->name());
-        $this->assertSame('application/json', (string) $format->preferredMediaType());
+        $this->assertSame('application/json', $format->preferredMediaType()->toString());
     }
 
     public function testContentType()
@@ -113,6 +113,6 @@ class FormatTest extends TestCase
 
         $this->assertInstanceOf(FormatFormat::class, $format);
         $this->assertSame('json', $format->name());
-        $this->assertSame('application/json', (string) $format->preferredMediaType());
+        $this->assertSame('application/json', $format->preferredMediaType()->toString());
     }
 }

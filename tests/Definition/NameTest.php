@@ -26,7 +26,7 @@ class NameTest extends TestCase
                 return (bool) preg_match('~^[a-zA-Z0-9_.]$~', $string);
             })
             ->then(function(string $string): void {
-                $this->assertSame($string, (string) new Name($string));
+                $this->assertSame($string, (new Name($string))->toString());
             });
     }
 
@@ -53,8 +53,8 @@ class NameTest extends TestCase
         $joined = $name->under($directory);
 
         $this->assertInstanceOf(Name::class, $joined);
-        $this->assertSame('foo', (string) $name);
-        $this->assertSame('bar', (string) $directory);
-        $this->assertSame('bar.foo', (string) $joined);
+        $this->assertSame('foo', $name->toString());
+        $this->assertSame('bar', $directory->toString());
+        $this->assertSame('bar.foo', $joined->toString());
     }
 }

@@ -153,9 +153,9 @@ final class HttpResource
         return true;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
-        return (string) $this->name;
+        return $this->name->toString();
     }
 
     private function acceptLink(Locator $locator, Link $link): bool

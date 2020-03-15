@@ -59,7 +59,7 @@ class LinkTranslatorTest extends TestCase
         );
         $this->assertSame(
             'bar',
-            (string) $link->reference()->identity()
+            $link->reference()->identity()->toString(),
         );
         $this->assertTrue($link->has('foo'));
         $this->assertSame('baz', $link->get('foo')->value());

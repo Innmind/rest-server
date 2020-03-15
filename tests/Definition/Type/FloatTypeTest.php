@@ -16,7 +16,7 @@ class FloatTypeTest extends TestCase
     public function testInterface()
     {
         $this->assertInstanceOf(Type::class, new FloatType);
-        $this->assertSame('float', (string) new FloatType);
+        $this->assertSame('float', (new FloatType)->toString());
     }
 
     public function testDenormalize()

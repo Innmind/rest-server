@@ -54,7 +54,7 @@ final class Directory
         $map = Map::of('string', HttpResource::class);
 
         foreach ($definitions as $definition) {
-            $map = $map->put((string) $definition->name(), $definition);
+            $map = $map->put($definition->name()->toString(), $definition);
         }
 
         return new self(
@@ -62,7 +62,7 @@ final class Directory
             $children->reduce(
                 Map::of('string', self::class),
                 static function(Map $children, self $child): Map {
-                    return $children->put((string) $child->name(), $child);
+                    return $children->put($child->name()->toString(), $child);
                 }
             ),
             $map
@@ -113,7 +113,7 @@ final class Directory
             ->definitions
             ->map(function(string $name, HttpResource $definition) {
                 return new Pair(
-                    (string) $definition->name()->under($this->name),
+                    $definition->name()->under($this->name)->toString(),
                     $definition
                 );
             });
@@ -127,7 +127,7 @@ final class Directory
                             ->flatten()
                             ->map(function(string $name, HttpResource $definition) {
                                 return new Pair(
-                                    (string) (new Name($name))->under($this->name),
+                                    (new Name($name))->under($this->name)->toString(),
                                     $definition
                                 );
                             })
@@ -140,8 +140,8 @@ final class Directory
         return $definitions;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
-        return (string) $this->name;
+        return $this->name->toString();
     }
 }

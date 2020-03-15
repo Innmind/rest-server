@@ -39,7 +39,7 @@ final class Prefix
         );
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->value->toString();
     }

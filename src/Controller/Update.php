@@ -63,7 +63,7 @@ final class Update implements Controller
     ): Response {
         $update = $this
             ->gateways
-            ->get((string) $definition->gateway())
+            ->get($definition->gateway()->toString())
             ->resourceUpdater();
 
         $update(

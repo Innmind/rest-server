@@ -37,14 +37,14 @@ class PointInTimeTypeTest extends TestCase
         $this->assertInstanceOf(Type::class, new PointInTimeType($this->clock));
         $this->assertSame(
             'date<Y-m-d>',
-            (string) new PointInTimeType(
+            (new PointInTimeType(
                 $this->clock,
                 $this->format
-            )
+            ))->toString(),
         );
         $this->assertSame(
             'date<Y-m-d\TH:i:sP>',
-            (string) new PointInTimeType($this->clock)
+            (new PointInTimeType($this->clock))->toString(),
         );
     }
 

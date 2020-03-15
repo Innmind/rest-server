@@ -13,6 +13,6 @@ class GatewayTest extends TestCase
         $gateway = new Gateway('foo');
 
         $this->assertSame('foo', $gateway->name());
-        $this->assertSame('foo', (string) $gateway);
+        $this->assertSame('foo', $gateway->toString());
     }
 }

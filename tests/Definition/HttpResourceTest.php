@@ -36,8 +36,8 @@ class HttpResourceTest extends TestCase
         );
 
         $this->assertInstanceOf(Name::class, $resource->name());
-        $this->assertSame('foobar', (string) $resource->name());
-        $this->assertSame('foobar', (string) $resource);
+        $this->assertSame('foobar', $resource->name()->toString());
+        $this->assertSame('foobar', $resource->toString());
         $this->assertSame($identity, $resource->identity());
         $this->assertInstanceOf(Map::class, $resource->properties());
         $this->assertSame('string', (string) $resource->properties()->keyType());

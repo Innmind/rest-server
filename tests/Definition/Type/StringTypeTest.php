@@ -19,7 +19,7 @@ class StringTypeTest extends TestCase
         $this->assertInstanceOf(Type::class, new StringType);
         $this->assertSame(
             'string',
-            (string) new StringType
+            (new StringType)->toString()
         );
     }
 

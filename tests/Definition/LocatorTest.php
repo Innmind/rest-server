@@ -21,7 +21,7 @@ class LocatorTest extends TestCase
         $resource = $locate('top_dir.sub_dir.res');
 
         $this->assertInstanceOf(HttpResource::class, $resource);
-        $this->assertSame('res', (string) $resource->name());
+        $this->assertSame('res', $resource->name()->toString());
     }
 
     public function testThrowWhenResourceNotFound()

@@ -86,7 +86,7 @@ final class Index implements Controller
 
         $access = $this
             ->gateways
-            ->get((string) $definition->gateway())
+            ->get($definition->gateway()->toString())
             ->resourceListAccessor();
         $identities = $access($definition, $specification, $range);
 

@@ -14,7 +14,7 @@ class BoolTypeTest extends TestCase
     public function testInterface()
     {
         $this->assertInstanceOf(Type::class, new BoolType);
-        $this->assertSame('bool', (string) new BoolType);
+        $this->assertSame('bool', (new BoolType)->toString());
     }
 
     public function testDenormalize()

@@ -49,7 +49,7 @@ final class Remove implements Controller
     ): Response {
         $remove = $this
             ->gateways
-            ->get((string) $definition->gateway())
+            ->get($definition->gateway()->toString())
             ->resourceRemover();
 
         $remove($definition, $identity);

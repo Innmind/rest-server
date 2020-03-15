@@ -72,7 +72,7 @@ final class Create implements Controller
 
         $create = $this
             ->gateways
-            ->get((string) $definition->gateway())
+            ->get($definition->gateway()->toString())
             ->resourceCreator();
 
         $identity = $create(

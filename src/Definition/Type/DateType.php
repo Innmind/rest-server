@@ -59,7 +59,7 @@ final class DateType implements Type
         return $data->format($this->format);
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return 'date<'.$this->format.'>';
     }

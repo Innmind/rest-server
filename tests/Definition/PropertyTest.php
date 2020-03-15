@@ -23,7 +23,7 @@ class PropertyTest extends TestCase
             'bar'
         );
 
-        $this->assertSame('foo', (string) $property);
+        $this->assertSame('foo', $property->toString());
         $this->assertSame('foo', $property->name());
         $this->assertSame($type, $property->type());
         $this->assertTrue($property->access()->isReadable());

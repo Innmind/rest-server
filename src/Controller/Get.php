@@ -57,7 +57,7 @@ final class Get implements Controller
     ): Response {
         $access = $this
             ->gateways
-            ->get((string) $definition->gateway())
+            ->get($definition->gateway()->toString())
             ->resourceAccessor();
         $resource = $access($definition, $identity);
 
