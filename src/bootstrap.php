@@ -43,6 +43,8 @@ use Innmind\Immutable\Map;
 
 /**
  * @param Map<string, Gateway> $gateways
+ *
+ * @return array{routes: Routes, controller: array{create: Controller, get: Controller, index: Controller, options: Controller, remove: Controller, update: Controller, link: Controller, unlink: Controller, capabilities: Capabilities}, locator: Locator}
  */
 function bootstrap(
     Map $gateways,
