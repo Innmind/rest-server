@@ -6,14 +6,14 @@ namespace Innmind\Rest\Server\Serializer\Encoder;
 use Innmind\Rest\Server\Serializer\Encoder;
 use Innmind\Http\Message\ServerRequest;
 use Innmind\Stream\Readable;
-use Innmind\Filesystem\Stream\StringStream;
+use Innmind\Stream\Readable\Stream;
 use Innmind\Json\Json as Helper;
 
 final class Json implements Encoder
 {
     public function __invoke(ServerRequest $request, array $data): Readable
     {
-        return new StringStream(
+        return Stream::ofContent(
             Helper::encode($data)
         );
     }

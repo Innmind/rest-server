@@ -19,13 +19,13 @@ class RouteTest extends TestCase
 {
     private $definition;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->definition = new Definition\HttpResource(
             'foo',
             new Definition\Gateway('foo'),
             new Definition\Identity('uuid'),
-            new Set(Definition\Property::class)
+            Set::of(Definition\Property::class)
         );
     }
 
@@ -56,7 +56,7 @@ class RouteTest extends TestCase
         );
 
         $this->assertInstanceOf(Route::class, $route);
-        $this->assertSame($expected, (string) $route->template());
+        $this->assertSame($expected, $route->template()->toString());
     }
 
     public function testMatches()
@@ -67,8 +67,8 @@ class RouteTest extends TestCase
             $this->definition
         );
 
-        $this->assertTrue($route->matches(new Path('/foo/bar/baz/')));
-        $this->assertFalse($route->matches(new Path('/foo/bar/baz')));
+        $this->assertTrue($route->matches(Path::of('/foo/bar/baz/')));
+        $this->assertFalse($route->matches(Path::of('/foo/bar/baz')));
 
         $route = Route::of(
             Action::get(),
@@ -76,8 +76,8 @@ class RouteTest extends TestCase
             $this->definition
         );
 
-        $this->assertTrue($route->matches(new Path('/foo/bar/baz/some-uuid')));
-        $this->assertFalse($route->matches(new Path('/foo/bar/baz/')));
+        $this->assertTrue($route->matches(Path::of('/foo/bar/baz/some-uuid')));
+        $this->assertFalse($route->matches(Path::of('/foo/bar/baz/')));
     }
 
     public function testIdentity()
@@ -88,10 +88,10 @@ class RouteTest extends TestCase
             $this->definition
         );
 
-        $identity = $route->identity(new Path('/foo/42'));
+        $identity = $route->identity(Path::of('/foo/42'));
 
         $this->assertInstanceOf(Identity::class, $identity);
-        $this->assertSame('42', (string) $identity);
+        $this->assertSame('42', $identity->toString());
     }
 
     public function testIdentityWhenNotInPath()
@@ -102,7 +102,7 @@ class RouteTest extends TestCase
             $this->definition
         );
 
-        $identity = $route->identity(new Path('/foo/'));
+        $identity = $route->identity(Path::of('/foo/'));
 
         $this->assertNull($identity);
     }

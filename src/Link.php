@@ -6,15 +6,15 @@ namespace Innmind\Rest\Server;
 use Innmind\Rest\Server\Link\Parameter;
 use Innmind\Immutable\{
     Sequence,
-    MapInterface,
     Map,
 };
 
 final class Link
 {
-    private $reference;
-    private $relationship;
-    private $parameters;
+    private Reference $reference;
+    private string $relationship;
+    /** @var Map<string, Parameter> */
+    private Map $parameters;
 
     public function __construct(
         Reference $reference,
@@ -23,9 +23,10 @@ final class Link
     ) {
         $this->reference = $reference;
         $this->relationship = $relationship;
-        $this->parameters = Sequence::of(...$parameters)->reduce(
+        /** @var Map<string, Parameter> */
+        $this->parameters = Sequence::of(Parameter::class, ...$parameters)->reduce(
             Map::of('string', Parameter::class),
-            static function(MapInterface $parameters, Parameter $parameter): MapInterface {
+            static function(Map $parameters, Parameter $parameter): Map {
                 return $parameters->put(
                     $parameter->name(),
                     $parameter

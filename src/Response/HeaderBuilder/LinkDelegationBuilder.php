@@ -11,14 +11,12 @@ use Innmind\Http\{
     Message\ServerRequest,
     Header,
 };
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Immutable\Set;
 
 final class LinkDelegationBuilder implements LinkBuilder
 {
-    private $builders;
+    /** @var list<LinkBuilder> */
+    private array $builders;
 
     public function __construct(LinkBuilder ...$builders)
     {
@@ -32,7 +30,8 @@ final class LinkDelegationBuilder implements LinkBuilder
         ServerRequest $request,
         Reference $from,
         Link ...$links
-    ): SetInterface {
+    ): Set {
+        /** @var Set<Header> */
         $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {

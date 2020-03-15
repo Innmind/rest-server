@@ -17,21 +17,27 @@ use Innmind\Rest\Server\{
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
-    Message\StatusCode\StatusCode,
-    Headers\Headers,
+    Message\StatusCode,
+    Headers,
+    Header\Link as LinkHeader,
     Exception\Http\BadRequest,
 };
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\Map;
+use function Innmind\Immutable\unwrap;
 
 final class Link implements Controller
 {
-    private $gateways;
-    private $buildHeader;
-    private $translate;
-    private $locator;
+    /** @var Map<string, Gateway> */
+    private Map $gateways;
+    private LinkBuilder $buildHeader;
+    private LinkTranslator $translate;
+    private Locator $locator;
 
+    /**
+     * @param Map<string, Gateway> $gateways
+     */
     public function __construct(
-        MapInterface $gateways,
+        Map $gateways,
         LinkBuilder $headerBuilder,
         LinkTranslator $translator,
         Locator $locator
@@ -41,7 +47,7 @@ final class Link implements Controller
             (string) $gateways->valueType() !== Gateway::class
         ) {
             throw new \TypeError(sprintf(
-                'Argument 1 must be of type MapInterface<string, %s>',
+                'Argument 1 must be of type Map<string, %s>',
                 Gateway::class
             ));
         }
@@ -57,28 +63,35 @@ final class Link implements Controller
         HttpResource $definition,
         Identity $identity = null
     ): Response {
-        $from = $definition;
+        $fromDefinition = $definition;
 
-        if (!$request->headers()->has('Link')) {
+        if (!$request->headers()->contains('Link')) {
+            throw new BadRequest;
+        }
+
+        $link = $request->headers()->get('Link');
+
+        if (!$link instanceof LinkHeader) {
             throw new BadRequest;
         }
 
         try {
-            $links = ($this->translate)($request->headers()->get('Link'));
+            $links = unwrap(($this->translate)($link));
         } catch (RouteNotFound $e) {
             throw new BadRequest('', 0, $e);
         }
 
-        if (!$from->accept($this->locator, ...$links)) {
+        if (!$fromDefinition->accept($this->locator, ...$links)) {
             throw new BadRequest;
         }
 
         $link = $this
             ->gateways
-            ->get((string) $from->gateway())
+            ->get($fromDefinition->gateway()->toString())
             ->resourceLinker();
+        /** @psalm-suppress PossiblyNullArgument */
         $link(
-            $from = new Reference($from, $identity),
+            $from = new Reference($fromDefinition, $identity),
             ...$links
         );
 
@@ -87,7 +100,7 @@ final class Link implements Controller
             $code->associatedreasonPhrase(),
             $request->protocolVersion(),
             Headers::of(
-                ...($this->buildHeader)($request, $from, ...$links)
+                ...unwrap(($this->buildHeader)($request, $from, ...$links))
             )
         );
     }

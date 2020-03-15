@@ -4,19 +4,24 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\Format;
 
 use Innmind\Rest\Server\Exception\DomainException;
-use Innmind\Immutable\SetInterface;
+use Innmind\Immutable\Set;
 
 final class Format
 {
-    private $name;
-    private $types;
-    private $priority;
+    private string $name;
+    /** @var Set<MediaType> */
+    private Set $types;
+    private int $priority;
+    private MediaType $preferredType;
 
-    public function __construct(string $name, SetInterface $types, int $priority)
+    /**
+     * @param Set<MediaType> $types
+     */
+    public function __construct(string $name, Set $types, int $priority)
     {
         if ((string) $types->type() !== MediaType::class) {
             throw new \TypeError(sprintf(
-                'Argument 2 must be of type SetInterface<%s>',
+                'Argument 2 must be of type Set<%s>',
                 MediaType::class
             ));
         }
@@ -29,8 +34,8 @@ final class Format
         $this->types = $types;
         $this->priority = $priority;
         $this->preferredType = $types
-            ->sort(function(MediaType $a, MediaType $b): bool {
-                return $a->priority() < $b->priority();
+            ->sort(function(MediaType $a, MediaType $b): int {
+                return (int) ($a->priority() < $b->priority());
             })
             ->first();
     }
@@ -41,9 +46,9 @@ final class Format
     }
 
     /**
-     * @return SetInterface<MediaType>
+     * @return Set<MediaType>
      */
-    public function mediaTypes(): SetInterface
+    public function mediaTypes(): Set
     {
         return $this->types;
     }
@@ -58,7 +63,7 @@ final class Format
         return $this->priority;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->name;
     }

@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\Definition;
 
 final class Gateway
 {
-    private $name;
+    private string $name;
 
     public function __construct(string $name)
     {
@@ -17,7 +17,7 @@ final class Gateway
         return $this->name;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->name;
     }

@@ -21,25 +21,30 @@ use Innmind\Rest\Server\{
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
-    Message\StatusCode\StatusCode,
-    Headers\Headers,
+    Message\StatusCode,
+    Headers,
     Exception\Http\RangeNotSatisfiable,
 };
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\Map;
+use function Innmind\Immutable\unwrap;
 
 final class Index implements Controller
 {
-    private $encode;
-    private $normalize;
-    private $extractRange;
-    private $buildSpecification;
-    private $gateways;
-    private $buildHeader;
+    private Encoder $encode;
+    private Identities $normalize;
+    private Extractor $extractRange;
+    private Builder $buildSpecification;
+    /** @var Map<string, Gateway> */
+    private Map $gateways;
+    private ListBuilder $buildHeader;
 
+    /**
+     * @param Map<string, Gateway> $gateways
+     */
     public function __construct(
         Encoder $encode,
         Identities $normalize,
-        MapInterface $gateways,
+        Map $gateways,
         ListBuilder $headerBuilder,
         Extractor $rangeExtractor,
         Builder $specificationBuilder
@@ -49,7 +54,7 @@ final class Index implements Controller
             (string) $gateways->valueType() !== Gateway::class
         ) {
             throw new \TypeError(sprintf(
-                'Argument 3 must be of type MapInterface<string, %s>',
+                'Argument 3 must be of type Map<string, %s>',
                 Gateway::class
             ));
         }
@@ -85,7 +90,7 @@ final class Index implements Controller
 
         $access = $this
             ->gateways
-            ->get((string) $definition->gateway())
+            ->get($definition->gateway()->toString())
             ->resourceListAccessor();
         $identities = $access($definition, $specification, $range);
 
@@ -103,13 +108,13 @@ final class Index implements Controller
             $code->associatedreasonPhrase(),
             $request->protocolVersion(),
             Headers::of(
-                ...($this->buildHeader)(
+                ...unwrap(($this->buildHeader)(
                     $identities,
                     $request,
                     $definition,
                     $specification,
                     $range
-                )
+                ))
             ),
             ($this->encode)(
                 $request,

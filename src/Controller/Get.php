@@ -15,22 +15,27 @@ use Innmind\Rest\Server\{
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
-    Message\StatusCode\StatusCode,
-    Headers\Headers,
+    Message\StatusCode,
+    Headers,
 };
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\Map;
+use function Innmind\Immutable\unwrap;
 
 final class Get implements Controller
 {
-    private $encode;
-    private $normalize;
-    private $gateways;
-    private $buildHeader;
+    private Encoder $encode;
+    private ResourceNormalizer $normalize;
+    /** @var Map<string, Gateway> */
+    private Map $gateways;
+    private GetBuilder $buildHeader;
 
+    /**
+     * @param Map<string, Gateway> $gateways
+     */
     public function __construct(
         Encoder $encode,
         ResourceNormalizer $normalize,
-        MapInterface $gateways,
+        Map $gateways,
         GetBuilder $headerBuilder
     ) {
         if (
@@ -38,7 +43,7 @@ final class Get implements Controller
             (string) $gateways->valueType() !== Gateway::class
         ) {
             throw new \TypeError(sprintf(
-                'Argument 3 must be of type MapInterface<string, %s>',
+                'Argument 3 must be of type Map<string, %s>',
                 Gateway::class
             ));
         }
@@ -56,8 +61,9 @@ final class Get implements Controller
     ): Response {
         $access = $this
             ->gateways
-            ->get((string) $definition->gateway())
+            ->get($definition->gateway()->toString())
             ->resourceAccessor();
+        /** @psalm-suppress PossiblyNullArgument */
         $resource = $access($definition, $identity);
 
         return new Response\Response(
@@ -65,7 +71,7 @@ final class Get implements Controller
             $code->associatedreasonPhrase(),
             $request->protocolVersion(),
             Headers::of(
-                ...($this->buildHeader)($resource, $request, $definition, $identity)
+                ...unwrap(($this->buildHeader)($resource, $request, $definition, $identity))
             ),
             ($this->encode)(
                 $request,

@@ -20,26 +20,31 @@ use Innmind\Rest\Server\{
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
-    Message\StatusCode\StatusCode,
-    Headers\Headers,
+    Message\StatusCode,
+    Headers,
 };
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\Map;
+use function Innmind\Immutable\unwrap;
 
 final class Create implements Controller
 {
-    private $decode;
-    private $encode;
-    private $gateways;
-    private $normalize;
-    private $denormalize;
-    private $buildHeader;
+    private RequestDecoder $decode;
+    private Encoder $encode;
+    /** @var Map<string, Gateway> */
+    private Map $gateways;
+    private IdentityNormalizer $normalize;
+    private ResourceDenormalizer $denormalize;
+    private CreateBuilder $buildHeader;
 
+    /**
+     * @param Map<string, Gateway> $gateways
+     */
     public function __construct(
         RequestDecoder $decode,
         Encoder $encode,
         IdentityNormalizer $normalize,
         ResourceDenormalizer $denormalize,
-        MapInterface $gateways,
+        Map $gateways,
         CreateBuilder $headerBuilder
     ) {
         if (
@@ -47,7 +52,7 @@ final class Create implements Controller
             (string) $gateways->valueType() !== Gateway::class
         ) {
             throw new \TypeError(sprintf(
-                'Argument 4 must be of type MapInterface<string, %s>',
+                'Argument 4 must be of type Map<string, %s>',
                 Gateway::class
             ));
         }
@@ -71,7 +76,7 @@ final class Create implements Controller
 
         $create = $this
             ->gateways
-            ->get((string) $definition->gateway())
+            ->get($definition->gateway()->toString())
             ->resourceCreator();
 
         $identity = $create(
@@ -88,7 +93,7 @@ final class Create implements Controller
             $code->associatedreasonPhrase(),
             $request->protocolVersion(),
             Headers::of(
-                ...($this->buildHeader)($identity, $request, $definition, $resource)
+                ...unwrap(($this->buildHeader)($identity, $request, $definition, $resource))
             ),
             ($this->encode)(
                 $request,

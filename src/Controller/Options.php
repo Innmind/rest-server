@@ -15,17 +15,17 @@ use Innmind\Rest\Server\{
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
-    Message\StatusCode\StatusCode,
-    Headers\Headers,
+    Message\StatusCode,
+    Headers,
     Header\ContentType,
     Header\ContentTypeValue,
 };
 
 final class Options implements Controller
 {
-    private $encode;
-    private $format;
-    private $normalize;
+    private Encoder $encode;
+    private Format $format;
+    private Definition $normalize;
 
     public function __construct(
         Encoder $encode,

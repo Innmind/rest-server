@@ -4,30 +4,36 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\Definition;
 
 use Innmind\Immutable\{
-    MapInterface,
     Map,
-    SetInterface,
+    Set,
     Pair,
 };
 
 final class Directory
 {
-    private $name;
-    private $children;
-    private $definitions;
-    private $flattened;
+    private Name $name;
+    /** @var Map<string, self> */
+    private Map $children;
+    /** @var Map<string, HttpResource> */
+    private Map $definitions;
+    /** @var Map<string, HttpResource>|null */
+    private ?Map $flattened = null;
 
+    /**
+     * @param Map<string, self> $children
+     * @param Map<string, HttpResource> $definitions
+     */
     public function __construct(
         string $name,
-        MapInterface $children,
-        MapInterface $definitions
+        Map $children,
+        Map $definitions
     ) {
         if (
             (string) $children->keyType() !== 'string' ||
             (string) $children->valueType() !== self::class
         ) {
             throw new \TypeError(sprintf(
-                'Argument 2 must be of type MapInterface<string, %s>',
+                'Argument 2 must be of type Map<string, %s>',
                 self::class
             ));
         }
@@ -37,7 +43,7 @@ final class Directory
             (string) $definitions->valueType() !== HttpResource::class
         ) {
             throw new \TypeError(sprintf(
-                'Argument 3 must be of type MapInterface<string, %s>',
+                'Argument 3 must be of type Map<string, %s>',
                 HttpResource::class
             ));
         }
@@ -47,27 +53,30 @@ final class Directory
         $this->definitions = $definitions;
     }
 
+    /**
+     * @param Set<self> $children
+     */
     public static function of(
         string $name,
-        SetInterface $children,
+        Set $children,
         HttpResource ...$definitions
     ): self {
+        /** @var Map<string, HttpResource> */
         $map = Map::of('string', HttpResource::class);
 
         foreach ($definitions as $definition) {
-            $map = $map->put((string) $definition->name(), $definition);
+            $map = $map->put($definition->name()->toString(), $definition);
         }
 
-        return new self(
-            $name,
-            $children->reduce(
-                Map::of('string', self::class),
-                static function(MapInterface $children, self $child): MapInterface {
-                    return $children->put((string) $child->name(), $child);
-                }
-            ),
-            $map
+        /** @var Map<string, self> */
+        $children = $children->reduce(
+            Map::of('string', self::class),
+            static function(Map $children, self $child): Map {
+                return $children->put($child->name()->toString(), $child);
+            },
         );
+
+        return new self($name, $children, $map);
     }
 
     public function name(): Name
@@ -81,9 +90,9 @@ final class Directory
     }
 
     /**
-     * @return MapInterface<string, Directory>
+     * @return Map<string, Directory>
      */
-    public function children(): MapInterface
+    public function children(): Map
     {
         return $this->children;
     }
@@ -94,19 +103,19 @@ final class Directory
     }
 
     /**
-     * @return MapInterface<string, HttpResource>
+     * @return Map<string, HttpResource>
      */
-    public function definitions(): MapInterface
+    public function definitions(): Map
     {
         return $this->definitions;
     }
 
     /**
-     * @return MapInterface<string, HttpResource>
+     * @return Map<string, HttpResource>
      */
-    public function flatten(): MapInterface
+    public function flatten(): Map
     {
-        if ($this->flattened instanceof MapInterface) {
+        if ($this->flattened instanceof Map) {
             return $this->flattened;
         }
 
@@ -114,21 +123,22 @@ final class Directory
             ->definitions
             ->map(function(string $name, HttpResource $definition) {
                 return new Pair(
-                    (string) $definition->name()->under($this->name),
+                    $definition->name()->under($this->name)->toString(),
                     $definition
                 );
             });
+        /** @var Map<string, HttpResource> */
         $definitions = $this
             ->children
             ->reduce(
                 $definitions,
-                function(MapInterface $carry, string $name, self $child) {
+                function(Map $carry, string $name, self $child): Map {
                     return $carry->merge(
                         $child
                             ->flatten()
                             ->map(function(string $name, HttpResource $definition) {
                                 return new Pair(
-                                    (string) (new Name($name))->under($this->name),
+                                    (new Name($name))->under($this->name)->toString(),
                                     $definition
                                 );
                             })
@@ -141,8 +151,8 @@ final class Directory
         return $definitions;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
-        return (string) $this->name;
+        return $this->name->toString();
     }
 }

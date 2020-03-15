@@ -8,16 +8,16 @@ use Innmind\Rest\Server\{
     Request\Range,
 };
 use Innmind\Specification\Specification;
-use Innmind\Immutable\SetInterface;
+use Innmind\Immutable\Set;
 
 interface ResourceListAccessor
 {
     /**
-     * @return SetInterface<IdentityInterface>
+     * @return Set<Identity>
      */
     public function __invoke(
         ResourceDefinition $definition,
         Specification $specification = null,
         Range $range = null
-    ): SetInterface;
+    ): Set;
 }

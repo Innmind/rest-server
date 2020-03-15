@@ -3,6 +3,11 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Definition;
 
+use Innmind\Rest\Server\Exception\{
+    DenormalizationException,
+    NormalizationException,
+};
+
 interface Type
 {
     /**
@@ -27,5 +32,5 @@ interface Type
      */
     public function normalize($data);
 
-    public function __toString(): string;
+    public function toString(): string;
 }

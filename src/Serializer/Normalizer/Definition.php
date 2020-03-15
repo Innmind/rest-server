@@ -9,37 +9,36 @@ use Innmind\Rest\Server\Definition\{
     AllowedLink,
     AllowedLink\Parameter,
 };
+use function Innmind\Immutable\unwrap;
 
 final class Definition
 {
     public function __invoke(HttpResource $resource): array
     {
+        /** @psalm-suppress InvalidScalarArgument */
+        $metas = \array_combine(
+            unwrap($resource->metas()->keys()),
+            unwrap($resource->metas()->values()),
+        );
+
         return [
-            'identity' => (string) $resource->identity(),
+            'identity' => $resource->identity()->toString(),
             'properties' => $resource
                 ->properties()
                 ->reduce(
                     [],
                     function(array $carry, string $name, Property $property) {
                         $carry[$name] = [
-                            'type' => (string) $property->type(),
-                            'access' => $property
-                                ->access()
-                                ->mask()
-                                ->toPrimitive(),
-                            'variants' => $property
-                                ->variants()
-                                ->toPrimitive(),
+                            'type' => $property->type()->toString(),
+                            'access' => unwrap($property->access()->mask()),
+                            'variants' => unwrap($property->variants()),
                             'optional' => $property->isOptional(),
                         ];
 
                         return $carry;
                     }
                 ),
-            'metas' => array_combine(
-                $resource->metas()->keys()->toPrimitive(),
-                $resource->metas()->values()->toPrimitive()
-            ),
+            'metas' => $metas,
             'rangeable' => $resource->isRangeable(),
             'linkable_to' => $resource
                 ->allowedLinks()

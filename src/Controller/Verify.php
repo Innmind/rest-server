@@ -16,8 +16,8 @@ use Innmind\Http\Message\{
 
 final class Verify implements Controller
 {
-    private $verify;
-    private $controller;
+    private Verifier $verify;
+    private Controller $controller;
 
     public function __construct(Verifier $verify, Controller $controller)
     {

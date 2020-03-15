@@ -8,18 +8,21 @@ use Innmind\Rest\Server\{
     HttpResource as HttpResourceInterface,
     Identity,
 };
-use Innmind\Http\Message\ServerRequest;
-use Innmind\Immutable\SetInterface;
+use Innmind\Http\{
+    Message\ServerRequest,
+    Header,
+};
+use Innmind\Immutable\Set;
 
 interface GetBuilder
 {
     /**
-     * @return SetInterface<Header>
+     * @return Set<Header>
      */
     public function __invoke(
         HttpResourceInterface $resource,
         ServerRequest $request,
         HttpResource $definition,
         Identity $identity
-    ): SetInterface;
+    ): Set;
 }

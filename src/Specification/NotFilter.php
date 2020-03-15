@@ -13,7 +13,7 @@ final class NotFilter implements Not
 {
     use Composite;
 
-    private $specification;
+    private Specification $specification;
 
     public function __construct(Specification $specification)
     {
@@ -30,6 +30,7 @@ final class NotFilter implements Not
 
     public function isSatisfiedBy(HttpResource $resource): bool
     {
+        /** @psalm-suppress UndefinedInterfaceMethod */
         return !$this->specification->isSatisfiedBy($resource);
     }
 }

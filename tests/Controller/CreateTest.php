@@ -19,14 +19,15 @@ use Innmind\Rest\Server\{
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
-    Headers\Headers,
+    Headers,
     Header,
     Header\Accept,
     Header\AcceptValue,
     Header\ContentType,
     Header\ContentTypeValue,
+    ProtocolVersion,
 };
-use Innmind\Filesystem\Stream\StringStream;
+use Innmind\Stream\Readable\Stream;
 use Innmind\Immutable\{
     Map,
     Set,
@@ -39,7 +40,7 @@ class CreateTest extends AbstractTestCase
     private $gateway;
     private $headerBuilder;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -65,14 +66,14 @@ class CreateTest extends AbstractTestCase
     public function testThrowWhenInvalidGatewayKeyType()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 4 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
+        $this->expectExceptionMessage('Argument 4 must be of type Map<string, Innmind\Rest\Server\Gateway>');
 
         new Create(
             new RequestDecoder\Json,
             new Encoder\Json,
             new IdentityNormalizer,
             new ResourceDenormalizer,
-            new Map('int', Gateway::class),
+            Map::of('int', Gateway::class),
             $this->createMock(CreateBuilder::class)
         );
     }
@@ -80,14 +81,14 @@ class CreateTest extends AbstractTestCase
     public function testThrowWhenInvalidGatewayValueType()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 4 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
+        $this->expectExceptionMessage('Argument 4 must be of type Map<string, Innmind\Rest\Server\Gateway>');
 
         new Create(
             new RequestDecoder\Json,
             new Encoder\Json,
             new IdentityNormalizer,
             new ResourceDenormalizer,
-            new Map('string', 'callable'),
+            Map::of('string', 'callable'),
             $this->createMock(CreateBuilder::class)
         );
     }
@@ -109,7 +110,11 @@ class CreateTest extends AbstractTestCase
         $request
             ->expects($this->any())
             ->method('body')
-            ->willReturn(new StringStream('{"resource":{"url":"example.com"}}'));
+            ->willReturn(Stream::ofContent('{"resource":{"url":"example.com"}}'));
+        $request
+            ->expects($this->any())
+            ->method('protocolVersion')
+            ->willReturn(new ProtocolVersion(2, 0));
         $this
             ->gateway
             ->expects($this->once())
@@ -130,16 +135,16 @@ class CreateTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($identity, $request, $this->definition)
-            ->willReturn(new Set(Header::class));
+            ->willReturn(Set::of(Header::class));
 
         $response = ($this->create)($request, $this->definition);
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(201, $response->statusCode()->value());
-        $this->assertSame('Created', (string) $response->reasonPhrase());
+        $this->assertSame('Created', $response->reasonPhrase()->toString());
         $this->assertSame(
             '{"identity":"some uuid"}',
-            (string) $response->body()
+            $response->body()->toString()
         );
     }
 

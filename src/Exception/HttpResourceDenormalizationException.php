@@ -3,20 +3,24 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Exception;
 
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\Map;
 
 class HttpResourceDenormalizationException extends RuntimeException
 {
-    private $errors;
+    /** @var Map<string, DenormalizationException> */
+    private Map $errors;
 
-    public function __construct(MapInterface $errors)
+    /**
+     * @param Map<string, DenormalizationException> $errors
+     */
+    public function __construct(Map $errors)
     {
         if (
             (string) $errors->keyType() !== 'string' ||
             (string) $errors->valueType() !== DenormalizationException::class
         ) {
             throw new \TypeError(sprintf(
-                'Argument 1 must be of type MapInterface<string, %s>',
+                'Argument 1 must be of type Map<string, %s>',
                 DenormalizationException::class
             ));
         }
@@ -26,9 +30,9 @@ class HttpResourceDenormalizationException extends RuntimeException
     }
 
     /**
-     * @return MapInterface<string, DenormalizationException>
+     * @return Map<string, DenormalizationException>
      */
-    public function errors(): MapInterface
+    public function errors(): Map
     {
         return $this->errors;
     }

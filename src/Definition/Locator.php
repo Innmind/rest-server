@@ -8,13 +8,15 @@ use Innmind\Immutable\Map;
 
 final class Locator
 {
-    private $directory;
-    private $cache;
+    private Directory $directory;
+    /** @var Map<string, HttpResource> */
+    private Map $cache;
 
     public function __construct(Directory $directory)
     {
         $this->directory = $directory;
-        $this->cache = new Map('string', HttpResource::class);
+        /** @var Map<string, HttpResource> */
+        $this->cache = Map::of('string', HttpResource::class);
     }
 
     public function __invoke(string $path): HttpResource

@@ -13,7 +13,6 @@ use Innmind\Rest\Server\{
 use Innmind\Immutable\{
     Map,
     Set,
-    SetInterface,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -54,24 +53,24 @@ class FormatsTest extends TestCase
     public function testThrowWhenInvalidMapKey()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Format\Format>');
+        $this->expectExceptionMessage('Argument 1 must be of type Map<string, Innmind\Rest\Server\Format\Format>');
 
-        new Formats(new Map('int', Format::class));
+        new Formats(Map::of('int', Format::class));
     }
 
     public function testThrowWhenInvalidMapValue()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Format\Format>');
+        $this->expectExceptionMessage('Argument 1 must be of type Map<string, Innmind\Rest\Server\Format\Format>');
 
-        new Formats(new Map('string', 'string'));
+        new Formats(Map::of('string', 'string'));
     }
 
     public function testThrowWhenEmptyMap()
     {
         $this->expectException(DomainException::class);
 
-        new Formats(new Map('string', Format::class));
+        new Formats(Map::of('string', Format::class));
     }
 
     public function testMediaTypes()
@@ -97,7 +96,7 @@ class FormatsTest extends TestCase
         );
 
         $types = $formats->mediaTypes();
-        $this->assertInstanceOf(SetInterface::class, $types);
+        $this->assertInstanceOf(Set::class, $types);
         $this->assertSame(MediaType::class, (string) $types->type());
         $this->assertSame(3, $types->size());
         $this->assertTrue($types->contains($json));

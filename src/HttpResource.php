@@ -7,7 +7,7 @@ use Innmind\Rest\Server\{
     Definition\HttpResource as ResourceDefinition,
     HttpResource\Property,
 };
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\Map;
 
 interface HttpResource
 {
@@ -20,7 +20,7 @@ interface HttpResource
     public function has(string $name): bool;
 
     /**
-     * @return MapInterface<string, Property>
+     * @return Map<string, Property>
      */
-    public function properties(): MapInterface;
+    public function properties(): Map;
 }

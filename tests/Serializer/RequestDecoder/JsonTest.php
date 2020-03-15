@@ -27,7 +27,7 @@ class JsonTest extends TestCase
             ->willReturn($body = $this->createMock(Readable::class));
         $body
             ->expects($this->once())
-            ->method('__toString')
+            ->method('toString')
             ->willReturn('{"foo":"bar"}');
         $data = (new Json)($request);
 

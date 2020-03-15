@@ -8,6 +8,7 @@ use Innmind\Rest\Server\{
     Reference,
     Link,
     Link\Parameter,
+    Exception\LogicException,
 };
 use Innmind\Http\Header\{
     Link as LinkHeader,
@@ -15,14 +16,14 @@ use Innmind\Http\Header\{
     Parameter as HttpParameter,
 };
 use Innmind\Immutable\{
-    MapInterface,
-    SetInterface,
+    Map,
     Set,
 };
+use function Innmind\Immutable\unwrap;
 
 final class LinkTranslator
 {
-    private $router;
+    private Router $router;
 
     public function __construct(Router $router)
     {
@@ -30,13 +31,14 @@ final class LinkTranslator
     }
 
     /**
-     * @return SetInterface<Link>
+     * @return Set<Link>
      */
-    public function __invoke(LinkHeader $link): SetInterface
+    public function __invoke(LinkHeader $link): Set
     {
+        /** @var Set<Link> */
         return $link->values()->reduce(
             Set::of(Link::class),
-            function(SetInterface $links, LinkValue $link): SetInterface {
+            function(Set $links, LinkValue $link): Set {
                 return $links->add($this->translateLinkValue($link));
             }
         );
@@ -45,25 +47,33 @@ final class LinkTranslator
     private function translateLinkValue(LinkValue $link): Link
     {
         $match = $this->router->match($link->url()->path());
+        $identity = $match->identity();
+
+        if (\is_null($identity)) {
+            throw new LogicException("Missing identity in '{$link->url()->path()->toString()}'");
+        }
 
         return new Link(
             new Reference(
                 $match->definition(),
-                $match->identity()
+                $identity,
             ),
             $link->relationship(),
-            ...$this->translateParameters($link->parameters())
+            ...unwrap($this->translateParameters($link->parameters())),
         );
     }
 
     /**
-     * @return SetInterface<Parameter>
+     * @param Map<string, HttpParameter> $parameters
+     *
+     * @return Set<Parameter>
      */
-    private function translateParameters(MapInterface $parameters): SetInterface
+    private function translateParameters(Map $parameters): Set
     {
+        /** @var Set<Parameter> */
         return $parameters->reduce(
             Set::of(Parameter::class),
-            static function(SetInterface $parameters, string $name, HttpParameter $param): SetInterface {
+            static function(Set $parameters, string $name, HttpParameter $param): Set {
                 return $parameters->add(
                     new Parameter\Parameter($name, $param->value())
                 );

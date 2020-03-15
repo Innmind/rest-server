@@ -13,14 +13,12 @@ use Innmind\Http\{
     Header,
 };
 use Innmind\Specification\Specification;
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Immutable\Set;
 
 final class ListDelegationBuilder implements ListBuilder
 {
-    private $builders;
+    /** @var list<ListBuilder> */
+    private array $builders;
 
     public function __construct(ListBuilder ...$builders)
     {
@@ -31,19 +29,20 @@ final class ListDelegationBuilder implements ListBuilder
      * {@inheritdoc}
      */
     public function __invoke(
-        SetInterface $identities,
+        Set $identities,
         ServerRequest $request,
         HttpResource $definition,
         Specification $specification = null,
         Range $range = null
-    ): SetInterface {
+    ): Set {
         if ((string) $identities->type() !== Identity::class) {
             throw new \TypeError(sprintf(
-                'Argument 1 must be of type SetInterface<%s>',
+                'Argument 1 must be of type Set<%s>',
                 Identity::class
             ));
         }
 
+        /** @var Set<Header> */
         $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {

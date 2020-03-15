@@ -3,24 +3,25 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Definition;
 
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Immutable\Set;
 
 final class Property
 {
-    private $name;
-    private $type;
-    private $access;
-    private $variants;
-    private $optional;
+    private string $name;
+    private Type $type;
+    private Access $access;
+    /** @var Set<string> */
+    private Set $variants;
+    private bool $optional;
 
+    /**
+     * @param Set<string> $variants
+     */
     private function __construct(
         string $name,
         Type $type,
         Access $access,
-        SetInterface $variants,
+        Set $variants,
         bool $optional
     ) {
         $this->name = $name;
@@ -40,7 +41,7 @@ final class Property
             $name,
             $type,
             $access,
-            Set::of('string', ...$variants),
+            Set::strings(...$variants),
             false
         );
     }
@@ -55,7 +56,7 @@ final class Property
             $name,
             $type,
             $access,
-            Set::of('string', ...$variants),
+            Set::strings(...$variants),
             true
         );
     }
@@ -76,9 +77,9 @@ final class Property
     }
 
     /**
-     * @return SetInterface<string>
+     * @return Set<string>
      */
-    public function variants(): SetInterface
+    public function variants(): Set
     {
         return $this->variants;
     }
@@ -88,7 +89,7 @@ final class Property
         return $this->optional;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->name;
     }

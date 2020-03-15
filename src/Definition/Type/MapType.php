@@ -8,17 +8,14 @@ use Innmind\Rest\Server\{
     Exception\DenormalizationException,
     Exception\NormalizationException,
 };
-use Innmind\Immutable\{
-    Map,
-    MapInterface,
-};
+use Innmind\Immutable\Map;
 
 final class MapType implements Type
 {
-    private $keyType;
-    private $valueType;
-    private $key;
-    private $value;
+    private Type $keyType;
+    private Type $valueType;
+    private string $key;
+    private string $value;
 
     public function __construct(
         string $key,
@@ -45,9 +42,11 @@ final class MapType implements Type
             ));
         }
 
-        $map = new Map($this->key, $this->value);
+        $map = Map::of($this->key, $this->value);
 
+        /** @var mixed $value */
         foreach ($data as $key => $value) {
+            /** @psalm-suppress MixedArgument */
             $map = $map->put(
                 $this->keyType->denormalize($key),
                 $this->valueType->denormalize($value)
@@ -62,25 +61,32 @@ final class MapType implements Type
      */
     public function normalize($data)
     {
-        if (!$data instanceof MapInterface) {
+        if (!$data instanceof Map) {
             throw new NormalizationException('The value must be a map');
         }
 
         $normalized = [];
 
-        foreach ($data as $key => $value) {
-            $normalized[$this->keyType->normalize($key)] = $this->valueType->normalize($value);
-        }
+        return $data->reduce(
+            [],
+            function(array $normalized, $key, $value): array {
+                /**
+                 * @psalm-suppress MixedArrayOffset
+                 * @psalm-suppress MixedAssignment
+                 */
+                $normalized[$this->keyType->normalize($key)] = $this->valueType->normalize($value);
 
-        return $normalized;
+                return $normalized;
+            },
+        );
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return \sprintf(
             'map<%s, %s>',
-            $this->keyType,
-            $this->valueType
+            $this->keyType->toString(),
+            $this->valueType->toString(),
         );
     }
 }

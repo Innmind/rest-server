@@ -9,6 +9,7 @@ use Innmind\Rest\Server\Definition\{
     Access,
 };
 use Innmind\Immutable\Set;
+use function Innmind\Immutable\unwrap;
 use PHPUnit\Framework\TestCase;
 
 class PropertyTest extends TestCase
@@ -22,13 +23,13 @@ class PropertyTest extends TestCase
             'bar'
         );
 
-        $this->assertSame('foo', (string) $property);
+        $this->assertSame('foo', $property->toString());
         $this->assertSame('foo', $property->name());
         $this->assertSame($type, $property->type());
         $this->assertTrue($property->access()->isReadable());
         $this->assertFalse($property->access()->isCreatable());
         $this->assertFalse($property->access()->isUpdatable());
-        $this->assertSame(['bar'], $property->variants()->toPrimitive());
+        $this->assertSame(['bar'], unwrap($property->variants()));
         $this->assertTrue($property->isOptional());
     }
 }

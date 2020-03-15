@@ -11,9 +11,9 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
-    Message\Method\Method,
-    ProtocolVersion\ProtocolVersion,
-    Headers\Headers,
+    Message\Method,
+    ProtocolVersion,
+    Headers,
     Header\Accept,
     Header\AcceptValue,
     Header\ContentType,
@@ -31,7 +31,7 @@ class FormatTest extends TestCase
 {
     private $format;
 
-    public function setUp()
+    public function setUp(): void
     {
         $accept = Formats::of(
             new FormatFormat(
@@ -60,7 +60,7 @@ class FormatTest extends TestCase
     {
         $format = $this->format->acceptable(
             new ServerRequest(
-                Url::fromString('/'),
+                Url::of('/'),
                 Method::get(),
                 new ProtocolVersion(1, 1),
                 Headers::of(
@@ -73,14 +73,14 @@ class FormatTest extends TestCase
 
         $this->assertInstanceOf(FormatFormat::class, $format);
         $this->assertSame('json', $format->name());
-        $this->assertSame('application/json', (string) $format->preferredMediaType());
+        $this->assertSame('application/json', $format->preferredMediaType()->toString());
     }
 
     public function testAcceptableWhenAcceptingEverything()
     {
         $format = $this->format->acceptable(
             new ServerRequest(
-                Url::fromString('/'),
+                Url::of('/'),
                 Method::get(),
                 new ProtocolVersion(1, 1),
                 Headers::of(
@@ -93,14 +93,14 @@ class FormatTest extends TestCase
 
         $this->assertInstanceOf(FormatFormat::class, $format);
         $this->assertSame('json', $format->name());
-        $this->assertSame('application/json', (string) $format->preferredMediaType());
+        $this->assertSame('application/json', $format->preferredMediaType()->toString());
     }
 
     public function testContentType()
     {
         $format = $this->format->contentType(
             new ServerRequest(
-                Url::fromString('/'),
+                Url::of('/'),
                 Method::get(),
                 new ProtocolVersion(1, 1),
                 Headers::of(
@@ -113,6 +113,6 @@ class FormatTest extends TestCase
 
         $this->assertInstanceOf(FormatFormat::class, $format);
         $this->assertSame('json', $format->name());
-        $this->assertSame('application/json', (string) $format->preferredMediaType());
+        $this->assertSame('application/json', $format->preferredMediaType()->toString());
     }
 }

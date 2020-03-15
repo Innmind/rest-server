@@ -14,9 +14,9 @@ final class AndFilter implements CompositeInterface
 {
     use Composite;
 
-    private $left;
-    private $right;
-    private $operator;
+    private Specification $left;
+    private Specification $right;
+    private Operator $operator;
 
     public function __construct(
         Specification $left,
@@ -53,6 +53,7 @@ final class AndFilter implements CompositeInterface
 
     public function isSatisfiedBy(HttpResource $resource): bool
     {
+        /** @psalm-suppress UndefinedInterfaceMethod */
         return $this->left->isSatisfiedBy($resource) && $this->right->isSatisfiedBy($resource);
     }
 }

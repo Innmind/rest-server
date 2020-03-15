@@ -19,10 +19,12 @@ use Innmind\Http\{
     Message\Method,
     Headers,
     Header,
+    Header\ContentType,
+    Header\ContentTypeValue,
     ProtocolVersion,
     Exception\Http\UnsupportedMediaType,
 };
-use Innmind\Url\UrlInterface;
+use Innmind\Url\Url;
 use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
@@ -60,30 +62,17 @@ class ContentTypeVerifierTest extends TestCase
                 )
             )
         );
-        $headers = $this->createMock(Headers::class);
-        $headers
-            ->method('get')
-            ->willReturn(
-                $header = $this->createMock(Header::class)
-            );
-        $headers
-            ->method('has')
-            ->willReturn(true);
-        $header
-            ->method('values')
-            ->willReturn(
-                Set::of('string', 'text/html')
-            );
+        $headers = Headers::of(
+            new ContentType(
+                new ContentTypeValue('text', 'html')
+            )
+        );
         $request = new ServerRequest(
-            $this->createMock(UrlInterface::class),
-            $method = $this->createMock(Method::class),
-            $this->createMock(ProtocolVersion::class),
+            Url::of('http://example.com'),
+            Method::post(),
+            new ProtocolVersion(2, 0),
             $headers
         );
-        $method
-            ->expects($this->once())
-            ->method('__toString')
-            ->willReturn(Method::POST);
 
         $this->expectException(UnsupportedMediaType::class);
 
@@ -93,7 +82,7 @@ class ContentTypeVerifierTest extends TestCase
                 'foo',
                 new Gateway('command'),
                 new Identity('uuid'),
-                new Set(Property::class)
+                Set::of(Property::class)
             )
         );
     }
@@ -112,40 +101,28 @@ class ContentTypeVerifierTest extends TestCase
                 )
             )
         );
-        $headers = $this->createMock(Headers::class);
-        $headers
-            ->method('get')
-            ->willReturn(
-                $header = $this->createMock(Header::class)
-            );
-        $headers
-            ->method('has')
-            ->willReturn(true);
-        $header
-            ->method('values')
-            ->willReturn(
-                Set::of('string', 'text/html')
-            );
+        $headers = Headers::of(
+            new ContentType(
+                new ContentTypeValue('text', 'html')
+            )
+        );
+
         $request = new ServerRequest(
-            $this->createMock(UrlInterface::class),
-            $method = $this->createMock(Method::class),
-            $this->createMock(ProtocolVersion::class),
+            Url::of('http://example.com'),
+            Method::get(),
+            new ProtocolVersion(2, 0),
             $headers
         );
-        $method
-            ->expects($this->once())
-            ->method('__toString')
-            ->willReturn(Method::GET);
 
-        $verify(
+        $this->assertNull($verify(
             $request,
             HttpResource::rangeable(
                 'foo',
                 new Gateway('command'),
                 new Identity('uuid'),
-                new Set(Property::class)
+                Set::of(Property::class)
             )
-        );
+        ));
     }
 
     public function testDoesntThrowWhenAcceptContentType()
@@ -162,30 +139,18 @@ class ContentTypeVerifierTest extends TestCase
                 )
             )
         );
-        $headers = $this->createMock(Headers::class);
-        $headers
-            ->method('get')
-            ->willReturn(
-                $header = $this->createMock(Header::class)
-            );
-        $headers
-            ->method('has')
-            ->willReturn(true);
-        $header
-            ->method('values')
-            ->willReturn(
-                Set::of('string', 'application/json')
-            );
+        $headers = Headers::of(
+            new ContentType(
+                new ContentTypeValue('application', 'json')
+            )
+        );
+
         $request = new ServerRequest(
-            $this->createMock(UrlInterface::class),
-            $method = $this->createMock(Method::class),
-            $this->createMock(ProtocolVersion::class),
+            Url::of('http://example.com'),
+            Method::post(),
+            new ProtocolVersion(2, 0),
             $headers
         );
-        $method
-            ->expects($this->once())
-            ->method('__toString')
-            ->willReturn(Method::POST);
 
         $this->assertNull(
             $verify(
@@ -194,7 +159,7 @@ class ContentTypeVerifierTest extends TestCase
                     'foo',
                     new Gateway('command'),
                     new Identity('uuid'),
-                    new Set(Property::class)
+                    Set::of(Property::class)
                 )
             )
         );
@@ -214,14 +179,12 @@ class ContentTypeVerifierTest extends TestCase
                 )
             )
         );
-        $headers = $this->createMock(Headers::class);
-        $headers
-            ->method('has')
-            ->willReturn(false);
+        $headers = Headers::of();
+
         $request = new ServerRequest(
-            $this->createMock(UrlInterface::class),
-            $this->createMock(Method::class),
-            $this->createMock(ProtocolVersion::class),
+            Url::of('http://example.com'),
+            Method::get(),
+            new ProtocolVersion(2, 0),
             $headers
         );
 
@@ -232,7 +195,7 @@ class ContentTypeVerifierTest extends TestCase
                     'foo',
                     new Gateway('command'),
                     new Identity('uuid'),
-                    new Set(Property::class)
+                    Set::of(Property::class)
                 )
             )
         );

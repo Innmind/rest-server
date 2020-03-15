@@ -13,7 +13,7 @@ class PropertyTest extends TestCase
         $property = new Property('foo', 42);
 
         $this->assertSame('foo', $property->name());
-        $this->assertSame('foo', (string) $property);
+        $this->assertSame('foo', $property->toString());
         $this->assertSame(42, $property->value());
     }
 }

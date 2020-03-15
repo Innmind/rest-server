@@ -10,7 +10,10 @@ use Innmind\Rest\Server\{
     Definition\HttpResource,
     Specification\Filter,
 };
-use Innmind\Http\Message\ServerRequest;
+use Innmind\Http\Message\{
+    ServerRequest,
+    Query\Parameter,
+};
 use Innmind\Specification\Specification;
 
 final class Builder implements BuilderInterface
@@ -22,34 +25,34 @@ final class Builder implements BuilderInterface
         ServerRequest $request,
         HttpResource $definition
     ): Specification {
-        $specification = null;
+        $specification = $request->query()->reduce(
+            null,
+            static function(?Specification $specification, Parameter $parameter) use ($definition): ?Specification {
+                if ($parameter->name() === 'range') {
+                    // range is used in QueryExtractor to determine the range of the
+                    // resources to return and thus can't be used as a filter
+                    return $specification;
+                }
 
-        foreach ($request->query() as $parameter) {
-            if ($parameter->name() === 'range') {
-                /*
-                range is used in QueryExtractor to determine the range of the
-                resources to return and thus can't be used as a filter
-                */
-                continue;
-            }
+                if (!$definition->properties()->contains($parameter->name())) {
+                    throw new FilterNotApplicable($parameter->name());
+                }
 
-            if (!$definition->properties()->contains($parameter->name())) {
-                throw new FilterNotApplicable($parameter->name());
-            }
+                if ($specification === null) {
+                    $specification = new Filter(
+                        $parameter->name(),
+                        $parameter->value()
+                    );
+                } else {
+                    $specification = $specification->and(new Filter(
+                        $parameter->name(),
+                        $parameter->value()
+                    ));
+                }
 
-            if ($specification === null) {
-                $specification = new Filter(
-                    $parameter->name(),
-                    $parameter->value()
-                );
-            } else {
-                $specification = $specification->and(new Filter(
-                    $parameter->name(),
-                    $parameter->value()
-                ));
-            }
-        }
-
+                return $specification;
+            },
+        );
         if ($specification === null) {
             throw new NoFilterFound;
         }

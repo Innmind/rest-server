@@ -11,6 +11,7 @@ use Innmind\Rest\Server\{
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
+    ProtocolVersion,
 };
 use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
@@ -24,17 +25,22 @@ class CapabilitiesTest extends TestCase
         );
 
         $capabilities = new Capabilities($routes, new Router($routes));
+        $request = $this->createMock(ServerRequest::class);
+        $request
+            ->expects($this->once())
+            ->method('protocolVersion')
+            ->willReturn(new ProtocolVersion(2, 0));
 
-        $response = $capabilities($this->createMock(ServerRequest::class));
+        $response = $capabilities($request);
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(200, $response->statusCode()->value());
-        $this->assertSame('OK', (string) $response->reasonPhrase());
-        $this->assertSame(1, $response->headers()->count());
+        $this->assertSame('OK', $response->reasonPhrase()->toString());
+        $this->assertCount(1, $response->headers());
         $this->assertSame(
             'Link: </top_dir/image/>; rel="top_dir.image", </top_dir/sub_dir/res/>; rel="top_dir.sub_dir.res"',
-            (string) $response->headers()->get('Link')
+            $response->headers()->get('Link')->toString(),
         );
-        $this->assertSame('', (string) $response->body());
+        $this->assertSame('', $response->body()->toString());
     }
 }

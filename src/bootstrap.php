@@ -39,16 +39,15 @@ use Innmind\Rest\Server\{
     Controller\Capabilities,
     Translator\LinkTranslator,
 };
-use Innmind\Immutable\{
-    MapInterface,
-    Map,
-};
+use Innmind\Immutable\Map;
 
 /**
- * @param MapInterface<string, Gateway> $gateways
+ * @param Map<string, Gateway> $gateways
+ *
+ * @return array{routes: Routes, controller: array{create: Controller, get: Controller, index: Controller, options: Controller, remove: Controller, update: Controller, link: Controller, unlink: Controller, capabilities: Capabilities}, locator: Locator}
  */
 function bootstrap(
-    MapInterface $gateways,
+    Map $gateways,
     Directory $directory,
     Formats $acceptFormats = null,
     Formats $contentTypeFormats = null,
@@ -72,12 +71,20 @@ function bootstrap(
         new ContentTypeVerifier($contentTypeFormats),
         new RangeVerifier
     );
+    /**
+     * @psalm-suppress InvalidScalarArgument
+     * @psalm-suppress InvalidArgument
+     */
     $requestDecoder = $requestDecoder ?? new RequestDecoder\Delegate(
         $format,
         Map::of('string', RequestDecoder::class)
             ('json', new RequestDecoder\Json)
             ('form', new RequestDecoder\Form)
     );
+    /**
+     * @psalm-suppress InvalidScalarArgument
+     * @psalm-suppress InvalidArgument
+     */
     $encoder = $encoder ?? new Encoder\Delegate(
         $format,
         Map::of('string', Encoder::class)

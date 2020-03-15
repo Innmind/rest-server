@@ -13,6 +13,7 @@ use Innmind\Rest\Server\{
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
+    ProtocolVersion,
 };
 use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
@@ -21,13 +22,13 @@ class CatchActionNotImplementedTest extends TestCase
 {
     private $definition;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->definition = new Definition\HttpResource(
             'foo',
             new Definition\Gateway('foo'),
             new Definition\Identity('foo'),
-            new Set(Definition\Property::class)
+            Set::of(Definition\Property::class)
         );
     }
 
@@ -45,6 +46,10 @@ class CatchActionNotImplementedTest extends TestCase
             $controller = $this->createMock(Controller::class)
         );
         $request = $this->createMock(ServerRequest::class);
+        $request
+            ->expects($this->once())
+            ->method('protocolVersion')
+            ->willReturn(new ProtocolVersion(2, 0));
         $identity = $this->createMock(Identity::class);
         $controller
             ->expects($this->once())
@@ -56,7 +61,7 @@ class CatchActionNotImplementedTest extends TestCase
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(405, $response->statusCode()->value());
-        $this->assertSame('Method Not Allowed', (string) $response->reasonPhrase());
+        $this->assertSame('Method Not Allowed', $response->reasonPhrase()->toString());
     }
 
     public function testReturnControllerResponse()

@@ -11,13 +11,13 @@ use Innmind\Rest\Server\{
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
-    Message\StatusCode\StatusCode,
+    Message\StatusCode,
     Exception
 };
 
 final class CatchHttpException implements Controller
 {
-    private $controller;
+    private Controller $controller;
 
     public function __construct(Controller $controller)
     {

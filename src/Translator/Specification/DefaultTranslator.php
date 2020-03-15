@@ -13,43 +13,41 @@ use Innmind\Specification\{
     Composite,
     Operator,
 };
-use Innmind\Url\{
-    QueryInterface,
-    Query,
-};
+use Innmind\Url\Query;
 
 final class DefaultTranslator implements SpecificationTranslator
 {
-    public function __invoke(Specification $specification): QueryInterface
+    public function __invoke(Specification $specification): Query
     {
         $data = $this->extract($specification);
 
-        return new Query(\http_build_query($data));
+        return Query::of(\http_build_query($data));
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function extract(Specification $specification): array
     {
+        /** @var array<string, mixed> */
         $data = [];
 
         switch (true) {
             case $specification instanceof Comparator:
-                $data[$specification->property()] = $specification->value();
-                break;
+                return [$specification->property() => $specification->value()];
+
             case $specification instanceof Composite:
                 if ($specification->operator()->equals(Operator::or())) {
                     throw new SpecificationNotUsableAsQuery;
                 }
 
-                $data = \array_merge(
-                    $data,
+                return \array_merge(
                     $this->extract($specification->left()),
                     $this->extract($specification->right())
                 );
-                break;
+
             default:
                 throw new SpecificationNotUsableAsQuery;
         }
-
-        return $data;
     }
 }

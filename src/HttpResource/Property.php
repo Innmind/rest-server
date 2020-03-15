@@ -5,9 +5,13 @@ namespace Innmind\Rest\Server\HttpResource;
 
 final class Property
 {
-    private $name;
+    private string $name;
+    /** @var mixed */
     private $value;
 
+    /**
+     * @param mixed $value
+     */
     public function __construct(string $name, $value)
     {
         $this->name = $name;
@@ -19,12 +23,15 @@ final class Property
         return $this->name;
     }
 
+    /**
+     * @return mixed
+     */
     public function value()
     {
         return $this->value;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->name;
     }

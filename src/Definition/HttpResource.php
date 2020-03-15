@@ -8,69 +8,78 @@ use Innmind\Rest\Server\{
     Link,
 };
 use Innmind\Immutable\{
-    MapInterface,
     Map,
-    SetInterface,
     Set,
 };
 
 final class HttpResource
 {
-    private $name;
-    private $identity;
-    private $properties;
-    private $actions;
-    private $metas;
-    private $gateway;
-    private $rangeable = false;
-    private $allowedLinks;
+    private Name $name;
+    private Identity $identity;
+    /** @var Map<string, Property> */
+    private Map $properties;
+    /** @var Set<Action> */
+    private Set $actions;
+    /** @var Map<scalar, scalar|array> */
+    private Map $metas;
+    private Gateway $gateway;
+    private bool $rangeable = false;
+    /** @var Set<AllowedLink> */
+    private Set $allowedLinks;
 
+    /**
+     * @param Set<Property> $properties
+     * @param Set<Action>|null $actions
+     * @param Set<AllowedLink>|null $allowedLinks
+     * @param Map<scalar, scalar|array>|null $metas
+     */
     public function __construct(
         string $name,
         Gateway $gateway,
         Identity $identity,
-        SetInterface $properties,
-        SetInterface $actions = null,
-        SetInterface $allowedLinks = null,
-        MapInterface $metas = null
+        Set $properties,
+        Set $actions = null,
+        Set $allowedLinks = null,
+        Map $metas = null
     ) {
         $actions = $actions ?? Action::all();
-        $metas = $metas ?? Map::of('scalar', 'variable');
+        $metas = $metas ?? Map::of('scalar', 'scalar|array');
         $allowedLinks = $allowedLinks ?? Set::of(AllowedLink::class);
 
         if ((string) $properties->type() !== Property::class) {
             throw new \TypeError(sprintf(
-                'Argument 4 must be of type SetInterface<%s>',
+                'Argument 4 must be of type Set<%s>',
                 Property::class
             ));
         }
 
         if ((string) $actions->type() !== Action::class) {
             throw new \TypeError(\sprintf(
-                'Argument 5 must be of type SetInterface<%s>',
+                'Argument 5 must be of type Set<%s>',
                 Action::class
             ));
         }
 
         if ((string) $allowedLinks->type() !== AllowedLink::class) {
             throw new \TypeError(\sprintf(
-                'Argument 6 must be of type SetInterface<%s>',
+                'Argument 6 must be of type Set<%s>',
                 AllowedLink::class
             ));
         }
 
         if (
             (string) $metas->keyType() !== 'scalar' ||
-            (string) $metas->valueType() !== 'variable'
+            (string) $metas->valueType() !== 'scalar|array'
         ) {
-            throw new \TypeError('Argument 7 must be of type MapInterface<scalar, variable>');
+            throw new \TypeError('Argument 7 must be of type Map<scalar, scalar|array>');
         }
 
         $this->name = new Name($name);
         $this->identity = $identity;
+        /** @var Map<string, Property> */
         $this->properties = $properties->reduce(
             Map::of('string', Property::class),
-            static function(MapInterface $properties, Property $property): MapInterface {
+            static function(Map $properties, Property $property): Map {
                 return $properties->put((string) $property->name(), $property);
             }
         );
@@ -80,14 +89,20 @@ final class HttpResource
         $this->allowedLinks = $allowedLinks;
     }
 
+    /**
+     * @param Set<Property> $properties
+     * @param Set<Action>|null $actions
+     * @param Set<AllowedLink>|null $allowedLinks
+     * @param Map<scalar, scalar|array>|null $metas
+     */
     public static function rangeable(
         string $name,
         Gateway $gateway,
         Identity $identity,
-        SetInterface $properties,
-        SetInterface $actions = null,
-        SetInterface $allowedLinks = null,
-        MapInterface $metas = null
+        Set $properties,
+        Set $actions = null,
+        Set $allowedLinks = null,
+        Map $metas = null
     ): self {
         $self = new self($name, $gateway, $identity, $properties, $actions, $allowedLinks, $metas);
         $self->rangeable = true;
@@ -106,9 +121,9 @@ final class HttpResource
     }
 
     /**
-     * @return MapInterface<string, Property>
+     * @return Map<string, Property>
      */
-    public function properties(): MapInterface
+    public function properties(): Map
     {
         return $this->properties;
     }
@@ -119,9 +134,9 @@ final class HttpResource
     }
 
     /**
-     * @return MapInterface<scalar, variable>
+     * @return Map<scalar, scalar|array>
      */
-    public function metas(): MapInterface
+    public function metas(): Map
     {
         return $this->metas;
     }
@@ -137,9 +152,9 @@ final class HttpResource
     }
 
     /**
-     * @return SetInterface<AllowedLink>
+     * @return Set<AllowedLink>
      */
-    public function allowedLinks(): SetInterface
+    public function allowedLinks(): Set
     {
         return $this->allowedLinks;
     }
@@ -155,9 +170,9 @@ final class HttpResource
         return true;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
-        return (string) $this->name;
+        return $this->name->toString();
     }
 
     private function acceptLink(Locator $locator, Link $link): bool

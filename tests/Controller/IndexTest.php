@@ -22,10 +22,11 @@ use Innmind\Rest\Server\{
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
-    Headers\Headers,
+    Headers,
     Header,
     Header\Accept,
     Header\AcceptValue,
+    ProtocolVersion,
     Exception\Http\RangeNotSatisfiable,
 };
 use Innmind\Immutable\{
@@ -42,7 +43,7 @@ class IndexTest extends AbstractTestCase
     private $rangeExtractor;
     private $builder;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -65,12 +66,12 @@ class IndexTest extends AbstractTestCase
     public function testThrowWhenInvalidGatewayKeyType()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
+        $this->expectExceptionMessage('Argument 3 must be of type Map<string, Innmind\Rest\Server\Gateway>');
 
         new Index(
             new Encoder\Json,
             new Identities,
-            new Map('int', Gateway::class),
+            Map::of('int', Gateway::class),
             $this->createMock(ListBuilder::class),
             $this->createMock(Extractor::class),
             $this->createMock(Builder::class)
@@ -80,12 +81,12 @@ class IndexTest extends AbstractTestCase
     public function testThrowWhenInvalidGatewayValueType()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 3 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
+        $this->expectExceptionMessage('Argument 3 must be of type Map<string, Innmind\Rest\Server\Gateway>');
 
         new Index(
             new Encoder\Json,
             new Identities,
-            new Map('string', 'callable'),
+            Map::of('string', 'callable'),
             $this->createMock(ListBuilder::class),
             $this->createMock(Extractor::class),
             $this->createMock(Builder::class)
@@ -103,6 +104,10 @@ class IndexTest extends AbstractTestCase
                     new AcceptValue('application', 'json')
                 )
             ));
+        $request
+            ->expects($this->any())
+            ->method('protocolVersion')
+            ->willReturn(new ProtocolVersion(2, 0));
         $this
             ->rangeExtractor
             ->expects($this->once())
@@ -134,16 +139,16 @@ class IndexTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($identities, $request, $this->definition, $spec, $range)
-            ->willReturn(new Set(Header::class));
+            ->willReturn(Set::of(Header::class));
 
         $response = ($this->index)($request, $this->definition);
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(206, $response->statusCode()->value());
-        $this->assertSame('Partial Content', (string) $response->reasonPhrase());
+        $this->assertSame('Partial Content', $response->reasonPhrase()->toString());
         $this->assertSame(
             '{"identities":["uuid1","uuid2"]}',
-            (string) $response->body()
+            $response->body()->toString(),
         );
     }
 
@@ -158,6 +163,10 @@ class IndexTest extends AbstractTestCase
                     new AcceptValue('application', 'json')
                 )
             ));
+        $request
+            ->expects($this->any())
+            ->method('protocolVersion')
+            ->willReturn(new ProtocolVersion(2, 0));
         $this
             ->rangeExtractor
             ->expects($this->once())
@@ -189,16 +198,16 @@ class IndexTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($identities, $request, $this->definition, $spec, null)
-            ->willReturn(new Set(Header::class));
+            ->willReturn(Set::of(Header::class));
 
         $response = ($this->index)($request, $this->definition);
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(200, $response->statusCode()->value());
-        $this->assertSame('OK', (string) $response->reasonPhrase());
+        $this->assertSame('OK', $response->reasonPhrase()->toString());
         $this->assertSame(
             '{"identities":["uuid1","uuid2"]}',
-            (string) $response->body()
+            $response->body()->toString(),
         );
     }
 
@@ -256,6 +265,10 @@ class IndexTest extends AbstractTestCase
                     new AcceptValue('application', 'json')
                 )
             ));
+        $request
+            ->expects($this->any())
+            ->method('protocolVersion')
+            ->willReturn(new ProtocolVersion(2, 0));
         $this
             ->rangeExtractor
             ->expects($this->once())
@@ -287,16 +300,16 @@ class IndexTest extends AbstractTestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($identities, $request, $this->definition, null, $range)
-            ->willReturn(new Set(Header::class));
+            ->willReturn(Set::of(Header::class));
 
         $response = ($this->index)($request, $this->definition);
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(206, $response->statusCode()->value());
-        $this->assertSame('Partial Content', (string) $response->reasonPhrase());
+        $this->assertSame('Partial Content', $response->reasonPhrase()->toString());
         $this->assertSame(
             '{"identities":["uuid1","uuid2"]}',
-            (string) $response->body()
+            $response->body()->toString(),
         );
     }
 

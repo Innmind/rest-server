@@ -16,7 +16,7 @@ class IntTypeTest extends TestCase
     public function testInterface()
     {
         $this->assertInstanceOf(Type::class, new IntType);
-        $this->assertSame('int', (string) new IntType);
+        $this->assertSame('int', (new IntType)->toString());
     }
 
     public function testDenormalize()

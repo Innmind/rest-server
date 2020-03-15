@@ -10,8 +10,10 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Http\{
     Message\ServerRequest,
+    Header\Value,
     Exception\Http\NotAcceptable,
 };
+use function Innmind\Immutable\join;
 use Negotiation\{
     Negotiator,
     Accept,
@@ -19,8 +21,8 @@ use Negotiation\{
 
 final class AcceptVerifier implements Verifier
 {
-    private $formats;
-    private $negotiator;
+    private Formats $formats;
+    private Negotiator $negotiator;
 
     public function __construct(Formats $formats)
     {
@@ -43,17 +45,23 @@ final class AcceptVerifier implements Verifier
             ->reduce(
                 [],
                 function(array $carry, MediaType $type) {
-                    $carry[] = (string) $type;
+                    $carry[] = $type->toString();
 
                     return $carry;
                 }
             );
         $best = $this->negotiator->getBest(
-            (string) $request
-                ->headers()
-                ->get('Accept')
-                ->values()
-                ->join(', '),
+            join(
+                ', ',
+                $request
+                    ->headers()
+                    ->get('Accept')
+                    ->values()
+                    ->mapTo(
+                        'string',
+                        static fn(Value $value): string => $value->toString(),
+                    ),
+            )->toString(),
             $types
         );
 

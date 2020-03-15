@@ -21,13 +21,13 @@ class VerifyTest extends TestCase
 {
     private $definition;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->definition = new Definition\HttpResource(
             'foo',
             new Definition\Gateway('foo'),
             new Definition\Identity('foo'),
-            new Set(Definition\Property::class)
+            Set::of(Definition\Property::class)
         );
     }
 

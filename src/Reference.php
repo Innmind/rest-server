@@ -7,8 +7,8 @@ use Innmind\Rest\Server\Definition\HttpResource as ResourceDefinition;
 
 final class Reference
 {
-    private $definition;
-    private $identity;
+    private ResourceDefinition $definition;
+    private Identity $identity;
 
     public function __construct(
         ResourceDefinition $definition,

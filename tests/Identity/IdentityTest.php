@@ -17,7 +17,7 @@ class IdentityTest extends TestCase
 
         $this->assertInstanceOf(IdentityInterface::class, $identity);
         $this->assertSame(42, $identity->value());
-        $this->assertSame('42', (string) $identity);
+        $this->assertSame('42', $identity->toString());
     }
 
     public function testThrowWhenInvalidData()

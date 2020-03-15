@@ -21,9 +21,10 @@ use Innmind\Http\Header\{
 };
 use Innmind\Url\Url;
 use Innmind\Immutable\{
-    SetInterface,
+    Set,
     Map,
 };
+use function Innmind\Immutable\first;
 use PHPUnit\Framework\TestCase;
 
 class LinkTranslatorTest extends TestCase
@@ -41,25 +42,24 @@ class LinkTranslatorTest extends TestCase
         $links = $translate(
             new LinkHeader(
                 new LinkValue(
-                    Url::fromString('/top_dir/sub_dir/res/bar'),
+                    Url::of('/top_dir/sub_dir/res/bar'),
                     'relationship_name',
-                    Map::of('string', LinkParameterInterface::class)
-                        ('foo', new LinkParameter('foo', 'baz'))
+                    new LinkParameter('foo', 'baz'),
                 )
             )
         );
 
-        $this->assertInstanceOf(SetInterface::class, $links);
+        $this->assertInstanceOf(Set::class, $links);
         $this->assertSame(Link::class, (string) $links->type());
         $this->assertCount(1, $links);
-        $link = $links->current();
+        $link = first($links);
         $this->assertSame(
             $directory->child('sub_dir')->definition('res'),
             $link->reference()->definition()
         );
         $this->assertSame(
             'bar',
-            (string) $link->reference()->identity()
+            $link->reference()->identity()->toString(),
         );
         $this->assertTrue($link->has('foo'));
         $this->assertSame('baz', $link->get('foo')->value());

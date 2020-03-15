@@ -22,15 +22,15 @@ final class RangeVerifier implements Verifier
         HttpResource $definition
     ): void {
         if (
-            (string) $request->method() !== Method::GET &&
-            $request->headers()->has('Range')
+            $request->method()->toString() !== Method::get()->toString() &&
+            $request->headers()->contains('Range')
         ) {
             throw new PreconditionFailed;
         }
 
         if (
             !$definition->isRangeable() &&
-            $request->headers()->has('Range')
+            $request->headers()->contains('Range')
         ) {
             throw new PreconditionFailed;
         }

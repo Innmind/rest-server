@@ -5,20 +5,18 @@ namespace Innmind\Rest\Server\Response\HeaderBuilder;
 
 use Innmind\Rest\Server\{
     Reference,
-    link,
+    Link,
 };
 use Innmind\Http\{
     Message\ServerRequest,
     Header,
 };
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Immutable\Set;
 
 final class UnlinkDelegationBuilder implements UnlinkBuilder
 {
-    private $builders;
+    /** @var list<UnlinkBuilder> */
+    private array $builders;
 
     public function __construct(UnlinkBuilder ...$builders)
     {
@@ -32,7 +30,8 @@ final class UnlinkDelegationBuilder implements UnlinkBuilder
         ServerRequest $request,
         Reference $from,
         Link ...$links
-    ): SetInterface {
+    ): Set {
+        /** @var Set<Header> */
         $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {

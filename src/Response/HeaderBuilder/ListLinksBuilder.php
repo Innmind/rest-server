@@ -18,14 +18,12 @@ use Innmind\Http\{
     Header\LinkValue,
 };
 use Innmind\Specification\Specification;
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Immutable\Set;
+use function Innmind\Immutable\unwrap;
 
 final class ListLinksBuilder implements ListBuilder
 {
-    private $router;
+    private Router $router;
 
     public function __construct(Router $router)
     {
@@ -36,12 +34,13 @@ final class ListLinksBuilder implements ListBuilder
      * {@inheritdoc}
      */
     public function __invoke(
-        SetInterface $identities,
+        Set $identities,
         ServerRequest $request,
         HttpResource $definition,
         Specification $specification = null,
         Range $range = null
-    ): SetInterface {
+    ): Set {
+        /** @var Set<Header> */
         $headers = Set::of(Header::class);
 
         if ($identities->size() === 0) {
@@ -50,8 +49,8 @@ final class ListLinksBuilder implements ListBuilder
 
         return $headers->add(
             new Link(
-                ...$identities->reduce(
-                    new Set(Value::class),
+                ...unwrap($identities->reduce(
+                    Set::of(Value::class),
                     function(Set $carry, Identity $identity) use ($definition): Set {
                         return $carry->add(new LinkValue(
                             $this->router->generate(
@@ -62,7 +61,7 @@ final class ListLinksBuilder implements ListBuilder
                             'resource'
                         ));
                     }
-                )
+                )),
             )
         );
     }

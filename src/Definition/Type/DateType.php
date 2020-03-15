@@ -11,7 +11,7 @@ use Innmind\Rest\Server\{
 
 final class DateType implements Type
 {
-    private $format;
+    private string $format;
 
     public function __construct(string $format = \DateTime::ISO8601)
     {
@@ -24,6 +24,7 @@ final class DateType implements Type
     public function denormalize($data)
     {
         try {
+            /** @psalm-suppress MixedArgument */
             $data = \DateTimeImmutable::createFromFormat(
                 $this->format,
                 $data
@@ -46,6 +47,7 @@ final class DateType implements Type
     {
         if (\is_string($data)) {
             try {
+                /** @var \DateTimeImmutable */
                 $data = $this->denormalize($data);
             } catch (DenormalizationException $e) {
                 throw new NormalizationException($e->getMessage());
@@ -59,7 +61,7 @@ final class DateType implements Type
         return $data->format($this->format);
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return 'date<'.$this->format.'>';
     }

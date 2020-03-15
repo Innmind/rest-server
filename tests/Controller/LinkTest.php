@@ -22,12 +22,12 @@ use Innmind\Http\{
     Header,
     Header\Link as LinkHeader,
     Header\LinkValue,
-    Headers\Headers,
+    Headers,
+    ProtocolVersion,
     Exception\Http\BadRequest,
 };
 use Innmind\Url\Url;
 use Innmind\Immutable\{
-    MapInterface,
     Map,
     Set,
 };
@@ -38,7 +38,7 @@ class LinkTest extends AbstractTestCase
     private $gateway;
     private $headerBuilder;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -62,10 +62,10 @@ class LinkTest extends AbstractTestCase
     public function testThrowWhenInvalidGatewayKeyType()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
+        $this->expectExceptionMessage('Argument 1 must be of type Map<string, Innmind\Rest\Server\Gateway>');
 
         new LinkController(
-            new Map('int', Gateway::class),
+            Map::of('int', Gateway::class),
             $this->createMock(LinkBuilder::class),
             new LinkTranslator($this->router),
             new Locator($this->directory)
@@ -75,10 +75,10 @@ class LinkTest extends AbstractTestCase
     public function testThrowWhenInvalidGatewayValueType()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 1 must be of type MapInterface<string, Innmind\Rest\Server\Gateway>');
+        $this->expectExceptionMessage('Argument 1 must be of type Map<string, Innmind\Rest\Server\Gateway>');
 
         new LinkController(
-            new Map('string', 'callable'),
+            Map::of('string', 'callable'),
             $this->createMock(LinkBuilder::class),
             new LinkTranslator($this->router),
             new Locator($this->directory)
@@ -94,11 +94,15 @@ class LinkTest extends AbstractTestCase
             ->willReturn(Headers::of(
                 new LinkHeader(
                     new LinkValue(
-                        Url::fromString('/top_dir/image/42'),
+                        Url::of('/top_dir/image/42'),
                         'resource'
                     )
                 )
             ));
+        $request
+            ->expects($this->any())
+            ->method('protocolVersion')
+            ->willReturn(new ProtocolVersion(2, 0));
         $identity = $this->createMock(Identity::class);
         $from = new Reference(
             $this->definition,
@@ -141,14 +145,14 @@ class LinkTest extends AbstractTestCase
                         $value->relationship() === $link->relationship();
                 })
             )
-            ->willReturn(new Set(Header::class));
+            ->willReturn(Set::of(Header::class));
 
         $response = ($this->link)($request, $this->definition, $identity);
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(204, $response->statusCode()->value());
-        $this->assertSame('No Content', (string) $response->reasonPhrase());
-        $this->assertSame('', (string) $response->body());
+        $this->assertSame('No Content', $response->reasonPhrase()->toString());
+        $this->assertSame('', $response->body()->toString());
     }
 
     public function testThrowWhenLinkNotAccepted()
@@ -160,7 +164,7 @@ class LinkTest extends AbstractTestCase
             ->willReturn(Headers::of(
                 new LinkHeader(
                     new LinkValue(
-                        Url::fromString('/top_dir/image/42'),
+                        Url::of('/top_dir/image/42'),
                         'resource'
                     )
                 )
@@ -225,7 +229,7 @@ class LinkTest extends AbstractTestCase
             ->willReturn(Headers::of(
                 new LinkHeader(
                     new LinkValue(
-                        Url::fromString('/foo/image/42'),
+                        Url::of('/foo/image/42'),
                         'resource'
                     )
                 )

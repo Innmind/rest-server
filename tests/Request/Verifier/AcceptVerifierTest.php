@@ -19,10 +19,12 @@ use Innmind\Http\{
     Message\Method,
     Headers,
     Header,
+    Header\Accept,
+    Header\AcceptValue,
     ProtocolVersion,
     Exception\Http\NotAcceptable,
 };
-use Innmind\Url\UrlInterface;
+use Innmind\Url\Url;
 use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
@@ -60,21 +62,16 @@ class AcceptVerifierTest extends TestCase
                 )
             )
         );
-        $headers = $this->createMock(Headers::class);
-        $headers
-            ->method('get')
-            ->willReturn(
-                $header = $this->createMock(Header::class)
-            );
-        $header
-            ->method('values')
-            ->willReturn(
-                Set::of('string', 'text/html')
-            );
+        $headers = Headers::of(
+            new Accept(
+                new AcceptValue('text', 'html')
+            )
+        );
+
         $request = new ServerRequest(
-            $this->createMock(UrlInterface::class),
-            $this->createMock(Method::class),
-            $this->createMock(ProtocolVersion::class),
+            Url::of('http://example.com'),
+            Method::get(),
+            new ProtocolVersion(2, 0),
             $headers
         );
 
@@ -86,7 +83,7 @@ class AcceptVerifierTest extends TestCase
                 'foo',
                 new Gateway('command'),
                 new Identity('uuid'),
-                new Set(Property::class)
+                Set::of(Property::class)
             )
         );
     }
@@ -105,21 +102,16 @@ class AcceptVerifierTest extends TestCase
                 )
             )
         );
-        $headers = $this->createMock(Headers::class);
-        $headers
-            ->method('get')
-            ->willReturn(
-                $header = $this->createMock(Header::class)
-            );
-        $header
-            ->method('values')
-            ->willReturn(
-                Set::of('string', 'application/json')
-            );
+        $headers = Headers::of(
+            new Accept(
+                new AcceptValue('application', 'json')
+            )
+        );
+
         $request = new ServerRequest(
-            $this->createMock(UrlInterface::class),
-            $this->createMock(Method::class),
-            $this->createMock(ProtocolVersion::class),
+            Url::of('http://example.com'),
+            Method::get(),
+            new ProtocolVersion(2, 0),
             $headers
         );
 
@@ -130,7 +122,7 @@ class AcceptVerifierTest extends TestCase
                     'foo',
                     new Gateway('command'),
                     new Identity('uuid'),
-                    new Set(Property::class)
+                    Set::of(Property::class)
                 )
             )
         );

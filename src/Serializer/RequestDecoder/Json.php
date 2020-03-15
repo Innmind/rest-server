@@ -11,6 +11,7 @@ final class Json implements RequestDecoder
 {
     public function __invoke(ServerRequest $request): array
     {
-        return Parser::decode((string) $request->body());
+        /** @var array */
+        return Parser::decode($request->body()->toString());
     }
 }

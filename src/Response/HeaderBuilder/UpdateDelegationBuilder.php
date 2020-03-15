@@ -12,14 +12,12 @@ use Innmind\Http\{
     Message\ServerRequest,
     Header,
 };
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Immutable\Set;
 
 final class UpdateDelegationBuilder implements UpdateBuilder
 {
-    private $builders;
+    /** @var list<UpdateBuilder> */
+    private array $builders;
 
     public function __construct(UpdateBuilder ...$builders)
     {
@@ -34,7 +32,8 @@ final class UpdateDelegationBuilder implements UpdateBuilder
         HttpResource $definition,
         Identity $identity,
         HttpResourceInterface $resource
-    ): SetInterface {
+    ): Set {
+        /** @var Set<Header> */
         $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {

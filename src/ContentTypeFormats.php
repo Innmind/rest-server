@@ -14,11 +14,11 @@ use Innmind\Immutable\Set;
  */
 final class ContentTypeFormats
 {
-    private static $default;
+    private static ?Formats $default = null;
 
     public static function default(): Formats
     {
-        return self::$default ?? self::$default = Formats::of(
+        return self::$default ??= Formats::of(
             new Format(
                 'json',
                 Set::of(

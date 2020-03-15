@@ -7,7 +7,11 @@ use Innmind\Rest\Server\{
     Exception\RangeNotFound,
     Request\Range,
 };
-use Innmind\Http\Message\ServerRequest;
+use Innmind\Http\{
+    Message\ServerRequest,
+    Header\Range as RangeHeader,
+};
+use function Innmind\Immutable\first;
 
 final class HeaderExtractor implements Extractor
 {
@@ -16,23 +20,19 @@ final class HeaderExtractor implements Extractor
      */
     public function __invoke(ServerRequest $request): Range
     {
-        if (!$request->headers()->has('Range')) {
+        if (!$request->headers()->contains('Range')) {
+            throw new RangeNotFound;
+        }
+
+        $range = $request->headers()->get('Range');
+
+        if (!$range instanceof RangeHeader) {
             throw new RangeNotFound;
         }
 
         return new Range(
-            $request
-                ->headers()
-                ->get('Range')
-                ->values()
-                ->current()
-                ->firstPosition(),
-            $request
-                ->headers()
-                ->get('Range')
-                ->values()
-                ->current()
-                ->lastPosition()
+            first($range->values())->firstPosition(),
+            first($range->values())->lastPosition(),
         );
     }
 }

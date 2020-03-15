@@ -16,10 +16,8 @@ use Innmind\Http\{
     Message\ServerRequest,
     Header,
 };
-use Innmind\Immutable\{
-    Set,
-    SetInterface,
-};
+use Innmind\Immutable\Set;
+use function Innmind\Immutable\unwrap;
 use PHPUnit\Framework\TestCase;
 
 class ListDelegationBuilderTest extends TestCase
@@ -30,16 +28,16 @@ class ListDelegationBuilderTest extends TestCase
 
         $this->assertInstanceOf(ListBuilder::class, $build);
         $headers = $build(
-            new Set(IdentityInterface::class),
+            Set::of(IdentityInterface::class),
             $this->createMock(ServerRequest::class),
             Httpresource::rangeable(
                 'foobar',
                 new Gateway('bar'),
                 new Identity('foo'),
-                new Set(Property::class)
+                Set::of(Property::class)
             )
         );
-        $this->assertInstanceOf(SetInterface::class, $headers);
+        $this->assertInstanceOf(Set::class, $headers);
         $this->assertSame(Header::class, (string) $headers->type());
     }
 
@@ -48,16 +46,16 @@ class ListDelegationBuilderTest extends TestCase
         $build = new ListDelegationBuilder;
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 1 must be of type SetInterface<Innmind\Rest\Server\Identity>');
+        $this->expectExceptionMessage('Argument 1 must be of type Set<Innmind\Rest\Server\Identity>');
 
         $build(
-            new Set('object'),
+            Set::of('object'),
             $this->createMock(ServerRequest::class),
             Httpresource::rangeable(
                 'foobar',
                 new Gateway('bar'),
                 new Identity('foo'),
-                new Set(Property::class)
+                Set::of(Property::class)
             )
         );
     }
@@ -80,19 +78,19 @@ class ListDelegationBuilderTest extends TestCase
             );
 
         $headers = $build(
-            new Set(IdentityInterface::class),
+            Set::of(IdentityInterface::class),
             $this->createMock(ServerRequest::class),
             Httpresource::rangeable(
                 'foobar',
                 new Gateway('bar'),
                 new Identity('foo'),
-                new Set(Property::class)
+                Set::of(Property::class)
             )
         );
 
         $this->assertSame(
             [$foo, $bar],
-            $headers->toPrimitive()
+            unwrap($headers),
         );
     }
 }

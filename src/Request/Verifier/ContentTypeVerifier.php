@@ -11,8 +11,10 @@ use Innmind\Rest\Server\{
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Method,
+    Header\Value,
     Exception\Http\UnsupportedMediaType,
 };
+use function Innmind\Immutable\join;
 use Negotiation\{
     Negotiator,
     Accept,
@@ -20,8 +22,8 @@ use Negotiation\{
 
 final class ContentTypeVerifier implements Verifier
 {
-    private $formats;
-    private $negotiator;
+    private Formats $formats;
+    private Negotiator $negotiator;
 
     public function __construct(Formats $formats)
     {
@@ -39,10 +41,10 @@ final class ContentTypeVerifier implements Verifier
         HttpResource $definition
     ): void {
         if (
-            !$request->headers()->has('Content-Type') ||
+            !$request->headers()->contains('Content-Type') ||
             !\in_array(
-                (string) $request->method(),
-                [Method::POST, Method::PUT],
+                $request->method()->toString(),
+                [Method::post()->toString(), Method::put()->toString()],
                 true
             )
         ) {
@@ -55,17 +57,23 @@ final class ContentTypeVerifier implements Verifier
             ->reduce(
                 [],
                 function(array $carry, MediaType $type) {
-                    $carry[] = (string) $type;
+                    $carry[] = $type->toString();
 
                     return $carry;
                 }
             );
         $best = $this->negotiator->getBest(
-            (string) $request
-                ->headers()
-                ->get('Content-Type')
-                ->values()
-                ->join(', '),
+            join(
+                ', ',
+                $request
+                    ->headers()
+                    ->get('Content-Type')
+                    ->values()
+                    ->mapTo(
+                        'string',
+                        static fn(Value $value): string => $value->toString(),
+                    )
+            )->toString(),
             $types
         );
 

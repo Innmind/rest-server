@@ -18,15 +18,15 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Http\{
     Message\ServerRequest\ServerRequest,
-    Message\Query\Query,
-    Message\Query\Parameter\Parameter,
+    Message\Query,
+    Message\Query\Parameter,
     Message\Method,
     Message\Environment,
     Message\Cookies,
     ProtocolVersion,
     Headers,
 };
-use Innmind\Url\UrlInterface;
+use Innmind\Url\Url;
 use Innmind\Stream\Readable;
 use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
@@ -36,13 +36,13 @@ class BuilderTest extends TestCase
     public function testBuildFrom()
     {
         $request = new ServerRequest(
-            $this->createMock(UrlInterface::class),
-            $this->createMock(Method::class),
-            $this->createMock(ProtocolVersion::class),
-            $this->createMock(Headers::class),
+            Url::of('http://example.com'),
+            Method::get(),
+            new ProtocolVersion(2, 0),
+            new Headers,
             $this->createMock(Readable::class),
-            $this->createMock(Environment::class),
-            $this->createMock(Cookies::class),
+            new Environment,
+            new Cookies,
             Query::of(
                 new Parameter('foo', 'bar'),
                 new Parameter('bar', 'baz'),
@@ -81,20 +81,20 @@ class BuilderTest extends TestCase
     public function testThrowWhenNoPropertyForTheFilter()
     {
         $request = new ServerRequest(
-            $this->createMock(UrlInterface::class),
-            $this->createMock(Method::class),
-            $this->createMock(ProtocolVersion::class),
-            $this->createMock(Headers::class),
+            Url::of('http://example.com'),
+            Method::get(),
+            new ProtocolVersion(2, 0),
+            new Headers,
             $this->createMock(Readable::class),
-            $this->createMock(Environment::class),
-            $this->createMock(Cookies::class),
+            new Environment,
+            new Cookies,
             Query::of(new Parameter('foo', 'bar'))
         );
         $definition = HttpResource::rangeable(
             'foo',
             new Gateway('command'),
             new Identity('uuid'),
-            new Set(Property::class)
+            Set::of(Property::class)
         );
         $build = new Builder;
 
@@ -107,20 +107,20 @@ class BuilderTest extends TestCase
     public function testThrowWhenNoFilterFound()
     {
         $request = new ServerRequest(
-            $this->createMock(UrlInterface::class),
-            $this->createMock(Method::class),
-            $this->createMock(ProtocolVersion::class),
-            $this->createMock(Headers::class),
+            Url::of('http://example.com'),
+            Method::get(),
+            new ProtocolVersion(2, 0),
+            new Headers,
             $this->createMock(Readable::class),
-            $this->createMock(Environment::class),
-            $this->createMock(Cookies::class),
+            new Environment,
+            new Cookies,
             new Query
         );
         $definition = HttpResource::rangeable(
             'foo',
             new Gateway('command'),
             new Identity('uuid'),
-            new Set(Property::class)
+            Set::of(Property::class)
         );
         $build = new Builder;
 

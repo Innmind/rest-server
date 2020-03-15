@@ -8,23 +8,25 @@ use Innmind\Rest\Server\{
     Format,
 };
 use Innmind\Http\Message\ServerRequest;
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\Map;
 
 final class Delegate implements RequestDecoder
 {
-    private $format;
-    private $decoders;
+    private Format $format;
+    /** @var Map<string, RequestDecoder> */
+    private Map $decoders;
 
-    public function __construct(
-        Format $format,
-        MapInterface $decoders
-    ) {
+    /**
+     * @param Map<string, RequestDecoder> $decoders
+     */
+    public function __construct(Format $format, Map $decoders)
+    {
         if (
             (string) $decoders->keyType() !== 'string' ||
             (string) $decoders->valueType() !== RequestDecoder::class
         ) {
             throw new \TypeError(sprintf(
-                'Argument 2 must be of type MapInterface<string, %s>',
+                'Argument 2 must be of type Map<string, %s>',
                 RequestDecoder::class
             ));
         }

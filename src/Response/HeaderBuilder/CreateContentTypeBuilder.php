@@ -10,13 +10,13 @@ use Innmind\Rest\Server\{
     Identity,
 };
 use Innmind\Http\Message\ServerRequest;
-use Innmind\Immutable\SetInterface;
+use Innmind\Immutable\Set;
 
 final class CreateContentTypeBuilder implements CreateBuilder
 {
     use ContentTypeBuilder;
 
-    private $formats;
+    private Formats $formats;
 
     public function __construct(Formats $formats)
     {
@@ -31,7 +31,7 @@ final class CreateContentTypeBuilder implements CreateBuilder
         ServerRequest $request,
         HttpResource $definition,
         HttpResourceInterface $resource
-    ): SetInterface {
+    ): Set {
         return $this->buildHeaderFrom($this->formats, $request);
     }
 }

@@ -8,7 +8,7 @@ use Innmind\Immutable\Str;
 
 final class Name
 {
-    private $value;
+    private string $value;
 
     public function __construct(string $value)
     {
@@ -21,10 +21,10 @@ final class Name
 
     public function under(self $name): self
     {
-        return new self($name.'.'.$this);
+        return new self($name->toString().'.'.$this->toString());
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->value;
     }

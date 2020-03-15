@@ -9,21 +9,25 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Http\Message\ServerRequest;
 use Innmind\Stream\Readable;
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\Map;
 
 final class Delegate implements Encoder
 {
-    private $format;
-    private $encoders;
+    private Format $format;
+    /** @var Map<string, Encoder> */
+    private Map $encoders;
 
-    public function __construct(Format $format, MapInterface $encoders)
+    /**
+     * @param Map<string, Encoder> $encoders
+     */
+    public function __construct(Format $format, Map $encoders)
     {
         if (
             (string) $encoders->keyType() !== 'string' ||
             (string) $encoders->valueType() !== Encoder::class
         ) {
             throw new \TypeError(sprintf(
-                'Argument 2 must be of type MapInterface<string, %s>',
+                'Argument 2 must be of type Map<string, %s>',
                 Encoder::class
             ));
         }

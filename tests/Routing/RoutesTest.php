@@ -38,21 +38,21 @@ class RoutesTest extends TestCase
         [$list, $get, $create, $update, $remove, $link, $unlink, $options] = iterator_to_array($routes);
 
         $this->assertSame(Action::list(), $list->action());
-        $this->assertSame('{+prefix}/top_dir/image/', (string) $list->template());
+        $this->assertSame('{+prefix}/top_dir/image/', $list->template()->toString());
         $this->assertSame(Action::get(), $get->action());
-        $this->assertSame('{+prefix}/top_dir/image/{identity}', (string) $get->template());
+        $this->assertSame('{+prefix}/top_dir/image/{identity}', $get->template()->toString());
         $this->assertSame(Action::create(), $create->action());
-        $this->assertSame('{+prefix}/top_dir/image/', (string) $create->template());
+        $this->assertSame('{+prefix}/top_dir/image/', $create->template()->toString());
         $this->assertSame(Action::update(), $update->action());
-        $this->assertSame('{+prefix}/top_dir/image/{identity}', (string) $update->template());
+        $this->assertSame('{+prefix}/top_dir/image/{identity}', $update->template()->toString());
         $this->assertSame(Action::remove(), $remove->action());
-        $this->assertSame('{+prefix}/top_dir/image/{identity}', (string) $remove->template());
+        $this->assertSame('{+prefix}/top_dir/image/{identity}', $remove->template()->toString());
         $this->assertSame(Action::link(), $link->action());
-        $this->assertSame('{+prefix}/top_dir/image/{identity}', (string) $link->template());
+        $this->assertSame('{+prefix}/top_dir/image/{identity}', $link->template()->toString());
         $this->assertSame(Action::unlink(), $unlink->action());
-        $this->assertSame('{+prefix}/top_dir/image/{identity}', (string) $unlink->template());
+        $this->assertSame('{+prefix}/top_dir/image/{identity}', $unlink->template()->toString());
         $this->assertSame(Action::options(), $options->action());
-        $this->assertSame('{+prefix}/top_dir/image/', (string) $options->template());
+        $this->assertSame('{+prefix}/top_dir/image/', $options->template()->toString());
     }
 
     public function testOfWithLimitedActions()
@@ -61,7 +61,7 @@ class RoutesTest extends TestCase
             'foo',
             new Definition\Gateway('foo'),
             new Definition\Identity('uuid'),
-            new Set(Definition\Property::class),
+            Set::of(Definition\Property::class),
             Set::of(Action::class, Action::list(), Action::get())
         );
 
@@ -74,11 +74,11 @@ class RoutesTest extends TestCase
         [$list, $get, $options] = iterator_to_array($routes);
 
         $this->assertSame(Action::list(), $list->action());
-        $this->assertSame('{+prefix}/top_dir/image/', (string) $list->template());
+        $this->assertSame('{+prefix}/top_dir/image/', $list->template()->toString());
         $this->assertSame(Action::get(), $get->action());
-        $this->assertSame('{+prefix}/top_dir/image/{identity}', (string) $get->template());
+        $this->assertSame('{+prefix}/top_dir/image/{identity}', $get->template()->toString());
         $this->assertSame(Action::options(), $options->action());
-        $this->assertSame('{+prefix}/top_dir/image/', (string) $options->template());
+        $this->assertSame('{+prefix}/top_dir/image/', $options->template()->toString());
     }
 
     public function testFrom()
@@ -107,38 +107,38 @@ class RoutesTest extends TestCase
         ] = iterator_to_array($routes);
 
         $this->assertSame(Action::list(), $resList->action());
-        $this->assertSame('{+prefix}/top_dir/sub_dir/res/', (string) $resList->template());
+        $this->assertSame('{+prefix}/top_dir/sub_dir/res/', $resList->template()->toString());
         $this->assertSame(Action::get(), $resGet->action());
-        $this->assertSame('{+prefix}/top_dir/sub_dir/res/{identity}', (string) $resGet->template());
+        $this->assertSame('{+prefix}/top_dir/sub_dir/res/{identity}', $resGet->template()->toString());
         $this->assertSame(Action::create(), $resCreate->action());
-        $this->assertSame('{+prefix}/top_dir/sub_dir/res/', (string) $resCreate->template());
+        $this->assertSame('{+prefix}/top_dir/sub_dir/res/', $resCreate->template()->toString());
         $this->assertSame(Action::update(), $resUpdate->action());
-        $this->assertSame('{+prefix}/top_dir/sub_dir/res/{identity}', (string) $resUpdate->template());
+        $this->assertSame('{+prefix}/top_dir/sub_dir/res/{identity}', $resUpdate->template()->toString());
         $this->assertSame(Action::remove(), $resRemove->action());
-        $this->assertSame('{+prefix}/top_dir/sub_dir/res/{identity}', (string) $resRemove->template());
+        $this->assertSame('{+prefix}/top_dir/sub_dir/res/{identity}', $resRemove->template()->toString());
         $this->assertSame(Action::link(), $resLink->action());
-        $this->assertSame('{+prefix}/top_dir/sub_dir/res/{identity}', (string) $resLink->template());
+        $this->assertSame('{+prefix}/top_dir/sub_dir/res/{identity}', $resLink->template()->toString());
         $this->assertSame(Action::unlink(), $resUnlink->action());
-        $this->assertSame('{+prefix}/top_dir/sub_dir/res/{identity}', (string) $resUnlink->template());
+        $this->assertSame('{+prefix}/top_dir/sub_dir/res/{identity}', $resUnlink->template()->toString());
         $this->assertSame(Action::options(), $resOptions->action());
-        $this->assertSame('{+prefix}/top_dir/sub_dir/res/', (string) $resOptions->template());
+        $this->assertSame('{+prefix}/top_dir/sub_dir/res/', $resOptions->template()->toString());
 
         $this->assertSame(Action::list(), $imageList->action());
-        $this->assertSame('{+prefix}/top_dir/image/', (string) $imageList->template());
+        $this->assertSame('{+prefix}/top_dir/image/', $imageList->template()->toString());
         $this->assertSame(Action::get(), $imageGet->action());
-        $this->assertSame('{+prefix}/top_dir/image/{identity}', (string) $imageGet->template());
+        $this->assertSame('{+prefix}/top_dir/image/{identity}', $imageGet->template()->toString());
         $this->assertSame(Action::create(), $imageCreate->action());
-        $this->assertSame('{+prefix}/top_dir/image/', (string) $imageCreate->template());
+        $this->assertSame('{+prefix}/top_dir/image/', $imageCreate->template()->toString());
         $this->assertSame(Action::update(), $imageUpdate->action());
-        $this->assertSame('{+prefix}/top_dir/image/{identity}', (string) $imageUpdate->template());
+        $this->assertSame('{+prefix}/top_dir/image/{identity}', $imageUpdate->template()->toString());
         $this->assertSame(Action::remove(), $imageRemove->action());
-        $this->assertSame('{+prefix}/top_dir/image/{identity}', (string) $imageRemove->template());
+        $this->assertSame('{+prefix}/top_dir/image/{identity}', $imageRemove->template()->toString());
         $this->assertSame(Action::link(), $imageLink->action());
-        $this->assertSame('{+prefix}/top_dir/image/{identity}', (string) $imageLink->template());
+        $this->assertSame('{+prefix}/top_dir/image/{identity}', $imageLink->template()->toString());
         $this->assertSame(Action::unlink(), $imageUnlink->action());
-        $this->assertSame('{+prefix}/top_dir/image/{identity}', (string) $imageUnlink->template());
+        $this->assertSame('{+prefix}/top_dir/image/{identity}', $imageUnlink->template()->toString());
         $this->assertSame(Action::options(), $imageOptions->action());
-        $this->assertSame('{+prefix}/top_dir/image/', (string) $imageOptions->template());
+        $this->assertSame('{+prefix}/top_dir/image/', $imageOptions->template()->toString());
     }
 
     public function testMatch()
@@ -149,18 +149,18 @@ class RoutesTest extends TestCase
 
         $this->assertSame(
             $directory->definition('image'),
-            $routes->match(new Path('/top_dir/image/'))->definition()
+            $routes->match(Path::of('/top_dir/image/'))->definition()
         );
         $this->assertNull(
-            $routes->match(new Path('/top_dir/image/'))->identity()
+            $routes->match(Path::of('/top_dir/image/'))->identity()
         );
         $this->assertSame(
             $directory->definition('image'),
-            $routes->match(new Path('/top_dir/image/some-uuid-or-other-identity'))->definition()
+            $routes->match(Path::of('/top_dir/image/some-uuid-or-other-identity'))->definition()
         );
         $this->assertEquals(
             new Identity('some-uuid-or-other-identity'),
-            $routes->match(new Path('/top_dir/image/some-uuid-or-other-identity'))->identity()
+            $routes->match(Path::of('/top_dir/image/some-uuid-or-other-identity'))->identity()
         );
     }
 
@@ -169,7 +169,7 @@ class RoutesTest extends TestCase
         $this->expectException(RouteNotFound::class);
         $this->expectExceptionMessage('/foo');
 
-        (new Routes)->match(new Path('/foo'));
+        (new Routes)->match(Path::of('/foo'));
     }
 
     public function testGet()

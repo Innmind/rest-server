@@ -4,8 +4,9 @@ declare(strict_types = 1);
 namespace Innmind\Rest\Server\SpecificationBuilder;
 
 use Innmind\Rest\Server\{
-    Exception\NoFilterFound,
     Definition\HttpResource,
+    Exception\NoFilterFound,
+    Exception\FilterNotApplicable,
 };
 use Innmind\Http\Message\ServerRequest;
 use Innmind\Specification\Specification;

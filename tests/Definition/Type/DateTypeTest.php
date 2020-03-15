@@ -18,11 +18,11 @@ class DateTypeTest extends TestCase
         $this->assertInstanceOf(Type::class, new DateType);
         $this->assertSame(
             'date<Y-m-d>',
-            (string) new DateType('Y-m-d')
+            (new DateType('Y-m-d'))->toString(),
         );
         $this->assertSame(
             'date<Y-m-d\TH:i:sO>',
-            (string) new DateType
+            (new DateType)->toString(),
         );
     }
 

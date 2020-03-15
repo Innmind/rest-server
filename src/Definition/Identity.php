@@ -5,7 +5,7 @@ namespace Innmind\Rest\Server\Definition;
 
 final class Identity
 {
-    private $property;
+    private string $property;
 
     public function __construct(string $property)
     {
@@ -17,7 +17,7 @@ final class Identity
         return $this->property;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->property;
     }
