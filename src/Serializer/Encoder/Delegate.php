@@ -14,8 +14,12 @@ use Innmind\Immutable\Map;
 final class Delegate implements Encoder
 {
     private Format $format;
+    /** @var Map<string, Encoder> */
     private Map $encoders;
 
+    /**
+     * @param Map<string, Encoder> $encoders
+     */
     public function __construct(Format $format, Map $encoders)
     {
         if (

@@ -16,23 +16,24 @@ final class QueryExtractor implements Extractor
      */
     public function __invoke(ServerRequest $request): Range
     {
-        if (
-            !$request->query()->contains('range') ||
-            !\is_array($request->query()->get('range')->value()) ||
-            \count($request->query()->get('range')->value()) !== 2
-        ) {
+        if (!$request->query()->contains('range')) {
             throw new RangeNotFound;
         }
 
+        $range = $request->query()->get('range')->value();
+
+        if (!\is_array($range)) {
+            throw new RangeNotFound;
+        }
+
+        if (\count($range) !== 2) {
+            throw new RangeNotFound;
+        }
+
+        /** @psalm-suppress MixedArgument */
         return new Range(
-            $request
-                ->query()
-                ->get('range')
-                ->value()[0],
-            $request
-                ->query()
-                ->get('range')
-                ->value()[1]
+            $range[0],
+            $range[1],
         );
     }
 }

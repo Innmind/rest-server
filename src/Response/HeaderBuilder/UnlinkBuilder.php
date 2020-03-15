@@ -7,7 +7,10 @@ use Innmind\Rest\Server\{
     Reference,
     Link,
 };
-use Innmind\Http\Message\ServerRequest;
+use Innmind\Http\{
+    Message\ServerRequest,
+    Header,
+};
 use Innmind\Immutable\Set;
 
 interface UnlinkBuilder

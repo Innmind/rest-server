@@ -32,7 +32,7 @@ class HttpResourceTest extends TestCase
             Set::of(Property::class),
             Set::of(Action::class, Action::get()),
             null,
-            $metas = Map::of('scalar', 'variable')
+            $metas = Map::of('scalar', 'scalar|array')
         );
 
         $this->assertInstanceOf(Name::class, $resource->name());
@@ -131,7 +131,7 @@ class HttpResourceTest extends TestCase
     public function testThrowForInvalidMetaMap()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 7 must be of type Map<scalar, variable>');
+        $this->expectExceptionMessage('Argument 7 must be of type Map<scalar, scalar|array>');
 
         new HttpResource(
             'foobar',

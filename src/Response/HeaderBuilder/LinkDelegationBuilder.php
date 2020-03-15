@@ -15,6 +15,7 @@ use Innmind\Immutable\Set;
 
 final class LinkDelegationBuilder implements LinkBuilder
 {
+    /** @var list<LinkBuilder> */
     private array $builders;
 
     public function __construct(LinkBuilder ...$builders)
@@ -30,6 +31,7 @@ final class LinkDelegationBuilder implements LinkBuilder
         Reference $from,
         Link ...$links
     ): Set {
+        /** @var Set<Header> */
         $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {

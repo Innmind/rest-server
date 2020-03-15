@@ -30,6 +30,7 @@ final class NotFilter implements Not
 
     public function isSatisfiedBy(HttpResource $resource): bool
     {
+        /** @psalm-suppress UndefinedInterfaceMethod */
         return !$this->specification->isSatisfiedBy($resource);
     }
 }

@@ -21,9 +21,13 @@ use function Innmind\Immutable\unwrap;
 
 final class Remove implements Controller
 {
+    /** @var Map<string, Gateway> */
     private Map $gateways;
     private RemoveBuilder $buildHeader;
 
+    /**
+     * @param Map<string, Gateway> $gateways
+     */
     public function __construct(
         Map $gateways,
         RemoveBuilder $headerBuilder
@@ -52,8 +56,10 @@ final class Remove implements Controller
             ->get($definition->gateway()->toString())
             ->resourceRemover();
 
+        /** @psalm-suppress PossiblyNullArgument */
         $remove($definition, $identity);
 
+        /** @psalm-suppress PossiblyNullArgument */
         return new Response\Response(
             $code = StatusCode::of('NO_CONTENT'),
             $code->associatedreasonPhrase(),

@@ -25,8 +25,10 @@ final class HttpResource
         Access $mask
     ): Resource {
         $errors = Map::of('string', DenormalizationException::class);
+        /** @var array */
         $data = $data['resource'];
 
+        /** @var Map<string, Property> */
         $properties = $definition
             ->properties()
             ->reduce(
@@ -44,6 +46,10 @@ final class HttpResource
                         !$definition->access()->matches($mask) &&
                         isset($data[$name])
                     ) {
+                        /**
+                         * @psalm-suppress MixedMethodCall
+                         * @psalm-suppress MixedAssignment
+                         */
                         $errors = $errors->put(
                             $name,
                             new DenormalizationException('The field is not allowed')
@@ -60,6 +66,10 @@ final class HttpResource
                             return $properties;
                         }
 
+                        /**
+                         * @psalm-suppress MixedMethodCall
+                         * @psalm-suppress MixedAssignment
+                         */
                         $errors = $errors->put(
                             $name,
                             new DenormalizationException('The field is missing')
@@ -76,6 +86,7 @@ final class HttpResource
                     }
 
                     try {
+                        /** @psalm-suppress MixedArrayAccess */
                         $properties = $properties->put(
                             $name,
                             new Property(
@@ -84,6 +95,10 @@ final class HttpResource
                             )
                         );
                     } catch (DenormalizationException $e) {
+                        /**
+                         * @psalm-suppress MixedMethodCall
+                         * @psalm-suppress MixedAssignment
+                         */
                         $errors = $errors->put($name, $e);
                     }
 
@@ -91,7 +106,9 @@ final class HttpResource
                 }
             );
 
+        /** @psalm-suppress MixedMethodCall */
         if ($errors->size() > 0) {
+            /** @psalm-suppress MixedArgument */
             throw new HttpResourceDenormalizationException($errors);
         }
 

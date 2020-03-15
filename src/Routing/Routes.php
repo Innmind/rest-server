@@ -22,20 +22,25 @@ use function Innmind\Immutable\{
 
 final class Routes implements \Iterator
 {
+    /** @var Set<Route> */
     private Set $routes;
+    /** @var list<Route> */
     private array $array;
+    /** @var Map<HttpResource, Map<Action, Set<Route>>> */
     private Map $definitions;
 
     public function __construct(Route ...$routes)
     {
         $this->routes = Set::of(Route::class, ...$routes);
         $this->array = $routes;
+        /** @var Map<HttpResource, Map<Action, Set<Route>>> */
         $this->definitions = Map::of(HttpResource::class, Map::class);
 
         if ($this->routes->size() === 0) {
             return;
         }
 
+        /** @var Map<HttpResource, Map<Action, Set<Route>>> */
         $this->definitions = $this
             ->routes
             ->groupBy(static function(Route $route): HttpResource {

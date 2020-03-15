@@ -24,6 +24,7 @@ final class DateType implements Type
     public function denormalize($data)
     {
         try {
+            /** @psalm-suppress MixedArgument */
             $data = \DateTimeImmutable::createFromFormat(
                 $this->format,
                 $data
@@ -46,6 +47,7 @@ final class DateType implements Type
     {
         if (\is_string($data)) {
             try {
+                /** @var \DateTimeImmutable */
                 $data = $this->denormalize($data);
             } catch (DenormalizationException $e) {
                 throw new NormalizationException($e->getMessage());

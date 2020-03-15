@@ -9,25 +9,22 @@ use Innmind\Rest\Server\{
     Exception\DomainException
 };
 use Innmind\Immutable\Map;
+use function Innmind\Immutable\assertMap;
 
 final class HttpResource implements HttpResourceInterface
 {
     private ResourceDefinition $definition;
+    /** @var Map<string, Property> */
     private Map $properties;
 
+    /**
+     * @param Map<string, Property> $properties
+     */
     public function __construct(
         ResourceDefinition $definition,
         Map $properties
     ) {
-        if (
-            (string) $properties->keyType() !== 'string' ||
-            (string) $properties->valueType() !== Property::class
-        ) {
-            throw new \TypeError(sprintf(
-                'Argument 2 must be of type Map<string, %s>',
-                Property::cass
-            ));
-        }
+        assertMap('string', Property::class, $properties, 2);
 
         $this->definition = $definition;
         $this->properties = $properties;
@@ -45,6 +42,7 @@ final class HttpResource implements HttpResourceInterface
         ResourceDefinition $definition,
         Property ...$properties
     ): self {
+        /** @var Map<string, Property> */
         $map = Map::of('string', Property::class);
 
         foreach ($properties as $property) {

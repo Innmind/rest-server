@@ -3,6 +3,11 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\Definition;
 
+use Innmind\Rest\Server\Exception\{
+    DenormalizationException,
+    NormalizationException,
+};
+
 interface Type
 {
     /**

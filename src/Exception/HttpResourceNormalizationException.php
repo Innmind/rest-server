@@ -7,8 +7,12 @@ use Innmind\Immutable\Map;
 
 class HttpResourceNormalizationException extends RuntimeException
 {
+    /** @var Map<string, DenormalizationException> */
     private Map $errors;
 
+    /**
+     * @param Map<string, DenormalizationException> $errors
+     */
     public function __construct(Map $errors)
     {
         if (

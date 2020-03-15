@@ -8,8 +8,12 @@ use Innmind\Rest\Server\Link\Parameter as ParameterInterface;
 final class Parameter implements ParameterInterface
 {
     private string $name;
+    /** @var mixed */
     private $value;
 
+    /**
+     * @param mixed $value
+     */
     public function __construct(string $name, $value)
     {
         $this->name = $name;

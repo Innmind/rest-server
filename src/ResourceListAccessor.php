@@ -13,7 +13,7 @@ use Innmind\Immutable\Set;
 interface ResourceListAccessor
 {
     /**
-     * @return Set<IdentityInterface>
+     * @return Set<Identity>
      */
     public function __invoke(
         ResourceDefinition $definition,

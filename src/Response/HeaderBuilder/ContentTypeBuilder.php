@@ -37,6 +37,7 @@ trait ContentTypeBuilder
             )->toString(),
         );
 
+        /** @var Set<Header> */
         return Set::of(
             Header::class,
             new ContentType(

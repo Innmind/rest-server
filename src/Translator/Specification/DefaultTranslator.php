@@ -24,29 +24,30 @@ final class DefaultTranslator implements SpecificationTranslator
         return Query::of(\http_build_query($data));
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function extract(Specification $specification): array
     {
+        /** @var array<string, mixed> */
         $data = [];
 
         switch (true) {
             case $specification instanceof Comparator:
-                $data[$specification->property()] = $specification->value();
-                break;
+                return [$specification->property() => $specification->value()];
+
             case $specification instanceof Composite:
                 if ($specification->operator()->equals(Operator::or())) {
                     throw new SpecificationNotUsableAsQuery;
                 }
 
-                $data = \array_merge(
-                    $data,
+                return \array_merge(
                     $this->extract($specification->left()),
                     $this->extract($specification->right())
                 );
-                break;
+
             default:
                 throw new SpecificationNotUsableAsQuery;
         }
-
-        return $data;
     }
 }

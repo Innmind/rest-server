@@ -44,7 +44,9 @@ final class MapType implements Type
 
         $map = Map::of($this->key, $this->value);
 
+        /** @var mixed $value */
         foreach ($data as $key => $value) {
+            /** @psalm-suppress MixedArgument */
             $map = $map->put(
                 $this->keyType->denormalize($key),
                 $this->valueType->denormalize($value)
@@ -68,6 +70,10 @@ final class MapType implements Type
         return $data->reduce(
             [],
             function(array $normalized, $key, $value): array {
+                /**
+                 * @psalm-suppress MixedArrayOffset
+                 * @psalm-suppress MixedAssignment
+                 */
                 $normalized[$this->keyType->normalize($key)] = $this->valueType->normalize($value);
 
                 return $normalized;

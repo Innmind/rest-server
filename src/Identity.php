@@ -9,7 +9,7 @@ namespace Innmind\Rest\Server;
 interface Identity
 {
     /**
-     * @return mixed
+     * @return scalar
      */
     public function value();
     public function toString(): string;

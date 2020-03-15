@@ -18,9 +18,13 @@ use Negotiation\Negotiator;
 
 final class Formats
 {
+    /** @var Map<string, Format> */
     private Map $formats;
     private Negotiator $negotiator;
 
+    /**
+     * @param Map<string, Format> $formats
+     */
     public function __construct(Map $formats)
     {
         if (
@@ -43,17 +47,18 @@ final class Formats
 
     public static function of(Format ...$formats): self
     {
-        return new self(
-            Sequence::of(Format::class, ...$formats)->reduce(
-                Map::of('string', Format::class),
-                static function(Map $formats, Format $format): Map {
-                    return $formats->put(
-                        $format->name(),
-                        $format
-                    );
-                }
-            )
+        /** @var Map<string, Format> */
+        $formats = Sequence::of(Format::class, ...$formats)->reduce(
+            Map::of('string', Format::class),
+            static function(Map $formats, Format $format): Map {
+                return $formats->put(
+                    $format->name(),
+                    $format
+                );
+            }
         );
+
+        return new self($formats);
     }
 
     public function get(string $name): Format
@@ -74,6 +79,7 @@ final class Formats
      */
     public function mediaTypes(): Set
     {
+        /** @var Set<MediaType> */
         return $this->formats->reduce(
             Set::of(MediaType::class),
             function(Set $types, string $name, Format $format): Set {
@@ -125,6 +131,10 @@ final class Formats
                 )
         );
 
+        /**
+         * @psalm-suppress UndefinedInterfaceMethod
+         * @psalm-suppress PossiblyNullReference
+         */
         return $this->best($best->getBasePart().'/'.$best->getSubPart());
     }
 
@@ -134,8 +144,8 @@ final class Formats
             return $this
                 ->formats
                 ->values()
-                ->sort(function(Format $a, Format $b): bool {
-                    return $a->priority() > $b->priority();
+                ->sort(function(Format $a, Format $b): int {
+                    return (int) ($a->priority() > $b->priority());
                 })
                 ->first();
         }

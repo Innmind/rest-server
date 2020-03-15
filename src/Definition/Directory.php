@@ -12,10 +12,17 @@ use Innmind\Immutable\{
 final class Directory
 {
     private Name $name;
+    /** @var Map<string, self> */
     private Map $children;
+    /** @var Map<string, HttpResource> */
     private Map $definitions;
+    /** @var Map<string, HttpResource>|null */
     private ?Map $flattened = null;
 
+    /**
+     * @param Map<string, self> $children
+     * @param Map<string, HttpResource> $definitions
+     */
     public function __construct(
         string $name,
         Map $children,
@@ -46,27 +53,30 @@ final class Directory
         $this->definitions = $definitions;
     }
 
+    /**
+     * @param Set<self> $children
+     */
     public static function of(
         string $name,
         Set $children,
         HttpResource ...$definitions
     ): self {
+        /** @var Map<string, HttpResource> */
         $map = Map::of('string', HttpResource::class);
 
         foreach ($definitions as $definition) {
             $map = $map->put($definition->name()->toString(), $definition);
         }
 
-        return new self(
-            $name,
-            $children->reduce(
-                Map::of('string', self::class),
-                static function(Map $children, self $child): Map {
-                    return $children->put($child->name()->toString(), $child);
-                }
-            ),
-            $map
+        /** @var Map<string, self> */
+        $children = $children->reduce(
+            Map::of('string', self::class),
+            static function(Map $children, self $child): Map {
+                return $children->put($child->name()->toString(), $child);
+            },
         );
+
+        return new self($name, $children, $map);
     }
 
     public function name(): Name
@@ -117,11 +127,12 @@ final class Directory
                     $definition
                 );
             });
+        /** @var Map<string, HttpResource> */
         $definitions = $this
             ->children
             ->reduce(
                 $definitions,
-                function(Map $carry, string $name, self $child) {
+                function(Map $carry, string $name, self $child): Map {
                     return $carry->merge(
                         $child
                             ->flatten()

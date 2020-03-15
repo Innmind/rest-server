@@ -19,6 +19,7 @@ use Innmind\Http\{
     Message\Response,
     Message\StatusCode,
     Headers,
+    Header\Link,
     Exception\Http\BadRequest,
 };
 use Innmind\Immutable\Map;
@@ -26,11 +27,15 @@ use function Innmind\Immutable\unwrap;
 
 final class Unlink implements Controller
 {
+    /** @var Map<string, Gateway> */
     private Map $gateways;
     private UnlinkBuilder $buildHeader;
     private LinkTranslator $translate;
     private Locator $locator;
 
+    /**
+     * @param Map<string, Gateway> $gateways
+     */
     public function __construct(
         Map $gateways,
         UnlinkBuilder $headerBuilder,
@@ -58,28 +63,35 @@ final class Unlink implements Controller
         HttpResource $definition,
         Identity $identity = null
     ): Response {
-        $from = $definition;
+        $fromDefinition = $definition;
 
         if (!$request->headers()->contains('Link')) {
             throw new BadRequest;
         }
 
+        $link = $request->headers()->get('Link');
+
+        if (!$link instanceof Link) {
+            throw new BadRequest;
+        }
+
         try {
-            $links = unwrap(($this->translate)($request->headers()->get('Link')));
+            $links = unwrap(($this->translate)($link));
         } catch (RouteNotFound $e) {
             throw new BadRequest('', 0, $e);
         }
 
-        if (!$from->accept($this->locator, ...$links)) {
+        if (!$fromDefinition->accept($this->locator, ...$links)) {
             throw new BadRequest;
         }
 
         $unlink = $this
             ->gateways
-            ->get($from->gateway()->toString())
+            ->get($fromDefinition->gateway()->toString())
             ->resourceUnlinker();
+        /** @psalm-suppress PossiblyNullArgument */
         $unlink(
-            $from = new Reference($from, $identity),
+            $from = new Reference($fromDefinition, $identity),
             ...$links
         );
 

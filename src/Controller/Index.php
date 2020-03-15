@@ -34,9 +34,13 @@ final class Index implements Controller
     private Identities $normalize;
     private Extractor $extractRange;
     private Builder $buildSpecification;
+    /** @var Map<string, Gateway> */
     private Map $gateways;
     private ListBuilder $buildHeader;
 
+    /**
+     * @param Map<string, Gateway> $gateways
+     */
     public function __construct(
         Encoder $encode,
         Identities $normalize,

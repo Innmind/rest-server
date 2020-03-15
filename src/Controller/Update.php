@@ -27,11 +27,15 @@ use function Innmind\Immutable\unwrap;
 final class Update implements Controller
 {
     private RequestDecoder $decode;
+    /** @var Map<string, Gateway> */
     private Map $gateways;
     private ResourceDenormalizer $denormalize;
     private Format $format;
     private UpdateBuilder $buildHeader;
 
+    /**
+     * @param Map<string, Gateway> $gateways
+     */
     public function __construct(
         RequestDecoder $decode,
         Format $format,
@@ -66,6 +70,7 @@ final class Update implements Controller
             ->get($definition->gateway()->toString())
             ->resourceUpdater();
 
+        /** @psalm-suppress PossiblyNullArgument */
         $update(
             $definition,
             $identity,
@@ -76,6 +81,7 @@ final class Update implements Controller
             )
         );
 
+        /** @psalm-suppress PossiblyNullArgument */
         return new Response\Response(
             $code = StatusCode::of('NO_CONTENT'),
             $code->associatedreasonPhrase(),

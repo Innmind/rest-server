@@ -11,6 +11,7 @@ use Innmind\Http\Message\ServerRequest;
 
 final class DelegationExtractor implements Extractor
 {
+    /** @var list<Extractor> */
     private array $extractors;
 
     public function __construct(Extractor ...$extractors)

@@ -12,11 +12,12 @@ final class Access
     public const CREATE = 'CREATE';
     public const UPDATE = 'UPDATE';
 
+    /** @var Set<string> */
     private Set $mask;
 
     public function __construct(string $first, string ...$mask)
     {
-        $this->mask = Set::of('string', $first, ...$mask);
+        $this->mask = Set::strings($first, ...$mask);
     }
 
     public function isReadable(): bool

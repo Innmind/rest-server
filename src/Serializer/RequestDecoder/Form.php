@@ -17,29 +17,10 @@ final class Form implements RequestDecoder
         return $request->form()->reduce(
             [],
             function(array $form, Parameter $parameter): array {
-                $form[$parameter->name()] = $this->translate($parameter);
+                $form[$parameter->name()] = $parameter->value();
 
                 return $form;
             },
         );
-    }
-
-    private function translate(Parameter $parameter)
-    {
-        if ($parameter->value() instanceof Map) {
-            return $parameter
-                ->value()
-                ->reduce(
-                    [],
-                    function(array $carry, $key, $value): array {
-                        $carry[$key] = $value instanceof Parameter ?
-                            $this->translate($value) : $value;
-
-                        return $carry;
-                    }
-                );
-        }
-
-        return $parameter->value();
     }
 }

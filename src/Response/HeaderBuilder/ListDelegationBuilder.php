@@ -17,6 +17,7 @@ use Innmind\Immutable\Set;
 
 final class ListDelegationBuilder implements ListBuilder
 {
+    /** @var list<ListBuilder> */
     private array $builders;
 
     public function __construct(ListBuilder ...$builders)
@@ -41,6 +42,7 @@ final class ListDelegationBuilder implements ListBuilder
             ));
         }
 
+        /** @var Set<Header> */
         $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {

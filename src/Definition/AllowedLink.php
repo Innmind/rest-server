@@ -21,6 +21,7 @@ final class AllowedLink
 {
     private string $relationship;
     private string $resourcePath;
+    /** @var Map<string, Parameter> */
     private Map $parameters;
 
     public function __construct(
@@ -37,6 +38,7 @@ final class AllowedLink
 
         $this->relationship = $relationship;
         $this->resourcePath = $resourcePath;
+        /** @var Map<string, Parameter> */
         $this->parameters = Sequence::of(Parameter::class, ...$parameters)->reduce(
             Map::of('string', Parameter::class),
             static function(Map $parameters, Parameter $parameter): Map {

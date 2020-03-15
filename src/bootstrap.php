@@ -69,12 +69,20 @@ function bootstrap(
         new ContentTypeVerifier($contentTypeFormats),
         new RangeVerifier
     );
+    /**
+     * @psalm-suppress InvalidScalarArgument
+     * @psalm-suppress InvalidArgument
+     */
     $requestDecoder = $requestDecoder ?? new RequestDecoder\Delegate(
         $format,
         Map::of('string', RequestDecoder::class)
             ('json', new RequestDecoder\Json)
             ('form', new RequestDecoder\Form)
     );
+    /**
+     * @psalm-suppress InvalidScalarArgument
+     * @psalm-suppress InvalidArgument
+     */
     $encoder = $encoder ?? new Encoder\Delegate(
         $format,
         Map::of('string', Encoder::class)

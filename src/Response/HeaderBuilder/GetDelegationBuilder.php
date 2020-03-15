@@ -16,6 +16,7 @@ use Innmind\Immutable\Set;
 
 final class GetDelegationBuilder implements GetBuilder
 {
+    /** @var list<GetBuilder> */
     private array $builders;
 
     public function __construct(GetBuilder ...$builders)
@@ -32,6 +33,7 @@ final class GetDelegationBuilder implements GetBuilder
         HttpResource $definition,
         Identity $identity
     ): Set {
+        /** @var Set<Header> */
         $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {

@@ -8,7 +8,10 @@ use Innmind\Rest\Server\{
     HttpResource as HttpResourceInterface,
     Identity,
 };
-use Innmind\Http\Message\ServerRequest;
+use Innmind\Http\{
+    Message\ServerRequest,
+    Header,
+};
 use Innmind\Immutable\Set;
 
 interface UpdateBuilder

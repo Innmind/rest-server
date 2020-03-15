@@ -30,11 +30,15 @@ final class Create implements Controller
 {
     private RequestDecoder $decode;
     private Encoder $encode;
+    /** @var Map<string, Gateway> */
     private Map $gateways;
     private IdentityNormalizer $normalize;
     private ResourceDenormalizer $denormalize;
     private CreateBuilder $buildHeader;
 
+    /**
+     * @param Map<string, Gateway> $gateways
+     */
     public function __construct(
         RequestDecoder $decode,
         Encoder $encode,

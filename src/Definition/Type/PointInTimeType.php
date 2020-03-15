@@ -34,6 +34,7 @@ final class PointInTimeType implements Type
     public function denormalize($data)
     {
         try {
+            /** @psalm-suppress MixedArgument */
             return $this->clock->at($data, $this->format);
         } catch (\Throwable $e) {
             throw new DenormalizationException('The value must be a point in time');

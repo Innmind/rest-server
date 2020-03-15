@@ -14,8 +14,12 @@ final class Filter implements Comparator
     use Composite;
 
     private string $property;
+    /** @var mixed */
     private $value;
 
+    /**
+     * @param mixed $value
+     */
     public function __construct(string $property, $value)
     {
         $this->property = $property;

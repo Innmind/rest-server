@@ -15,6 +15,12 @@ final class Definition
 {
     public function __invoke(HttpResource $resource): array
     {
+        /** @psalm-suppress InvalidScalarArgument */
+        $metas = \array_combine(
+            unwrap($resource->metas()->keys()),
+            unwrap($resource->metas()->values()),
+        );
+
         return [
             'identity' => $resource->identity()->toString(),
             'properties' => $resource
@@ -32,10 +38,7 @@ final class Definition
                         return $carry;
                     }
                 ),
-            'metas' => array_combine(
-                unwrap($resource->metas()->keys()),
-                unwrap($resource->metas()->values()),
-            ),
+            'metas' => $metas,
             'rangeable' => $resource->isRangeable(),
             'linkable_to' => $resource
                 ->allowedLinks()

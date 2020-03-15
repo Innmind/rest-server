@@ -53,6 +53,7 @@ final class OrFilter implements CompositeInterface
 
     public function isSatisfiedBy(HttpResource $resource): bool
     {
+        /** @psalm-suppress UndefinedInterfaceMethod */
         return $this->left->isSatisfiedBy($resource) || $this->right->isSatisfiedBy($resource);
     }
 }

@@ -13,12 +13,14 @@ use Innmind\Immutable\Map;
 final class Delegate implements RequestDecoder
 {
     private Format $format;
+    /** @var Map<string, RequestDecoder> */
     private Map $decoders;
 
-    public function __construct(
-        Format $format,
-        Map $decoders
-    ) {
+    /**
+     * @param Map<string, RequestDecoder> $decoders
+     */
+    public function __construct(Format $format, Map $decoders)
+    {
         if (
             (string) $decoders->keyType() !== 'string' ||
             (string) $decoders->valueType() !== RequestDecoder::class

@@ -25,9 +25,13 @@ final class Get implements Controller
 {
     private Encoder $encode;
     private ResourceNormalizer $normalize;
+    /** @var Map<string, Gateway> */
     private Map $gateways;
     private GetBuilder $buildHeader;
 
+    /**
+     * @param Map<string, Gateway> $gateways
+     */
     public function __construct(
         Encoder $encode,
         ResourceNormalizer $normalize,
@@ -59,6 +63,7 @@ final class Get implements Controller
             ->gateways
             ->get($definition->gateway()->toString())
             ->resourceAccessor();
+        /** @psalm-suppress PossiblyNullArgument */
         $resource = $access($definition, $identity);
 
         return new Response\Response(

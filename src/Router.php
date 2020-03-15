@@ -21,12 +21,14 @@ final class Router
 {
     private Routes $routes;
     private Prefix $prefix;
+    /** @var Map<string, scalar|array> */
     private Map $variables;
 
     public function __construct(Routes $routes, Prefix $prefix = null)
     {
         $this->routes = $routes;
         $this->prefix = $prefix ?? Prefix::none();
+        /** @var Map<string, scalar|array> */
         $this->variables = Map::of('string', 'scalar|array');
 
         if ($prefix instanceof Prefix) {

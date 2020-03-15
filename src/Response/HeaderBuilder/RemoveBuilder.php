@@ -7,7 +7,10 @@ use Innmind\Rest\Server\{
     Definition\HttpResource,
     Identity,
 };
-use Innmind\Http\Message\ServerRequest;
+use Innmind\Http\{
+    Message\ServerRequest,
+    Header,
+};
 use Innmind\Immutable\Set;
 
 interface RemoveBuilder

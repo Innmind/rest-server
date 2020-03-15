@@ -7,9 +7,13 @@ use Innmind\Rest\Server\Identity as IdentityInterface;
 
 final class Identity implements IdentityInterface
 {
+    /** @var scalar */
     private $value;
     private string $string;
 
+    /**
+     * @param scalar $value
+     */
     public function __construct($value)
     {
         $this->value = $value;

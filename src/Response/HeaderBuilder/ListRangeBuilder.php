@@ -30,6 +30,7 @@ final class ListRangeBuilder implements ListBuilder
         Specification $specification = null,
         Range $range = null
     ): Set {
+        /** @var Set<Header> */
         $headers = Set::of(Header::class);
 
         if (!$definition->isRangeable()) {

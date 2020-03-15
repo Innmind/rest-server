@@ -10,9 +10,13 @@ final class Property
     private string $name;
     private Type $type;
     private Access $access;
+    /** @var Set<string> */
     private Set $variants;
     private bool $optional;
 
+    /**
+     * @param Set<string> $variants
+     */
     private function __construct(
         string $name,
         Type $type,
@@ -37,7 +41,7 @@ final class Property
             $name,
             $type,
             $access,
-            Set::of('string', ...$variants),
+            Set::strings(...$variants),
             false
         );
     }
@@ -52,7 +56,7 @@ final class Property
             $name,
             $type,
             $access,
-            Set::of('string', ...$variants),
+            Set::strings(...$variants),
             true
         );
     }

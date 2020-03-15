@@ -36,6 +36,7 @@ final class CreateLocationBuilder implements CreateBuilder
         HttpResource $definition,
         HttpResourceInterface $resource
     ): Set {
+        /** @var Set<Header> */
         return Set::of(
             Header::class,
             new Location(

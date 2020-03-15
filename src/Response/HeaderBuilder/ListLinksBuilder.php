@@ -40,6 +40,7 @@ final class ListLinksBuilder implements ListBuilder
         Specification $specification = null,
         Range $range = null
     ): Set {
+        /** @var Set<Header> */
         $headers = Set::of(Header::class);
 
         if ($identities->size() === 0) {

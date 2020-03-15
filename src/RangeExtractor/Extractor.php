@@ -3,7 +3,10 @@ declare(strict_types = 1);
 
 namespace Innmind\Rest\Server\RangeExtractor;
 
-use Innmind\Rest\Server\Request\Range;
+use Innmind\Rest\Server\{
+    Request\Range,
+    Exception\RangeNotFound,
+};
 use Innmind\Http\Message\ServerRequest;
 
 interface Extractor

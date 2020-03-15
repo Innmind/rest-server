@@ -15,6 +15,7 @@ use Innmind\Immutable\Set;
 
 final class RemoveDelegationBuilder implements RemoveBuilder
 {
+    /** @var list<RemoveBuilder> */
     private array $builders;
 
     public function __construct(RemoveBuilder ...$builders)
@@ -30,6 +31,7 @@ final class RemoveDelegationBuilder implements RemoveBuilder
         HttpResource $definition,
         Identity $identity
     ): Set {
+        /** @var Set<Header> */
         $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {

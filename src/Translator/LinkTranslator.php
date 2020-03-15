@@ -8,6 +8,7 @@ use Innmind\Rest\Server\{
     Reference,
     Link,
     Link\Parameter,
+    Exception\LogicException,
 };
 use Innmind\Http\Header\{
     Link as LinkHeader,
@@ -34,6 +35,7 @@ final class LinkTranslator
      */
     public function __invoke(LinkHeader $link): Set
     {
+        /** @var Set<Link> */
         return $link->values()->reduce(
             Set::of(Link::class),
             function(Set $links, LinkValue $link): Set {
@@ -45,11 +47,16 @@ final class LinkTranslator
     private function translateLinkValue(LinkValue $link): Link
     {
         $match = $this->router->match($link->url()->path());
+        $identity = $match->identity();
+
+        if (\is_null($identity)) {
+            throw new LogicException("Missing identity in '{$link->url()->path()->toString()}'");
+        }
 
         return new Link(
             new Reference(
                 $match->definition(),
-                $match->identity()
+                $identity,
             ),
             $link->relationship(),
             ...unwrap($this->translateParameters($link->parameters())),
@@ -57,10 +64,13 @@ final class LinkTranslator
     }
 
     /**
+     * @param Map<string, HttpParameter> $parameters
+     *
      * @return Set<Parameter>
      */
     private function translateParameters(Map $parameters): Set
     {
+        /** @var Set<Parameter> */
         return $parameters->reduce(
             Set::of(Parameter::class),
             static function(Set $parameters, string $name, HttpParameter $param): Set {

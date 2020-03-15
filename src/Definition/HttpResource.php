@@ -16,13 +16,23 @@ final class HttpResource
 {
     private Name $name;
     private Identity $identity;
+    /** @var Map<string, Property> */
     private Map $properties;
+    /** @var Set<Action> */
     private Set $actions;
+    /** @var Map<scalar, scalar|array> */
     private Map $metas;
     private Gateway $gateway;
     private bool $rangeable = false;
+    /** @var Set<AllowedLink> */
     private Set $allowedLinks;
 
+    /**
+     * @param Set<Property> $properties
+     * @param Set<Action>|null $actions
+     * @param Set<AllowedLink>|null $allowedLinks
+     * @param Map<scalar, scalar|array>|null $metas
+     */
     public function __construct(
         string $name,
         Gateway $gateway,
@@ -33,7 +43,7 @@ final class HttpResource
         Map $metas = null
     ) {
         $actions = $actions ?? Action::all();
-        $metas = $metas ?? Map::of('scalar', 'variable');
+        $metas = $metas ?? Map::of('scalar', 'scalar|array');
         $allowedLinks = $allowedLinks ?? Set::of(AllowedLink::class);
 
         if ((string) $properties->type() !== Property::class) {
@@ -59,13 +69,14 @@ final class HttpResource
 
         if (
             (string) $metas->keyType() !== 'scalar' ||
-            (string) $metas->valueType() !== 'variable'
+            (string) $metas->valueType() !== 'scalar|array'
         ) {
-            throw new \TypeError('Argument 7 must be of type Map<scalar, variable>');
+            throw new \TypeError('Argument 7 must be of type Map<scalar, scalar|array>');
         }
 
         $this->name = new Name($name);
         $this->identity = $identity;
+        /** @var Map<string, Property> */
         $this->properties = $properties->reduce(
             Map::of('string', Property::class),
             static function(Map $properties, Property $property): Map {
@@ -78,6 +89,12 @@ final class HttpResource
         $this->allowedLinks = $allowedLinks;
     }
 
+    /**
+     * @param Set<Property> $properties
+     * @param Set<Action>|null $actions
+     * @param Set<AllowedLink>|null $allowedLinks
+     * @param Map<scalar, scalar|array>|null $metas
+     */
     public static function rangeable(
         string $name,
         Gateway $gateway,
@@ -117,7 +134,7 @@ final class HttpResource
     }
 
     /**
-     * @return Map<scalar, variable>
+     * @return Map<scalar, scalar|array>
      */
     public function metas(): Map
     {

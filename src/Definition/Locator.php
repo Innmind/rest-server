@@ -9,11 +9,13 @@ use Innmind\Immutable\Map;
 final class Locator
 {
     private Directory $directory;
+    /** @var Map<string, HttpResource> */
     private Map $cache;
 
     public function __construct(Directory $directory)
     {
         $this->directory = $directory;
+        /** @var Map<string, HttpResource> */
         $this->cache = Map::of('string', HttpResource::class);
     }
 

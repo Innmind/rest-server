@@ -36,7 +36,9 @@ final class SetType implements Type
 
         $set = Set::of($this->type);
 
+        /** @var mixed $value */
         foreach ($data as $value) {
+            /** @psalm-suppress MixedArgument */
             $set = $set->add($this->inner->denormalize($value));
         }
 
@@ -52,9 +54,12 @@ final class SetType implements Type
             throw new NormalizationException('The value must be a set');
         }
 
+        /** @var list<mixed> */
         $normalized = [];
 
+        /** @var mixed $value */
         foreach (unwrap($data) as $value) {
+            /** @psalm-suppress MixedAssignment */
             $normalized[] = $this->inner->normalize($value);
         }
 
