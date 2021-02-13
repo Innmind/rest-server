@@ -9,6 +9,9 @@ use Innmind\Specification\{
     Not,
 };
 
+/**
+ * @psalm-immutable
+ */
 trait Composite
 {
     /**

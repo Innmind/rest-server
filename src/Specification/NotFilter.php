@@ -9,6 +9,9 @@ use Innmind\Specification\{
     Specification,
 };
 
+/**
+ * @psalm-immutable
+ */
 final class NotFilter implements Not
 {
     use Composite;

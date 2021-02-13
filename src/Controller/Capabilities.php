@@ -22,11 +22,13 @@ use function Innmind\Immutable\unwrap;
 
 final class Capabilities
 {
+    /** @var Sequence<Route> */
     private Sequence $routes;
     private Router $router;
 
     public function __construct(Routes $routes, Router $router)
     {
+        /** @var Sequence<Route> */
         $this->routes = Sequence::of(Route::class, ...$routes)->filter(static function(Route $route): bool {
             return $route->action() === Action::options();
         });

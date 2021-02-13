@@ -10,6 +10,9 @@ use Innmind\Specification\{
     Operator,
 };
 
+/**
+ * @psalm-immutable
+ */
 final class OrFilter implements CompositeInterface
 {
     use Composite;

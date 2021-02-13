@@ -47,6 +47,7 @@ final class ListLinksBuilder implements ListBuilder
             return $headers;
         }
 
+        /** @psalm-suppress MixedArgument */
         return $headers->add(
             new Link(
                 ...unwrap($identities->reduce(

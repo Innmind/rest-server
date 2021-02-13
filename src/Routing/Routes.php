@@ -20,6 +20,9 @@ use function Innmind\Immutable\{
     first,
 };
 
+/**
+ * @implements \Iterator<Route>
+ */
 final class Routes implements \Iterator
 {
     /** @var Set<Route> */
@@ -61,6 +64,7 @@ final class Routes implements \Iterator
 
     public static function of(Name $name, HttpResource $definition): self
     {
+        /** @psalm-suppress MixedArgument */
         return new self(
             ...unwrap(Action::all()
                 ->filter(static function(Action $action) use ($definition): bool {
