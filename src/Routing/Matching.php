@@ -8,7 +8,7 @@ use Innmind\Rest\Server\{
     Identity,
 };
 
-final class Match
+final class Matching
 {
     private HttpResource $definition;
     private ?Identity $identity;

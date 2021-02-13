@@ -104,17 +104,17 @@ final class Routes implements \Iterator
         return new self(...$this, ...$routes);
     }
 
-    public function match(Path $path): Match
+    public function match(Path $path): Matching
     {
         $match = $this->routes->reduce(
             null,
-            static function(?Match $match, Route $route) use ($path): ?Match {
-                if ($match instanceof Match) {
+            static function(?Matching $match, Route $route) use ($path): ?Matching {
+                if ($match instanceof Matching) {
                     return $match;
                 }
 
                 if ($route->matches($path)) {
-                    return new Match(
+                    return new Matching(
                         $route->definition(),
                         $route->identity($path)
                     );
@@ -124,7 +124,7 @@ final class Routes implements \Iterator
             }
         );
 
-        if ($match instanceof Match) {
+        if ($match instanceof Matching) {
             return $match;
         }
 
