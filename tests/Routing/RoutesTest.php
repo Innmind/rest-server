@@ -34,8 +34,8 @@ class RoutesTest extends TestCase
         );
 
         $this->assertInstanceOf(Routes::class, $routes);
-        $this->assertCount(8, iterator_to_array($routes));
-        [$list, $get, $create, $update, $remove, $link, $unlink, $options] = iterator_to_array($routes);
+        $this->assertCount(8, \iterator_to_array($routes));
+        [$list, $get, $create, $update, $remove, $link, $unlink, $options] = \iterator_to_array($routes);
 
         $this->assertSame(Action::list(), $list->action());
         $this->assertSame('{+prefix}/top_dir/image/', $list->template()->toString());
@@ -70,8 +70,8 @@ class RoutesTest extends TestCase
             $definition
         );
 
-        $this->assertCount(3, iterator_to_array($routes));
-        [$list, $get, $options] = iterator_to_array($routes);
+        $this->assertCount(3, \iterator_to_array($routes));
+        [$list, $get, $options] = \iterator_to_array($routes);
 
         $this->assertSame(Action::list(), $list->action());
         $this->assertSame('{+prefix}/top_dir/image/', $list->template()->toString());
@@ -86,7 +86,7 @@ class RoutesTest extends TestCase
         $routes = Routes::from(require 'fixtures/mapping.php');
 
         $this->assertInstanceOf(Routes::class, $routes);
-        $this->assertCount(16, iterator_to_array($routes));
+        $this->assertCount(16, \iterator_to_array($routes));
         [
             $imageList,
             $imageGet,
@@ -104,7 +104,7 @@ class RoutesTest extends TestCase
             $resLink,
             $resUnlink,
             $resOptions
-        ] = iterator_to_array($routes);
+        ] = \iterator_to_array($routes);
 
         $this->assertSame(Action::list(), $resList->action());
         $this->assertSame('{+prefix}/top_dir/sub_dir/res/', $resList->template()->toString());

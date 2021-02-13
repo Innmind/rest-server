@@ -19,7 +19,7 @@ class HttpResourceDenormalizationException extends RuntimeException
             $errors->keyType() !== 'string' ||
             $errors->valueType() !== DenormalizationException::class
         ) {
-            throw new \TypeError(sprintf(
+            throw new \TypeError(\sprintf(
                 'Argument 1 must be of type Map<string, %s>',
                 DenormalizationException::class
             ));

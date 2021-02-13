@@ -32,7 +32,7 @@ final class HttpResource
             })
             ->reduce(
                 [],
-                function(
+                static function(
                     array $data,
                     string $name,
                     Property $property

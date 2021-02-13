@@ -19,7 +19,7 @@ class HttpResourceNormalizationException extends RuntimeException
             $errors->keyType() !== 'string' ||
             $errors->valueType() !== NormalizationException::class
         ) {
-            throw new \TypeError(sprintf(
+            throw new \TypeError(\sprintf(
                 'Argument 1 must be of type Map<string, %s>',
                 NormalizationException::class
             ));

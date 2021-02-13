@@ -23,9 +23,6 @@ final class GetContentTypeBuilder implements GetBuilder
         $this->formats = $formats;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(
         HttpResourceInterface $resource,
         ServerRequest $request,

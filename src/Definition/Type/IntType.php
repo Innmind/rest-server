@@ -11,9 +11,6 @@ use Innmind\Rest\Server\{
 
 final class IntType implements Type
 {
-    /**
-     * {@inheritdoc}
-     */
     public function denormalize($data)
     {
         try {
@@ -23,9 +20,6 @@ final class IntType implements Type
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function normalize($data)
     {
         try {

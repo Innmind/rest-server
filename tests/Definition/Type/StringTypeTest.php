@@ -9,7 +9,6 @@ use Innmind\Rest\Server\{
     Exception\NormalizationException,
     Exception\DenormalizationException,
 };
-use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
 class StringTypeTest extends TestCase

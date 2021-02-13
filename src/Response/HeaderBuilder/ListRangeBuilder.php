@@ -20,9 +20,6 @@ use Innmind\Immutable\Set;
 
 final class ListRangeBuilder implements ListBuilder
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(
         Set $identities,
         ServerRequest $request,

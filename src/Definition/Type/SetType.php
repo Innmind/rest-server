@@ -22,13 +22,10 @@ final class SetType implements Type
         $this->inner = $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function denormalize($data)
     {
         if (!\is_array($data)) {
-            throw new DenormalizationException(sprintf(
+            throw new DenormalizationException(\sprintf(
                 'The value must be an array of %s',
                 $this->type
             ));
@@ -45,9 +42,6 @@ final class SetType implements Type
         return $set;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function normalize($data)
     {
         if (!$data instanceof Set) {

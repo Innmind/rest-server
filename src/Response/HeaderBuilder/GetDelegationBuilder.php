@@ -24,9 +24,6 @@ final class GetDelegationBuilder implements GetBuilder
         $this->builders = $builders;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(
         HttpResourceInterface $resource,
         ServerRequest $request,

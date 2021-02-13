@@ -19,9 +19,6 @@ final class DelegationExtractor implements Extractor
         $this->extractors = $extractors;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(ServerRequest $request): Range
     {
         foreach ($this->extractors as $extract) {

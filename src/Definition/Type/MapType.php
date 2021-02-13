@@ -29,13 +29,10 @@ final class MapType implements Type
         $this->valueType = $valueType;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function denormalize($data)
     {
         if (!\is_array($data)) {
-            throw new DenormalizationException(sprintf(
+            throw new DenormalizationException(\sprintf(
                 'The value must be an array of %s mapped to %s',
                 $this->key,
                 $this->value
@@ -56,9 +53,6 @@ final class MapType implements Type
         return $map;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function normalize($data)
     {
         if (!$data instanceof Map) {

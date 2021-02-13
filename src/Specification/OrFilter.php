@@ -30,25 +30,16 @@ final class OrFilter implements CompositeInterface
         $this->operator = Operator::or();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function left(): Specification
     {
         return $this->left;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function right(): Specification
     {
         return $this->right;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function operator(): Operator
     {
         return $this->operator;

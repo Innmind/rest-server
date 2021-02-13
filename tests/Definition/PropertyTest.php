@@ -8,7 +8,6 @@ use Innmind\Rest\Server\Definition\{
     Type\StringType,
     Access,
 };
-use Innmind\Immutable\Set;
 use function Innmind\Immutable\unwrap;
 use PHPUnit\Framework\TestCase;
 

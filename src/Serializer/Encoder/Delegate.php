@@ -26,7 +26,7 @@ final class Delegate implements Encoder
             $encoders->keyType() !== 'string' ||
             $encoders->valueType() !== Encoder::class
         ) {
-            throw new \TypeError(sprintf(
+            throw new \TypeError(\sprintf(
                 'Argument 2 must be of type Map<string, %s>',
                 Encoder::class
             ));

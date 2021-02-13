@@ -21,7 +21,6 @@ use Innmind\Http\{
 };
 use Innmind\Url\Url;
 use Innmind\Stream\Readable\Stream;
-use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
 class QueryExtractorTest extends TestCase

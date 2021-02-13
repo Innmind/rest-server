@@ -25,7 +25,7 @@ final class Delegate implements RequestDecoder
             $decoders->keyType() !== 'string' ||
             $decoders->valueType() !== RequestDecoder::class
         ) {
-            throw new \TypeError(sprintf(
+            throw new \TypeError(\sprintf(
                 'Argument 2 must be of type Map<string, %s>',
                 RequestDecoder::class
             ));

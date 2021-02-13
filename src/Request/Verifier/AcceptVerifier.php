@@ -31,8 +31,6 @@ final class AcceptVerifier implements Verifier
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws NotAcceptable
      */
     public function __invoke(
@@ -44,7 +42,7 @@ final class AcceptVerifier implements Verifier
             ->mediaTypes()
             ->reduce(
                 [],
-                function(array $carry, MediaType $type) {
+                static function(array $carry, MediaType $type) {
                     $carry[] = $type->toString();
 
                     return $carry;

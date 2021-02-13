@@ -57,7 +57,8 @@ class CatchHttpExceptionTest extends TestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($request, $this->definition, $identity)
-            ->will($this->throwException(new class extends \Error implements Exception\Exception {}));
+            ->will($this->throwException(new class extends \Error implements Exception\Exception {
+            }));
 
         $response = $catch($request, $this->definition, $identity);
 

@@ -23,9 +23,6 @@ final class UnlinkDelegationBuilder implements UnlinkBuilder
         $this->builders = $builders;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(
         ServerRequest $request,
         Reference $from,

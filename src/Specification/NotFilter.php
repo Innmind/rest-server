@@ -23,9 +23,6 @@ final class NotFilter implements Not
         $this->specification = $specification;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function specification(): Specification
     {
         return $this->specification;

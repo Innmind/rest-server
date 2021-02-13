@@ -23,9 +23,6 @@ final class RemoveDelegationBuilder implements RemoveBuilder
         $this->builders = $builders;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(
         ServerRequest $request,
         HttpResource $definition,

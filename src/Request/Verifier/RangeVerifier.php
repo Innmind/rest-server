@@ -13,8 +13,6 @@ use Innmind\Http\{
 final class RangeVerifier implements Verifier
 {
     /**
-     * {@inheritdoc}
-     *
      * @throws PreconditionFailed
      */
     public function __invoke(

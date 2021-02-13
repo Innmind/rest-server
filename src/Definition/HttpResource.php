@@ -47,7 +47,7 @@ final class HttpResource
         $allowedLinks = $allowedLinks ?? Set::of(AllowedLink::class);
 
         if ($properties->type() !== Property::class) {
-            throw new \TypeError(sprintf(
+            throw new \TypeError(\sprintf(
                 'Argument 4 must be of type Set<%s>',
                 Property::class
             ));

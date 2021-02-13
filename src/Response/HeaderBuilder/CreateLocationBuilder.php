@@ -27,9 +27,6 @@ final class CreateLocationBuilder implements CreateBuilder
         $this->router = $router;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(
         Identity $identity,
         ServerRequest $request,

@@ -20,8 +20,6 @@ use Innmind\Http\{
     Header\RangeValue,
 };
 use Innmind\Url\Url;
-use Innmind\Filesystem\Stream\StringStream;
-use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
 class HeaderExtractorTest extends TestCase

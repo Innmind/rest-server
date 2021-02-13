@@ -19,7 +19,7 @@ final class Identities
         return [
             'identities' => $identities->reduce(
                 [],
-                function(array $carry, Identity $identity): array {
+                static function(array $carry, Identity $identity): array {
                     /** @psalm-suppress MixedAssignment */
                     $carry[] = $identity->value();
 

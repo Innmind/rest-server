@@ -24,9 +24,6 @@ final class CreateDelegationBuilder implements CreateBuilder
         $this->builders = $builders;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(
         Identity $identity,
         ServerRequest $request,

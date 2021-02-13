@@ -31,7 +31,7 @@ final class Formats
             $formats->keyType() !== 'string' ||
             $formats->valueType() !== Format::class
         ) {
-            throw new \TypeError(sprintf(
+            throw new \TypeError(\sprintf(
                 'Argument 1 must be of type Map<string, %s>',
                 Format::class
             ));
@@ -82,7 +82,7 @@ final class Formats
         /** @var Set<MediaType> */
         return $this->formats->reduce(
             Set::of(MediaType::class),
-            function(Set $types, string $name, Format $format): Set {
+            static function(Set $types, string $name, Format $format): Set {
                 return $types->merge($format->mediaTypes());
             }
         );
@@ -93,12 +93,12 @@ final class Formats
         $formats = $this
             ->formats
             ->values()
-            ->filter(function(Format $format) use ($wished) {
+            ->filter(static function(Format $format) use ($wished) {
                 return $format
                     ->mediaTypes()
                     ->reduce(
                         false,
-                        function(bool $carry, MediaType $mediaType) use ($wished): bool {
+                        static function(bool $carry, MediaType $mediaType) use ($wished): bool {
                             if ($carry === true) {
                                 return true;
                             }
@@ -123,7 +123,7 @@ final class Formats
                 ->mediaTypes()
                 ->reduce(
                     [],
-                    function(array $carry, MediaType $type): array {
+                    static function(array $carry, MediaType $type): array {
                         $carry[] = $type->toString();
 
                         return $carry;
@@ -144,7 +144,7 @@ final class Formats
             return $this
                 ->formats
                 ->values()
-                ->sort(function(Format $a, Format $b): int {
+                ->sort(static function(Format $a, Format $b): int {
                     return (int) ($a->priority() > $b->priority());
                 })
                 ->first();

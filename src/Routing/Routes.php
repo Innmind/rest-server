@@ -90,7 +90,7 @@ final class Routes implements \Iterator
             ->flatten()
             ->reduce(
                 new self,
-                static function(Routes $routes, string $name, HttpResource $definition): Routes {
+                static function(self $routes, string $name, HttpResource $definition): self {
                     return $routes->merge(self::of(
                         new Name($name),
                         $definition

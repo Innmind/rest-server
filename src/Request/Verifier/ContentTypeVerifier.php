@@ -32,8 +32,6 @@ final class ContentTypeVerifier implements Verifier
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws UnsupportedMediaType
      */
     public function __invoke(
@@ -56,7 +54,7 @@ final class ContentTypeVerifier implements Verifier
             ->mediaTypes()
             ->reduce(
                 [],
-                function(array $carry, MediaType $type) {
+                static function(array $carry, MediaType $type) {
                     $carry[] = $type->toString();
 
                     return $carry;

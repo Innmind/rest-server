@@ -32,7 +32,7 @@ final class Directory
             $children->keyType() !== 'string' ||
             $children->valueType() !== self::class
         ) {
-            throw new \TypeError(sprintf(
+            throw new \TypeError(\sprintf(
                 'Argument 2 must be of type Map<string, %s>',
                 self::class
             ));
@@ -42,7 +42,7 @@ final class Directory
             $definitions->keyType() !== 'string' ||
             $definitions->valueType() !== HttpResource::class
         ) {
-            throw new \TypeError(sprintf(
+            throw new \TypeError(\sprintf(
                 'Argument 3 must be of type Map<string, %s>',
                 HttpResource::class
             ));

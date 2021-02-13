@@ -36,7 +36,7 @@ final class Remove implements Controller
             $gateways->keyType() !== 'string' ||
             $gateways->valueType() !== Gateway::class
         ) {
-            throw new \TypeError(sprintf(
+            throw new \TypeError(\sprintf(
                 'Argument 1 must be of type Map<string, %s>',
                 Gateway::class
             ));

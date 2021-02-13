@@ -28,9 +28,6 @@ final class PointInTimeType implements Type
         $this->format = $format ?? new ISO8601;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function denormalize($data)
     {
         try {
@@ -41,9 +38,6 @@ final class PointInTimeType implements Type
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function normalize($data)
     {
         if (!$data instanceof PointInTime) {

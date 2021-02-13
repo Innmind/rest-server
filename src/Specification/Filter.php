@@ -29,25 +29,16 @@ final class Filter implements Comparator
         $this->value = $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function property(): string
     {
         return $this->property;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sign(): Sign
     {
         return Sign::equality();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function value()
     {
         return $this->value;

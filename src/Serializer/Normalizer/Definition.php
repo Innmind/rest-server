@@ -27,7 +27,7 @@ final class Definition
                 ->properties()
                 ->reduce(
                     [],
-                    function(array $carry, string $name, Property $property) {
+                    static function(array $carry, string $name, Property $property) {
                         $carry[$name] = [
                             'type' => $property->type()->toString(),
                             'access' => unwrap($property->access()->mask()),
@@ -44,7 +44,7 @@ final class Definition
                 ->allowedLinks()
                 ->reduce(
                     [],
-                    function(array $carry, AllowedLink $allowed): array {
+                    static function(array $carry, AllowedLink $allowed): array {
                         $carry[] = [
                             'relationship' => $allowed->relationship(),
                             'resource_path' => $allowed->resourcePath(),

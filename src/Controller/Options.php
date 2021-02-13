@@ -42,7 +42,7 @@ final class Options implements Controller
         HttpResource $definition,
         Identity $identity = null
     ): Response {
-        if (!is_null($identity)) {
+        if (!\is_null($identity)) {
             throw new LogicException;
         }
 
