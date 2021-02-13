@@ -26,7 +26,7 @@ $services = bootstrap(
     require '/path/to/resources/mapping.php'
 );
 
-$services['routes']; // provides all the routes available for the deinfitions you provided
+$services['routes']; // provides all the routes available for the definitions you provided
 
 // action controllers
 $services['controller']['create'];
