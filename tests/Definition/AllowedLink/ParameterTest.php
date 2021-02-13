@@ -8,22 +8,19 @@ use Innmind\Rest\Server\{
     Exception\DomainException,
 };
 use PHPUnit\Framework\TestCase;
-use Eris\{
-    Generator,
-    TestTrait,
+use Innmind\BlackBox\{
+    PHPUnit\BlackBox,
+    Set,
 };
 
 class ParameterTest extends TestCase
 {
-    use TestTrait;
+    use BlackBox;
 
     public function testInterface()
     {
         $this
-            ->forAll(Generator\string())
-            ->when(static function(string $value): bool {
-                return $value !== '';
-            })
+            ->forAll(Set\Strings::any()->filter(static fn($value) => $value !== ''))
             ->then(function(string $value): void {
                 $this->assertSame($value, (new Parameter($value))->name());
             });

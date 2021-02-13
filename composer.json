@@ -37,9 +37,9 @@
     },
     "require-dev": {
         "phpunit/phpunit": "~8.0",
-        "giorgiosironi/eris": "^0.11.0",
         "innmind/time-continuum": "~2.2",
-        "vimeo/psalm": "~4.4"
+        "vimeo/psalm": "~4.4",
+        "innmind/black-box": "^4.16"
     },
     "suggest": {
         "innmind/time-continuum": "In order to use point in time type"
