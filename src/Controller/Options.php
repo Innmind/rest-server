@@ -51,6 +51,7 @@ final class Options implements Controller
             ->acceptable($request)
             ->preferredMediaType();
 
+        /** @psalm-suppress InvalidArgument */
         return new Response\Response(
             $code = StatusCode::of('OK'),
             $code->associatedreasonPhrase(),

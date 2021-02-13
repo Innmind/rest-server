@@ -33,7 +33,7 @@ final class UpdateDelegationBuilder implements UpdateBuilder
         Identity $identity,
         HttpResourceInterface $resource
     ): Set {
-        /** @var Set<Header> */
+        /** @var Set<Header<Header\Value>> */
         $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {

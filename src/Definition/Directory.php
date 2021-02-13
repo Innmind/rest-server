@@ -29,8 +29,8 @@ final class Directory
         Map $definitions
     ) {
         if (
-            (string) $children->keyType() !== 'string' ||
-            (string) $children->valueType() !== self::class
+            $children->keyType() !== 'string' ||
+            $children->valueType() !== self::class
         ) {
             throw new \TypeError(sprintf(
                 'Argument 2 must be of type Map<string, %s>',
@@ -39,8 +39,8 @@ final class Directory
         }
 
         if (
-            (string) $definitions->keyType() !== 'string' ||
-            (string) $definitions->valueType() !== HttpResource::class
+            $definitions->keyType() !== 'string' ||
+            $definitions->valueType() !== HttpResource::class
         ) {
             throw new \TypeError(sprintf(
                 'Argument 3 must be of type Map<string, %s>',

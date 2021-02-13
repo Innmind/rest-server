@@ -33,8 +33,8 @@ final class Remove implements Controller
         RemoveBuilder $headerBuilder
     ) {
         if (
-            (string) $gateways->keyType() !== 'string' ||
-            (string) $gateways->valueType() !== Gateway::class
+            $gateways->keyType() !== 'string' ||
+            $gateways->valueType() !== Gateway::class
         ) {
             throw new \TypeError(sprintf(
                 'Argument 1 must be of type Map<string, %s>',

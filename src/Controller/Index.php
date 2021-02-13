@@ -50,8 +50,8 @@ final class Index implements Controller
         Builder $specificationBuilder
     ) {
         if (
-            (string) $gateways->keyType() !== 'string' ||
-            (string) $gateways->valueType() !== Gateway::class
+            $gateways->keyType() !== 'string' ||
+            $gateways->valueType() !== Gateway::class
         ) {
             throw new \TypeError(sprintf(
                 'Argument 3 must be of type Map<string, %s>',

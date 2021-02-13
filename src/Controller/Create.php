@@ -48,8 +48,8 @@ final class Create implements Controller
         CreateBuilder $headerBuilder
     ) {
         if (
-            (string) $gateways->keyType() !== 'string' ||
-            (string) $gateways->valueType() !== Gateway::class
+            $gateways->keyType() !== 'string' ||
+            $gateways->valueType() !== Gateway::class
         ) {
             throw new \TypeError(sprintf(
                 'Argument 4 must be of type Map<string, %s>',

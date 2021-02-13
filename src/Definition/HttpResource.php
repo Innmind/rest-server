@@ -46,21 +46,21 @@ final class HttpResource
         $metas = $metas ?? Map::of('scalar', 'scalar|array');
         $allowedLinks = $allowedLinks ?? Set::of(AllowedLink::class);
 
-        if ((string) $properties->type() !== Property::class) {
+        if ($properties->type() !== Property::class) {
             throw new \TypeError(sprintf(
                 'Argument 4 must be of type Set<%s>',
                 Property::class
             ));
         }
 
-        if ((string) $actions->type() !== Action::class) {
+        if ($actions->type() !== Action::class) {
             throw new \TypeError(\sprintf(
                 'Argument 5 must be of type Set<%s>',
                 Action::class
             ));
         }
 
-        if ((string) $allowedLinks->type() !== AllowedLink::class) {
+        if ($allowedLinks->type() !== AllowedLink::class) {
             throw new \TypeError(\sprintf(
                 'Argument 6 must be of type Set<%s>',
                 AllowedLink::class
@@ -68,8 +68,8 @@ final class HttpResource
         }
 
         if (
-            (string) $metas->keyType() !== 'scalar' ||
-            (string) $metas->valueType() !== 'scalar|array'
+            $metas->keyType() !== 'scalar' ||
+            $metas->valueType() !== 'scalar|array'
         ) {
             throw new \TypeError('Argument 7 must be of type Map<scalar, scalar|array>');
         }
@@ -80,7 +80,7 @@ final class HttpResource
         $this->properties = $properties->reduce(
             Map::of('string', Property::class),
             static function(Map $properties, Property $property): Map {
-                return $properties->put((string) $property->name(), $property);
+                return $properties->put($property->name(), $property);
             }
         );
         $this->actions = $actions->add(Action::options());

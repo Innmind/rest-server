@@ -30,13 +30,14 @@ final class ListRangeBuilder implements ListBuilder
         Specification $specification = null,
         Range $range = null
     ): Set {
-        /** @var Set<Header> */
+        /** @var Set<Header<Header\Value>> */
         $headers = Set::of(Header::class);
 
         if (!$definition->isRangeable()) {
             return $headers;
         }
 
+        /** @psalm-suppress InvalidArgument */
         $headers = $headers->add(
             new AcceptRanges(new AcceptRangesValue('resources'))
         );
@@ -47,6 +48,7 @@ final class ListRangeBuilder implements ListBuilder
 
         $length = $range->lastPosition() - $range->firstPosition();
 
+        /** @psalm-suppress InvalidArgument */
         return $headers->add(
             new ContentRange(
                 new ContentRangeValue(

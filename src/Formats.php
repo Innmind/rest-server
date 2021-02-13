@@ -28,8 +28,8 @@ final class Formats
     public function __construct(Map $formats)
     {
         if (
-            (string) $formats->keyType() !== 'string' ||
-            (string) $formats->valueType() !== Format::class
+            $formats->keyType() !== 'string' ||
+            $formats->valueType() !== Format::class
         ) {
             throw new \TypeError(sprintf(
                 'Argument 1 must be of type Map<string, %s>',

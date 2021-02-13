@@ -40,14 +40,17 @@ final class ListLinksBuilder implements ListBuilder
         Specification $specification = null,
         Range $range = null
     ): Set {
-        /** @var Set<Header> */
+        /** @var Set<Header<Header\Value>> */
         $headers = Set::of(Header::class);
 
         if ($identities->size() === 0) {
             return $headers;
         }
 
-        /** @psalm-suppress MixedArgument */
+        /**
+         * @psalm-suppress MixedArgument
+         * @psalm-suppress InvalidArgument
+         */
         return $headers->add(
             new Link(
                 ...unwrap($identities->reduce(

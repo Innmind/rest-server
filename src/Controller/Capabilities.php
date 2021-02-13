@@ -37,6 +37,7 @@ final class Capabilities
 
     public function __invoke(ServerRequest $request): Response
     {
+        /** @psalm-suppress InvalidArgument */
         return new Response\Response(
             $code = StatusCode::of('OK'),
             $code->associatedreasonPhrase(),

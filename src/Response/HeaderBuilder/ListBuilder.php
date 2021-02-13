@@ -20,7 +20,7 @@ interface ListBuilder
     /**
      * @param Set<Identity> $identities
      *
-     * @return Set<Header>
+     * @return Set<Header<Header\Value>>
      */
     public function __invoke(
         Set $identities,

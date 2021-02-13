@@ -26,6 +26,7 @@ final class HeaderExtractor implements Extractor
 
         $range = $request->headers()->get('Range');
 
+        /** @psalm-suppress RedundantCondition */
         if (!$range instanceof RangeHeader) {
             throw new RangeNotFound;
         }

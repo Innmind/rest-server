@@ -19,7 +19,7 @@ final class Format
      */
     public function __construct(string $name, Set $types, int $priority)
     {
-        if ((string) $types->type() !== MediaType::class) {
+        if ($types->type() !== MediaType::class) {
             throw new \TypeError(sprintf(
                 'Argument 2 must be of type Set<%s>',
                 MediaType::class

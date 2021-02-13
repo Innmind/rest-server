@@ -43,8 +43,8 @@ final class Link implements Controller
         Locator $locator
     ) {
         if (
-            (string) $gateways->keyType() !== 'string' ||
-            (string) $gateways->valueType() !== Gateway::class
+            $gateways->keyType() !== 'string' ||
+            $gateways->valueType() !== Gateway::class
         ) {
             throw new \TypeError(sprintf(
                 'Argument 1 must be of type Map<string, %s>',
@@ -71,6 +71,7 @@ final class Link implements Controller
 
         $link = $request->headers()->get('Link');
 
+        /** @psalm-suppress RedundantCondition */
         if (!$link instanceof LinkHeader) {
             throw new BadRequest;
         }

@@ -17,7 +17,7 @@ use Innmind\Immutable\Set;
 interface GetBuilder
 {
     /**
-     * @return Set<Header>
+     * @return Set<Header<Header\Value>>
      */
     public function __invoke(
         HttpResourceInterface $resource,
