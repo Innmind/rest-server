@@ -20,7 +20,7 @@
         "innmind/specification": "~2.0",
         "innmind/filesystem": "~4.0",
         "innmind/http": "~4.2",
-        "willdurand/negotiation": "^2.0",
+        "willdurand/negotiation": "^3.0",
         "innmind/url-template": "~2.0",
         "innmind/json": "^1.0"
     },
