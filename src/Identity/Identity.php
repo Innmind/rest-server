@@ -20,9 +20,6 @@ final class Identity implements IdentityInterface
         $this->string = (string) $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function value()
     {
         return $this->value;

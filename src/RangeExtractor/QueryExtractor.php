@@ -11,9 +11,6 @@ use Innmind\Http\Message\ServerRequest;
 
 final class QueryExtractor implements Extractor
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(ServerRequest $request): Range
     {
         if (!$request->query()->contains('range')) {

@@ -13,7 +13,6 @@ use Innmind\Http\{
     Message\Response,
     ProtocolVersion,
 };
-use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class CapabilitiesTest extends TestCase

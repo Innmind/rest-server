@@ -23,10 +23,10 @@ final class Delegate implements Encoder
     public function __construct(Format $format, Map $encoders)
     {
         if (
-            (string) $encoders->keyType() !== 'string' ||
-            (string) $encoders->valueType() !== Encoder::class
+            $encoders->keyType() !== 'string' ||
+            $encoders->valueType() !== Encoder::class
         ) {
-            throw new \TypeError(sprintf(
+            throw new \TypeError(\sprintf(
                 'Argument 2 must be of type Map<string, %s>',
                 Encoder::class
             ));

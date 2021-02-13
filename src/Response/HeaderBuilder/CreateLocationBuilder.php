@@ -27,16 +27,13 @@ final class CreateLocationBuilder implements CreateBuilder
         $this->router = $router;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(
         Identity $identity,
         ServerRequest $request,
         HttpResource $definition,
         HttpResourceInterface $resource
     ): Set {
-        /** @var Set<Header> */
+        /** @var Set<Header<Header\Value>> */
         return Set::of(
             Header::class,
             new Location(

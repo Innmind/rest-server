@@ -8,7 +8,6 @@ use Innmind\Http\{
     Message\ServerRequest,
     Message\Form\Parameter,
 };
-use Innmind\Immutable\Map;
 
 final class Form implements RequestDecoder
 {
@@ -16,7 +15,7 @@ final class Form implements RequestDecoder
     {
         return $request->form()->reduce(
             [],
-            function(array $form, Parameter $parameter): array {
+            static function(array $form, Parameter $parameter): array {
                 $form[$parameter->name()] = $parameter->value();
 
                 return $form;

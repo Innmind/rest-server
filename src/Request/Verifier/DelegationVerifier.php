@@ -16,9 +16,6 @@ final class DelegationVerifier implements Verifier
         $this->verifiers = $verifiers;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(
         ServerRequest $request,
         HttpResource $definition

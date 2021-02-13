@@ -9,6 +9,9 @@ use Innmind\Specification\{
     Specification,
 };
 
+/**
+ * @psalm-immutable
+ */
 final class NotFilter implements Not
 {
     use Composite;
@@ -20,9 +23,6 @@ final class NotFilter implements Not
         $this->specification = $specification;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function specification(): Specification
     {
         return $this->specification;

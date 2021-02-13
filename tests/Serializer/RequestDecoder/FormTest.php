@@ -12,7 +12,6 @@ use Innmind\Http\{
     Message\Form as HttpForm,
     Message\Form\Parameter,
 };
-use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
 class FormTest extends TestCase

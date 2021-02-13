@@ -23,9 +23,6 @@ final class ListContentTypeBuilder implements ListBuilder
         $this->formats = $formats;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(
         Set $identities,
         ServerRequest $request,

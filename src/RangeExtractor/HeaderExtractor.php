@@ -15,9 +15,6 @@ use function Innmind\Immutable\first;
 
 final class HeaderExtractor implements Extractor
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(ServerRequest $request): Range
     {
         if (!$request->headers()->contains('Range')) {
@@ -26,6 +23,7 @@ final class HeaderExtractor implements Extractor
 
         $range = $request->headers()->get('Range');
 
+        /** @psalm-suppress RedundantCondition */
         if (!$range instanceof RangeHeader) {
             throw new RangeNotFound;
         }

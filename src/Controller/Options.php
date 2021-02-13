@@ -42,7 +42,7 @@ final class Options implements Controller
         HttpResource $definition,
         Identity $identity = null
     ): Response {
-        if (!is_null($identity)) {
+        if (!\is_null($identity)) {
             throw new LogicException;
         }
 
@@ -51,6 +51,7 @@ final class Options implements Controller
             ->acceptable($request)
             ->preferredMediaType();
 
+        /** @psalm-suppress InvalidArgument */
         return new Response\Response(
             $code = StatusCode::of('OK'),
             $code->associatedreasonPhrase(),

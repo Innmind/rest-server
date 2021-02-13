@@ -11,7 +11,6 @@ use Innmind\Rest\Server\{
     Definition\Gateway,
     Definition\Loader\YamlLoader,
 };
-use Innmind\Immutable\Map;
 use PHPUnit\Framework\TestCase;
 
 class DefinitionTest extends TestCase

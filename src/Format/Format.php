@@ -19,8 +19,8 @@ final class Format
      */
     public function __construct(string $name, Set $types, int $priority)
     {
-        if ((string) $types->type() !== MediaType::class) {
-            throw new \TypeError(sprintf(
+        if ($types->type() !== MediaType::class) {
+            throw new \TypeError(\sprintf(
                 'Argument 2 must be of type Set<%s>',
                 MediaType::class
             ));
@@ -34,7 +34,7 @@ final class Format
         $this->types = $types;
         $this->priority = $priority;
         $this->preferredType = $types
-            ->sort(function(MediaType $a, MediaType $b): int {
+            ->sort(static function(MediaType $a, MediaType $b): int {
                 return (int) ($a->priority() < $b->priority());
             })
             ->first();

@@ -25,9 +25,6 @@ final class Parameter implements ParameterInterface
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function value()
     {
         return $this->value;

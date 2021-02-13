@@ -16,7 +16,7 @@ use Innmind\Immutable\Set;
 interface RemoveBuilder
 {
     /**
-     * @return Set<Header>
+     * @return Set<Header<Header\Value>>
      */
     public function __invoke(
         ServerRequest $request,

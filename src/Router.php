@@ -6,7 +6,7 @@ namespace Innmind\Rest\Server;
 use Innmind\Rest\Server\{
     Routing\Routes,
     Routing\Prefix,
-    Routing\Match,
+    Routing\Matching,
     Definition\HttpResource,
     Exception\LogicException,
     Exception\RouteNotFound,
@@ -36,7 +36,7 @@ final class Router
         }
     }
 
-    public function match(Path $path): Match
+    public function match(Path $path): Matching
     {
         try {
             $path = $this->prefix->outOf($path);

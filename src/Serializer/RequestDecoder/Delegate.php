@@ -22,10 +22,10 @@ final class Delegate implements RequestDecoder
     public function __construct(Format $format, Map $decoders)
     {
         if (
-            (string) $decoders->keyType() !== 'string' ||
-            (string) $decoders->valueType() !== RequestDecoder::class
+            $decoders->keyType() !== 'string' ||
+            $decoders->valueType() !== RequestDecoder::class
         ) {
-            throw new \TypeError(sprintf(
+            throw new \TypeError(\sprintf(
                 'Argument 2 must be of type Map<string, %s>',
                 RequestDecoder::class
             ));

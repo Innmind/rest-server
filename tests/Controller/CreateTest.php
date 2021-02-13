@@ -32,7 +32,6 @@ use Innmind\Immutable\{
     Map,
     Set,
 };
-use PHPUnit\Framework\TestCase;
 
 class CreateTest extends AbstractTestCase
 {

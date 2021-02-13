@@ -16,10 +16,10 @@ class HttpResourceNormalizationException extends RuntimeException
     public function __construct(Map $errors)
     {
         if (
-            (string) $errors->keyType() !== 'string' ||
-            (string) $errors->valueType() !== NormalizationException::class
+            $errors->keyType() !== 'string' ||
+            $errors->valueType() !== NormalizationException::class
         ) {
-            throw new \TypeError(sprintf(
+            throw new \TypeError(\sprintf(
                 'Argument 1 must be of type Map<string, %s>',
                 NormalizationException::class
             ));

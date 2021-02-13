@@ -63,7 +63,7 @@ class DelegationVerifierTest extends TestCase
         );
         $verifier1
             ->method('__invoke')
-            ->will($this->returnCallback(function() use (&$count) {
+            ->will($this->returnCallback(static function() use (&$count) {
                 throw new \Exception;
             }));
 

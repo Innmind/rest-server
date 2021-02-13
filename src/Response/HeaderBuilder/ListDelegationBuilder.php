@@ -25,9 +25,6 @@ final class ListDelegationBuilder implements ListBuilder
         $this->builders = $builders;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(
         Set $identities,
         ServerRequest $request,
@@ -35,14 +32,14 @@ final class ListDelegationBuilder implements ListBuilder
         Specification $specification = null,
         Range $range = null
     ): Set {
-        if ((string) $identities->type() !== Identity::class) {
-            throw new \TypeError(sprintf(
+        if ($identities->type() !== Identity::class) {
+            throw new \TypeError(\sprintf(
                 'Argument 1 must be of type Set<%s>',
                 Identity::class
             ));
         }
 
-        /** @var Set<Header> */
+        /** @var Set<Header<Header\Value>> */
         $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {

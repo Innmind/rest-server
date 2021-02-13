@@ -10,6 +10,9 @@ use Innmind\Specification\{
     Operator,
 };
 
+/**
+ * @psalm-immutable
+ */
 final class AndFilter implements CompositeInterface
 {
     use Composite;
@@ -27,25 +30,16 @@ final class AndFilter implements CompositeInterface
         $this->operator = Operator::and();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function left(): Specification
     {
         return $this->left;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function right(): Specification
     {
         return $this->right;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function operator(): Operator
     {
         return $this->operator;

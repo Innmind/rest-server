@@ -33,7 +33,7 @@ final class HttpResource
             ->properties()
             ->reduce(
                 Map::of('string', Property::class),
-                function(
+                static function(
                     Map $properties,
                     string $name,
                     PropertyDefinition $definition

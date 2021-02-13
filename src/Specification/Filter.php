@@ -9,6 +9,9 @@ use Innmind\Specification\{
     Sign,
 };
 
+/**
+ * @psalm-immutable
+ */
 final class Filter implements Comparator
 {
     use Composite;
@@ -26,25 +29,16 @@ final class Filter implements Comparator
         $this->value = $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function property(): string
     {
         return $this->property;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sign(): Sign
     {
         return Sign::equality();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function value()
     {
         return $this->value;
@@ -52,6 +46,7 @@ final class Filter implements Comparator
 
     public function isSatisfiedBy(HttpResource $resource): bool
     {
+        /** @psalm-suppress ImpureMethodCall */
         return $resource->property($this->property)->value() === $this->value;
     }
 }

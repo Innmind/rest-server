@@ -1,6 +1,6 @@
 # REST Server
 
-[![Build Status](https://github.com/Innmind/rest-server/workflows/CI/badge.svg)](https://github.com/Innmind/rest-server/actions?query=workflow%3ACI)
+[![Build Status](https://github.com/Innmind/rest-server/workflows/CI/badge.svg?branch=master)](https://github.com/Innmind/rest-server/actions?query=workflow%3ACI)
 [![codecov](https://codecov.io/gh/Innmind/rest-server/branch/develop/graph/badge.svg)](https://codecov.io/gh/Innmind/rest-server)
 [![Type Coverage](https://shepherd.dev/github/Innmind/rest-server/coverage.svg)](https://shepherd.dev/github/Innmind/rest-server)
 
@@ -26,7 +26,7 @@ $services = bootstrap(
     require '/path/to/resources/mapping.php'
 );
 
-$services['routes']; // provides all the routes available for the deinfitions you provided
+$services['routes']; // provides all the routes available for the definitions you provided
 
 // action controllers
 $services['controller']['create'];

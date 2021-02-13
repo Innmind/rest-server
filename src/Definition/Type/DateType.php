@@ -18,9 +18,6 @@ final class DateType implements Type
         $this->format = $format;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function denormalize($data)
     {
         try {
@@ -40,9 +37,6 @@ final class DateType implements Type
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function normalize($data)
     {
         if (\is_string($data)) {

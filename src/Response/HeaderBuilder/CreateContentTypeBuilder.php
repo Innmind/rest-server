@@ -23,9 +23,6 @@ final class CreateContentTypeBuilder implements CreateBuilder
         $this->formats = $formats;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(
         Identity $identity,
         ServerRequest $request,

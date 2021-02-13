@@ -23,15 +23,12 @@ final class RemoveDelegationBuilder implements RemoveBuilder
         $this->builders = $builders;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(
         ServerRequest $request,
         HttpResource $definition,
         Identity $identity
     ): Set {
-        /** @var Set<Header> */
+        /** @var Set<Header<Header\Value>> */
         $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {

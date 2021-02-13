@@ -18,9 +18,6 @@ use Innmind\Specification\Specification;
 
 final class Builder implements BuilderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(
         ServerRequest $request,
         HttpResource $definition
@@ -53,6 +50,7 @@ final class Builder implements BuilderInterface
                 return $specification;
             },
         );
+
         if ($specification === null) {
             throw new NoFilterFound;
         }

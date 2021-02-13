@@ -23,15 +23,12 @@ final class LinkDelegationBuilder implements LinkBuilder
         $this->builders = $builders;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(
         ServerRequest $request,
         Reference $from,
         Link ...$links
     ): Set {
-        /** @var Set<Header> */
+        /** @var Set<Header<Header\Value>> */
         $headers = Set::of(Header::class);
 
         foreach ($this->builders as $build) {

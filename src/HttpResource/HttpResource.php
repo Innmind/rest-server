@@ -52,33 +52,21 @@ final class HttpResource implements HttpResourceInterface
         return new self($definition, $map);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function definition(): ResourceDefinition
     {
         return $this->definition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function property(string $name): Property
     {
         return $this->properties->get($name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function has(string $name): bool
     {
         return $this->properties->contains($name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function properties(): Map
     {
         return $this->properties;

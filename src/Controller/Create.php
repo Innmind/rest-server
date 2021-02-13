@@ -48,10 +48,10 @@ final class Create implements Controller
         CreateBuilder $headerBuilder
     ) {
         if (
-            (string) $gateways->keyType() !== 'string' ||
-            (string) $gateways->valueType() !== Gateway::class
+            $gateways->keyType() !== 'string' ||
+            $gateways->valueType() !== Gateway::class
         ) {
-            throw new \TypeError(sprintf(
+            throw new \TypeError(\sprintf(
                 'Argument 4 must be of type Map<string, %s>',
                 Gateway::class
             ));
@@ -70,7 +70,7 @@ final class Create implements Controller
         HttpResource $definition,
         Identity $identity = null
     ): Response {
-        if (!is_null($identity)) {
+        if (!\is_null($identity)) {
             throw new LogicException;
         }
 
